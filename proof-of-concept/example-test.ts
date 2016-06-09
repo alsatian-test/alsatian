@@ -17,6 +17,11 @@ export class ExampleTest {
 
   @Test()
   private _iShouldBeRun() {
-    console.log("you should see me");
+    // console.log("you should see me");
+  }
+
+  @Test()
+  public errorTest() {
+    throw new Error();
   }
 }
