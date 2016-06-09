@@ -67,10 +67,10 @@ testFixtures.forEach(testFixture => {
       test.testCases.forEach((testCase: any) => {
         try {
           testFixture.fixture[test.key].apply(this, testCase.arguments);
-          console.log("ok");
+          console.log("ok", test.description);
         }
         catch(error) {
-          console.log("not ok");
+          console.log("not ok", test.description);
         }
       });
     //}
