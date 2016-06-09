@@ -52,27 +52,14 @@ testFixtures.forEach(testFixture => {
   // run all tests on this test fixture
   testFixture.tests.forEach((test: any) => {
 
-    // if there are no test cases then just run the test
-    /*if (!testFixture.test) {
+    test.testCases.forEach((testCase: any) => {
       try {
-        testFixture.fixture[testKey].call(this);
-        console.log("ok");
+        testFixture.fixture[test.key].apply(this, testCase.arguments);
+        console.log("ok", test.description);
       }
       catch(error) {
-        console.log("not ok");
+        console.log("not ok", test.description);
       }
-    }*/
-    // otherwise pass all the test case arguments
-    //else {
-      test.testCases.forEach((testCase: any) => {
-        try {
-          testFixture.fixture[test.key].apply(this, testCase.arguments);
-          console.log("ok", test.description);
-        }
-        catch(error) {
-          console.log("not ok", test.description);
-        }
-      });
-    //}
+    });
   });
 });
