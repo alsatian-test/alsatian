@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/jamesrichford/alsatian#readme",
   "devDependencies": {
+    "reflect-metadata": "^0.1.3",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
   }
