@@ -1,0 +1,30 @@
+{
+  "name": "alsatian",
+  "version": "1.0.0-alpha.0",
+  "description": "TypeScript testing framework with test cases",
+  "main": "alsatian.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesrichford/alsatian.git"
+  },
+  "keywords": [
+    "test",
+    "framework",
+    "test",
+    "framework",
+    "TypeScript",
+    "node",
+    "test",
+    "case",
+    "case"
+  ],
+  "author": "James Richford <=> (=)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesrichford/alsatian/issues"
+  },
+  "homepage": "https://github.com/jamesrichford/alsatian#readme"
+}
