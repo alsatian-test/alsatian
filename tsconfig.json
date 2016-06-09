@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "buildOnSave": true,
+    "compileOnSave": true,
+    "exclude": [
+        "**/*.d.ts",
+        "./node_modules/**/*.*"
+    ],
+    "filesGlob": [
+        "./proof-of-concept/**/*.ts",
+        "./typings/main.d.ts"
+    ],
+    "files": [
+        "./typings/main.d.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}

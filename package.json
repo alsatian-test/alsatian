@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/jamesrichford/alsatian/issues"
   },
-  "homepage": "https://github.com/jamesrichford/alsatian#readme"
+  "homepage": "https://github.com/jamesrichford/alsatian#readme",
+  "devDependencies": {
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
+  }
 }
