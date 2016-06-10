@@ -2,6 +2,7 @@ import { TestCase } from "./test-case-decorator";
 import { Test } from "./test-decorator";
 import { AsyncTest } from "./async-test-decorator";
 import { TestFixture } from "./test-fixture";
+import { Expect } from "./expect";
 
 export class ExampleTest extends TestFixture {
 
@@ -10,7 +11,7 @@ export class ExampleTest extends TestFixture {
   @TestCase(1)
   @TestCase("")
   public checkIsTrue(value: boolean) {
-    return value === true;
+    Expect(value).toBe(true);
   }
 
   private _ignoreMe() {
@@ -24,7 +25,6 @@ export class ExampleTest extends TestFixture {
 
   @Test()
   public errorTest() {
-    throw new Error();
   }
 
   @AsyncTest()

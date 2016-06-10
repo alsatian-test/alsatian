@@ -1,5 +1,23 @@
 import * as Test from "./example-test";
+import { MatchError } from "./match-error";
 import "reflect-metadata";
+
+
+let handleError = (error: Error, test: any) => {
+  console.log("not ok", test.description);
+  if (error instanceof MatchError) {
+    console.log("   ---");
+    console.log("   message: \"" + error.message + "\"");
+    console.log("   severity: fail");
+    console.log("   data:");
+    console.log("      got: " + JSON.stringify(error.actualValue));
+    console.log("      expect: " + JSON.stringify(error.expectedValue));
+    console.log("   ...");
+  }
+  else {
+    console.log("# Unknown Error");
+  }
+}
 
 let testFixtureKeys = Object.keys(Test);
 let testFixtures: Array<any> = [];
@@ -59,8 +77,8 @@ testFixtures.forEach(testFixture => {
             promise.then(() => {
                console.log("ok", test.description);
             })
-            .catch(() => {
-               console.log("not ok", test.description);
+            .catch((error: Error) => {
+              handleError(error, test);
             });
          }
          else {
@@ -69,7 +87,7 @@ testFixtures.forEach(testFixture => {
          }
       }
       catch (error) {
-        console.log("not ok", test.description, error);
+        handleError(error, test);
       }
     });
   });

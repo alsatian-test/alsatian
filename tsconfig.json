@@ -21,6 +21,8 @@
     "files": [
         "./proof-of-concept/async-test-decorator.ts",
         "./proof-of-concept/example-test.ts",
+        "./proof-of-concept/expect.ts",
+        "./proof-of-concept/match-error.ts",
         "./proof-of-concept/runner.ts",
         "./proof-of-concept/test-case-decorator.ts",
         "./proof-of-concept/test-decorator.ts",
