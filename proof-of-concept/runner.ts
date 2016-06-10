@@ -64,6 +64,7 @@ testFixtureKeys.forEach(testFixtureKey => {
 
 // RUN
 let totalTestCount = testFixtures.map(x => x.tests.map((y: any) => y.testCases.length)).reduce((a, b) => a + b).reduce((c: number, d: number) => c + d);
+console.log("TAP version 13");
 console.log("1.." + totalTestCount);
 
 testFixtures.forEach(testFixture => {
