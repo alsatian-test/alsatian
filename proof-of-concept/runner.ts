@@ -14,23 +14,23 @@ testFixtureKeys.forEach(testFixtureKey => {
   testFixture.fixture = new Test[testFixtureKey]();
 
   // find all the tests on this test fixture
-  let testKeys = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
+  let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
 
-  if (testKeys.length === 0) {
+  if (tests.length === 0) {
     console.error("no tests found");
     return;
   }
 
   testFixture.tests = [];
 
-  testKeys.forEach((testKey: string) => {
-    let test: any = {};
+  tests.forEach((test: any) => {
     testFixture.tests.push(test);
 
-    test.key = testKey;
-    test.description = testKey;
+    if (!test.description) {
+       test.description = test.key;
+    }
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture.fixture, testKey);
+    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture.fixture, test.key);
     test.testCases = [];
 
     if (!testCases) {
@@ -54,11 +54,22 @@ testFixtures.forEach(testFixture => {
 
     test.testCases.forEach((testCase: any) => {
       try {
-        testFixture.fixture[test.key].apply(this, testCase.arguments);
-        console.log("ok", test.description);
+         if (test.isAsync) {
+            let promise: any = testFixture.fixture[test.key].apply(testFixture, testCase.arguments);
+            promise.then(() => {
+               console.log("ok", test.description);
+            })
+            .catch(() => {
+               console.log("not ok", test.description);
+            });
+         }
+         else {
+           testFixture.fixture[test.key].apply(testFixture, testCase.arguments);
+           console.log("ok", test.description);
+         }
       }
-      catch(error) {
-        console.log("not ok", test.description);
+      catch (error) {
+        console.log("not ok", test.description, error);
       }
     });
   });
