@@ -1,7 +1,6 @@
 import { TestCase } from "./test-case-decorator";
 import { Test } from "./test-decorator";
 import { AsyncTest } from "./async-test-decorator";
-import { TestFixture } from "./test-fixture";
 
 export class ExampleTest {
 
