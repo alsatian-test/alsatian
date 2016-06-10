@@ -42,7 +42,12 @@ export class ExampleTest extends TestFixture {
      };
 
      setTimeout(() => {
-        throw new Error();
+        try {
+           throw new Error();
+        }
+        catch (error) {
+           promise.catchCallback(error);
+        }
      }, 1000);
 
      return promise;
