@@ -14,6 +14,14 @@ export class ExampleTest extends TestFixture {
     Expect(value).toBe(true);
   }
 
+  @TestCase(true)
+  @TestCase(false)
+  @TestCase(1)
+  @TestCase("")
+  public checkIsNotTrue(value: boolean) {
+    Expect(value).not.toBe(true);
+  }
+
   private _ignoreMe() {
     console.log("you should not see me");
   }

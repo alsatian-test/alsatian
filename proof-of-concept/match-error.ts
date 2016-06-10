@@ -15,9 +15,13 @@ export class MatchError extends Error {
     return this._message;
   }
 
-  public constructor(actualValue: any, expectedValue: any) {
+  public constructor(actualValue: any, expectedValue: any, shouldMatch: boolean) {
     super();
-    this._message = "Expected " + actualValue + " to be " + expectedValue + ".";
+    this._message = "Expected " + JSON.stringify(actualValue);
+    if (!shouldMatch) {
+      this._message += " not";
+    }
+    this._message += " to be " + JSON.stringify(expectedValue) + ".";
     this._actualValue = actualValue;
     this._expectedValue = expectedValue;
   }
