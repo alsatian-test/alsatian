@@ -23,8 +23,7 @@
         "./proof-of-concept/example-test.ts",
         "./proof-of-concept/runner.ts",
         "./proof-of-concept/test-case-decorator.ts",
-        "./proof-of-concept/test-decorator.ts",
-        "./proof-of-concept/test-fixture.ts"
+        "./proof-of-concept/test-decorator.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

@@ -3,7 +3,7 @@ import { Test } from "./test-decorator";
 import { AsyncTest } from "./async-test-decorator";
 import { TestFixture } from "./test-fixture";
 
-export class ExampleTest extends TestFixture {
+export class ExampleTest {
 
   @TestCase(true)
   @TestCase(false)
