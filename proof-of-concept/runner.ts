@@ -23,11 +23,25 @@ let handleError = (error: Error, test: any, testCaseArguments: Array<any>) => {
     process.stdout.write("# Unknown Error\n");
   }
 
-  runNextTestCase();
+  teardown();
 }
 
 let notifySuccess = (test: any, testCaseArguments: Array<any>) => {
   process.stdout.write(`ok ${getTestDescription(test, testCaseArguments)}\n`);
+  teardown();
+}
+
+let teardown = () => {
+  let testFixture = testFixtures[currentTestFixtureIndex];
+
+  let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", testFixture.fixture);
+
+  if (teardownFunctions) {
+    teardownFunctions.forEach(teardownFunction => {
+        testFixture.fixture[teardownFunction].call(testFixture.fixture);
+    });
+  }
+
   runNextTestCase();
 }
 
@@ -168,11 +182,19 @@ let runNextTestCase = () => {
 let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
   currentTestId++;
 
+  let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
+
+  if (setupFunctions) {
+    setupFunctions.forEach(setupFunction => {
+        testFixture.fixture[setupFunction].call(testFixture.fixture);
+    });
+  }
+
   try {
      if (test.isAsync) {
         let timeout = false;
 
-        let promise: any = testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
+        let promise: any = testFixture.fixture[test.key].apply(testFixture.fixture, testCaseArguments);
         promise.then(() => {
           // TODO: Cancel promise on timeout instead;
           if (!timeout) {

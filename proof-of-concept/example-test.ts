@@ -7,6 +7,8 @@ import { IgnoreTest } from "./ignore-test-decorator";
 import { IgnoreTests } from "./ignore-tests-decorator";
 import { FocusTest } from "./focus-test-decorator";
 import { FocusTests } from "./focus-tests-decorator";
+import { Setup } from "./setup-decorator";
+import { Teardown } from "./teardown-decorator";
 
 @FocusTests
 export class ExampleTest extends TestFixture {
@@ -70,8 +72,28 @@ export class ExampleTest extends TestFixture {
      return promise;
   }
 
-    @Test("Nicely described test")
-    public nicelyDescribedTest() {
-      // console.log("you should see me");
-    }
+  @Test("Nicely described test")
+  public nicelyDescribedTest() {
+    // console.log("you should see me");
+  }
+
+  @Setup
+  private _doMeBefore() {
+    console.log("before");
+  }
+
+  @Setup
+  private _doMeBeforeAswell() {
+    console.log("before 2");
+  }
+
+  @Teardown
+  private _doMeAfter() {
+    console.log("after");
+  }
+
+  @Teardown
+  private _doMeAfterAswell() {
+    console.log("after 2");
+  }
 }

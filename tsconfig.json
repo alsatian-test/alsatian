@@ -28,6 +28,8 @@
         "./proof-of-concept/ignore-tests-decorator.ts",
         "./proof-of-concept/match-error.ts",
         "./proof-of-concept/runner.ts",
+        "./proof-of-concept/setup-decorator.ts",
+        "./proof-of-concept/teardown-decorator.ts",
         "./proof-of-concept/test-case-decorator.ts",
         "./proof-of-concept/test-decorator.ts",
         "./proof-of-concept/test-fixture.ts"
