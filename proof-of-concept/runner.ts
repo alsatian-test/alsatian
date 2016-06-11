@@ -2,8 +2,10 @@ import * as Test from "./example-test";
 import { MatchError } from "./match-error";
 import "reflect-metadata";
 
+let currentTestId = 0;
+
 let getTestDescription = (test: any, testCaseArguments: Array<any>) => {
-  let testDescription = `${test.description}`;
+  let testDescription = `${currentTestId} - ${test.description}`;
 
   if (testCaseArguments !== undefined) {
     testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
@@ -148,6 +150,8 @@ let runNextTestCase = () => {
 }
 
 let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
+  currentTestId++;
+  
   try {
      if (test.isAsync) {
         let timeout = false;
