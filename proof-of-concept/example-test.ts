@@ -10,6 +10,7 @@ export class ExampleTest extends TestFixture {
   @TestCase(false)
   @TestCase(1)
   @TestCase("")
+  @TestCase(undefined)
   public checkIsTrue(value: boolean) {
     Expect(value).toBe(true);
   }

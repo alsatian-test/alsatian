@@ -2,14 +2,28 @@ import * as Test from "./example-test";
 import { MatchError } from "./match-error";
 import "reflect-metadata";
 
-let handleError = (error: Error, test: any) => {
-  process.stdout.write(`not ok ${test.description}\n`);
+let getTestDescription = (test: any, testCaseArguments: Array<any>) => {
+  let testDescription = `${test.description}`;
+
+  if (testCaseArguments !== undefined) {
+    testDescription += ` ${JSON.stringify(testCaseArguments)}`;
+  }
+
+  return testDescription;
+}
+
+let handleError = (error: Error, test: any, testCaseArguments: Array<any>) => {
+  process.stdout.write(`not ok ${getTestDescription(test, testCaseArguments)}\n`);
   if (error instanceof MatchError) {
     process.stdout.write(`   ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n   ...\n`);
   }
   else {
     process.stdout.write("# Unknown Error\n");
   }
+}
+
+let notifySuccess = (test: any, testCaseArguments: Array<any>) => {
+  process.stdout.write(`ok ${getTestDescription(test, testCaseArguments)}\n`);
 }
 
 let testFixtureKeys = Object.keys(Test);
@@ -69,19 +83,19 @@ testFixtures.forEach(testFixture => {
          if (test.isAsync) {
             let promise: any = testFixture.fixture[test.key].apply(testFixture, testCase.arguments);
             promise.then(() => {
-              process.stdout.write(`ok ${test.description}\n`);
+              notifySuccess(test, testCase.arguments);
             })
             .catch((error: Error) => {
-              handleError(error, test);
+              handleError(error, test, testCase.arguments);
             });
          }
          else {
            testFixture.fixture[test.key].apply(testFixture, testCase.arguments);
-           process.stdout.write(`ok ${test.description}\n`);
+           notifySuccess(test, testCase.arguments);
          }
       }
       catch (error) {
-        handleError(error, test);
+        handleError(error, test, testCase.arguments);
       }
     });
   });
