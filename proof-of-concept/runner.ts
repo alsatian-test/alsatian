@@ -1,5 +1,5 @@
 import * as Test from "./example-test";
-import { MatchError } from "./match-error";
+import { MatchError } from "./errors/match-error";
 import "reflect-metadata";
 
 let currentTestId = 0;

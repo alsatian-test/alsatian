@@ -1,4 +1,4 @@
-import { MatchError} from "./match-error";
+import { MatchError} from "./errors/match-error";
 
 export function Expect(actualValue: any){
   return new Matcher(actualValue);

@@ -9,7 +9,7 @@ import { FocusTest } from "./focus-test-decorator";
 import { FocusTests } from "./focus-tests-decorator";
 import { Setup } from "./setup-decorator";
 import { Teardown } from "./teardown-decorator";
-import { MatchError } from "./match-error";
+import { MatchError } from "./errors/match-error";
 
 @FocusTests
 export class ExampleTest extends TestFixture {
