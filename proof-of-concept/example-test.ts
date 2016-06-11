@@ -9,6 +9,7 @@ import { FocusTests } from "./focus-tests-decorator";
 import { Setup } from "./setup-decorator";
 import { Teardown } from "./teardown-decorator";
 import { MatchError } from "./errors/match-error";
+import { SpyOn } from "./spying/spy-on";
 
 @FocusTests
 export class ExampleTest {
@@ -138,5 +139,19 @@ export class ExampleTest {
     Expect(() => { throw new MatchError(1, 2, "Expected 1 to be 2.") }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
     Expect(() => { throw new Error("Expected 1 to be 2.") }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
     Expect(() => { throw new Error() }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
+  }
+
+  @Test()
+  public spyTest() {
+    let test = {
+      x: "i are a property",
+      test: () => { console.log(this, this["x"]); }
+    };
+
+    SpyOn(test, "test");
+
+    test.test();
+
+    Expect((<any>test.test).calls.length).toBe(1);
   }
 }
