@@ -4,9 +4,9 @@ import "reflect-metadata";
 
 let getTestDescription = (test: any, testCaseArguments: Array<any>) => {
   let testDescription = `${test.description}`;
-
+  
   if (testCaseArguments !== undefined) {
-    testDescription += ` ${JSON.stringify(testCaseArguments)}`;
+    testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
   }
 
   return testDescription;
