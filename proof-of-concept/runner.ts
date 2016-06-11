@@ -17,7 +17,7 @@ let getTestDescription = (test: any, testCaseArguments: Array<any>) => {
 let handleError = (error: Error, test: any, testCaseArguments: Array<any>) => {
   process.stdout.write(`not ok ${getTestDescription(test, testCaseArguments)}\n`);
   if (error instanceof MatchError) {
-    process.stdout.write(`   ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n   ...\n`);
+    process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
   }
   else {
     process.stdout.write("# Unknown Error\n");
@@ -33,6 +33,8 @@ let notifySuccess = (test: any, testCaseArguments: Array<any>) => {
 
 let testFixtureKeys = Object.keys(Test);
 let testFixtures: Array<any> = [];
+
+let testsFocussed = false;
 
 // CALCULATE TESTS TO RUN
 testFixtureKeys.forEach(testFixtureKey => {
@@ -55,6 +57,8 @@ testFixtureKeys.forEach(testFixtureKey => {
     return;
   }
 
+  let focusFixture = Reflect.getMetadata("alsatian:focus", Test[testFixtureKey]);
+
   testFixture.tests = [];
 
   tests.forEach((test: any) => {
@@ -63,6 +67,10 @@ testFixtureKeys.forEach(testFixtureKey => {
       // ignore this test
       return;
     }
+
+    let focusTest = Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key);
+    test.focussed = focusFixture || focusTest;
+    testsFocussed = testsFocussed || test.focussed;
 
     testFixture.tests.push(test);
 
@@ -91,6 +99,14 @@ if (testFixtures.length === 0) {
   process.exit(1);
 }
 
+//Filter out unfocussed tests if any are focussed
+if (testsFocussed) {
+  testFixtures = testFixtures.map(x => {
+    x.tests = x.tests.filter(y => y.focussed)
+    return x;
+  });
+}
+
 // RUN
 let totalTestCount = testFixtures.map(x => x.tests.map((y: any) => y.testCases.length)).reduce((a, b) => a + b).reduce((c: number, d: number) => c + d);
 process.stdout.write("TAP version 13\n");
@@ -103,7 +119,6 @@ let currentTestIndex = 0;
 let currentTestCaseIndex = 0;
 
 let exit = () => {
-  console.log("all done");
   process.exit(0);
 }
 
@@ -123,6 +138,7 @@ let runNextTestFixture = () => {
 }
 
 let runNextTest = () => {
+
   currentTestIndex++;
   currentTestCaseIndex = 0;
 
@@ -151,7 +167,7 @@ let runNextTestCase = () => {
 
 let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
   currentTestId++;
-  
+
   try {
      if (test.isAsync) {
         let timeout = false;
@@ -170,7 +186,7 @@ let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
         let timeoutCheck = setTimeout(() => {
           // TODO: Cancel promise on timeout instead;
           timeout = true;
-          handleError(new Error("Timeout"), test, testCaseArguments);
+          handleError(new MatchError("longer than 500ms", "less than 500ms", true), test, testCaseArguments);
         }, 500);
      }
      else {

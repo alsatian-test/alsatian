@@ -5,7 +5,10 @@ import { TestFixture } from "./test-fixture";
 import { Expect } from "./expect";
 import { IgnoreTest } from "./ignore-test-decorator";
 import { IgnoreTests } from "./ignore-tests-decorator";
+import { FocusTest } from "./focus-test-decorator";
+import { FocusTests } from "./focus-tests-decorator";
 
+@FocusTests
 export class ExampleTest extends TestFixture {
 
   @TestCase(true)
@@ -31,6 +34,7 @@ export class ExampleTest extends TestFixture {
   }
 
   @Test()
+  @FocusTest
   private _iShouldBeRun() {
     // console.log("you should see me");
   }
