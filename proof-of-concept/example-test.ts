@@ -1,7 +1,6 @@
 import { TestCase } from "./test-case-decorator";
 import { Test } from "./test-decorator";
 import { AsyncTest } from "./async-test-decorator";
-import { TestFixture } from "./test-fixture";
 import { Expect } from "./expect";
 import { IgnoreTest } from "./ignore-test-decorator";
 import { IgnoreTests } from "./ignore-tests-decorator";
@@ -12,7 +11,7 @@ import { Teardown } from "./teardown-decorator";
 import { MatchError } from "./errors/match-error";
 
 @FocusTests
-export class ExampleTest extends TestFixture {
+export class ExampleTest {
 
   @TestCase(true)
   @TestCase(false)
@@ -80,7 +79,7 @@ export class ExampleTest extends TestFixture {
 
   @Test()
   public equalTest() {
-    Expect(1).toEqual("1");
+    Expect(!1).toEqual("1");
     Expect(2).not.toEqual("1");
   }
 
@@ -135,9 +134,9 @@ export class ExampleTest extends TestFixture {
   @Test()
   @FocusTest
   public throwErrorTest() {
-    Expect(() => { throw new MatchError(1, 2, true); }).toThrowError(MatchError, "Expected 1 to be 2.");
-    Expect(() => { throw new MatchError(1, 2, false) }).not.toThrowError(MatchError, "Expected 1 to be 2.");
-    Expect(() => { throw new Error("Expected 1 to be 2.") }).not.toThrowError(MatchError, "Expected 1 to be 2.");
-    Expect(() => { throw new Error() }).not.toThrowError(MatchError, "Expected 1 to be 2.");
+    Expect(() => { throw new MatchError(1, 2, "Expected 1 to be 2."); }).toThrowError(<any>MatchError, "Expected 1 to be 2.");
+    Expect(() => { throw new MatchError(1, 2, "Expected 1 to be 2.") }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
+    Expect(() => { throw new Error("Expected 1 to be 2.") }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
+    Expect(() => { throw new Error() }).not.toThrowError(<any>MatchError, "Expected 1 to be 2.");
   }
 }
