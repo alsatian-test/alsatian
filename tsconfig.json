@@ -16,7 +16,7 @@
     ],
     "filesGlob": [
         "./proof-of-concept/**/*.ts",
-        "./typings/main.d.ts"
+        "./typings/index.d.ts"
     ],
     "files": [
         "./proof-of-concept/async-test-decorator.ts",
@@ -39,7 +39,8 @@
         "./proof-of-concept/setup-decorator.ts",
         "./proof-of-concept/teardown-decorator.ts",
         "./proof-of-concept/test-case-decorator.ts",
-        "./proof-of-concept/test-decorator.ts"
+        "./proof-of-concept/test-decorator.ts",
+        "./typings/index.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

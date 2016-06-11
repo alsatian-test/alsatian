@@ -116,7 +116,7 @@ if (testFixtures.length === 0) {
 //Filter out unfocussed tests if any are focussed
 if (testsFocussed) {
   testFixtures = testFixtures.map(x => {
-    x.tests = x.tests.filter(y => y.focussed)
+    x.tests = x.tests.filter((y: any) => y.focussed)
     return x;
   });
 }
@@ -208,7 +208,7 @@ let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
         let timeoutCheck = setTimeout(() => {
           // TODO: Cancel promise on timeout instead;
           timeout = true;
-          handleError(new MatchError("longer than 500ms", "less than 500ms", true), test, testCaseArguments);
+          handleError(new MatchError("longer than 500ms", "less than 500ms", "The test exceeded the given timeout."), test, testCaseArguments);
         }, 500);
      }
      else {
