@@ -150,13 +150,24 @@ let runNextTestCase = () => {
 let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
   try {
      if (test.isAsync) {
+        let timeout = false;
+
         let promise: any = testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
         promise.then(() => {
-          notifySuccess(test, testCaseArguments);
+          // TODO: Cancel promise on timeout instead;
+          if (!timeout) {
+            notifySuccess(test, testCaseArguments);
+          }
         })
         .catch((error: Error) => {
           handleError(error, test, testCaseArguments);
         });
+
+        let timeoutCheck = setTimeout(() => {
+          // TODO: Cancel promise on timeout instead;
+          timeout = true;
+          handleError(new Error("Timeout"), test, testCaseArguments);
+        }, 500);
      }
      else {
        testFixture.fixture[test.key].apply(testFixture, testCaseArguments);

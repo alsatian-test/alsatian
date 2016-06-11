@@ -55,7 +55,8 @@ export class ExampleTest extends TestFixture {
 
      setTimeout(() => {
         try {
-           throw new Error();
+           //throw new Error();
+           promise.thenCallback();
         }
         catch (error) {
            promise.catchCallback(error);
