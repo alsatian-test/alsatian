@@ -4,7 +4,7 @@ import "reflect-metadata";
 
 let getTestDescription = (test: any, testCaseArguments: Array<any>) => {
   let testDescription = `${test.description}`;
-  
+
   if (testCaseArguments !== undefined) {
     testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
   }
@@ -32,8 +32,12 @@ let testFixtures: Array<any> = [];
 // CALCULATE TESTS TO RUN
 testFixtureKeys.forEach(testFixtureKey => {
 
+  if(Reflect.getMetadata("alsatian:ignore", Test[testFixtureKey])) {
+    // fixture should be ignored
+    return;
+  }
+
   let testFixture: any = {};
-  testFixtures.push(testFixture);
 
   // create an instance of the test fixture
   testFixture.fixture = new Test[testFixtureKey]();
@@ -42,13 +46,19 @@ testFixtureKeys.forEach(testFixtureKey => {
   let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
 
   if (tests.length === 0) {
-    console.error("no tests found");
+    // no tests on the fixture
     return;
   }
 
   testFixture.tests = [];
 
   tests.forEach((test: any) => {
+
+    if(Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
+      // ignore this test
+      return;
+    }
+
     testFixture.tests.push(test);
 
     if (!test.description) {
@@ -67,7 +77,14 @@ testFixtureKeys.forEach(testFixtureKey => {
       });
     }
   });
+
+  testFixtures.push(testFixture);
 });
+
+if (testFixtures.length === 0) {
+  process.stderr.write("no tests to run\n");
+  process.exit(1);
+}
 
 // RUN
 let totalTestCount = testFixtures.map(x => x.tests.map((y: any) => y.testCases.length)).reduce((a, b) => a + b).reduce((c: number, d: number) => c + d);

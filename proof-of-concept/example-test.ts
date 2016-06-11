@@ -3,7 +3,10 @@ import { Test } from "./test-decorator";
 import { AsyncTest } from "./async-test-decorator";
 import { TestFixture } from "./test-fixture";
 import { Expect } from "./expect";
+import { IgnoreTest } from "./ignore-test-decorator";
+import { IgnoreTests } from "./ignore-tests-decorator";
 
+@IgnoreTests
 export class ExampleTest extends TestFixture {
 
   @TestCase(true)
