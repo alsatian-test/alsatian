@@ -20,10 +20,13 @@ let handleError = (error: Error, test: any, testCaseArguments: Array<any>) => {
   else {
     process.stdout.write("# Unknown Error\n");
   }
+
+  runNextTestCase();
 }
 
 let notifySuccess = (test: any, testCaseArguments: Array<any>) => {
   process.stdout.write(`ok ${getTestDescription(test, testCaseArguments)}\n`);
+  runNextTestCase();
 }
 
 let testFixtureKeys = Object.keys(Test);
@@ -91,7 +94,89 @@ let totalTestCount = testFixtures.map(x => x.tests.map((y: any) => y.testCases.l
 process.stdout.write("TAP version 13\n");
 process.stdout.write(`1..${totalTestCount}\n`);
 
+let currentTestFixtureIndex = 0;
+
+let currentTestIndex = 0;
+
+let currentTestCaseIndex = 0;
+
+let exit = () => {
+  console.log("all done");
+  process.exit(0);
+}
+
+let runNextTestFixture = () => {
+  currentTestFixtureIndex++;
+  currentTestIndex = 0;
+  currentTestCaseIndex = 0;
+
+  if (!testFixtures[currentTestFixtureIndex]) {
+    exit();
+  }
+  else {
+    runTest(testFixtures[currentTestFixtureIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex].testCases[currentTestCaseIndex].arguments)
+  }
+}
+
+let runNextTest = () => {
+  currentTestIndex++;
+  currentTestCaseIndex = 0;
+
+  if (!testFixtures[currentTestFixtureIndex].tests[currentTestIndex]) {
+    runNextTestFixture();
+  }
+  else {
+    runTest(testFixtures[currentTestFixtureIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex].testCases[currentTestCaseIndex].arguments)
+  }
+}
+
+let runNextTestCase = () => {
+  currentTestCaseIndex++;
+
+  if (!testFixtures[currentTestFixtureIndex].tests[currentTestIndex].testCases[currentTestCaseIndex]) {
+    runNextTest();
+  }
+  else {
+    runTest(testFixtures[currentTestFixtureIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex],
+            testFixtures[currentTestFixtureIndex].tests[currentTestIndex].testCases[currentTestCaseIndex].arguments)
+  }
+}
+
+let runTest = (testFixture: any, test: any, testCaseArguments: Array<any>) => {
+  try {
+     if (test.isAsync) {
+        let promise: any = testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
+        promise.then(() => {
+          notifySuccess(test, testCaseArguments);
+        })
+        .catch((error: Error) => {
+          handleError(error, test, testCaseArguments);
+        });
+     }
+     else {
+       testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
+       notifySuccess(test, testCaseArguments);
+     }
+  }
+  catch (error) {
+    handleError(error, test, testCaseArguments);
+  }
+}
+
+// run first test
+runTest(testFixtures[currentTestFixtureIndex],
+        testFixtures[currentTestFixtureIndex].tests[currentTestIndex],
+        testFixtures[currentTestFixtureIndex].tests[currentTestIndex].testCases[currentTestCaseIndex].arguments)
+/*
 testFixtures.forEach(testFixture => {
+
+  currentTestId++;
+
   // run all tests on this test fixture
   testFixture.tests.forEach((test: any) => {
 
@@ -117,3 +202,4 @@ testFixtures.forEach(testFixture => {
     });
   });
 });
+*/

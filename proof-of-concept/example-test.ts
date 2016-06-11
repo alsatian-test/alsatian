@@ -6,7 +6,6 @@ import { Expect } from "./expect";
 import { IgnoreTest } from "./ignore-test-decorator";
 import { IgnoreTests } from "./ignore-tests-decorator";
 
-@IgnoreTests
 export class ExampleTest extends TestFixture {
 
   @TestCase(true)
