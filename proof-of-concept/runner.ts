@@ -20,6 +20,7 @@ let handleError = (error: Error, test: any, testCaseArguments: Array<any>) => {
     process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
   }
   else {
+     console.log(error);
     process.stdout.write("# Unknown Error\n");
   }
 
@@ -66,7 +67,7 @@ testFixtureKeys.forEach(testFixtureKey => {
   // find all the tests on this test fixture
   let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
 
-  if (tests.length === 0) {
+  if (!tests || tests.length === 0) {
     // no tests on the fixture
     return;
   }

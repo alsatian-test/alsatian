@@ -24,6 +24,7 @@
         "./proof-of-concept/errors/equal-match-error.ts",
         "./proof-of-concept/errors/error-match-error.ts",
         "./proof-of-concept/errors/exact-match-error.ts",
+        "./proof-of-concept/errors/function-call-match-error.ts",
         "./proof-of-concept/errors/greater-than-match-error.ts",
         "./proof-of-concept/errors/less-than-match-error.ts",
         "./proof-of-concept/errors/match-error.ts",

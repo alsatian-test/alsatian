@@ -143,15 +143,27 @@ export class ExampleTest {
 
   @Test()
   public spyTest() {
-    let test = {
-      x: "i are a property",
-      test: () => { console.log(this, this["x"]); }
-    };
+    let test = new Example();
 
     SpyOn(test, "test");
+    SpyOn(test, "testWithArgs");
 
     test.test();
+    test.testWithArgs(1, "test");
 
-    Expect((<any>test.test).calls.length).toBe(1);
+    Expect((<any>test.test)).toHaveBeenCalled();
+    Expect((<any>test.testWithArgs)).toHaveBeenCalledWith(1, "test");
   }
+}
+
+export class Example {
+     x: string = "i are a property";
+
+     test() {
+        //console.log(this, this["x"]);
+     }
+
+     testWithArgs(a: number, b: string) {
+        //console.log(a, b);
+     }
 }

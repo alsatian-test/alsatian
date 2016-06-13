@@ -7,6 +7,7 @@ import { ContentsMatchError } from "./errors/contents-match-error";
 import { LessThanMatchError } from "./errors/less-than-match-error";
 import { GreaterThanMatchError } from "./errors/greater-than-match-error";
 import { ErrorMatchError } from "./errors/error-match-error";
+import { FunctionCallMatchError } from "./errors/function-call-match-error";
 
 export function Expect(actualValue: any){
   return new Matcher(actualValue);
@@ -114,6 +115,18 @@ class Matcher {
 
     if (!threwRightError === this._shouldMatch) {
       throw new ErrorMatchError(actualError, this._shouldMatch, (<any>errorType), errorMessage);
+    }
+  }
+
+  public toHaveBeenCalled() {
+    if (this._actualValue.calls.length === 0 === this._shouldMatch) {
+      throw new FunctionCallMatchError(this._actualValue, this._shouldMatch);
+    }
+  }
+
+  public toHaveBeenCalledWith(...args: Array<any>) {
+    if (this._actualValue.calls.filter(x => x.args.filter((arg: any, index: number) => arg === args[index]) && x.args.length === args.length).length === 0 === this._shouldMatch) {
+      throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
     }
   }
 }

@@ -9,7 +9,7 @@ let createSpy = (originalFunction: () => any, context: any) => {
   let spy = (...args: Array<any>) => {
     (<any>spy).calls.push(new SpyCall(args));
 
-    return (<any>spy).handler.call(context, args);
+    return (<any>spy).handler.apply(context, args);
   };
 
   (<any>spy).calls = [];
@@ -18,15 +18,15 @@ let createSpy = (originalFunction: () => any, context: any) => {
     (<any>stubbedSpy).returnValue = value;
   };
 
-  (<any>spy).stub = () => {
+  (<any>spy).andStub = () => {
     (<any>spy).handler = stubbedSpy;
   };
 
-  (<any>spy).fake = (fakeFunction: () => any) => {
+  (<any>spy).andCall = (fakeFunction: () => any) => {
     (<any>spy).handler = fakeFunction;
   };
 
-  (<any>spy).original = () => {
+  (<any>spy).andCallThrough = () => {
     (<any>spy).handler = originalFunction;
   };
 
