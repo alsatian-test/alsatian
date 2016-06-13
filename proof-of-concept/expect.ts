@@ -125,7 +125,7 @@ class Matcher {
   }
 
   public toHaveBeenCalledWith(...args: Array<any>) {
-    if (this._actualValue.calls.filter(x => x.args.filter((arg: any, index: number) => arg === args[index]) && x.args.length === args.length).length === 0 === this._shouldMatch) {
+    if (this._actualValue.calls.filter((call: any) => call.args.filter((arg: any, index: number) => arg === args[index]) && call.args.length === args.length).length === 0 === this._shouldMatch) {
       throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
     }
   }

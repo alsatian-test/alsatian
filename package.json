@@ -2,12 +2,16 @@
   "name": "alsatian",
   "version": "1.0.0-alpha.0",
   "description": "TypeScript testing framework with test cases",
-  "main": "alsatian.js",
+  "main": "./core/alsatian-core.js",
+  "bin": {
+    "alsatian": "./cli/alsatian-cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "poc": "node ./proof-of-concept/runner.js",
     "poc-dot": "node ./proof-of-concept/runner.js | tap-dot",
-    "poc-spec": "node ./proof-of-concept/runner.js | tap-spec"
+    "poc-spec": "node ./proof-of-concept/runner.js | tap-spec",
+    "cli-test": "clitest"
   },
   "repository": {
     "type": "git",
@@ -31,8 +35,11 @@
   },
   "homepage": "https://github.com/jamesrichford/alsatian#readme",
   "devDependencies": {
-    "reflect-metadata": "^0.1.3",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.3",
+    "glob": "^7.0.3"
   }
 }

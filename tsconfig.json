@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "sourceMap": true,
         "preserveConstEnums": true,
@@ -16,6 +17,8 @@
     ],
     "filesGlob": [
         "./proof-of-concept/**/*.ts",
+        "./cli/**/*.ts",
+        "./core/**/*.ts",
         "./typings/index.d.ts"
     ],
     "files": [
@@ -42,7 +45,11 @@
         "./proof-of-concept/spying/spy-on.ts",
         "./proof-of-concept/teardown-decorator.ts",
         "./proof-of-concept/test-case-decorator.ts",
-        "./proof-of-concept/test-decorator.ts"
+        "./proof-of-concept/test-decorator.ts",
+        "./cli/alsatian-cli.ts",
+        "./core/alsatian-core.ts",
+        "./core/test-runner.ts",
+        "./typings/index.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
