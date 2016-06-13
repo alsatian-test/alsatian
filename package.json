@@ -4,7 +4,10 @@
   "description": "TypeScript testing framework with test cases",
   "main": "alsatian.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "poc": "node ./proof-of-concept/runner.js",
+    "poc-dot": "node ./proof-of-concept/runner.js | tap-dot",
+    "poc-spec": "node ./proof-of-concept/runner.js | tap-spec"
   },
   "repository": {
     "type": "git",
