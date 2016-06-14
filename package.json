@@ -7,10 +7,10 @@
     "alsatian": "./cli/alsatian-cli.js"
   },
   "scripts": {
-    "test": "node ./cli/alsatian-cli.js ./test/**/*d.spec.js",
-    "test-dot": "node ./cli/alsatian-cli.js ./test/**/*d.spec.js | tap-dot",
+    "test": "node ./cli/alsatian-cli.js ./test/**/*.spec.js",
+    "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*d.spec.js"
+    "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
