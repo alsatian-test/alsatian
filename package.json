@@ -10,8 +10,8 @@
     "test": "node ./cli/alsatian-cli.js ./test/**/*.spec.js",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*.spec.js",
-    "typings": "typings --v"
+    "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*.spec.js && npm run remap-coverage",
+    "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
   },
   "homepage": "https://github.com/jamesrichford/alsatian#readme",
   "devDependencies": {
+    "istanbul": "^0.4.3",
+    "remap-istanbul": "^0.6.4",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
   },

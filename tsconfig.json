@@ -71,11 +71,15 @@
         "./core/expect.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on.ts",
+        "./core/spying/spy.ts",
         "./core/test-runner.ts",
         "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
         "./test/unit-tests/expect-tests/to-be-null.spec.ts",
         "./test/unit-tests/expect-tests/to-be.spec.ts",
         "./test/unit-tests/expect-tests/to-equal.spec.ts",
+        "./test/unit-tests/spying/spy-call.spec.ts",
+        "./test/unit-tests/spying/spy-on.spec.ts",
+        "./test/unit-tests/spying/spy/call.spec.ts",
         "./typings/index.d.ts"
     ],
     "atom": {
