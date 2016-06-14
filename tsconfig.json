@@ -69,8 +69,11 @@
         "./core/errors/regex-match-error.ts",
         "./core/errors/truthy-match-error.ts",
         "./core/expect.ts",
+        "./core/spying/spy-call.ts",
+        "./core/spying/spy-on.ts",
         "./core/test-runner.ts",
-        "./test/unit-tests/expect.spec.ts",
+        "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
+        "./test/unit-tests/expect-tests/to-be-null.spec.ts",
         "./typings/index.d.ts"
     ],
     "atom": {
