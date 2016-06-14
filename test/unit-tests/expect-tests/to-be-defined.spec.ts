@@ -3,7 +3,7 @@ import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-export class ToBeDefinedTests {   
+export class ToBeDefinedTests {
 
    @TestCase(null)
    @TestCase(0)
