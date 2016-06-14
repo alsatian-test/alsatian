@@ -48,8 +48,17 @@
         "./proof-of-concept/test-decorator.ts",
         "./cli/alsatian-cli.ts",
         "./core/alsatian-core.ts",
-        "./core/test-runner.ts",
-        "./typings/index.d.ts"
+        "./core/errors/contents-match-error.ts",
+        "./core/errors/equal-match-error.ts",
+        "./core/errors/error-match-error.ts",
+        "./core/errors/exact-match-error.ts",
+        "./core/errors/function-call-match-error.ts",
+        "./core/errors/greater-than-match-error.ts",
+        "./core/errors/less-than-match-error.ts",
+        "./core/errors/match-error.ts",
+        "./core/errors/regex-match-error.ts",
+        "./core/errors/truthy-match-error.ts",
+        "./core/test-runner.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
