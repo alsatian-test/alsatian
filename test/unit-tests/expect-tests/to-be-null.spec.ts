@@ -1,5 +1,3 @@
-import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 

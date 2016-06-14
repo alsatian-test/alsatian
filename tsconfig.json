@@ -74,6 +74,7 @@
         "./core/test-runner.ts",
         "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
         "./test/unit-tests/expect-tests/to-be-null.spec.ts",
+        "./test/unit-tests/expect-tests/to-be.spec.ts",
         "./typings/index.d.ts"
     ],
     "atom": {
