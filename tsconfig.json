@@ -19,6 +19,7 @@
         "./proof-of-concept/**/*.ts",
         "./cli/**/*.ts",
         "./core/**/*.ts",
+        "./test/**/*.ts",
         "./typings/index.d.ts"
     ],
     "files": [
@@ -48,6 +49,15 @@
         "./proof-of-concept/test-decorator.ts",
         "./cli/alsatian-cli.ts",
         "./core/alsatian-core.ts",
+        "./core/decorators/async-test-decorator.ts",
+        "./core/decorators/focus-test-decorator.ts",
+        "./core/decorators/focus-tests-decorator.ts",
+        "./core/decorators/ignore-test-decorator.ts",
+        "./core/decorators/ignore-tests-decorator.ts",
+        "./core/decorators/setup-decorator.ts",
+        "./core/decorators/teardown-decorator.ts",
+        "./core/decorators/test-case-decorator.ts",
+        "./core/decorators/test-decorator.ts",
         "./core/errors/contents-match-error.ts",
         "./core/errors/equal-match-error.ts",
         "./core/errors/error-match-error.ts",
@@ -58,7 +68,15 @@
         "./core/errors/match-error.ts",
         "./core/errors/regex-match-error.ts",
         "./core/errors/truthy-match-error.ts",
-        "./core/test-runner.ts"
+        "./core/expect.ts",
+        "./core/spying/spy-call.ts",
+        "./core/spying/spy-on.ts",
+        "./core/test-runner.ts",
+        "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
+        "./test/unit-tests/expect-tests/to-be-null.spec.ts",
+        "./test/unit-tests/expect-tests/to-be.spec.ts",
+        "./test/unit-tests/expect-tests/to-equal.spec.ts",
+        "./typings/index.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

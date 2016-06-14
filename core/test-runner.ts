@@ -16,10 +16,16 @@ export class TestRunner {
         process.stderr.write("no tests to run\n");
         process.exit(1);
       }
+      else {
 
-      this._runTest(this._testFixtures[this._currentTestFixtureIndex],
-              this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-              this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+         let totalTestCount = this._testFixtures.map(x => x.tests.map((y: any) => y.testCases.length).reduce((a: number, b: number) => a + b)).reduce((a: number, b: number) => a + b);
+         process.stdout.write("TAP version 13\n");
+         process.stdout.write(`1..${totalTestCount}\n`);
+
+         this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+      }
    }
 
    public loadTests(testFileLocations: Array<string>) {
@@ -103,6 +109,7 @@ export class TestRunner {
    }
 
    private _runTest(testFixture: any, test: any, testCaseArguments: Array<any>) {
+
      this._currentTestId++;
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
