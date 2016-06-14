@@ -47,7 +47,7 @@ class Matcher {
 
   public toBeDefined() {
     if (this._actualValue === undefined === this._shouldMatch) {
-      throw new ExactMatchError(this._actualValue, undefined, this._shouldMatch);
+      throw new ExactMatchError(this._actualValue, undefined, !this._shouldMatch);
     }
   }
 

@@ -8,10 +8,8 @@
   },
   "scripts": {
     "test": "node ./cli/alsatian-cli.js ./test/**/*.spec.js",
-    "poc": "node ./proof-of-concept/runner.js",
-    "poc-dot": "node ./proof-of-concept/runner.js | tap-dot",
-    "poc-spec": "node ./proof-of-concept/runner.js | tap-spec",
-    "cli-test": "clitest"
+    "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
+    "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec"
   },
   "repository": {
     "type": "git",
