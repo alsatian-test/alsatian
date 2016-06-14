@@ -1,7 +1,7 @@
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
+import { EqualMatchError } from "../../../core/errors/equal-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-export class ToBeTests {
+export class ToEqualTests {
 
    @TestCase(undefined)
    @TestCase(null)
@@ -14,7 +14,7 @@ export class ToBeTests {
    public identicalSimpleTypesDontThrow(value: any) {
       let expect = Expect(value);
 
-      Expect(() => expect.toBe(value)).not.toThrow();
+      Expect(() => expect.toEqual(value)).not.toThrow();
    }
 
    @TestCase(undefined, undefined)
@@ -28,14 +28,14 @@ export class ToBeTests {
    public matchingSimpleTypesDontThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).not.toThrow();
+      Expect(() => expect.toEqual(expected)).not.toThrow();
    }
 
    @Test()
    public differentValuesThrowsExactMatchError () {
       let expect = Expect(1);
 
-      Expect(() => expect.toBe(2)).toThrowError(<any>ExactMatchError, "Expected 1 to be 2.");
+      Expect(() => expect.toEqual(2)).toThrowError(<any>EqualMatchError, "Expected 1 to be equal to 2.");
    }
 
    @TestCase("something", "something else")
@@ -45,7 +45,7 @@ export class ToBeTests {
    public differentSimpleValuesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrow();
+      Expect(() => expect.toEqual(expected)).toThrow();
    }
 
    @TestCase("something", "something else")
@@ -55,17 +55,23 @@ export class ToBeTests {
    public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual) + " to be equal to " + JSON.stringify(expected) + ".");
    }
 
    @TestCase(undefined, null)
    @TestCase(null, undefined)
+   public nullAndUndefinedNotToThrow(expected: any, actual: any) {
+      let expect = Expect(actual);
+
+      Expect(() => expect.toEqual(expected)).not.toThrow();
+   }
+
    @TestCase(42, "something")
    @TestCase("something", 42)
    public differentSimpleTypesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrow();
+      Expect(() => expect.toEqual(expected)).toThrow();
    }
 
    @TestCase({})
@@ -77,7 +83,7 @@ export class ToBeTests {
    public identicalComplexTypesDontThrow(value: any) {
       let expect = Expect(value);
 
-      Expect(() => expect.toBe(value)).not.toThrow();
+      Expect(() => expect.toEqual(value)).not.toThrow();
    }
 
    @TestCase({}, {})
@@ -91,7 +97,7 @@ export class ToBeTests {
    public matchingComplexTypesThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrow();
+      Expect(() => expect.toEqual(expected)).toThrow();
    }
 
    @TestCase({}, { "with": "something" })
@@ -101,7 +107,7 @@ export class ToBeTests {
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual) + " to be equal to " + JSON.stringify(expected) + ".");
    }
 
    @TestCase({}, [])
@@ -113,7 +119,7 @@ export class ToBeTests {
    public differentComplexTypesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrow();
+      Expect(() => expect.toEqual(expected)).toThrow();
    }
 
 }
