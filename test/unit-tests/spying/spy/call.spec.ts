@@ -39,12 +39,14 @@ export class CallTests {
       originalFunction: () => {}
     };
 
-    let spy = new Spy(object.originalFunction, object);
-
     SpyOn(object, "originalFunction");
+
+    let originalFunction = object.originalFunction;
+
+    let spy = new Spy(object.originalFunction, object);
 
     spy.call([]);
 
-    Expect(object.originalFunction).toHaveBeenCalled();
+    Expect(originalFunction).toHaveBeenCalled();
   }
 }
