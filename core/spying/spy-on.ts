@@ -9,8 +9,8 @@ export function SpyOn(target: any, functionName: string) {
     return spy.call(args);
   };
 
-  // expose spy's privates on the newly found function
-  Object.keys(spy).forEach(key => {
-    target[functionName][key.substr(1)] = spy[key];
-  });
+  // expose spy's calls on function
+  target[functionName].calls = spy.calls;
+
+  return spy;
 }
