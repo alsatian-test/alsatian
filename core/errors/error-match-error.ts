@@ -3,7 +3,7 @@ import { MatchError } from "./match-error";
 export class ErrorMatchError extends MatchError {
 
   //public constructor(actualError: Error, shouldMatch: boolean);
-  public constructor(actualError: Error, shouldMatch: boolean, expectedErrorType?: (...args: Array<any>) => Error, expectedErrorMessage?: string) {
+  public constructor(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {
     super(actualError, expectedErrorMessage, "");
 
     if (!actualError === shouldMatch) {
