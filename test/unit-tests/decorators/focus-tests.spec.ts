@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { FocusTests as FocusTestsDecorator } from "../../../core/decorators/focus-tests-decorator";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-export class TestDecoratorTests {
+export class FocusTestsDecoratorTests {
 
     @Test()
     public focusTestKeyMetaDataAdded(key: string) {

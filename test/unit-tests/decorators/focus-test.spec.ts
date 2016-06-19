@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { FocusTest as FocusTestDecorator } from "../../../core/decorators/focus-test-decorator";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-export class TestDecoratorTests {
+export class FocusTestDecoratorTests {
 
     @TestCase("key")
     @TestCase("another key")

@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { IgnoreTest as IgnoreTestDecorator } from "../../../core/decorators/ignore-test-decorator";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-export class TestDecoratorTests {
+export class IgnoreTestDecoratorTests {
 
     @TestCase("key")
     @TestCase("another key")
