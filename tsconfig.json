@@ -75,7 +75,6 @@
         "./core/test-runner.ts",
         "./core/test-set.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
-        "./test/unit-tests/cli/alsatian-cli.spec.ts",
         "./test/unit-tests/decorators/test.spec.ts",
         "./test/unit-tests/errors/error-match-error.spec.ts",
         "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
