@@ -6,6 +6,7 @@ import { IgnoreTests } from "./decorators/ignore-tests-decorator";
 import { Test } from "./decorators/test-decorator";
 import { TestCase } from "./decorators/test-case-decorator";
 import { TestRunner } from "./test-runner";
+import { TestSet } from "./test-set";
 import { SpyOn } from "./spying/spy-on";
 
 export {
@@ -17,5 +18,6 @@ export {
    Test,
    TestCase,
    TestRunner,
+   TestSet,
    SpyOn
 };
