@@ -11,8 +11,9 @@ let fileGlobs = userArguments.filter((argument: string) => argument.indexOf("-")
 // filter out the options
 let options = userArguments.filter((argument: string) => argument.indexOf("-") === 0);
 
+// create test set from given file globs
 let testSet = new TestSet(fileGlobs);
 
+// create runner and run those tests
 let testRunner = new TestRunner();
-
 testRunner.run(testSet);
