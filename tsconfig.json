@@ -84,9 +84,9 @@
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on.spec.ts",
         "./test/unit-tests/spying/spy/and-call-through.spec.ts",
+        "./test/unit-tests/spying/spy/and-return.spec.ts",
         "./test/unit-tests/spying/spy/and-stub.spec.ts",
         "./test/unit-tests/spying/spy/call.spec.ts",
-        "./test/unit-tests/spying/spy/return.spec.ts",
         "./typings/index.d.ts"
     ],
     "atom": {

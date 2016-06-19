@@ -22,7 +22,7 @@ export class ReturnTests {
 
     let spy = new Spy(object.originalFunction, object);
 
-    spy.return(expectedReturnValue);
+    spy.andReturn(expectedReturnValue);
 
     let actualReturnValue = spy.call([]);
 
