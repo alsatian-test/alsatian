@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { TestCase as TestCaseDecorator } from "../../../proof-of-concept/test-case-decorator";
+import { TestCase as TestCaseDecorator } from "../../../core/decorators/test-case-decorator";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
 export class TestCaseDecoratorTests {
