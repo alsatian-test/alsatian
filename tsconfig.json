@@ -80,6 +80,7 @@
         "./test/unit-tests/decorators/focus-tests.spec.ts",
         "./test/unit-tests/decorators/ignore-test.spec.ts",
         "./test/unit-tests/decorators/ignore-tests.spec.ts",
+        "./test/unit-tests/decorators/setup.spec.ts",
         "./test/unit-tests/decorators/test-case.spec.ts",
         "./test/unit-tests/decorators/test.spec.ts",
         "./test/unit-tests/errors/error-match-error.spec.ts",
