@@ -75,6 +75,7 @@
         "./core/test-runner.ts",
         "./core/test-set.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
+        "./test/unit-tests/decorators/async-test-decorator.spec.ts",
         "./test/unit-tests/decorators/focus-test.spec.ts",
         "./test/unit-tests/decorators/focus-tests.spec.ts",
         "./test/unit-tests/decorators/ignore-test.spec.ts",
