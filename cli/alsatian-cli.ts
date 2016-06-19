@@ -13,6 +13,8 @@ let options = userArguments.filter((argument: string) => argument.indexOf("-") =
 
 let testSet = new TestSet(fileGlobs);
 
+console.log(testSet);
+
 let testRunner = new TestRunner();
 
 testRunner.run(testSet);

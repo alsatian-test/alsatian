@@ -18,6 +18,14 @@ export class TestSet {
     }
 
     this._loadTestFixtures(testsFileLocations);
+
+    // Filter out unfocussed tests if any are focussed
+    if (this._testsFocussed) {
+      this._testFixtures = this._testFixtures.map(x => {
+        x.tests = x.tests.filter((y: any) => y.focussed)
+        return x;
+      }).filter(testFixture => testFixture.tests.length !== 0);
+    }
   }
 
   private _loadTestFixtures(testFileLocations: Array<string>) {
@@ -99,13 +107,5 @@ export class TestSet {
 
        this._testFixtures.push(testFixture);
      });
-
-     // Filter out unfocussed tests if any are focussed
-     if (this._testsFocussed) {
-       this._testFixtures = this._testFixtures.map(x => {
-         x.tests = x.tests.filter((y: any) => y.focussed)
-         return x;
-       });
-     }
   }
 }
