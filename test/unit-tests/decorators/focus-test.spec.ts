@@ -13,6 +13,6 @@ export class TestDecoratorTests {
 
        FocusTestDecorator(testFixture, key, null);
 
-       Expect(Reflect.getMetadata("alsatian:fccus", testFixture, key)).toBe(true);
+       Expect(Reflect.getMetadata("alsatian:focus", testFixture, key)).toBe(true);
     }
 }
