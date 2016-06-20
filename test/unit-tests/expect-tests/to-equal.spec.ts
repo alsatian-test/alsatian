@@ -94,10 +94,10 @@ export class ToEqualTests {
    @TestCase([ 1, 2, 3 ], [ 1, 2, 3 ])
    @TestCase([ { "with": "something" }, { "and": "something", "else": "!"} ],
              [ { "with": "something" }, { "and": "something", "else": "!"} ])
-   public matchingComplexTypesThrow(expected: any, actual: any) {
+   public matchingComplexTypesNotThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toEqual(expected)).toThrow();
+      Expect(() => expect.toEqual(expected)).not.toThrow();
    }
 
    @TestCase({}, { "with": "something" })

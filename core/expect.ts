@@ -43,6 +43,12 @@ class Matcher {
   }
 
   private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
+
+     // if one object is an array and the other is not then they are not equal
+     if (Array.isArray(objectA) !== Array.isArray(objectB)) {
+        return false;
+     }
+
      // get all the property keys for each object
      let objectAKeys = Object.keys(objectA);
      let objectBKeys = Object.keys(objectB);
