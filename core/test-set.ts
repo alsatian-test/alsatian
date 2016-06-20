@@ -13,6 +13,8 @@ export class TestSet {
   public constructor (testFileLocations: Array<string>)
   public constructor(testsFileLocations: string | Array<string>) {
 
+    console.log("requested test file locations", testsFileLocations);
+
     if (typeof testsFileLocations === "string") {
       testsFileLocations = [ <string>testsFileLocations ];
     }
@@ -35,6 +37,8 @@ export class TestSet {
 
         if (Glob.hasMagic(testFileLocation)) {
           let physicalTestFileLocations = Glob.sync(testFileLocation);
+
+          console.log("deglobbed test file locations", physicalTestFileLocations);
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
 
