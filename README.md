@@ -1,4 +1,6 @@
 # alsatian
+[![Build Status](https://travis-ci.org/jamesrichford/alsatian.svg?branch=master)](https://travis-ci.org/jamesrichford/alsatian)
+
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
 ## Installing
