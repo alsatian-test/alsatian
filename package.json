@@ -9,7 +9,7 @@
   "scripts": {
     "build": "typings install && tsc",
     "postinstall": "npm run build",
-    "test": "node ./cli/alsatian-cli.js ./test/**/*.spec.js",
+    "test": "node ./cli/alsatian-cli.js './test/**/*.spec.js'",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
     "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*.spec.js && npm run remap-coverage",
