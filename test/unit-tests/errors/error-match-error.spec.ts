@@ -1,5 +1,5 @@
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, FocusTest } from "../../../core/alsatian-core";
 
 export class ErrorMatchErrorTests {
 
@@ -45,7 +45,7 @@ export class ErrorMatchErrorTests {
    public actualErrorIsNotCorrectTypeGivesCorrectMessage(ActualErrorType: new () => Error, ExpectedErrorType: new () => Error) {
       let error = new ErrorMatchError(new ActualErrorType(), true, ExpectedErrorType);
 
-      Expect(error.message).toBe("Expected an error of type " + ExpectedErrorType["name"] + " to have been thrown, but " + ActualErrorType["name"] + "was thrown instead.");
+      Expect(error.message).toBe("Expected an error of type " + ExpectedErrorType["name"] + " to have been thrown, but " + ActualErrorType["name"] + " was thrown instead.");
    }
 
    @TestCase(Error, EvalError)
@@ -74,8 +74,8 @@ export class ErrorMatchErrorTests {
    @TestCase(URIError, TypeError)
    @TestCase(URIError, SyntaxError)
    public actualErrorIsCorrectTypeButShouldntBeGivesCorrectMessage(ActualErrorType: new () => Error, ExpectedErrorType: new () => Error) {
-      let error = new ErrorMatchError(new ActualErrorType(), true, ExpectedErrorType);
+      let error = new ErrorMatchError(new ActualErrorType(), false, ExpectedErrorType);
 
-      Expect(error.message).toBe("Expected an error of type " + ExpectedErrorType["name"] + " to have been thrown, but it shoudln't have been.");
+      Expect(error.message).toBe("Expected an error of type " + ExpectedErrorType["name"] + " not to have been thrown, but it was.");
    }
 }

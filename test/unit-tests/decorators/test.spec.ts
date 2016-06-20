@@ -33,21 +33,6 @@ export class TestDecoratorTests {
        Expect(tests[0].key).toBe(key);
     }
 
-     @TestCase("Some Test")
-     @TestCase("Another sort of test")
-     @TestCase("Make sure it works")
-     public testDescriptionMetaDataAdded(description: string) {
-        let testDecorator = TestDecorator();
-
-        let testFixture = {};
-
-        testDecorator(testFixture, "key", description);
-
-        let tests = Reflect.getMetadata("alsatian:tests", testFixture);
-
-        Expect(tests[0].description).toBe(description);
-     }
-
       @TestCase(1)
       @TestCase(2)
       @TestCase(42)

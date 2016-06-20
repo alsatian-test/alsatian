@@ -27,7 +27,7 @@ export class AsyncTestDecoratorTests {
        asyncTestDecorator(testFixture, "test", null);
 
        let tests = Reflect.getMetadata("alsatian:tests", testFixture);
- 
+
        Expect(tests[0].isAsync).toBe(true);
     }
 
@@ -50,11 +50,11 @@ export class AsyncTestDecoratorTests {
      @TestCase("Another sort of test")
      @TestCase("Make sure it works")
      public testDescriptionMetaDataAdded(description: string) {
-        let asyncTestDecorator = AsyncTestDecorator();
+        let asyncTestDecorator = AsyncTestDecorator(description);
 
         let testFixture = {};
 
-        asyncTestDecorator(testFixture, "key", description);
+        asyncTestDecorator(testFixture, "key", null);
 
         let tests = Reflect.getMetadata("alsatian:tests", testFixture);
 

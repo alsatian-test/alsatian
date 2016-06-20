@@ -33,21 +33,6 @@ export class TestCaseDecoratorTests {
     Expect(tests[0].key).toBe(key);
   }
 
-  @TestCase("Some Test")
-  @TestCase("Another sort of test")
-  @TestCase("Make sure it works")
-  public testDescriptionMetaDataAdded(description: string) {
-    let testCaseDecorator = TestCaseDecorator();
-
-    let testFixture = {};
-
-    testCaseDecorator(testFixture, "key", description);
-
-    let tests = Reflect.getMetadata("alsatian:tests", testFixture);
-
-    Expect(tests[0].description).toBe(description);
-  }
-
   @TestCase(1)
   @TestCase(2)
   @TestCase(42)
@@ -100,7 +85,7 @@ export class TestCaseDecoratorTests {
   @TestCase([ 1, 2, 3 ])
   @TestCase([ "this", "that", "the other" ])
   public testCaseArgumentsMetaDataAdded(expectedArguments: Array<any>) {
-    let testCaseDecorator = TestCaseDecorator(expectedArguments);
+    let testCaseDecorator = TestCaseDecorator.apply(TestCaseDecorator, expectedArguments);
 
     let testFixture = {};
 
@@ -108,7 +93,7 @@ export class TestCaseDecoratorTests {
 
     let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, "key");
 
-    Expect(testCases[0].arguments).toBe(expectedArguments);
+    Expect(testCases[0].arguments).toEqual(expectedArguments);
   }
 
   @TestCase("key")
@@ -131,7 +116,9 @@ export class TestCaseDecoratorTests {
   @TestCase(2)
   @TestCase(42)
   public testCaseArgumentsAlwaysAddedAsFirstIndex(testCount: number) {
-    let dummyTestCaseDecorator = TestCaseDecorator();
+
+    let args = [ 1, 2, 3 ];
+    let dummyTestCaseDecorator = TestCaseDecorator.apply(TestCaseDecorator, args);
 
     let testFixture = {};
 
@@ -139,12 +126,10 @@ export class TestCaseDecoratorTests {
       dummyTestCaseDecorator(testFixture, "key " + i, null);
     }
 
-    let args = [ 1, 2, 3 ];
-
     TestCaseDecorator(args)(testFixture, "key " + i, null);
 
     let testCases = Reflect.getMetadata("alsatian:tests", testFixture);
 
-    Expect(testCases[0].arguments).toBe(args);
+    Expect(testCases[0].arguments).toEqual(args);
   }
 }

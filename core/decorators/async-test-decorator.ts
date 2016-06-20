@@ -10,6 +10,7 @@ export function AsyncTest(description?: string) {
       if (!tests) {
          tests = [ {
             key: propertyKey,
+            description: description,
             isAsync: true
          } ];
          Reflect.defineMetadata("alsatian:tests", tests, target);
@@ -18,6 +19,7 @@ export function AsyncTest(description?: string) {
       else if (tests.filter(test => test.key === propertyKey).length === 0) {
          tests.push( {
             key: propertyKey,
+            description: description,
             isAsync: true
          } );
          Reflect.defineMetadata("alsatian:tests", tests, target);
