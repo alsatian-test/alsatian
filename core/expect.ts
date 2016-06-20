@@ -35,8 +35,40 @@ class Matcher {
 
   public toEqual(expectedValue: any) {
     if (expectedValue != this._actualValue === this._shouldMatch) {
-      throw new EqualMatchError(this._actualValue, expectedValue, this._shouldMatch);
+
+      if (typeof expectedValue !== "object" || this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this._shouldMatch) {
+         throw new EqualMatchError(this._actualValue, expectedValue, this._shouldMatch);
+      }
     }
+  }
+
+  private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
+     // get all the property keys for each object
+     let objectAKeys = Object.keys(objectA);
+     let objectBKeys = Object.keys(objectB);
+
+     // if they don't have the same amount of properties then clearly not
+     if (objectAKeys.length !== objectBKeys.length) {
+        return false;
+     }
+
+     // check all the properties of each object
+     for (let i = 0; i < objectAKeys.length; i++) {
+        let objectAKey = objectAKeys[i];
+
+        // if the property values are not the same
+        if (objectA[objectAKey] !== objectB[objectAKey]) {
+
+           // and it's not an object or the objects are not equal
+           if (typeof(objectA[objectAKey]) !== "object" || this._checkObjectsAreDeepEqual(objectA[objectAKey], objectB[objectAKey]) === false) {
+             // then not deep equal
+             return false;
+          }
+        }
+     }
+
+     // all properties match so all is good
+     return true;
   }
 
   public toMatch(regex: any) {

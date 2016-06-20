@@ -106,10 +106,10 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, key, null);
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture);
+    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, key);
 
-    Expect(testCases[0].key).toBeDefined();
-    Expect(testCases[0].key).not.toBeNull();
+    Expect(testCases).toBeDefined();
+    Expect(testCases).not.toBeNull();
   }
 
   @TestCase(1)
@@ -117,18 +117,18 @@ export class TestCaseDecoratorTests {
   @TestCase(42)
   public testCaseArgumentsAlwaysAddedAsFirstIndex(testCount: number) {
 
-    let args = [ 1, 2, 3 ];
-    let dummyTestCaseDecorator = TestCaseDecorator.apply(TestCaseDecorator, args);
+    let dummyTestCaseDecorator = TestCaseDecorator();
 
     let testFixture = {};
 
-    for (var i = 0; i < testCount; i ++) {
+    for (let i = 0; i < testCount; i ++) {
       dummyTestCaseDecorator(testFixture, "key " + i, null);
     }
 
-    TestCaseDecorator(args)(testFixture, "key " + i, null);
+    let args = [ 1, 2, 3 ];
+    TestCaseDecorator.apply(TestCaseDecorator, args)(testFixture, "key", null);
 
-    let testCases = Reflect.getMetadata("alsatian:tests", testFixture);
+    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, "key");
 
     Expect(testCases[0].arguments).toEqual(args);
   }
