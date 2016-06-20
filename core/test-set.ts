@@ -14,10 +14,10 @@ export class TestSet {
   public constructor(testsFileLocations: string | Array<string>) {
 
     if (typeof testsFileLocations === "string") {
-      testsFileLocations = [ testsFileLocations ];
+      testsFileLocations = [ <string>testsFileLocations ];
     }
 
-    this._loadTestFixtures(testsFileLocations);
+    this._loadTestFixtures(<Array<string>>testsFileLocations);
 
     // Filter out unfocussed tests if any are focussed
     if (this._testsFocussed) {

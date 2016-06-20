@@ -41,7 +41,7 @@ export class ErrorMatchErrorTests {
    public actualErrorIsNotCorrectTypeGivesCorrectMessage(ActualErrorType: new () => Error, ExpectedErrorType: new () => Error) {
       let error = new ErrorMatchError(new ActualErrorType(), true, ExpectedErrorType);
 
-      Expect(error.message).toBe("Expected an error of type " + ExpectedErrorType["name"] + " to have been thrown, but " + ActualErrorType["name"] + " was thrown instead.");
+      Expect(error.message).toBe("Expected an error of type " + (<any>ExpectedErrorType)["name"] + " to have been thrown, but " + (<any>ActualErrorType)["name"] + " was thrown instead.");
    }
 
    @TestCase(EvalError)
@@ -52,7 +52,7 @@ export class ErrorMatchErrorTests {
    public actualErrorIsMatchingTypeButShouldntBeGivesCorrectMessage(ErrorType: new () => Error) {
       let error = new ErrorMatchError(new ErrorType(), false, ErrorType);
 
-      Expect(error.message).toBe("Expected an error of type " + ErrorType["name"] + " to not have been thrown, but it was.");
+      Expect(error.message).toBe("Expected an error of type " + (<any>ErrorType)["name"] + " to not have been thrown, but it was.");
    }
 
    @TestCase("something went wrong")
@@ -79,7 +79,7 @@ export class ErrorMatchErrorTests {
    public actualErrorHasIncorrectTypeAndMessageGivesCorrectMessage(ExpectedErrorType: new () => Error, message: string) {
       let error = new ErrorMatchError(new Error(), true, ExpectedErrorType, message);
 
-      Expect(error.message).toBe("Expected an error with message \"" + message + "\" and type " + ExpectedErrorType["name"] + " to have been thrown, but it wasn't.");
+      Expect(error.message).toBe("Expected an error with message \"" + message + "\" and type " + (<any>ExpectedErrorType)["name"] + " to have been thrown, but it wasn't.");
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -88,6 +88,6 @@ export class ErrorMatchErrorTests {
    public actualErrorHasMatchingMessageAndTypeButShouldntBeGivesCorrectMessage(ExpectedErrorType: new (message: string) => Error, message: string) {
       let error = new ErrorMatchError(new ExpectedErrorType(message), false, ExpectedErrorType, message);
 
-      Expect(error.message).toBe("Expected an error with message \"" + message + "\" and type " + ExpectedErrorType["name"] + " to not have been thrown, but it was.");
+      Expect(error.message).toBe("Expected an error with message \"" + message + "\" and type " + (<any>ExpectedErrorType)["name"] + " to not have been thrown, but it was.");
    }
 }
