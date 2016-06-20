@@ -48,7 +48,7 @@ export class AndCallTests {
 
     let fake = {
       function: fakeFunction
-    }
+   };
 
     SpyOn(fake, "function");
 
@@ -58,6 +58,6 @@ export class AndCallTests {
 
     spy.call([]);
 
-    Expect(fake.function).toHaveBeenCalled();
+    Expect(fake.function).not.toHaveBeenCalled();
   }
 }
