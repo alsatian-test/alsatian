@@ -9,10 +9,10 @@
   "scripts": {
     "build": "typings install && tsc",
     "postinstall": "npm run build",
-    "test": "node ./cli/alsatian-cli.js \"test/**/*.spec.js\"",
+    "test": "npm run unit-tests",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "test-cover": "istanbul cover ./cli/alsatian-cli.js ./test/**/*.spec.js && npm run remap-coverage",
+    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/**/*.spec.js\" && npm run remap-coverage",
     "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },
   "repository": {
@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/jamesrichford/alsatian#readme",
   "devDependencies": {
+    "codeclimate-test-reporter": "^0.3.3",
     "istanbul": "^0.4.3",
     "remap-istanbul": "^0.6.4",
     "typescript": "^1.8.10",
