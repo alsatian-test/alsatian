@@ -2,6 +2,8 @@ engines:
   fixme:
     enabled: true
 ratings:
-  paths: []
+  paths:
+    - "cli/**/*.ts"
+    - "core/**/*.ts"
 exclude_paths:
-- test/
+  - test/
