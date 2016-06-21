@@ -7,3 +7,5 @@ node_js:
 os:
   - linux
   - osx
+after_script:
+  - codeclimate-test-reporter < lcov.info
