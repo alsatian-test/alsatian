@@ -122,4 +122,20 @@ export class ToEqualTests {
       Expect(() => expect.toEqual(expected)).toThrow();
    }
 
+   @TestCase({ "with": { "something": "deep" } }, [ 1, 2, 3 ])
+   @TestCase([ {"this": "that" } ], { "with": "something" })
+   public differentDeepComplexTypesToThrow(expected: any, actual: any) {
+      let expect = Expect(actual);
+
+      Expect(() => expect.toEqual(expected)).toThrow();
+   }
+
+   @TestCase({ "with": { "something": "deep" } }, { "with": { "something": "different" } })
+   @TestCase([ {"this": "that" } ], [ {"this": "and that" }])
+   public differentDeepComplexToThrow(expected: any, actual: any) {
+      let expect = Expect(actual);
+
+      Expect(() => expect.toEqual(expected)).toThrow();
+   }
+
 }

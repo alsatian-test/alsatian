@@ -108,13 +108,13 @@ class Matcher {
   }
 
   public toBeLessThan(upperLimit: any) {
-    if (this._actualValue > upperLimit === this._shouldMatch) {
+    if (this._actualValue < upperLimit !== this._shouldMatch) {
       throw new LessThanMatchError(this._actualValue, upperLimit, this._shouldMatch);
     }
   }
 
   public toBeGreaterThan(lowerLimit: any) {
-    if (this._actualValue < lowerLimit === this._shouldMatch) {
+    if (this._actualValue > lowerLimit !== this._shouldMatch) {
       throw new GreaterThanMatchError(this._actualValue, lowerLimit, this._shouldMatch);
     }
   }
