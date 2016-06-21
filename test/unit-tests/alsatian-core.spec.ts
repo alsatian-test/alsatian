@@ -56,4 +56,16 @@ export class AlsatianCoreTests {
       Expect(Alsatian.SpyOn).toBeDefined();
       Expect(Alsatian.SpyOn).not.toBeNull();
    }
+
+   @Test()
+   public setupShouldBeExposed() {
+      Expect(Alsatian.Setup).toBeDefined();
+      Expect(Alsatian.Setup).not.toBeNull();
+   }
+
+   @Test()
+   public teardownShouldBeExposed() {
+      Expect(Alsatian.Teardown).toBeDefined();
+      Expect(Alsatian.Teardown).not.toBeNull();
+   }
 }

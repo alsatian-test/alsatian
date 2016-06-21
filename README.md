@@ -93,6 +93,48 @@ export class ExampleTestFixture {
 }
 ```
 
+### Focussing Tests
+
+You can run a single test or select tests using the ```FocusTest``` annotation
+
+```
+import { Expect, Test, FocusTest } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Test()
+  @FocusTest
+  public thisTestWillBeRun() {
+    Expect(1).toBe(1);
+  }
+
+  @Test()
+  public thisTestWillNotBeRun() {
+    Expect(1).toBe(1);
+  }
+}
+```
+
+or you can run only tests in this fixture using the ```FocusTests``` annotation
+
+```
+import { Expect, Test, FocusTests } from "alsatian";
+
+@FocusTests
+export class ExampleTestFixture {
+
+  @Test()
+  public thisTestWillBeRun() {
+    Expect(1).toBe(1);
+  }
+
+  @Test()
+  public soWillThisTest() {
+    Expect(1).toBe(1);
+  }
+}
+```
+
 ### Matchers
 
 Now you've set up some tests, it's time to check your code is working. Let's start easy.
@@ -241,4 +283,83 @@ SpyOn(some, "function").andCall(() => console.log("I are called"));
 
 ```
 SpyOn(some, "function").andReturn(42);
+```
+
+### Ignoring Tests
+
+You can stop tests from being run by using the ```IgnoreTest``` annotation
+
+```
+import { Expect, Test, IgnoreTest } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Test()
+  @IgnoreTest
+  public ignoredTest() {
+    Expect(1).toBe(1);
+  }
+}
+```
+
+or you can stop all tests in a given fixture from running using the ```IgnoreTests``` annotation
+
+```
+import { Expect, Test, IgnoreTests } from "alsatian";
+
+@IgnoreTests
+export class ExampleTestFixture {
+
+  @Test()
+  public thisTestWillNotBeRun() {
+    Expect(1).toBe(1);
+  }
+
+  @Test()
+  public neitherWillThisOne() {
+   Expect(1).toBe(1);
+  }
+}
+```
+
+### Setup
+
+You can get a function to be run before every function in the fixture using the ```Setup``` decorators
+
+```
+import { Expect, Test, Setup } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Setup
+  public thisFunctionWillBeRunBeforeAllTests() {
+    // do some setup work
+  }
+
+  @Test()
+  public exampleTest() {
+   Expect(1).toBe(1);
+  }
+}
+```
+
+### Teardown
+
+You can also run functions after every test has completed using the ```Teardown``` decorators
+
+```
+import { Expect, Test, Teardown } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Teardown
+  public thisFunctionWillBeRunAfterAllTests() {
+    // do some teardown work
+  }
+
+  @Test()
+  public exampleTest() {
+   Expect(1).toBe(1);
+  }
+}
 ```
