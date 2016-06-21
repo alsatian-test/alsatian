@@ -303,7 +303,7 @@ export class ExampleTestFixture {
 }
 ```
 
-### Focussing Tests
+### Focusing Tests
 
 You can run a single test or select tests using the ```FocusTest``` annotation
 
