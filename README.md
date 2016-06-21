@@ -243,6 +243,29 @@ SpyOn(some, "function").andCall(() => console.log("I are called"));
 SpyOn(some, "function").andReturn(42);
 ```
 
+### Async Tests
+
+You can also have asynchronous tests using the ```AsyncTest``` annotation,
+
+```
+import { Expect, Test, AsyncTest } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Test()
+  @AsyncTest()
+  public ignoredTest() {
+
+    return new Promise((resolve, reject) => {
+      waitForSomethingToHappen((result: number) => {
+         Expect(result).toBe(1);
+         resolve();
+      });
+    });
+  }
+}
+```
+
 ### Ignoring Tests
 
 You can stop tests from being run by using the ```IgnoreTest``` annotation
