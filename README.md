@@ -222,7 +222,7 @@ Expect(some.function).toHaveBeenCalled();
 ... or check it's been called with certain arguments ...
 
 ```
-Expect(some.function).toHaveBeenCalled(this, "and that");
+Expect(some.function).toHaveBeenCalledWith(this, "and that");
 ```
 
 ... you can stub it out ...
