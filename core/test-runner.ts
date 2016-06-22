@@ -10,6 +10,7 @@ export class TestRunner {
    private _currentTestFixtureIndex: number = 0;
    private _currentTestIndex: number = 0;
    private _currentTestCaseIndex: number = 0;
+   private _testsFailed: boolean = false;
 
    public run(testSet: TestSet) {
 
@@ -75,6 +76,7 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: any, testCaseArguments: Array<any>) {
+      this._testsFailed = true;
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
@@ -117,7 +119,12 @@ export class TestRunner {
    }
 
    private _exit() {
-     process.exit(0);
+      if (this._testsFailed) {
+         process.exit(1);
+      }
+      else {
+        process.exit(0);
+     }
    }
 
    private _runNextTestFixture() {
