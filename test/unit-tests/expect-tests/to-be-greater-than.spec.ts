@@ -19,7 +19,7 @@ export class ToBeGreaterThanTests {
    }
 
    @TestCase(0, 1)
-   @TestCase(42, 1)
+   @TestCase(1, 42)
    public lessThanShouldThrowError(value: number, lowerLimit: number) {
       let expect = Expect(value);
       Expect(() => expect.toBeGreaterThan(lowerLimit)).toThrow();
@@ -41,7 +41,7 @@ export class ToBeGreaterThanTests {
    }
 
    @TestCase(0, 1)
-   @TestCase(42, 1)
+   @TestCase(1, 42)
    public notLessThanShouldNotThrowError(value: number, lowerLimit: number) {
       let expect = Expect(value);
       Expect(() => expect.not.toBeGreaterThan(lowerLimit)).not.toThrow();
@@ -57,7 +57,6 @@ export class ToBeGreaterThanTests {
 
 
    @TestCase(1, 0)
-   @TestCase(2, 2)
    @TestCase(42, 1)
    public shouldNotBeGreaterThanMessage(value: number, lowerLimit: number) {
       let expect = Expect(value);

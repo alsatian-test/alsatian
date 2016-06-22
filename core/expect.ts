@@ -143,7 +143,7 @@ class Matcher {
     try {
       this._actualValue();
     }
-    catch(error) {
+    catch (error) {
       actualError = error;
 
       if (error instanceof errorType && error.message === errorMessage) {
