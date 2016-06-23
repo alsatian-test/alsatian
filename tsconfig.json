@@ -16,7 +16,6 @@
         "./node_modules/**/*.*"
     ],
     "filesGlob": [
-        "./proof-of-concept/**/*.ts",
         "./cli/**/*.ts",
         "./core/**/*.ts",
         "./test/**/*.ts",
