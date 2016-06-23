@@ -3,6 +3,7 @@
     "node": "registry:dt/node#6.0.0+20160608110640"
   },
   "dependencies": {
-    "glob": "registry:npm/glob#6.0.0+20160211003958"
+    "glob": "registry:npm/glob#6.0.0+20160211003958",
+    "rewire": "registry:npm/rewire#2.5.1+20160601175240"
   }
 }

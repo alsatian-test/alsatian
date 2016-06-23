@@ -43,6 +43,7 @@
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "remap-istanbul": "^0.6.4",
+    "rewire": "^2.5.1",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
   },
