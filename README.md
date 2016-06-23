@@ -1,7 +1,7 @@
 # alsatian
 [![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
 [![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
-[![Test Coverage](https://codeclimate.com/github/alsatian-test/alsatian/badges/coverage.svg)](https://codeclimate.com/github/alsatian-test/alsatian/coverage)
+[![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
 [![Issue Count](https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
 
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
