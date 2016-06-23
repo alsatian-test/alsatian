@@ -1,5 +1,5 @@
-import { MatchError } from "./errors/match-error";
-import { TestSet } from "./test-set";
+import { MatchError } from "./errors/_namespace";
+import { TestSet } from "./_namespace";
 import "reflect-metadata";
 
 export class TestRunner {
