@@ -70,6 +70,7 @@
         "./test/unit-tests/errors/truthy-match-error.spec.ts",
         "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
         "./test/unit-tests/expect-tests/to-be-greater-than.spec.ts",
+        "./test/unit-tests/expect-tests/to-be-less-than.spec.ts",
         "./test/unit-tests/expect-tests/to-be-null.spec.ts",
         "./test/unit-tests/expect-tests/to-be.spec.ts",
         "./test/unit-tests/expect-tests/to-equal.spec.ts",
