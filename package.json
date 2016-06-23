@@ -40,6 +40,7 @@
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.3",
+    "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "remap-istanbul": "^0.6.4",
     "typescript": "^1.8.10",
