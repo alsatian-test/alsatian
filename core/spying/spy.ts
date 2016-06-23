@@ -1,4 +1,4 @@
-import { SpyCall } from "./spy-call";
+import { SpyCall } from "./_namespace";
 
 export class Spy {
 

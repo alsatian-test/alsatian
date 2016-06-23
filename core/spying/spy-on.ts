@@ -1,5 +1,7 @@
-import { SpyCall } from "./spy-call";
-import { Spy } from "./spy";
+import {
+    SpyCall,
+    Spy
+} from "./_namespace";
 
 export function SpyOn(target: any, functionName: string) {
 
