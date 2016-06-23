@@ -67,6 +67,7 @@
         "./test/unit-tests/errors/equal-match-error.spec.ts",
         "./test/unit-tests/errors/error-match-error.spec.ts",
         "./test/unit-tests/errors/exact-match-error.spec.ts",
+        "./test/unit-tests/errors/function-call-match-error.spec.ts",
         "./test/unit-tests/errors/greater-than-match-error.spec.ts",
         "./test/unit-tests/errors/less-than-match-error.spec.ts",
         "./test/unit-tests/errors/regex-match-error.spec.ts",
