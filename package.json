@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamesrichford/alsatian.git"
+    "url": "git+https://github.com/alsatian-test/alsatian.git"
   },
   "keywords": [
     "test",
@@ -35,9 +35,9 @@
   "author": "James Richford <=> (=)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamesrichford/alsatian/issues"
+    "url": "https://github.com/alsatian-test/alsatian/issues"
   },
-  "homepage": "https://github.com/jamesrichford/alsatian#readme",
+  "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.3",
     "istanbul": "^0.4.3",
