@@ -22,13 +22,15 @@
   "keywords": [
     "test",
     "framework",
-    "test",
-    "framework",
+    "test framework",
     "TypeScript",
     "node",
-    "test",
+    "test case",
     "case",
-    "case"
+    "unit test",
+    "tap",
+    "junit",
+    "nunit"
   ],
   "author": "James Richford <=> (=)",
   "license": "MIT",
