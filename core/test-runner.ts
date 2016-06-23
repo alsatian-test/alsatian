@@ -50,7 +50,7 @@ export class TestRunner {
 
            let promise: any = testFixture.fixture[test.key].apply(testFixture.fixture, testCaseArguments);
            promise.then(() => {
-             // TODO: Cancel promise on timeout instead;
+
              if (!timeout) {
                this._notifySuccess(test, testCaseArguments);
              }
@@ -60,7 +60,7 @@ export class TestRunner {
            });
 
            let timeoutCheck = setTimeout(() => {
-             // TODO: Cancel promise on timeout instead;
+
              timeout = true;
              this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
            }, 500);
