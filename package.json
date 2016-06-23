@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "typings install && tsc",
-    "postinstall": "npm run build",
+    "prepublish": "npm run build && npm test",
     "test": "npm run unit-tests",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
