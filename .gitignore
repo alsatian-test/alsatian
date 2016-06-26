@@ -8,6 +8,7 @@ npm-debug.log
 typings
 cli/**/*.d.ts
 core/**/*.d.ts
+test/**/*.d.ts
 !core/alsatian.d.ts
 
 #Test
