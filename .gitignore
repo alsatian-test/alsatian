@@ -6,6 +6,9 @@ npm-debug.log
 *.js
 *.js.map
 typings
+cli/**/*.d.ts
+core/**/*.d.ts
+!core/alsatian.d.ts
 
 #Test
 coverage

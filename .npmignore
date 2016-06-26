@@ -6,6 +6,8 @@ npm-debug.log
 *.ts
 *.js.map
 typings
+!*.d.ts
+
 
 #Testing
 test

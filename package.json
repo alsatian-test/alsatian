@@ -3,6 +3,7 @@
   "version": "1.0.0-alpha.3",
   "description": "TypeScript testing framework with test cases",
   "main": "./core/alsatian-core.js",
+  "typings": "./core/alsatian.d.ts",
   "bin": {
     "alsatian": "./cli/alsatian-cli.js"
   },
