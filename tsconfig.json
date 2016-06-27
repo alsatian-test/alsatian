@@ -4,6 +4,7 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
+        "declaration": true,
         "sourceMap": true,
         "preserveConstEnums": true,
         "experimentalDecorators": true,
@@ -12,7 +13,9 @@
     "buildOnSave": true,
     "compileOnSave": true,
     "exclude": [
-        "**/*.d.ts",
+        "./core/**/*.d.ts",
+        "./cli/**/*.d.ts",
+        "./test/**/*.d.ts",
         "./node_modules/**/*.*"
     ],
     "filesGlob": [
@@ -86,6 +89,7 @@
         "./test/unit-tests/spying/spy/and-return.spec.ts",
         "./test/unit-tests/spying/spy/and-stub.spec.ts",
         "./test/unit-tests/spying/spy/call.spec.ts",
+        "./test/unit-tests/test-set/load-test.spec.ts",
         "./typings/index.d.ts"
     ],
     "atom": {

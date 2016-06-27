@@ -6,6 +6,7 @@ npm-debug.log
 *.js
 *.js.map
 typings
+*.d.ts
 
 #Test
 coverage

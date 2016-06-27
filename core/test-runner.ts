@@ -22,7 +22,12 @@ export class TestRunner {
       }
       else {
 
-         let totalTestCount = this._currentTestSet.testFixtures.map(x => x.tests.map((y: any) => y.testCases.length).reduce((a: number, b: number) => a + b)).reduce((a: number, b: number) => a + b);
+         let totalTestCount = this._currentTestSet.testFixtures
+                                      .filter(x => x.tests.length > 0)
+                                      .map(x => x.tests.map((y: any) => y.testCases.length)
+                                      .reduce((a: number, b: number) => a + b))
+                                      .reduce((a: number, b: number) => a + b);
+
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);
 
@@ -132,8 +137,13 @@ export class TestRunner {
      this._currentTestIndex = 0;
      this._currentTestCaseIndex = 0;
 
+     // no more test fixtures
      if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex]) {
        this._exit();
+     }
+     // no tests on this fixture
+     else if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+       this._runNextTestFixture();
      }
      else {
        this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],

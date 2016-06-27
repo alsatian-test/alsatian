@@ -1,8 +1,9 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "TypeScript testing framework with test cases",
   "main": "./core/alsatian-core.js",
+  "typings": "./core/alsatian-core.d.ts",
   "bin": {
     "alsatian": "./cli/alsatian-cli.js"
   },
@@ -43,8 +44,9 @@
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "remap-istanbul": "^0.6.4",
+    "rewire": "^2.5.1",
     "typescript": "^1.8.10",
-    "typings": "^1.0.4"
+    "typings": "^1.3.0"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.3",

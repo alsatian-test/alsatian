@@ -15,7 +15,7 @@ export function Expect(actualValue: any){
   return new Matcher(actualValue);
 }
 
-class Matcher {
+export class Matcher {
 
   private _actualValue: any;
   private _shouldMatch: boolean = true;
