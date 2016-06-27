@@ -11,7 +11,7 @@ import {
     FunctionCallMatchError
 } from "./errors/_namespace";
 
-export function Expect(actualValue: any){
+export function Expect(actualValue: any) {
   return new Matcher(actualValue);
 }
 
@@ -79,7 +79,7 @@ export class Matcher {
      return true;
   }
 
-  public toMatch(regex: any) {
+  public toMatch(regex: RegExp) {
     if (!regex.test(this._actualValue) === this._shouldMatch) {
       throw new RegexMatchError(this._actualValue, regex, this._shouldMatch);
     }
@@ -109,13 +109,13 @@ export class Matcher {
     }
   }
 
-  public toBeLessThan(upperLimit: any) {
+  public toBeLessThan(upperLimit: number) {
     if (this._actualValue < upperLimit !== this._shouldMatch) {
       throw new LessThanMatchError(this._actualValue, upperLimit, this._shouldMatch);
     }
   }
 
-  public toBeGreaterThan(lowerLimit: any) {
+  public toBeGreaterThan(lowerLimit: number) {
     if (this._actualValue > lowerLimit !== this._shouldMatch) {
       throw new GreaterThanMatchError(this._actualValue, lowerLimit, this._shouldMatch);
     }
@@ -128,7 +128,7 @@ export class Matcher {
     try {
       this._actualValue();
     }
-    catch(error) {
+    catch (error) {
       actualError = error;
       threwError = true;
     }
@@ -138,7 +138,7 @@ export class Matcher {
     }
   }
 
-  public toThrowError(errorType: (...args: Array<any>) => Error, errorMessage: string) {
+  public toThrowError(errorType: new (...args: Array<any>) => Error, errorMessage: string) {
     let threwRightError = false;
     let actualError: Error;
 
