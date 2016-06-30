@@ -16,17 +16,17 @@ export class TestRunner {
 
      this._currentTestSet = testSet;
 
-      if (this._currentTestSet.testFixtures.length === 0) {
-        process.stderr.write("no tests to run\n");
+      let totalTestCount = this._currentTestSet.testFixtures
+                                   .filter(x => x.tests.length > 0)
+                                   .map(x => x.tests.map((y: any) => y.testCases.length)
+                                   .reduce((a: number, b: number) => a + b, 0))
+                                   .reduce((a: number, b: number) => a + b, 0);
+
+      if (totalTestCount === 0) {
+        process.stderr.write("no tests to run");
         process.exit(1);
       }
       else {
-
-         let totalTestCount = this._currentTestSet.testFixtures
-                                      .filter(x => x.tests.length > 0)
-                                      .map(x => x.tests.map((y: any) => y.testCases.length)
-                                      .reduce((a: number, b: number) => a + b))
-                                      .reduce((a: number, b: number) => a + b);
 
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);

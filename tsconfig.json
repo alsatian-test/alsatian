@@ -92,6 +92,7 @@
         "./test/unit-tests/spying/spy/and-return.spec.ts",
         "./test/unit-tests/spying/spy/and-stub.spec.ts",
         "./test/unit-tests/spying/spy/call.spec.ts",
+        "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
         "./typings/index.d.ts"
     ],
