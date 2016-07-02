@@ -46,7 +46,7 @@ export class ToHaveBeenCalledTests {
 
     SpyOn(some, "function");
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalled()).toThrow();
+    Expect(() => Expect(some.function).not.toHaveBeenCalled()).not.toThrow();
   }
 
   @Test()

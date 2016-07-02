@@ -168,16 +168,21 @@ export class Matcher {
    * Checks that a function throws an error when executed
    */
   public toThrow() {
+    let errorThrown: Error;
+
     try {
       this._actualValue();
-      if (this._shouldMatch) {
-        throw new ErrorMatchError(undefined, this._shouldMatch);
-      }
     }
     catch (error) {
       if (!this._shouldMatch) {
         throw new ErrorMatchError(error, this._shouldMatch);
       }
+
+      errorThrown = error;
+    }
+
+    if (this._shouldMatch && errorThrown === undefined) {
+      throw new ErrorMatchError(undefined, this._shouldMatch);
     }
   }
 
