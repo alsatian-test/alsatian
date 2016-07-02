@@ -28,7 +28,7 @@ export class ToThrowTests {
   public functionDoesNotThrowErrorPassesWhenShouldNotThrow() {
     let nonThrowFunction = () => {};
 
-    Expect(() => Expect(nonThrowFunction).not.toThrow()).toThrow();
+    Expect(() => Expect(nonThrowFunction).not.toThrow()).not.toThrow();
   }
 
   @Test()
