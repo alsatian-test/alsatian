@@ -14,6 +14,7 @@
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
     "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/**/*.spec.js\" && npm run remap-coverage",
+    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/**/*.spec.js\"",
     "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },
   "repository": {
@@ -43,6 +44,7 @@
     "codeclimate-test-reporter": "^0.3.3",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
+    "node-inspector": "^0.12.8",
     "remap-istanbul": "^0.6.4",
     "rewire": "^2.5.1",
     "typescript": "^1.8.10",

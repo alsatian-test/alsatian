@@ -2,7 +2,7 @@ import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
 import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
 
-export class AlsatianCoreTests {
+export class NotestsErrorTests {
 
    @Test()
    public emptyTestFixturesExitsWithCodeOne() {
@@ -38,7 +38,7 @@ export class AlsatianCoreTests {
 
    @TestCase(1)
    @TestCase(2)
-   @TestCase(42)
+   @TestCase(13)
    public testFixtureWithEmptyTestsOutputsNoTestError(testCount: number) {
       let testSet = <TestSet>{};
 
@@ -62,7 +62,7 @@ export class AlsatianCoreTests {
 
    @TestCase(1)
    @TestCase(2)
-   @TestCase(42)
+   @TestCase(13)
    public multiplTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
@@ -84,13 +84,13 @@ export class AlsatianCoreTests {
 
    @TestCase(1, 1)
    @TestCase(1, 2)
-   @TestCase(1, 42)
+   @TestCase(1, 13)
    @TestCase(2, 1)
    @TestCase(2, 2)
-   @TestCase(2, 42)
-   @TestCase(42, 1)
-   @TestCase(42, 2)
-   @TestCase(42, 42)
+   @TestCase(2, 13)
+   @TestCase(13, 1)
+   @TestCase(13, 2)
+   @TestCase(13, 13)
    public multiplTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
@@ -100,7 +100,7 @@ export class AlsatianCoreTests {
         testSet.testFixtures.push({ tests: [] });
 
         for (let j = 0; j < testCount; j++) {
-          testSet.testFixtures[0].tests.push({ testCases: [] });
+          testSet.testFixtures[i].tests.push({ testCases: [] });
         }
       }
 

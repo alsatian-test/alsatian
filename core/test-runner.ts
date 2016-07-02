@@ -81,7 +81,9 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: any, testCaseArguments: Array<any>) {
-      this._testsFailed = true;
+
+     this._teardown();
+     this._testsFailed = true;
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
@@ -91,12 +93,13 @@ export class TestRunner {
        process.stdout.write("# Unknown Error\n");
      }
 
-     this._teardown();
+     this._runNextTestCase();
    }
 
    private _notifySuccess(test: any, testCaseArguments: Array<any>) {
-     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      this._teardown();
+     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+     this._runNextTestCase();
    }
 
    private _getTestDescription = (test: any, testCaseArguments: Array<any>) => {
@@ -119,8 +122,6 @@ export class TestRunner {
            testFixture.fixture[teardownFunction].call(testFixture.fixture);
        });
      }
-
-     this._runNextTestCase();
    }
 
    private _exit() {
