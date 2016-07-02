@@ -1,17 +1,32 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
 
 export class NotestsErrorTests {
+
+  private _originalStdErr: any;
+  private _originalProcessExit: any;
+
+   @Setup
+   private _spyProcess() {
+     this._originalProcessExit = process.exit;
+     this._originalStdErr = process.stderr.write;
+
+     SpyOn(process, "exit").andStub();
+     SpyOn(process.stderr, "write").andStub();
+   }
+
+   @Teardown
+   private _resetProcess() {
+     process.exit = this._originalProcessExit;
+     process.stderr.write = this._originalStdErr;
+   }
 
    @Test()
    public emptyTestFixturesExitsWithCodeOne() {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stderr, "write").andStub();
 
       let testRunner = new TestRunner();
 
@@ -25,9 +40,6 @@ export class NotestsErrorTests {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stderr, "write").andStub();
 
       let testRunner = new TestRunner();
 
@@ -50,9 +62,6 @@ export class NotestsErrorTests {
         testSet.testFixtures[0].tests.push({ testCases: [] });
       }
 
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stderr, "write").andStub();
-
       let testRunner = new TestRunner();
 
       testRunner.run(testSet);
@@ -71,9 +80,6 @@ export class NotestsErrorTests {
       for (let i = 0; i < testFixtureCount; i++) {
         testSet.testFixtures.push({ tests: [] });
       }
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stderr, "write").andStub();
 
       let testRunner = new TestRunner();
 
@@ -103,9 +109,6 @@ export class NotestsErrorTests {
           testSet.testFixtures[i].tests.push({ testCases: [] });
         }
       }
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stderr, "write").andStub();
 
       let testRunner = new TestRunner();
 

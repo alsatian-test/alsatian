@@ -13,8 +13,7 @@ export class PreTestTests {
      this._originalStdOut = process.stdout.write;
 
      SpyOn(process, "exit").andStub();
-     let stdOutSpy = SpyOn(process.stdout, "write");
-     stdOutSpy.andStub();
+     SpyOn(process.stdout, "write").andStub();
    }
 
    @Teardown
