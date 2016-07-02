@@ -16,17 +16,17 @@ export class TestRunner {
 
      this._currentTestSet = testSet;
 
-      if (this._currentTestSet.testFixtures.length === 0) {
-        process.stderr.write("no tests to run\n");
+      let totalTestCount = this._currentTestSet.testFixtures
+                                   .filter(x => x.tests.length > 0)
+                                   .map(x => x.tests.map((y: any) => y.testCases.length)
+                                   .reduce((a: number, b: number) => a + b, 0))
+                                   .reduce((a: number, b: number) => a + b, 0);
+
+      if (totalTestCount === 0) {
+        process.stderr.write("no tests to run");
         process.exit(1);
       }
       else {
-
-         let totalTestCount = this._currentTestSet.testFixtures
-                                      .filter(x => x.tests.length > 0)
-                                      .map(x => x.tests.map((y: any) => y.testCases.length)
-                                      .reduce((a: number, b: number) => a + b))
-                                      .reduce((a: number, b: number) => a + b);
 
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);
@@ -81,7 +81,9 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: any, testCaseArguments: Array<any>) {
-      this._testsFailed = true;
+
+     this._teardown();
+     this._testsFailed = true;
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
@@ -91,12 +93,13 @@ export class TestRunner {
        process.stdout.write("# Unknown Error\n");
      }
 
-     this._teardown();
+     this._runNextTestCase();
    }
 
    private _notifySuccess(test: any, testCaseArguments: Array<any>) {
-     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      this._teardown();
+     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+     this._runNextTestCase();
    }
 
    private _getTestDescription = (test: any, testCaseArguments: Array<any>) => {
@@ -119,8 +122,6 @@ export class TestRunner {
            testFixture.fixture[teardownFunction].call(testFixture.fixture);
        });
      }
-
-     this._runNextTestCase();
    }
 
    private _exit() {
