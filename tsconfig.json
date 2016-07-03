@@ -87,6 +87,7 @@
         "./test/unit-tests/expect-tests/to-have-been-called-with.spec.ts",
         "./test/unit-tests/expect-tests/to-have-been-called.spec.ts",
         "./test/unit-tests/expect-tests/to-match.spec.ts",
+        "./test/unit-tests/expect-tests/to-throw-error.spec.ts",
         "./test/unit-tests/expect-tests/to-throw.spec.ts",
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on.spec.ts",
