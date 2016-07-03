@@ -28,7 +28,7 @@ export class ToThrowErrorTests {
 
     Expect(() => Expect(throwWrongErrorFunction).toThrowError(expectedErrorType, expectedErrorMessage))
     .toThrowError(ErrorMatchError,
-      "Expected an error with message \"" + expectedErrorMessage + "\" and type " + (<any>expectedErrorType) + " to have been thrown, but it wasn't.");
+      "Expected an error with message \"" + expectedErrorMessage + "\" and type " + (<any>expectedErrorType)["name"] + " to have been thrown, but it wasn't.");
   }
 
   @TestCase(EvalError, SyntaxError)
