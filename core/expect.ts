@@ -225,7 +225,10 @@ export class Matcher {
    * @param args - a list of arguments that the spy should have been called with
    */
   public toHaveBeenCalledWith(...args: Array<any>) {
-    if (this._actualValue.calls.filter((call: any) => call.args.filter((arg: any, index: number) => arg === args[index]) && call.args.length === args.length).length === 0 === this._shouldMatch) {
+    if (this._actualValue.calls.filter((call: any) => {
+      return call.args.filter((arg: any, index: number) => arg === args[index]).length === args.length && // all call arguments match expected arguments
+             call.args.length === args.length // and the call has the same amount of arguments
+    }).length === 0 === this._shouldMatch) {
       throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
     }
   }
