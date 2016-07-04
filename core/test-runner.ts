@@ -38,7 +38,6 @@ export class TestRunner {
    }
 
    private _runTest(testFixture: any, test: any, testCaseArguments: Array<any>) {
-
      this._currentTestId++;
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
@@ -81,7 +80,9 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: any, testCaseArguments: Array<any>) {
-      this._testsFailed = true;
+
+     this._teardown();
+     this._testsFailed = true;
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
@@ -91,12 +92,13 @@ export class TestRunner {
        process.stdout.write("# Unknown Error\n");
      }
 
-     this._teardown();
+     this._runNextTestCase();
    }
 
    private _notifySuccess(test: any, testCaseArguments: Array<any>) {
-     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      this._teardown();
+     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+     this._runNextTestCase();
    }
 
    private _getTestDescription = (test: any, testCaseArguments: Array<any>) => {
@@ -119,8 +121,6 @@ export class TestRunner {
            testFixture.fixture[teardownFunction].call(testFixture.fixture);
        });
      }
-
-     this._runNextTestCase();
    }
 
    private _exit() {
@@ -146,14 +146,15 @@ export class TestRunner {
        this._runNextTestFixture();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+        setTimeout(() => {
+          this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
+                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+        });
      }
    }
 
    private _runNextTest() {
-
      this._currentTestIndex++;
      this._currentTestCaseIndex = 0;
 
