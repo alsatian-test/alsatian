@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "TypeScript testing framework with test cases",
   "main": "./core/alsatian-core.js",
   "typings": "./core/alsatian-core.d.ts",
