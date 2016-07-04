@@ -6,10 +6,10 @@ export class ErrorMatchError extends MatchError {
     super(actualError, expectedErrorMessage, "");
 
     if (expectedErrorType || expectedErrorMessage) {
-      if (expectedErrorType === undefined || expectedErrorType === null) {
+      if (expectedErrorType === undefined || expectedErrorType === null || (expectedErrorMessage && actualError instanceof expectedErrorType && expectedErrorMessage !== actualError.message)) {
          this._message = `Expected an error with message "${expectedErrorMessage}" to ${!shouldMatch ? "not " : ""}have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
       }
-      else if (expectedErrorMessage === undefined) {
+      else if (expectedErrorMessage === undefined || (actualError && !(actualError instanceof expectedErrorType) && expectedErrorMessage === actualError.message)) {
          this._message = `Expected an error of type ${(<any>expectedErrorType)["name"]} to ${!shouldMatch ? "not " : ""}have been thrown, but ${shouldMatch ? (<any>actualError)["name"] + " was thrown instead" : "it was"}.`;
       }
       else {

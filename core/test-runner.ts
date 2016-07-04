@@ -38,7 +38,6 @@ export class TestRunner {
    }
 
    private _runTest(testFixture: any, test: any, testCaseArguments: Array<any>) {
-
      this._currentTestId++;
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
@@ -147,14 +146,15 @@ export class TestRunner {
        this._runNextTestFixture();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+        setTimeout(() => {
+          this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
+                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+        });
      }
    }
 
    private _runNextTest() {
-
      this._currentTestIndex++;
      this._currentTestCaseIndex = 0;
 
