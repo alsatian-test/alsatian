@@ -16,4 +16,8 @@ let testSet = new TestSet(fileGlobs);
 
 // create runner and run those tests
 let testRunner = new TestRunner();
-testRunner.run(testSet);
+
+testRunner.run(testSet).then((results: Array<any>) => {
+  console.log(results);
+  process.exit(0);
+});
