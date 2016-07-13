@@ -23,16 +23,14 @@ export class NotestsErrorTests {
    }
 
    @Test()
-   public emptyTestFixturesExitsWithCodeOne() {
+   public emptyTestFixturesThrowsError() {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
-
-      Expect(process.exit).toHaveBeenCalledWith(1);
+      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
    @Test()
@@ -43,9 +41,7 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
-
-      Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run");
+      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
    @TestCase(1)
@@ -64,9 +60,7 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
-
-      Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run");
+      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
    @TestCase(1)
@@ -83,9 +77,7 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
-
-      Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run");
+      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
    @TestCase(1, 1)
@@ -112,8 +104,6 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
-
-      Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run");
+      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 }

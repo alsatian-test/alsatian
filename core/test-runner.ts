@@ -13,13 +13,17 @@ export class TestRunner {
    private _testsFailed: boolean = false;
    private _testResults: Array<any> = [];
    private _resultPromise: any = {
+      resolve: () => {
+
+      },
      then: (callback: (testResults: Array<any>) => any) => {
-       this.resolve = callback;
-     },
+       // console.log("then", callback);
+       this._resultPromise.resolve = callback;
+    },//.bind(this),
      catch: (error: Error) => {
 
      }
-   }
+  };
 
    public run(testSet: TestSet) {
 
@@ -32,8 +36,8 @@ export class TestRunner {
                                    .reduce((a: number, b: number) => a + b, 0);
 
       if (totalTestCount === 0) {
-        process.stderr.write("no tests to run");
-        //process.exit(1);
+        throw new Error("no tests to run.");
+        // process.exit(1);
       }
       else {
 
@@ -125,7 +129,7 @@ export class TestRunner {
      process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
 
     this._testResults.push({
-      result: "Error",
+      result: "Pass",
       testDescription: this._getTestDescription(test, testCaseArguments)
     });
 
@@ -161,6 +165,7 @@ export class TestRunner {
       else {
         process.exit(0);
      }*/
+     // console.log(this._resultPromise);
      this._resultPromise.resolve(this._testResults);
    }
 
@@ -196,7 +201,7 @@ export class TestRunner {
      else {
        this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
                this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 
@@ -209,7 +214,7 @@ export class TestRunner {
      else {
        this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
                this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 }

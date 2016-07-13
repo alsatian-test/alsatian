@@ -17,7 +17,17 @@ let testSet = new TestSet(fileGlobs);
 // create runner and run those tests
 let testRunner = new TestRunner();
 
-testRunner.run(testSet).then((results: Array<any>) => {
-  console.log(results);
-  process.exit(0);
-});
+try {
+   testRunner.run(testSet).then((results: Array<any>) => {
+     if (results.filter(test => test.result !== "Pass"). length > 0) {
+       process.exit(1);
+     }
+     else {
+       process.exit(0);
+     }
+   });
+}
+catch (error) {
+   process.stderr.write(error.message);
+   process.exit(1);
+}
