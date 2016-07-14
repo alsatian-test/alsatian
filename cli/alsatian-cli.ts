@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { TestRunner, TestSet } from "../core/alsatian-core";
+import { TestRunner, TestSet, TestLoader } from "../core/alsatian-core";
 
 // get all arguments from the user
 let userArguments = process.argv.slice(2);
@@ -12,7 +12,9 @@ let fileGlobs = userArguments.filter((argument: string) => argument.indexOf("-")
 let options = userArguments.filter((argument: string) => argument.indexOf("-") === 0);
 
 // create test set from given file globs
-let testSet = new TestSet(fileGlobs);
+let testSet = new TestSet(new TestLoader());
+
+testSet.addTestsFromFiles(fileGlobs);
 
 // create runner and run those tests
 let testRunner = new TestRunner();

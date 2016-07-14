@@ -1,7 +1,8 @@
 import {
     Expect,
     TestRunner,
-    TestSet
+    TestSet,
+    TestLoader
 } from "./_namespace";
 
 import {
@@ -30,6 +31,7 @@ export {
    Teardown,
    Test,
    TestCase,
+   TestLoader,
    TestRunner,
    TestSet
 };

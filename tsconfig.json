@@ -54,6 +54,7 @@
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on.ts",
         "./core/spying/spy.ts",
+        "./core/test-loader.ts",
         "./core/test-runner.ts",
         "./core/test-set.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
