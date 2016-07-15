@@ -1,7 +1,7 @@
 import {
     SpyCall,
     Spy
-} from "./_namespace";
+} from "../_spying";
 
 export function SpyOn(target: any, functionName: string) {
 

@@ -3,7 +3,7 @@ import {
     TestRunner,
     TestSet,
     TestLoader
-} from "./_namespace";
+} from "./_core";
 
 import {
     AsyncTest,
@@ -15,11 +15,11 @@ import {
     Teardown,
     Test,
     TestCase
-} from "./decorators/_namespace";
+} from "./_decorators";
 
 import {
     SpyOn
-} from "./spying/_namespace";
+} from "./_spying";
 
 export {
    AsyncTest,

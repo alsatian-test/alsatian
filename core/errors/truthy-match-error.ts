@@ -1,4 +1,4 @@
-import { MatchError } from "./_namespace";
+import { MatchError } from "../_errors";
 
 export class TruthyMatchError extends MatchError {
 
