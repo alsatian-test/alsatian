@@ -8,7 +8,7 @@ export class LoadTestTests {
    @IgnoreTest
    public noTestsAtLocationGivesNoTestFixtures() {
      require = (<any>{});
-     let testSet = new TestSet("");
+     let testSet = new TestSet(null);
 
      Expect(testSet.testFixtures.length).toBe(0);
    }

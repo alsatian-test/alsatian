@@ -1,3 +1,4 @@
+import { AsyncTest } from "./async-test-decorator";
 import { FocusTest } from "./focus-test-decorator";
 import { FocusTests } from "./focus-tests-decorator";
 import { IgnoreTest } from "./ignore-test-decorator";
@@ -8,6 +9,7 @@ import { Test } from "./test-decorator";
 import { TestCase } from "./test-case-decorator";
 
 export {
+    AsyncTest,
     FocusTest,
     FocusTests,
     IgnoreTest,

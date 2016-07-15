@@ -11,6 +11,19 @@ export class TestRunner {
    private _currentTestIndex: number = 0;
    private _currentTestCaseIndex: number = 0;
    private _testsFailed: boolean = false;
+   private _testResults: Array<any> = [];
+   private _resultPromise: any = {
+      resolve: () => {
+
+      },
+     then: (callback: (testResults: Array<any>) => any) => {
+       // console.log("then", callback);
+       this._resultPromise.resolve = callback;
+    },//.bind(this),
+     catch: (error: Error) => {
+
+     }
+  };
 
    public run(testSet: TestSet) {
 
@@ -23,8 +36,8 @@ export class TestRunner {
                                    .reduce((a: number, b: number) => a + b, 0);
 
       if (totalTestCount === 0) {
-        process.stderr.write("no tests to run");
-        process.exit(1);
+        throw new Error("no tests to run.");
+        // process.exit(1);
       }
       else {
 
@@ -35,6 +48,8 @@ export class TestRunner {
                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
       }
+
+      return this._resultPromise;
    }
 
    private _runTest(testFixture: any, test: any, testCaseArguments: Array<any>) {
@@ -86,10 +101,24 @@ export class TestRunner {
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
+
+       this._testResults.push({
+         result: "Fail",
+         testDescription: this._getTestDescription(test, testCaseArguments),
+         message: error.message,
+         expected: error.expectedValue,
+         actual: error.actualValue
+       });
      }
      else {
         console.log(error);
        process.stdout.write("# Unknown Error\n");
+
+       this._testResults.push({
+         result: "Error",
+         testDescription: this._getTestDescription(test, testCaseArguments),
+         message: error.message
+       });
      }
 
      this._runNextTestCase();
@@ -98,6 +127,12 @@ export class TestRunner {
    private _notifySuccess(test: any, testCaseArguments: Array<any>) {
      this._teardown();
      process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+
+    this._testResults.push({
+      result: "Pass",
+      testDescription: this._getTestDescription(test, testCaseArguments)
+    });
+
      this._runNextTestCase();
    }
 
@@ -124,12 +159,14 @@ export class TestRunner {
    }
 
    private _exit() {
-      if (this._testsFailed) {
+      /*if (this._testsFailed) {
          process.exit(1);
       }
       else {
         process.exit(0);
-     }
+     }*/
+     // console.log(this._resultPromise);
+     this._resultPromise.resolve(this._testResults);
    }
 
    private _runNextTestFixture() {
@@ -164,7 +201,7 @@ export class TestRunner {
      else {
        this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
                this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 
@@ -177,7 +214,7 @@ export class TestRunner {
      else {
        this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
                this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments)
+               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 }

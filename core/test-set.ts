@@ -1,4 +1,5 @@
 import * as Glob from "glob";
+import { TestLoader } from "./test-loader";
 const path = require("path");
 
 export class TestSet {
@@ -9,9 +10,11 @@ export class TestSet {
     return this._testFixtures;
   }
 
-  public constructor (testFileLocation: string)
-  public constructor (testFileLocations: Array<string>)
-  public constructor(testsFileLocations: string | Array<string>) {
+  public constructor(private _testLoader: TestLoader) { }
+
+  public addTestsFromFiles (testFileLocation: string): void
+  public addTestsFromFiles (testFileLocations: Array<string>): void
+  public addTestsFromFiles (testsFileLocations: string | Array<string>) {
 
     if (typeof testsFileLocations === "string") {
       testsFileLocations = [ <string>testsFileLocations ];
@@ -38,11 +41,11 @@ export class TestSet {
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
 
-              this._loadTest(require(physicalTestFileLocation));
+              this._loadTest(this._testLoader.loadTestFromFilePath(physicalTestFileLocation));
           });
         }
         else {
-          this._loadTest(require(testFileLocation));
+          this._loadTest(this._testLoader.loadTestFromFilePath(testFileLocation));
         }
      });
   }
