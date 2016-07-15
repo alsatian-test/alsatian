@@ -9,7 +9,7 @@ import {
     GreaterThanMatchError,
     ErrorMatchError,
     FunctionCallMatchError
-} from "./errors/_namespace";
+} from "./_errors";
 
 /**
  * Allows checking of test outcomes
