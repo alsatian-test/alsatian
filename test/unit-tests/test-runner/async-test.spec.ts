@@ -27,7 +27,7 @@ export class AsyncTestTests {
    }
 
    @Test()
-   @IgnoreTest
+   @FocusTest
    public asyncTestRunsSucessfully() {
       let testSet = <TestSet>{};
 
