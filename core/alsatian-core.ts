@@ -6,6 +6,7 @@ import {
 } from "./_namespace";
 
 import {
+    AsyncTest,
     FocusTest,
     FocusTests,
     IgnoreTest,
@@ -21,6 +22,7 @@ import {
 } from "./spying/_namespace";
 
 export {
+   AsyncTest,
    Expect,
    FocusTest,
    FocusTests,

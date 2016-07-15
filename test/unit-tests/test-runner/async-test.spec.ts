@@ -1,6 +1,6 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, Test, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest } from "../../../core/alsatian-core";
 
 export class AsyncTestTests {
 
@@ -26,22 +26,28 @@ export class AsyncTestTests {
      process.stderr.write = this._originalStdErr;
    }
 
-   @Test()
-   @FocusTest
+   private _createPromise() {
+     let promise: any = {
+        then: (callback: any) => {
+           promise.resolve = callback;
+           return promise;
+        },
+        catch: () => {
+           return promise;
+        }
+     };
+
+     return promise;
+   }
+
+   @AsyncTest()
    public asyncTestRunsSucessfully() {
       let testSet = <TestSet>{};
 
-      let promise: any = {
-         then: (callback: any) => {
-            promise.resolve = callback;
-            return promise;
-         },
-         catch: () => {
-            return promise;
-         }
-      };
+      let testPromise = this._createPromise();
 
       (<any>testSet).testFixtures = [ { tests: [ {
+         description: "Test Function",
          isAsync: true,
          key: "testFunction",
          testCases: [ {
@@ -50,17 +56,21 @@ export class AsyncTestTests {
       }],
       fixture: {
          testFunction: () => {
+            let subPromise = this._createPromise();
             setTimeout(() => {
-                     Expect(process.stdout.write).toHaveBeenCalledWith("ok 1 - testFunction\n");
-                     promise.resolve();
+                     subPromise.resolve();
+                     Expect(process.stdout.write).toHaveBeenCalledWith("ok 1 - Test Function [  ]\n");
+                     testPromise.resolve();
                    }, 100);
-            return promise;
+            return subPromise;
          }
       }}];
 
       let testRunner = new TestRunner();
 
       testRunner.run(testSet);
+
+      return testPromise;
 
    }
 }
