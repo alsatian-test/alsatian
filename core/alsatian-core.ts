@@ -1,8 +1,7 @@
 import {
+    createTestSet,
     Expect,
-    TestRunner,
-    TestSet,
-    TestLoader
+    TestRunner
 } from "./_core";
 
 import {
@@ -23,6 +22,7 @@ import {
 
 export {
    AsyncTest,
+   createTestSet,
    Expect,
    FocusTest,
    FocusTests,
@@ -33,7 +33,5 @@ export {
    Teardown,
    Test,
    TestCase,
-   TestLoader,
-   TestRunner,
-   TestSet
+   TestRunner
 };
