@@ -14,7 +14,7 @@ export class ToThrowErrorTests {
 
   @Test()
   public errorThrownWhenExpectedPasses() {
-    let throwFunction = () => { throw new Error("error message") };
+    let throwFunction = () => { throw new Error("error message"); };
 
     Expect(() => Expect(throwFunction).toThrowError(Error, "error message"))
     .not.toThrow();
@@ -55,7 +55,7 @@ export class ToThrowErrorTests {
 
   @Test()
   public errorThrownWhenNoneExpectedShouldGiveCorrectMessage() {
-    let throwFunction = () => { throw new Error("error message") };
+    let throwFunction = () => { throw new Error("error message"); };
 
     Expect(() => Expect(throwFunction).not.toThrowError(Error, "error message"))
     .toThrowError(ErrorMatchError,

@@ -9,7 +9,14 @@
   },
   "scripts": {
     "build": "typings install && tsc",
-    "prepublish": "npm run build && npm test",
+    "clean": "npm run clean-js && npm run clean-js-map && npm run clean-ts-definitions",
+    "clean-js": "rimraf \"./*.js\" \"./cli/**/*.js\" \"./core/**/*.js\" \"./test/**/*.js\"",
+    "clean-js-map": "rimraf \"./*.js.map\" \"./cli/**/*.js.map\" \"./core/**/*.js.map\" \"./test/**/*.js.map\"",
+    "clean-ts-definitions": "rimraf \"./*.d.ts\" \"./cli/**/*.d.ts\" \"./core/**/*.d.ts\" \"./test/**/*.d.ts\"",
+    "prepublish": "npm run review && npm run build && npm test",
+    "review": "npm run review-code & npm run review-tests",
+    "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
+    "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "test": "npm run unit-tests",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
@@ -47,6 +54,7 @@
     "node-inspector": "^0.12.8",
     "remap-istanbul": "^0.6.4",
     "rewire": "^2.5.1",
+    "tslint": "^3.13.0",
     "typescript": "^1.8.10",
     "typings": "^1.3.0"
   },

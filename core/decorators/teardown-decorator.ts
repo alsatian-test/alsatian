@@ -5,7 +5,7 @@ export function Teardown(target: any, propertyKey: string, descriptor: TypedProp
     let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", target);
 
     if (!teardownFunctions) {
-      teardownFunctions = []
+      teardownFunctions = [];
     }
 
     teardownFunctions.push(propertyKey);

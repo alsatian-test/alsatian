@@ -69,7 +69,7 @@ export class AsyncTestDecoratorTests {
 
          let testFixture = {};
 
-         for (var i = 0; i < testCount; i ++) {
+         for (let i = 0; i < testCount; i ++) {
            asyncTestDecorator(testFixture, "key " + i, null);
          }
 
@@ -86,7 +86,7 @@ export class AsyncTestDecoratorTests {
 
           let testFixture = {};
 
-          for (var i = 0; i < testCount; i ++) {
+          for (let i = 0; i < testCount; i ++) {
             testDecorator(testFixture, "key", null);
           }
 

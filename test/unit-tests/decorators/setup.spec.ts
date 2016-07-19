@@ -38,7 +38,7 @@ export class SetupDecoratorTests {
 
        let testFixture = {};
 
-       for (var i = 0; i < setupFunctionCount; i ++) {
+       for (let i = 0; i < setupFunctionCount; i ++) {
          Setup(testFixture, "key " + i, null);
        }
 

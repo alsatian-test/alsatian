@@ -26,7 +26,7 @@ export class CallTests {
 
     let spy = new Spy(originalFunction, this);
 
-    for (let i = 0; i < callCount; i++ ){
+    for (let i = 0; i < callCount; i++) {
       spy.call([]);
     }
 
