@@ -37,10 +37,10 @@ export class TestBuilder {
   public withTestCaseCount(testCaseCount: number): TestBuilder {
     let testCaseBuilder = new TestCaseBuilder();
 
-    for (var i = 0; i < testCaseCount; i++) {
+    for (let i = 0; i < testCaseCount; i++) {
       this._test.testCases.push(testCaseBuilder.build());
     }
-    
+
     return this;
   }
 

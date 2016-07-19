@@ -41,7 +41,7 @@ export class TestDecoratorTests {
 
          let testFixture = {};
 
-         for (var i = 0; i < testCount; i ++) {
+         for (let i = 0; i < testCount; i ++) {
            testDecorator(testFixture, "key " + i, null);
          }
 
@@ -58,7 +58,7 @@ export class TestDecoratorTests {
 
           let testFixture = {};
 
-          for (var i = 0; i < testCount; i ++) {
+          for (let i = 0; i < testCount; i ++) {
             testDecorator(testFixture, "key", null);
           }
 

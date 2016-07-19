@@ -49,7 +49,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, expectedArguments)
+    some.function.apply(some, expectedArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);
@@ -74,7 +74,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, actualArguments)
+    some.function.apply(some, actualArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);
@@ -97,7 +97,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, actualArguments)
+    some.function.apply(some, actualArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);
@@ -114,7 +114,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, actualArguments)
+    some.function.apply(some, actualArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);
@@ -216,7 +216,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, actualArguments)
+    some.function.apply(some, actualArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);
@@ -235,7 +235,7 @@ export class ToHaveBeenCalledWithTests {
 
     SpyOn(some, "function");
 
-    some.function.apply(some, expectedArguments)
+    some.function.apply(some, expectedArguments);
 
     Expect(() => {
       let matcher = Expect(some.function);

@@ -54,7 +54,8 @@ export class Matcher {
    * @param expectedValue - the value that will be used to match
    */
   public toEqual(expectedValue: any) {
-    if (expectedValue != this._actualValue === this._shouldMatch) {
+    // exclude the double equals in this case from review as this is what we want to do
+    if (expectedValue != this._actualValue === this._shouldMatch) { // tslint:disable-line:triple-equals
 
       if (typeof expectedValue !== "object" || this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this._shouldMatch) {
          throw new EqualMatchError(this._actualValue, expectedValue, this._shouldMatch);
@@ -227,7 +228,7 @@ export class Matcher {
   public toHaveBeenCalledWith(...args: Array<any>) {
     if (this._actualValue.calls.filter((call: any) => {
       return call.args.filter((arg: any, index: number) => arg === args[index]).length === args.length && // all call arguments match expected arguments
-             call.args.length === args.length // and the call has the same amount of arguments
+             call.args.length === args.length; // and the call has the same amount of arguments
     }).length === 0 === this._shouldMatch) {
       throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
     }

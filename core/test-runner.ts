@@ -17,9 +17,8 @@ export class TestRunner {
 
       },
      then: (callback: (testResults: Array<any>) => any) => {
-       // console.log("then", callback);
        this._resultPromise.resolve = callback;
-    },//.bind(this),
+    },
      catch: (error: Error) => {
 
      }

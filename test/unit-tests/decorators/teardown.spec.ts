@@ -38,7 +38,7 @@ export class TeardownDecoratorTests {
 
        let testFixture = {};
 
-       for (var i = 0; i < teardownFunctionCount; i ++) {
+       for (let i = 0; i < teardownFunctionCount; i ++) {
          Teardown(testFixture, "key " + i, null);
        }
 

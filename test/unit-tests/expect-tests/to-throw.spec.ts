@@ -5,7 +5,7 @@ export class ToThrowTests {
 
   @Test()
   public functionThrowsErrorPasses() {
-    let throwFunction = () => { throw new Error() };
+    let throwFunction = () => { throw new Error(); };
 
     Expect(() => Expect(throwFunction).toThrow()).not.toThrow();
   }
@@ -33,14 +33,14 @@ export class ToThrowTests {
 
   @Test()
   public functionThrowsErrorFailsWhenShouldNotThrow() {
-    let throwFunction = () => { throw new Error() };
+    let throwFunction = () => { throw new Error(); };
 
     Expect(() => Expect(throwFunction).not.toThrow()).toThrow();
   }
 
   @Test()
   public functionThrowsErrorFailsWithCorrectError() {
-    let throwFunction = () => { throw new Error() };
+    let throwFunction = () => { throw new Error(); };
 
     Expect(() => Expect(throwFunction).not.toThrow()).toThrowError(ErrorMatchError, "Expected an error not to be thrown but an error was thown.");
   }

@@ -9,6 +9,8 @@ os:
   - osx
 before_script:
   - npm run build
+script:
+  - npm run review & npm test
 after_script:
   - codeclimate-test-reporter < coverage/lcov.info
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
