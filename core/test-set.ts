@@ -28,10 +28,11 @@ export class TestSet {
 
     // Filter out unfocussed tests if any are focussed
     if (anyTestsFocussed) {
-      this._testFixtures = this._testFixtures.map(x => {
+      this._testFixtures = this._testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
+      /*this._testFixtures = this._testFixtures.map(x => {
         x.tests = x.tests.filter(test => test.focussed);
         return x;
-      }).filter(testFixture => testFixture.tests.length !== 0);
+      }).filter(testFixture => testFixture.tests.length !== 0);*/
     }
   }
 
@@ -44,13 +45,11 @@ export class TestSet {
           let physicalTestFileLocations = Glob.sync(testFileLocation);
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
-             let testFixture = this._testLoader.loadTestFixture(physicalTestFileLocation);
-             this._testFixtures.push(testFixture);
+             this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(physicalTestFileLocation));
           });
         }
         else {
-          let testFixture = this._testLoader.loadTestFixture(testFileLocation);
-          this._testFixtures.push(testFixture);
+           this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(testFileLocation));
         }
      });
   }
