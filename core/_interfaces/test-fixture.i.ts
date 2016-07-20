@@ -1,7 +1,7 @@
 import { ITest } from "./test.i";
 
 export interface ITestFixture {
-  fixture: Object;
+  fixture: { [id: string]: (...args: Array<any>) => any };
   ignored: boolean;
   focussed: boolean;
   tests: Array<ITest>;

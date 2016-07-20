@@ -15,7 +15,7 @@ export class TestFixtureBuilder {
     };
   }
 
-  public withFixture(fixture: Object): TestFixtureBuilder {
+  public withFixture(fixture: { [id: string]: (...args: Array<any>) => any }): TestFixtureBuilder {
     this._testFixture.fixture = fixture;
     return this;
   }
