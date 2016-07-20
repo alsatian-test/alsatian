@@ -1,12 +1,14 @@
 import * as Glob from "glob";
 import { TestLoader } from "./test-loader";
+import { ITestFixture } from "./_interfaces/test-fixture.i";
+
 const path = require("path");
 
 export class TestSet {
 
-  private _testsFocussed: boolean;
-  private _testFixtures: Array<any> = [];
-  public get testFixtures(): Array<any> {
+  private _testFixtures: Array<ITestFixture> = [];
+
+  public get testFixtures(): Array<ITestFixture> {
     return this._testFixtures;
   }
 
@@ -22,10 +24,12 @@ export class TestSet {
 
     this._loadTestFixtures(<Array<string>>testsFileLocations);
 
+    let anyTestsFocussed = this._testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
+
     // Filter out unfocussed tests if any are focussed
-    if (this._testsFocussed) {
+    if (anyTestsFocussed) {
       this._testFixtures = this._testFixtures.map(x => {
-        x.tests = x.tests.filter((y: any) => y.focussed);
+        x.tests = x.tests.filter(test => test.focussed);
         return x;
       }).filter(testFixture => testFixture.tests.length !== 0);
     }
@@ -40,75 +44,14 @@ export class TestSet {
           let physicalTestFileLocations = Glob.sync(testFileLocation);
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
-
-              this._loadTest(this._testLoader.loadTestFromFilePath(physicalTestFileLocation));
+             let testFixture = this._testLoader.loadTestFixture(physicalTestFileLocation);
+             this._testFixtures.push(testFixture);
           });
         }
         else {
-          this._loadTest(this._testLoader.loadTestFromFilePath(testFileLocation));
+          let testFixture = this._testLoader.loadTestFixture(testFileLocation);
+          this._testFixtures.push(testFixture);
         }
-     });
-  }
-
-  private _loadTest(Test: any) {
-     let testFixtureKeys = Object.keys(Test);
-
-     // CALCULATE TESTS TO RUN
-     testFixtureKeys.forEach(testFixtureKey => {
-
-       if (Reflect.getMetadata("alsatian:ignore", Test[testFixtureKey])) {
-         // fixture should be ignored
-         return;
-       }
-
-       let testFixture: any = {};
-
-       // create an instance of the test fixture
-       testFixture.fixture = new Test[testFixtureKey]();
-
-       // find all the tests on this test fixture
-       let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
-
-       if (!tests || tests.length === 0) {
-         // no tests on the fixture
-         return;
-       }
-
-       let focusFixture = Reflect.getMetadata("alsatian:focus", Test[testFixtureKey]);
-
-       testFixture.tests = [];
-
-       tests.forEach((test: any) => {
-
-         if (Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
-           // ignore this test
-           return;
-         }
-
-         let focusTest = Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key);
-         test.focussed = focusFixture || focusTest;
-         this._testsFocussed = this._testsFocussed || test.focussed;
-
-         testFixture.tests.push(test);
-
-         if (!test.description) {
-            test.description = test.key;
-         }
-
-         let testCases = Reflect.getMetadata("alsatian:testcases", testFixture.fixture, test.key);
-         test.testCases = [];
-
-         if (!testCases) {
-           test.testCases.push([]);
-         }
-         else {
-           testCases.forEach((testCase: any) => {
-             test.testCases.push(testCase);
-           });
-         }
-       });
-
-       this._testFixtures.push(testFixture);
      });
   }
 }

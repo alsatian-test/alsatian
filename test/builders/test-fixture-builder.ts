@@ -8,12 +8,14 @@ export class TestFixtureBuilder {
 
   public constructor() {
     this._testFixture = {
+      focussed: false,
+      ignored: false,
       fixture: {},
       tests: []
     };
   }
 
-  public withFixture(fixture: Object): TestFixtureBuilder {
+  public withFixture(fixture: { [id: string]: (...args: Array<any>) => any }): TestFixtureBuilder {
     this._testFixture.fixture = fixture;
     return this;
   }

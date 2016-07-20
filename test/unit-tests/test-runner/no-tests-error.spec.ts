@@ -1,6 +1,8 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
 import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { TestBuilder } from "../../builders/test-builder";
 
 export class NotestsErrorTests {
 
@@ -52,10 +54,10 @@ export class NotestsErrorTests {
 
       (<any>testSet).testFixtures = [];
 
-      testSet.testFixtures.push({ tests: [] });
+      testSet.testFixtures.push(new TestFixtureBuilder().build());
 
       for (let i = 0; i < testCount; i++) {
-        testSet.testFixtures[0].tests.push({ testCases: [] });
+        testSet.testFixtures[0].tests.push(new TestBuilder().build());
       }
 
       let testRunner = new TestRunner();
@@ -72,7 +74,7 @@ export class NotestsErrorTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push({ tests: [] });
+        testSet.testFixtures.push(new TestFixtureBuilder().build());
       }
 
       let testRunner = new TestRunner();
@@ -95,10 +97,10 @@ export class NotestsErrorTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push({ tests: [] });
+        testSet.testFixtures.push(new TestFixtureBuilder().build());
 
         for (let j = 0; j < testCount; j++) {
-          testSet.testFixtures[i].tests.push({ testCases: [] });
+          testSet.testFixtures[i].tests.push(new TestBuilder().build());
         }
       }
 
