@@ -47,7 +47,6 @@ export class TestLoader {
         let focusTest = Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key);
 
         test.focussed = focusFixture || focusTest;
-        //this._testsFocussed = this._testsFocussed || test.focussed;
 
         testFixture.tests.push(test);
 
