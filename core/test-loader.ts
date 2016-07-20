@@ -7,7 +7,7 @@ export class TestLoader {
 
    public constructor(private _fileRequirer: FileRequirer) { }
 
-  loadTestFromFilePath(filePath: string): ITestFixture {
+  loadTestFixture(filePath: string): ITestFixture {
     let Test = this._fileRequirer.require(filePath);
     let testFixtureKeys = Object.keys(Test);
     let testFixture: ITestFixture = <ITestFixture>{};

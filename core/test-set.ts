@@ -44,12 +44,12 @@ export class TestSet {
           let physicalTestFileLocations = Glob.sync(testFileLocation);
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
-             let testFixture = this._testLoader.loadTestFromFilePath(physicalTestFileLocation);
+             let testFixture = this._testLoader.loadTestFixture(physicalTestFileLocation);
              this._testFixtures.push(testFixture);
           });
         }
         else {
-          let testFixture = this._testLoader.loadTestFromFilePath(testFileLocation);
+          let testFixture = this._testLoader.loadTestFixture(testFileLocation);
           this._testFixtures.push(testFixture);
         }
      });

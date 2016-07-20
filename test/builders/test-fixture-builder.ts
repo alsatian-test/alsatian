@@ -8,6 +8,8 @@ export class TestFixtureBuilder {
 
   public constructor() {
     this._testFixture = {
+      focussed: false,
+      ignored: false,
       fixture: {},
       tests: []
     };

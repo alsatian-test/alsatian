@@ -8,8 +8,11 @@ export class TestBuilder {
 
   public constructor() {
     this._test = {
+      focussed: false,
+      ignored: false,
       isAsync: false,
       key: "testFunction",
+      description: "Test Function",
       testCases: []
     };
   }

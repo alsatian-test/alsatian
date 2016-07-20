@@ -1,6 +1,9 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
 import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { TestBuilder } from "../../builders/test-builder";
+import { TestCaseBuilder } from "../../builders/test-case-builder";
 
 export class PreTestTests {
 
@@ -27,15 +30,9 @@ export class PreTestTests {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
-      testSet.testFixtures.push({
-        fixture: {
-          testFunction: () => {}
-        },
-        tests: [ {
-          key: "testFunction",
-          testCases: [[]]
-        }]
-      });
+      testSet.testFixtures.push(new TestFixtureBuilder().build());
+      testSet.testFixtures[0].tests.push(new TestBuilder().build());
+      testSet.testFixtures[0].tests[0].testCases.push(new TestCaseBuilder().build());
 
       let testRunner = new TestRunner();
 
@@ -54,15 +51,9 @@ export class PreTestTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push({
-          fixture: {
-            testFunction: () => {}
-          },
-          tests: [ {
-            key: "testFunction",
-            testCases: [[]]
-          }]
-        });
+         testSet.testFixtures.push(new TestFixtureBuilder().build());
+         testSet.testFixtures[i].tests.push(new TestBuilder().build());
+         testSet.testFixtures[i].tests[0].testCases.push(new TestCaseBuilder().build());
       }
 
       let testRunner = new TestRunner();
@@ -87,19 +78,14 @@ export class PreTestTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push({
-          fixture: {
-          },
-          tests: []
-        });
+
+         testSet.testFixtures.push(new TestFixtureBuilder().build());
 
         for (let j = 0; j < testCount; j++) {
           let testFunctionKey = "testFunction" + j;
           testSet.testFixtures[i].fixture[testFunctionKey];
-          testSet.testFixtures[i].tests.push({
-            key: testFunctionKey,
-            testCases: [[]]
-          });
+          testSet.testFixtures[i].tests.push(new TestBuilder().build());
+          testSet.testFixtures[i].tests[j].testCases.push(new TestCaseBuilder().build());
         }
       }
 
@@ -143,24 +129,15 @@ export class PreTestTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push({
-          fixture: {
-          },
-          tests: []
-        });
+        testSet.testFixtures.push(new TestFixtureBuilder().build());
 
         for (let j = 0; j < testCount; j++) {
           let testFunctionKey = "testFunction" + j;
           testSet.testFixtures[i].fixture[testFunctionKey];
-          testSet.testFixtures[i].tests.push({
-            key: testFunctionKey,
-            testCases: []
-          });
+          testSet.testFixtures[i].tests.push(new TestBuilder().build());
 
           for (let k = 0; k < testCaseCount; k++) {
-            testSet.testFixtures[i].tests[j].testCases.push({
-              arguments: [ i, j , k ]
-            });
+            testSet.testFixtures[i].tests[j].testCases.push(new TestCaseBuilder().build());
           }
         }
       }
