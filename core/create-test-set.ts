@@ -1,6 +1,7 @@
-import { TestSet, TestLoader } from "./_core";
+import { TestSet, TestLoader, FileRequirer } from "./_core";
 
 export function createTestSet(): TestSet {
-  let testLoader = new TestLoader();
+   let fileRequirer = new FileRequirer();
+  let testLoader = new TestLoader(fileRequirer);
   return new TestSet(testLoader);
 }
