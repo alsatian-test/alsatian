@@ -2,7 +2,7 @@ import { SpyCall } from "../_spying";
 
 export class Spy {
 
-  private _originalFunction: (...args: Array<any>) => any;
+  protected originalFunction: (...args: Array<any>) => any;
   private _returnValue: any;
   private _hasReturnValue: boolean;
   private _isStubbed: boolean;
@@ -15,7 +15,7 @@ export class Spy {
   }
 
   public constructor(originalFunction: (...args: Array<any>) => any, originalContext: any) {
-    this._originalFunction = originalFunction;
+    this.originalFunction = originalFunction;
     this._originalContext = originalContext;
   }
 
@@ -26,7 +26,7 @@ export class Spy {
     let returnValue: any;
 
     if (!this._isStubbed) {
-      returnValue = this._originalFunction.apply(this._originalContext, args);
+      returnValue = this.originalFunction.apply(this._originalContext, args);
     }
     else if (this._fakeFunction) {
       this._fakeFunction.apply(this._originalContext, args);
