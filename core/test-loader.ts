@@ -63,9 +63,9 @@ export class TestLoader {
 
       tests.forEach((test: ITest) => {
 
+        test.ignored = false;
         if (Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
-          // ignore this test
-          return;
+          test.ignored = true;
         }
 
         test.focussed = false;
