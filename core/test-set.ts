@@ -28,10 +28,6 @@ export class TestSet {
     // Filter out unfocussed tests if any are focussed
     if (anyTestsFocussed) {
       this._testFixtures = this._testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
-      /*this._testFixtures = this._testFixtures.map(x => {
-        x.tests = x.tests.filter(test => test.focussed);
-        return x;
-      }).filter(testFixture => testFixture.tests.length !== 0);*/
     }
   }
 
