@@ -1,5 +1,4 @@
-import * as Glob from "glob";
-import { TestLoader } from "./test-loader";
+import { GlobHelper, TestLoader } from "./_Core";
 import { ITestFixture } from "./_interfaces/test-fixture.i";
 
 const path = require("path");
@@ -12,7 +11,7 @@ export class TestSet {
     return this._testFixtures;
   }
 
-  public constructor(private _testLoader: TestLoader) { }
+  public constructor(private _testLoader: TestLoader, private _globHelper: GlobHelper) { }
 
   public addTestsFromFiles (testFileLocation: string): void
   public addTestsFromFiles (testFileLocations: Array<string>): void
@@ -41,8 +40,8 @@ export class TestSet {
 
         testFileLocation = path.join(process.cwd(), testFileLocation);
 
-        if (Glob.hasMagic(testFileLocation)) {
-          let physicalTestFileLocations = Glob.sync(testFileLocation);
+        if (this._globHelper.isGlob(testFileLocation)) {
+          let physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
 
           physicalTestFileLocations.forEach(physicalTestFileLocation => {
              this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(physicalTestFileLocation));

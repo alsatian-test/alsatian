@@ -56,6 +56,7 @@
         "./core/errors/truthy-match-error.ts",
         "./core/expect.ts",
         "./core/file-requirer.ts",
+        "./core/glob-helper.ts",
         "./core/spying/restorable-spy.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on.ts",

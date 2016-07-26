@@ -54,11 +54,13 @@ export class NotestsErrorTests {
 
       (<any>testSet).testFixtures = [];
 
-      testSet.testFixtures.push(new TestFixtureBuilder().build());
+      let testFixtureBuilder = new TestFixtureBuilder();
 
       for (let i = 0; i < testCount; i++) {
-        testSet.testFixtures[0].tests.push(new TestBuilder().build());
+        testFixtureBuilder.addTest(new TestBuilder().build());
       }
+
+      testSet.testFixtures.push(testFixtureBuilder.build());
 
       let testRunner = new TestRunner();
 
@@ -97,11 +99,13 @@ export class NotestsErrorTests {
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push(new TestFixtureBuilder().build());
+        let testFixtureBuilder = new TestFixtureBuilder();
 
         for (let j = 0; j < testCount; j++) {
-          testSet.testFixtures[i].tests.push(new TestBuilder().build());
+          testFixtureBuilder.addTest(new TestBuilder().build());
         }
+
+         testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
       let testRunner = new TestRunner();

@@ -22,11 +22,17 @@ export class TestFixtureBuilder {
 
   public addTest(test: ITest): TestFixtureBuilder {
     this._testFixture.tests.push(test);
+    this._testFixture.fixture[test.key] = () => {};
     return this;
   }
 
   public withTests(tests: Array<ITest>): TestFixtureBuilder {
     this._testFixture.tests = tests;
+
+    tests.forEach(test => {
+      this._testFixture.fixture[test.key] = () => {};
+    });
+
     return this;
   }
 

@@ -18,9 +18,10 @@ export class TestRunner {
       },
      then: (callback: (testResults: Array<any>) => any) => {
        this._resultPromise.resolve = callback;
+       return this._resultPromise;
     },
      catch: (error: Error) => {
-
+        return this._resultPromise;
      }
   };
 
@@ -43,9 +44,11 @@ export class TestRunner {
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);
 
+         setTimeout(() => {
          this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+              });
       }
 
       return this._resultPromise;
@@ -67,21 +70,24 @@ export class TestRunner {
            let timeout = false;
 
            let promise: any = testFixture.fixture[test.key].apply(testFixture.fixture, testCaseArguments);
-           promise.then(() => {
+           let timeoutCheck: NodeJS.Timer = null;
+
+          promise.then(() => {
 
              if (!timeout) {
                this._notifySuccess(test, testCaseArguments);
+               clearTimeout(timeoutCheck);
              }
            })
            .catch((error: Error) => {
              this._handleError(error, test, testCaseArguments);
            });
 
-           let timeoutCheck = setTimeout(() => {
+           timeoutCheck = setTimeout(() => {
 
              timeout = true;
              this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
-           }, 500);
+          }, 500);
         }
         else {
           testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
