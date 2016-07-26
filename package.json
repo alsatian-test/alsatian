@@ -9,10 +9,7 @@
   },
   "scripts": {
     "build": "typings install && tsc",
-    "clean": "git clean -f -n -d",
-    "clean-js": "rimraf \"./*.js\" \"./cli/**/*.js\" \"./core/**/*.js\" \"./test/**/*.js\"",
-    "clean-js-map": "rimraf \"./*.js.map\" \"./cli/**/*.js.map\" \"./core/**/*.js.map\" \"./test/**/*.js.map\"",
-    "clean-ts-definitions": "rimraf \"./*.d.ts\" \"./cli/**/*.d.ts\" \"./core/**/*.d.ts\" \"./test/**/*.d.ts\"",
+    "clean": "git clean -X -d -f",   
     "prepublish": "npm run review && npm run build && npm test",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
