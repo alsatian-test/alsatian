@@ -1,11 +1,13 @@
 import { MatchError } from "./_errors";
 import { TestSet } from "./_core";
+import { ITestFixture } from "./_interfaces/test-fixture.i";
 import "reflect-metadata";
 
 export class TestRunner {
 
    private _testsFocussed: boolean;
-   private _currentTestSet: TestSet;
+   //private _currentTestSet: TestSet;
+   private _testFixtures: Array<ITestFixture>;
    private _currentTestId: number = 0;
    private _currentTestFixtureIndex: number = 0;
    private _currentTestIndex: number = 0;
@@ -27,9 +29,18 @@ export class TestRunner {
 
    public run(testSet: TestSet) {
 
-     this._currentTestSet = testSet;
+     let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
 
-      let totalTestCount = this._currentTestSet.testFixtures
+     this._testFixtures = testSet.testFixtures;
+     
+     // Filter out unfocussed tests if any are focussed
+     if (anyTestsFocussed) {
+       this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
+     }
+
+     //this._currentTestSet = testSet;
+
+      let totalTestCount = this._testFixtures
                                    .filter(x => x.tests.length > 0)
                                    .map(x => x.tests.map((y: any) => y.testCases.length)
                                    .reduce((a: number, b: number) => a + b, 0))
@@ -45,9 +56,9 @@ export class TestRunner {
          process.stdout.write(`1..${totalTestCount}\n`);
 
          setTimeout(() => {
-         this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-                 this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                 this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+         this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
               });
       }
 
@@ -152,7 +163,7 @@ export class TestRunner {
    }
 
    private _teardown() {
-     let testFixture = this._currentTestSet.testFixtures[this._currentTestFixtureIndex];
+     let testFixture = this._testFixtures[this._currentTestFixtureIndex];
 
      let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", testFixture.fixture);
 
@@ -180,18 +191,18 @@ export class TestRunner {
      this._currentTestCaseIndex = 0;
 
      // no more test fixtures
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex]) {
        this._exit();
      }
      // no tests on this fixture
-     else if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     else if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
         setTimeout(() => {
-          this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+          this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
         });
      }
    }
@@ -200,26 +211,26 @@ export class TestRunner {
      this._currentTestIndex++;
      this._currentTestCaseIndex = 0;
 
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+       this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 
    private _runNextTestCase = () => {
      this._currentTestCaseIndex++;
 
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
        this._runNextTest();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+       this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 }

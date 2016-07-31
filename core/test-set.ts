@@ -22,13 +22,6 @@ export class TestSet {
     }
 
     this._loadTestFixtures(<Array<string>>testsFileLocations);
-
-    let anyTestsFocussed = this._testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
-
-    // Filter out unfocussed tests if any are focussed
-    if (anyTestsFocussed) {
-      this._testFixtures = this._testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
-    }
   }
 
   private _loadTestFixtures(testFileLocations: Array<string>) {
