@@ -6,7 +6,6 @@ import "reflect-metadata";
 export class TestRunner {
 
    private _testsFocussed: boolean;
-   //private _currentTestSet: TestSet;
    private _testFixtures: Array<ITestFixture>;
    private _currentTestId: number = 0;
    private _currentTestFixtureIndex: number = 0;
@@ -48,8 +47,6 @@ export class TestRunner {
        this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
      }
 
-     //this._currentTestSet = testSet;
-
       let totalTestCount = this._testFixtures
                                    .filter(x => x.tests.length > 0)
                                    .map(x => x.tests.map((y: any) => y.testCases.length)
@@ -58,7 +55,6 @@ export class TestRunner {
 
       if (totalTestCount === 0) {
         throw new Error("no tests to run.");
-        // process.exit(1);
       }
       else {
 
@@ -185,13 +181,6 @@ export class TestRunner {
    }
 
    private _exit() {
-      /*if (this._testsFailed) {
-         process.exit(1);
-      }
-      else {
-        process.exit(0);
-     }*/
-     // console.log(this._resultPromise);
      this._resultPromise.resolve(this._testResults);
    }
 
