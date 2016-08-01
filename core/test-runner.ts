@@ -15,14 +15,24 @@ export class TestRunner {
    private _testsFailed: boolean = false;
    private _testResults: Array<any> = [];
    private _resultPromise: any = {
-      resolve: () => {
-
+     resolve: () => {
+        try {
+           if (this._resultPromise.resolveCallback) {
+             this._resultPromise.resolveCallback();
+          }
+       }
+       catch (error) {
+          this._resultPromise.reject(error);
+       }
+     },
+      reject: (error: Error) => {
       },
      then: (callback: (testResults: Array<any>) => any) => {
-       this._resultPromise.resolve = callback;
+       this._resultPromise.resolveCallback = callback;
        return this._resultPromise;
-    },
-     catch: (error: Error) => {
+     },
+     catch: (callback: (error: Error) => any) => {
+        this._resultPromise.reject = callback;
         return this._resultPromise;
      }
   };
@@ -32,7 +42,7 @@ export class TestRunner {
      let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
 
      this._testFixtures = testSet.testFixtures;
-     
+
      // Filter out unfocussed tests if any are focussed
      if (anyTestsFocussed) {
        this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);

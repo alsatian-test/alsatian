@@ -70,7 +70,7 @@ export class NotestsErrorTests {
    @TestCase(1)
    @TestCase(2)
    @TestCase(13)
-   public multiplTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
+   public multipleTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -93,7 +93,7 @@ export class NotestsErrorTests {
    @TestCase(13, 1)
    @TestCase(13, 2)
    @TestCase(13, 13)
-   public multiplTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number, testCount: number) {
+   public multipleTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];

@@ -22,7 +22,9 @@ export class TestFixtureBuilder {
 
   public addTest(test: ITest): TestFixtureBuilder {
     this._testFixture.tests.push(test);
-    this._testFixture.fixture[test.key] = () => {};
+    if (this._testFixture.fixture[test.key] === undefined) {
+        this._testFixture.fixture[test.key] = () => {};
+    }
     return this;
   }
 
