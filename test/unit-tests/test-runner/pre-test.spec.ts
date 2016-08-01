@@ -1,6 +1,6 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
@@ -25,42 +25,77 @@ export class PreTestTests {
      process.stdout.write = this._originalStdOut;
    }
 
-   @Test()
+   @AsyncTest()
    public tapVersionHeaderOutput() {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
-      testSet.testFixtures.push(new TestFixtureBuilder().build());
-      testSet.testFixtures[0].tests.push(new TestBuilder().build());
-      testSet.testFixtures[0].tests[0].testCases.push(new TestCaseBuilder().build());
+      let testFixtureBuilder = new TestFixtureBuilder();
+      let testBuilder = new TestBuilder();
+      testBuilder.addTestCase(new TestCaseBuilder().build());
+      testFixtureBuilder.addTest(testBuilder.build());
+      testSet.testFixtures.push(testFixtureBuilder.build());
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+           return resultPromise;
+        }
+     };
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
+      testRunner.run(testSet).then.call(testRunner, () => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
+         resultPromise.resolve();
+      });
 
-      Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
-
+      return resultPromise;
    }
 
    @TestCase(1)
    @TestCase(2)
    @TestCase(13)
-   public multiplTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
+   @AsyncTest()
+   public multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-         testSet.testFixtures.push(new TestFixtureBuilder().build());
-         testSet.testFixtures[i].tests.push(new TestBuilder().build());
-         testSet.testFixtures[i].tests[0].testCases.push(new TestCaseBuilder().build());
+         let testFixtureBuilder = new TestFixtureBuilder();
+         let testBuilder = new TestBuilder();
+         testBuilder.addTestCase(new TestCaseBuilder().build());
+         testFixtureBuilder.addTest(testBuilder.build());
+         testSet.testFixtures.push(testFixtureBuilder.build());
       }
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+        }
+     };
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+         resultPromise.resolve();
+      });
 
-      Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+      return resultPromise;
    }
 
    @TestCase(1, 1)
@@ -72,6 +107,7 @@ export class PreTestTests {
    @TestCase(13, 1)
    @TestCase(13, 2)
    @TestCase(13, 13)
+   @AsyncTest()
    public multiplTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
@@ -79,21 +115,38 @@ export class PreTestTests {
 
       for (let i = 0; i < testFixtureCount; i++) {
 
-         testSet.testFixtures.push(new TestFixtureBuilder().build());
+        let testFixtureBuilder = new TestFixtureBuilder();
 
         for (let j = 0; j < testCount; j++) {
           let testFunctionKey = "testFunction" + j;
-          testSet.testFixtures[i].fixture[testFunctionKey];
-          testSet.testFixtures[i].tests.push(new TestBuilder().build());
-          testSet.testFixtures[i].tests[j].testCases.push(new TestCaseBuilder().build());
+          let testBuilder = new TestBuilder().withKey(testFunctionKey);
+          testBuilder.addTestCase(new TestCaseBuilder().build());
+          testFixtureBuilder.addTest(testBuilder.build());
         }
+
+        testSet.testFixtures.push(testFixtureBuilder.build());
       }
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+        }
+     };
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
+         resultPromise.resolve();
+      });
 
-      Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
+      return resultPromise;
    }
 
    @TestCase(1, 1, 1)
@@ -123,29 +176,48 @@ export class PreTestTests {
    @TestCase(13, 1, 13)
    @TestCase(13, 2, 13)
    @TestCase(13, 13, 13)
+   @AsyncTest()
    public multiplTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push(new TestFixtureBuilder().build());
+
+        let testFixtureBuilder = new TestFixtureBuilder();
 
         for (let j = 0; j < testCount; j++) {
           let testFunctionKey = "testFunction" + j;
-          testSet.testFixtures[i].fixture[testFunctionKey];
-          testSet.testFixtures[i].tests.push(new TestBuilder().build());
+          let testBuilder = new TestBuilder().withKey(testFunctionKey);
+          testFixtureBuilder.addTest(testBuilder.build());
 
           for (let k = 0; k < testCaseCount; k++) {
-            testSet.testFixtures[i].tests[j].testCases.push(new TestCaseBuilder().build());
+             testBuilder.addTestCase(new TestCaseBuilder().build());
           }
         }
+
+        testSet.testFixtures.push(testFixtureBuilder.build());
       }
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+        }
+     };
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet);
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+         resultPromise.resolve();
+      });
 
-      Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+      return resultPromise;
    }
 }

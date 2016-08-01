@@ -1,9 +1,9 @@
-import { TestLoader } from "../../../core/test-loader";
-import { FileRequirer } from "../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests } from "../../../core/alsatian-core";
+import { TestLoader } from "../../../../core/test-loader";
+import { FileRequirer } from "../../../../core/file-requirer";
+import { Expect, Test, TestCase, SpyOn, FocusTests } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
-export class LoadTestTests {
+export class DefaultExportFixtureTests {
 
    @Test()
    public ignoredShouldBeFalseByDefault() {
@@ -13,13 +13,11 @@ export class LoadTestTests {
      let testFixtureInstance = {};
      Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
 
-     let testFixtureSet = {
-        testFixture: () => testFixtureInstance
-     };
+     let testFixtureConstructor = () => testFixtureInstance;
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
-     spy.andReturn(testFixtureSet);
+     spy.andReturn(testFixtureConstructor);
 
      let testLoader = new TestLoader(fileRequirer);
 
@@ -34,15 +32,13 @@ export class LoadTestTests {
       let testFixtureInstance = {};
       Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
 
-      let testFixtureSet = {
-         testFixture: () => testFixtureInstance
-      };
+      let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata("alsatian:ignore", true,  testFixtureSet.testFixture);
+     Reflect.defineMetadata("alsatian:ignore", true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
-     spy.andReturn(testFixtureSet);
+     spy.andReturn(testFixtureConstructor);
 
      let testLoader = new TestLoader(fileRequirer);
 
@@ -57,13 +53,11 @@ export class LoadTestTests {
      let testFixtureInstance = {};
      Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
 
-     let testFixtureSet = {
-        testFixture: () => testFixtureInstance
-     };
+     let testFixtureConstructor = () => testFixtureInstance;
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
-     spy.andReturn(testFixtureSet);
+     spy.andReturn(testFixtureConstructor);
 
      let testLoader = new TestLoader(fileRequirer);
 
@@ -78,15 +72,13 @@ export class LoadTestTests {
       let testFixtureInstance = {};
       Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
 
-      let testFixtureSet = {
-         testFixture: () => testFixtureInstance
-      };
+      let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata("alsatian:focus", true,  testFixtureSet.testFixture);
+     Reflect.defineMetadata("alsatian:focus", true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
-     spy.andReturn(testFixtureSet);
+     spy.andReturn(testFixtureConstructor);
 
      let testLoader = new TestLoader(fileRequirer);
 
@@ -100,13 +92,11 @@ export class LoadTestTests {
 
       let testFixtureInstance = {};
 
-      let testFixtureSet = {
-         testFixture: () => testFixtureInstance
-      };
+      let testFixtureConstructor = () => testFixtureInstance;
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
-     spy.andReturn(testFixtureSet);
+     spy.andReturn(testFixtureConstructor);
 
      let testLoader = new TestLoader(fileRequirer);
 

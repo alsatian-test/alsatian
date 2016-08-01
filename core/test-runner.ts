@@ -1,11 +1,12 @@
 import { MatchError } from "./_errors";
 import { TestSet } from "./_core";
+import { ITestFixture } from "./_interfaces/test-fixture.i";
 import "reflect-metadata";
 
 export class TestRunner {
 
    private _testsFocussed: boolean;
-   private _currentTestSet: TestSet;
+   private _testFixtures: Array<ITestFixture>;
    private _currentTestId: number = 0;
    private _currentTestFixtureIndex: number = 0;
    private _currentTestIndex: number = 0;
@@ -13,22 +14,40 @@ export class TestRunner {
    private _testsFailed: boolean = false;
    private _testResults: Array<any> = [];
    private _resultPromise: any = {
-      resolve: () => {
-
+     resolve: () => {
+        try {
+           if (this._resultPromise.resolveCallback) {
+             this._resultPromise.resolveCallback();
+          }
+       }
+       catch (error) {
+          this._resultPromise.reject(error);
+       }
+     },
+      reject: (error: Error) => {
       },
      then: (callback: (testResults: Array<any>) => any) => {
-       this._resultPromise.resolve = callback;
-    },
-     catch: (error: Error) => {
-
+       this._resultPromise.resolveCallback = callback;
+       return this._resultPromise;
+     },
+     catch: (callback: (error: Error) => any) => {
+        this._resultPromise.reject = callback;
+        return this._resultPromise;
      }
   };
 
    public run(testSet: TestSet) {
 
-     this._currentTestSet = testSet;
+     let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
 
-      let totalTestCount = this._currentTestSet.testFixtures
+     this._testFixtures = testSet.testFixtures;
+
+     // Filter out unfocussed tests if any are focussed
+     if (anyTestsFocussed) {
+       this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
+     }
+
+      let totalTestCount = this._testFixtures
                                    .filter(x => x.tests.length > 0)
                                    .map(x => x.tests.map((y: any) => y.testCases.length)
                                    .reduce((a: number, b: number) => a + b, 0))
@@ -36,16 +55,17 @@ export class TestRunner {
 
       if (totalTestCount === 0) {
         throw new Error("no tests to run.");
-        // process.exit(1);
       }
       else {
 
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);
 
-         this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-                 this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                 this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+         setTimeout(() => {
+         this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+              });
       }
 
       return this._resultPromise;
@@ -67,21 +87,24 @@ export class TestRunner {
            let timeout = false;
 
            let promise: any = testFixture.fixture[test.key].apply(testFixture.fixture, testCaseArguments);
-           promise.then(() => {
+           let timeoutCheck: NodeJS.Timer = null;
+
+          promise.then(() => {
 
              if (!timeout) {
                this._notifySuccess(test, testCaseArguments);
+               clearTimeout(timeoutCheck);
              }
            })
            .catch((error: Error) => {
              this._handleError(error, test, testCaseArguments);
            });
 
-           let timeoutCheck = setTimeout(() => {
+           timeoutCheck = setTimeout(() => {
 
              timeout = true;
              this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
-           }, 500);
+          }, 500);
         }
         else {
           testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
@@ -146,7 +169,7 @@ export class TestRunner {
    }
 
    private _teardown() {
-     let testFixture = this._currentTestSet.testFixtures[this._currentTestFixtureIndex];
+     let testFixture = this._testFixtures[this._currentTestFixtureIndex];
 
      let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", testFixture.fixture);
 
@@ -158,13 +181,6 @@ export class TestRunner {
    }
 
    private _exit() {
-      /*if (this._testsFailed) {
-         process.exit(1);
-      }
-      else {
-        process.exit(0);
-     }*/
-     // console.log(this._resultPromise);
      this._resultPromise.resolve(this._testResults);
    }
 
@@ -174,18 +190,18 @@ export class TestRunner {
      this._currentTestCaseIndex = 0;
 
      // no more test fixtures
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex]) {
        this._exit();
      }
      // no tests on this fixture
-     else if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     else if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
         setTimeout(() => {
-          this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                  this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+          this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
         });
      }
    }
@@ -194,26 +210,26 @@ export class TestRunner {
      this._currentTestIndex++;
      this._currentTestCaseIndex = 0;
 
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+       this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 
    private _runNextTestCase = () => {
      this._currentTestCaseIndex++;
 
-     if (!this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
        this._runNextTest();
      }
      else {
-       this._runTest(this._currentTestSet.testFixtures[this._currentTestFixtureIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._currentTestSet.testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+       this._runTest(this._testFixtures[this._currentTestFixtureIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 }

@@ -7,46 +7,72 @@ export class TestLoader {
 
    public constructor(private _fileRequirer: FileRequirer) { }
 
-  loadTestFixture(filePath: string): ITestFixture {
+  loadTestFixture(filePath: string): Array<ITestFixture> {
     let Test = this._fileRequirer.require(filePath);
     let testFixtureKeys = Object.keys(Test);
-    let testFixture: ITestFixture = <ITestFixture>{};
+    let testFixtures: Array<ITestFixture> = [];
 
-    // CALCULATE TESTS TO RUN
-    testFixtureKeys.forEach(testFixtureKey => {
+    // if the default export is class constructor
+    if (typeof Test === "function") {
+      let testFixture = this._loadTestFixture(Test);
+      if (testFixture !== null) {
+        testFixtures.push(testFixture);
+      }
+    }
+    // otherwise there are multiple exports and we must handle all of them
+    else {
+      testFixtureKeys.forEach(testFixtureKey => {
+        let testFixture = this._loadTestFixture(Test[testFixtureKey]);
+        if (testFixture !== null) {
+          testFixtures.push(testFixture);
+        }
+       });
+     }
+
+     return testFixtures;
+   }
+
+  private _loadTestFixture(testFixtureConstructor: any): ITestFixture {
+      let testFixture = <ITestFixture>{};
 
       testFixture.ignored = false;
 
-      if (Reflect.getMetadata("alsatian:ignore", Test[testFixtureKey])) {
+      if (Reflect.getMetadata("alsatian:ignore", testFixtureConstructor)) {
         // fixture should be ignored
         testFixture.ignored = true;
       }
 
       // create an instance of the test fixture
-      testFixture.fixture = new Test[testFixtureKey]();
+      testFixture.fixture = new testFixtureConstructor();
 
       // find all the tests on this test fixture
       let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
 
-      let focusFixture = Reflect.getMetadata("alsatian:focus", Test[testFixtureKey]);
+      testFixture.focussed = false;
+
+      if (Reflect.getMetadata("alsatian:focus", testFixtureConstructor)) {
+        testFixture.focussed = true;
+      }
 
       testFixture.tests = [];
 
-      if (!tests || tests.length === 0) {
+      if (tests === undefined) {
         // no tests on the fixture
-        return testFixture;
+        return null;
       }
 
       tests.forEach((test: ITest) => {
 
+        test.ignored = false;
         if (Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
-          // ignore this test
-          return;
+          test.ignored = true;
         }
 
-        let focusTest = Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key);
+        test.focussed = false;
 
-        test.focussed = focusFixture || focusTest;
+        if (Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key)) {
+          test.focussed = true;
+        }
 
         testFixture.tests.push(test);
 
@@ -67,8 +93,6 @@ export class TestLoader {
         }
       });
 
-
-   });
-   return testFixture;
+      return testFixture;
   }
 }

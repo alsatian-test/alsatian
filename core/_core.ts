@@ -4,6 +4,7 @@ import { TestSet } from "./test-set";
 import { TestLoader } from "./test-loader";
 import { createTestSet } from "./create-test-set";
 import { FileRequirer } from "./file-requirer";
+import { GlobHelper } from "./glob-helper";
 
 export {
     createTestSet,
@@ -11,5 +12,6 @@ export {
     TestRunner,
     TestSet,
     TestLoader,
-    FileRequirer
+    FileRequirer,
+    GlobHelper
 };
