@@ -1,7 +1,12 @@
 import "reflect-metadata";
 
-export function Test(description?: string) {
+export function Timeout(timeoutInMs: number) {
+  if (timeoutInMs <= 0) {
+     throw new RangeError("Timeout period must be greater than 0.");
+  }
+  
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
+
 
     // check if this has been registered as a test already
     let tests: Array<any> = Reflect.getMetadata("alsatian:tests", target);
@@ -21,6 +26,6 @@ export function Test(description?: string) {
       Reflect.defineMetadata("alsatian:tests", tests, target);
     }
 
-    tests.filter(test => test.key === propertyKey)[0].description = description;
+    tests.filter(test => test.key === propertyKey)[0].timeout = timeoutInMs;
 };
 }

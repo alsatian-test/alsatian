@@ -13,7 +13,8 @@ import {
     Setup,
     Teardown,
     Test,
-    TestCase
+    TestCase,
+    Timeout
 } from "./_decorators";
 
 import {
@@ -33,5 +34,6 @@ export {
    Teardown,
    Test,
    TestCase,
-   TestRunner
+   TestRunner,
+   Timeout
 };
