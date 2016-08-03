@@ -108,7 +108,7 @@ export class PreTestTests {
    @TestCase(13, 2)
    @TestCase(13, 13)
    @AsyncTest()
-   public multiplTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
+   public multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -177,7 +177,7 @@ export class PreTestTests {
    @TestCase(13, 2, 13)
    @TestCase(13, 13, 13)
    @AsyncTest()
-   public multiplTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
+   public multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
