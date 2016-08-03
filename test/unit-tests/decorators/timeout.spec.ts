@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { Timeout as TimeoutDecorator } from "../../../core/decorators/timeout-decorator";
 import { Expect, Test, TestCase, FocusTests } from "../../../core/alsatian-core";
 
-@FocusTests
 export class TimeoutDecoratorTests {
 
    @Test()
@@ -45,7 +44,7 @@ export class TimeoutDecoratorTests {
    @TestCase(2)
    @TestCase(42)
    public correctTestCountAdded(testCount: number) {
-      let timeoutDecorator = TimeoutDecorator(0);
+      let timeoutDecorator = TimeoutDecorator(500);
 
       let testFixture = {};
 
@@ -60,7 +59,7 @@ export class TimeoutDecoratorTests {
 
    @Test()
    public keyAddedIfTestsAlreadyExist() {
-      let timeoutDecorator = TimeoutDecorator(0);
+      let timeoutDecorator = TimeoutDecorator(500);
 
       let testFixture = {};
 
@@ -77,7 +76,7 @@ export class TimeoutDecoratorTests {
    @TestCase(2)
    @TestCase(42)
    public noDuplicateTestKeysAdded(testCount: number) {
-      let timeoutDecorator = TimeoutDecorator(0);
+      let timeoutDecorator = TimeoutDecorator(500);
 
       let testFixture = {};
 
