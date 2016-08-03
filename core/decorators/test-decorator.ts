@@ -11,16 +11,18 @@ export function Test(description?: string) {
       tests = [ {
          key: propertyKey
       } ];
-      Reflect.defineMetadata("alsatian:tests", tests, target);
     }
     // otherwise add it to the register
     else if (tests.filter(test => test.key === propertyKey).length === 0) {
       tests.push( {
          key: propertyKey
       });
-      Reflect.defineMetadata("alsatian:tests", tests, target);
     }
 
+    // set the description
     tests.filter(test => test.key === propertyKey)[0].description = description;
+
+    // update the register
+    Reflect.defineMetadata("alsatian:tests", tests, target);
 };
 }

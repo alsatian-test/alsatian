@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import { Timeout as TimeoutDecorator } from "../../../core/decorators/timeout-decorator";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, FocusTests } from "../../../core/alsatian-core";
 
+@FocusTests
 export class TimeoutDecoratorTests {
 
    @Test()
@@ -55,6 +56,21 @@ export class TimeoutDecoratorTests {
       let tests = Reflect.getMetadata("alsatian:tests", testFixture);
 
       Expect(tests.length).toBe(testCount);
+   }
+
+   @Test()
+   public keyAddedIfTestsAlreadyExist() {
+      let timeoutDecorator = TimeoutDecorator(0);
+
+      let testFixture = {};
+
+      Reflect.defineMetadata("alsatian:tests", [ { key: "anotherKey" }], testFixture);
+
+      timeoutDecorator(testFixture, "key", null);
+
+      let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+
+      Expect(tests.length).toBe(2);
    }
 
    @TestCase(1)

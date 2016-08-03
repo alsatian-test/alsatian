@@ -11,19 +11,20 @@ export function AsyncTest(description?: string) {
          tests = [ {
             key: propertyKey
          } ];
-         Reflect.defineMetadata("alsatian:tests", tests, target);
       }
       // otherwise add it to the register if it's not already there
       else if (tests.filter(test => test.key === propertyKey).length === 0) {
          tests.push( {
             key: propertyKey
          } );
-         Reflect.defineMetadata("alsatian:tests", tests, target);
       }
 
       // mark it as async and add the description
       let test = tests.filter(test => test.key === propertyKey)[0];
       test.isAsync = true;
       test.description = description;
+
+      // update the register
+      Reflect.defineMetadata("alsatian:tests", tests, target);
    };
 }
