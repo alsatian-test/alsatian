@@ -220,4 +220,46 @@ export class PreTestTests {
 
       return resultPromise;
    }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(13)
+   @AsyncTest()
+   public testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
+      let testSet = <TestSet>{};
+
+      (<any>testSet).testFixtures = [];
+
+      for (let i = 0; i < testFixtureCount; i++) {
+         let testFixtureBuilder = new TestFixtureBuilder();
+         let testBuilder = new TestBuilder();
+         testBuilder.addTestCase(new TestCaseBuilder().build());
+         testFixtureBuilder.addTest(testBuilder.build());
+         testSet.testFixtures.push(testFixtureBuilder.build());
+      }
+
+      let testFixtureBuilder = new TestFixtureBuilder();
+      testSet.testFixtures.push(testFixtureBuilder.build());
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+        }
+     };
+
+      let testRunner = new TestRunner();
+
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+         resultPromise.resolve();
+      });
+
+      return resultPromise;
+   }
 }

@@ -84,7 +84,7 @@ export class TestRunner {
 
              timeout = true;
              this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
-          }, 500);
+          }, test.timeout | 500);
         }
         else {
           testFixture.fixture[test.key].apply(testFixture, testCaseArguments);

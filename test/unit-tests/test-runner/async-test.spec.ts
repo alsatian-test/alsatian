@@ -58,6 +58,39 @@ export class AsyncTestTests {
       testRunner.run(testSet);
 
       return testPromise;
+   }
 
+   @AsyncTest()
+   public asyncTestTimeoutFails() {
+      let testSet = <TestSet>{};
+
+      let testPromise = createPromise();
+
+      (<any>testSet).testFixtures = [ { tests: [ {
+         description: "Test Function",
+         isAsync: true,
+         timeout: 100,
+         key: "testFunction",
+         testCases: [ {
+            arguments: []
+         } ]
+      }],
+      fixture: {
+         testFunction: () => {
+            let subPromise = createPromise();
+            setTimeout(() => {
+                     subPromise.resolve();
+                     Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+                     testPromise.resolve();
+                  }, 101);
+            return subPromise;
+         }
+      }}];
+
+      let testRunner = new TestRunner();
+
+      testRunner.run(testSet);
+
+      return testPromise;
    }
 }
