@@ -1,6 +1,7 @@
 import { MatchError } from "./_errors";
 import { TestSet } from "./_core";
 import { ITestFixture } from "./_interfaces/test-fixture.i";
+import { createPromise } from "../promise/create-promise";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -13,28 +14,7 @@ export class TestRunner {
    private _currentTestCaseIndex: number = 0;
    private _testsFailed: boolean = false;
    private _testResults: Array<any> = [];
-   private _resultPromise: any = {
-     resolve: () => {
-        try {
-           if (this._resultPromise.resolveCallback) {
-             this._resultPromise.resolveCallback();
-          }
-       }
-       catch (error) {
-          this._resultPromise.reject(error);
-       }
-     },
-      reject: (error: Error) => {
-      },
-     then: (callback: (testResults: Array<any>) => any) => {
-       this._resultPromise.resolveCallback = callback;
-       return this._resultPromise;
-     },
-     catch: (callback: (error: Error) => any) => {
-        this._resultPromise.reject = callback;
-        return this._resultPromise;
-     }
-  };
+   private _resultPromise: any = createPromise();
 
    public run(testSet: TestSet) {
 
