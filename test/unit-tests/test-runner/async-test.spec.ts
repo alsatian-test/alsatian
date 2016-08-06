@@ -61,6 +61,7 @@ export class AsyncTestTests {
    }
 
    @AsyncTest()
+   @IgnoreTest
    public asyncTestTimeoutFails() {
       let testSet = <TestSet>{};
 

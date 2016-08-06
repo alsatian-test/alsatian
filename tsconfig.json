@@ -114,6 +114,7 @@
         "./test/unit-tests/test-loader/load-test-fixtures-tests/default-export-fixture.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/focussed-test.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/ignored-test.spec.ts",
+        "./test/unit-tests/test-loader/load-test-fixtures-tests/test-timeout.spec.ts",
         "./test/unit-tests/test-runner/async-test.spec.ts",
         "./test/unit-tests/test-runner/failing-tests.spec.ts",
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
