@@ -14,7 +14,7 @@ export class TestBuilder {
       timeout: null,
       key: "testFunction",
       description: "Test Function",
-      testCases: []
+      testCases: [ ]
     };
   }
 

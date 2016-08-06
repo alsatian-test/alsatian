@@ -2,10 +2,10 @@ import { CliTestRunner } from "../../../cli/cli-test-runner";
 import { TestSet } from "../../../core/test-set";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTests } from "../../../core/alsatian-core";
+import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
 import { createPromise } from "../../../promise/create-promise";
 
-@FocusTests
 export class CliTestRunnerTests {
 
   private _originalStdErr: any;
@@ -40,9 +40,16 @@ export class CliTestRunnerTests {
 
       let cliTestRunner = new CliTestRunner();
 
-      cliTestRunner.run(testSet).then(() => {
-        Expect(process.exit).toHaveBeenCalledWith(1);
-        testPromise.resolve();
+      cliTestRunner.run(testSet);
+
+      setTimeout(() => {
+        try {
+          Expect(process.exit).toHaveBeenCalledWith(1);
+          testPromise.resolve();
+        }
+        catch(error) {
+          testPromise.reject(error);
+        }
       });
 
       return testPromise;
@@ -56,14 +63,22 @@ export class CliTestRunnerTests {
 
       (<any>testSet).testFixtures = [
          new TestFixtureBuilder()
-              .addTest(new TestBuilder().build())
+              .addTest(new TestBuilder().addTestCase(new TestCaseBuilder().build()).build())
               .build() ];
 
       let cliTestRunner = new CliTestRunner();
 
-      cliTestRunner.run(testSet).then(() => {
-        Expect(process.exit).toHaveBeenCalledWith(0);
-        testPromise.resolve();
+      cliTestRunner.run(testSet);
+
+      setTimeout(() => {
+        try {
+          Expect(process.exit).not.toHaveBeenCalledWith(1);
+          testPromise.resolve();
+        }
+        catch(error) {
+          console.log((process.exit as any).calls);
+          testPromise.reject(error);
+        }
       });
 
       return testPromise;
@@ -83,9 +98,16 @@ export class CliTestRunnerTests {
 
       let cliTestRunner = new CliTestRunner();
 
-      cliTestRunner.run(testSet).then(() => {
-        Expect(process.exit).toHaveBeenCalledWith(1);
-        testPromise.resolve();
+      cliTestRunner.run(testSet);
+
+      setTimeout(() => {
+        try {
+          Expect(process.exit).toHaveBeenCalledWith(1);
+          testPromise.resolve();
+        }
+        catch(error) {
+          testPromise.reject(error);
+        }
       });
 
       return testPromise;

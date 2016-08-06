@@ -1,4 +1,5 @@
 import { TestRunner, TestSet } from "../core/alsatian-core";
+import { createPromise } from "../promise/create-promise";
 
 export class CliTestRunner extends TestRunner {
 
@@ -15,8 +16,6 @@ export class CliTestRunner extends TestRunner {
            process.exit(0);
          }
        });
-
-       return testRunPromise;
     }
     catch (error) {
        process.stderr.write(error.message);
