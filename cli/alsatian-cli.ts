@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { createTestSet, TestRunner } from "../core/alsatian-core";
+import { CliTestRunner } from "./cli-test-runner";
 
 // get all arguments from the user
 let userArguments = process.argv.slice(2);
@@ -16,20 +17,5 @@ let testSet = createTestSet();
 
 testSet.addTestsFromFiles(fileGlobs);
 
-// create runner and run those tests
-let testRunner = new TestRunner();
-
-try {
-   testRunner.run(testSet).then((results: Array<any>) => {
-     if (results.filter(test => test.result !== "Pass"). length > 0) {
-       process.exit(1);
-     }
-     else {
-       process.exit(0);
-     }
-   });
-}
-catch (error) {
-   process.stderr.write(error.message);
-   process.exit(1);
-}
+let testRunner = new CliTestRunner();
+testRunner.run(testSet);

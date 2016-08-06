@@ -108,7 +108,7 @@ export class PreTestTests {
    @TestCase(13, 2)
    @TestCase(13, 13)
    @AsyncTest()
-   public multiplTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
+   public multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -177,7 +177,7 @@ export class PreTestTests {
    @TestCase(13, 2, 13)
    @TestCase(13, 13, 13)
    @AsyncTest()
-   public multiplTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
+   public multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -215,6 +215,48 @@ export class PreTestTests {
 
       testRunner.run(testSet).then(() => {
          Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+         resultPromise.resolve();
+      });
+
+      return resultPromise;
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(13)
+   @AsyncTest()
+   public testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
+      let testSet = <TestSet>{};
+
+      (<any>testSet).testFixtures = [];
+
+      for (let i = 0; i < testFixtureCount; i++) {
+         let testFixtureBuilder = new TestFixtureBuilder();
+         let testBuilder = new TestBuilder();
+         testBuilder.addTestCase(new TestCaseBuilder().build());
+         testFixtureBuilder.addTest(testBuilder.build());
+         testSet.testFixtures.push(testFixtureBuilder.build());
+      }
+
+      let testFixtureBuilder = new TestFixtureBuilder();
+      testSet.testFixtures.push(testFixtureBuilder.build());
+
+      let resultPromise: any = {
+        resolve: () => {
+
+        },
+        then: (callback: (testResults: Array<any>) => any) => {
+          resultPromise.resolve = callback;
+          return resultPromise;
+        },
+        catch: (error: Error) => {
+        }
+     };
+
+      let testRunner = new TestRunner();
+
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
          resultPromise.resolve();
       });
 

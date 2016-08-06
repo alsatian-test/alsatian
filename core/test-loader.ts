@@ -74,6 +74,8 @@ export class TestLoader {
           test.focussed = true;
         }
 
+        test.timeout = Reflect.getMetadata("alsatian:timeout", testFixture.fixture, test.key) || null;
+
         testFixture.tests.push(test);
 
         if (!test.description) {

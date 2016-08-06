@@ -11,9 +11,10 @@ export class TestBuilder {
       focussed: false,
       ignored: false,
       isAsync: false,
+      timeout: null,
       key: "testFunction",
       description: "Test Function",
-      testCases: []
+      testCases: [ ]
     };
   }
 

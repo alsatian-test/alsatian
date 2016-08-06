@@ -1,7 +1,8 @@
 import {
     createTestSet,
     Expect,
-    TestRunner
+    TestRunner,
+    TestSet
 } from "./_core";
 
 import {
@@ -13,7 +14,8 @@ import {
     Setup,
     Teardown,
     Test,
-    TestCase
+    TestCase,
+    Timeout
 } from "./_decorators";
 
 import {
@@ -33,5 +35,7 @@ export {
    Teardown,
    Test,
    TestCase,
-   TestRunner
+   TestRunner,
+   TestSet,
+   Timeout
 };

@@ -5,6 +5,7 @@ import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { MatchError } from "../../../core/errors/match-error";
 import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest } from "../../../core/alsatian-core";
+import { createPromise } from "../../../promise/create-promise";
 
 export class FailingTestsTests {
 
@@ -30,32 +31,6 @@ export class FailingTestsTests {
      process.stderr.write = this._originalStdErr;
    }
 
-   private _createPromise(): any {
-      let promise: any = {
-        resolve: () => {
-           try {
-             promise.resolveCallback();
-          }
-          catch (error) {
-             promise.reject(error);
-          }
-        },
-         reject: (error: Error) => {
-            promise.rejectCallback(error);
-         },
-        then: (callback: (testResults: Array<any>) => any) => {
-          promise.resolveCallback = callback;
-          return promise;
-        },
-        catch: (callback: (error: Error) => any) => {
-           promise.rejectCallback = callback;
-           return promise;
-        }
-     };
-
-     return promise;
-   }
-
    @AsyncTest()
    public failingTestOutputsNotOk() {
       let testSet = <TestSet>{};
@@ -69,12 +44,12 @@ export class FailingTestsTests {
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let resultPromise = this._createPromise();
+      let resultPromise = createPromise();
 
       let testRunner = new TestRunner();
 
       testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function [  ]\n");
          resultPromise.resolve();
       });
 
@@ -94,12 +69,12 @@ export class FailingTestsTests {
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let resultPromise: any = this._createPromise();
+      let resultPromise: any = createPromise();
 
       let testRunner = new TestRunner();
 
       testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function [  ]\n");
          resultPromise.resolve();
       });
 

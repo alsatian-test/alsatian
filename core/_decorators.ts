@@ -7,6 +7,7 @@ import { Setup } from "./decorators/setup-decorator";
 import { Teardown } from "./decorators/teardown-decorator";
 import { Test } from "./decorators/test-decorator";
 import { TestCase } from "./decorators/test-case-decorator";
+import { Timeout } from "./decorators/timeout-decorator";
 
 export {
     AsyncTest,
@@ -17,5 +18,6 @@ export {
     Setup,
     Teardown,
     Test,
-    TestCase
+    TestCase,
+    Timeout
 };

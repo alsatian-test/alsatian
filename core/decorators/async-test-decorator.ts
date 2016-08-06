@@ -9,24 +9,22 @@ export function AsyncTest(description?: string) {
       // if there are no tests registered yet then register it
       if (!tests) {
          tests = [ {
-            key: propertyKey,
-            description: description,
-            isAsync: true
+            key: propertyKey
          } ];
-         Reflect.defineMetadata("alsatian:tests", tests, target);
       }
       // otherwise add it to the register if it's not already there
       else if (tests.filter(test => test.key === propertyKey).length === 0) {
          tests.push( {
-            key: propertyKey,
-            description: description,
-            isAsync: true
+            key: propertyKey
          } );
-         Reflect.defineMetadata("alsatian:tests", tests, target);
       }
-      // otherwise mark it as async
-      else {
-         tests.filter(test => test.key === propertyKey)[0].isAsync = true;
-      }
+
+      // mark it as async and add the description
+      let test = tests.filter(test => test.key === propertyKey)[0];
+      test.isAsync = true;
+      test.description = description;
+
+      // update the register
+      Reflect.defineMetadata("alsatian:tests", tests, target);
    };
 }
