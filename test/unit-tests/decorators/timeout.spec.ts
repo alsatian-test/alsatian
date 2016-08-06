@@ -14,7 +14,7 @@ export class TimeoutDecoratorTests {
 
       timeoutDecorator(testFixture, "test", null);
 
-      Expect(Reflect.getMetadata("alsatian:timeout", testFixture)).toBe(timeout);
+      Expect(Reflect.getMetadata("alsatian:timeout", testFixture, "test")).toBe(timeout);
    }
 
    @TestCase(0)
