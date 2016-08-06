@@ -1,6 +1,7 @@
 import { MatchError } from "./_errors";
 import { TestSet } from "./_core";
 import { ITestFixture } from "./_interfaces/test-fixture.i";
+import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
 import "reflect-metadata";
 
@@ -51,8 +52,14 @@ export class TestRunner {
       return this._resultPromise;
    }
 
-   private _runTest(testFixture: any, test: any, testCaseArguments: Array<any>) {
+   private _runTest(testFixture: ITestFixture, test: ITest, testCaseArguments: Array<any>) {
      this._currentTestId++;
+
+     if (test.ignored) {
+       process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+       this._runNextTest();
+       return;
+     }
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
 
@@ -96,7 +103,7 @@ export class TestRunner {
      }
    }
 
-   private _handleError(error: Error, test: any, testCaseArguments: Array<any>) {
+   private _handleError(error: Error, test: ITest, testCaseArguments: Array<any>) {
 
      this._teardown();
      this._testsFailed = true;
@@ -126,7 +133,7 @@ export class TestRunner {
      this._runNextTestCase();
    }
 
-   private _notifySuccess(test: any, testCaseArguments: Array<any>) {
+   private _notifySuccess(test: ITest, testCaseArguments: Array<any>) {
      this._teardown();
      process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
 
@@ -138,8 +145,8 @@ export class TestRunner {
      this._runNextTestCase();
    }
 
-   private _getTestDescription = (test: any, testCaseArguments: Array<any>) => {
-     let testDescription = `${this._currentTestId} - ${test.description}`;
+   private _getTestDescription = (test: ITest, testCaseArguments: Array<any>) => {
+     let testDescription = `${this._currentTestId} ${test.ignored ? "# skip " : ""}${test.description}`;
 
      if (testCaseArguments !== undefined) {
        testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
