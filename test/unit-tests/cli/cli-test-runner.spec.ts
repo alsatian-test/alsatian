@@ -47,7 +47,7 @@ export class CliTestRunnerTests {
           Expect(process.exit).toHaveBeenCalledWith(1);
           testPromise.resolve();
         }
-        catch(error) {
+        catch (error) {
           testPromise.reject(error);
         }
       });
@@ -75,7 +75,7 @@ export class CliTestRunnerTests {
           Expect(process.exit).not.toHaveBeenCalledWith(1);
           testPromise.resolve();
         }
-        catch(error) {
+        catch (error) {
           console.log((process.exit as any).calls);
           testPromise.reject(error);
         }
@@ -105,7 +105,7 @@ export class CliTestRunnerTests {
           Expect(process.exit).toHaveBeenCalledWith(1);
           testPromise.resolve();
         }
-        catch(error) {
+        catch (error) {
           testPromise.reject(error);
         }
       });
