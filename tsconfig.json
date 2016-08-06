@@ -26,6 +26,7 @@
     ],
     "files": [
         "./cli/alsatian-cli.ts",
+        "./cli/cli-test-runner.ts",
         "./core/_core.ts",
         "./core/_decorators.ts",
         "./core/_errors.ts",
@@ -69,6 +70,7 @@
         "./test/builders/test-case-builder.ts",
         "./test/builders/test-fixture-builder.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
+        "./test/unit-tests/cli/cli-test-runner.spec.ts",
         "./test/unit-tests/decorators/async-test-decorator.spec.ts",
         "./test/unit-tests/decorators/focus-test.spec.ts",
         "./test/unit-tests/decorators/focus-tests.spec.ts",

@@ -46,7 +46,7 @@ export class AsyncTestTests {
             let subPromise = createPromise();
             setTimeout(() => {
                      subPromise.resolve();
-                     Expect(process.stdout.write).toHaveBeenCalledWith("ok 1 - Test Function [  ]\n");
+                     Expect(process.stdout.write).toHaveBeenCalledWith("ok 1 Test Function [  ]\n");
                      testPromise.resolve();
                    }, 100);
             return subPromise;
@@ -81,7 +81,7 @@ export class AsyncTestTests {
             let subPromise = createPromise();
             setTimeout(() => {
                      subPromise.resolve();
-                     Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+                     Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function [  ]\n");
                      testPromise.resolve();
                   }, 101);
             return subPromise;

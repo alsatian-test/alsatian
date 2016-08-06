@@ -1,7 +1,8 @@
 import {
     createTestSet,
     Expect,
-    TestRunner
+    TestRunner,
+    TestSet
 } from "./_core";
 
 import {
@@ -35,5 +36,6 @@ export {
    Test,
    TestCase,
    TestRunner,
+   TestSet,
    Timeout
 };

@@ -49,7 +49,7 @@ export class FailingTestsTests {
       let testRunner = new TestRunner();
 
       testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function [  ]\n");
          resultPromise.resolve();
       });
 
@@ -74,7 +74,7 @@ export class FailingTestsTests {
       let testRunner = new TestRunner();
 
       testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 - Test Function [  ]\n");
+         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function [  ]\n");
          resultPromise.resolve();
       });
 
