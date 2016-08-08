@@ -10,7 +10,7 @@
   "scripts": {
     "build": "typings install && tsc",
     "clean": "git clean -X -d -f",
-    "prepublish": "npm run review && npm run build && npm test && npm run execute-integration-tests",
+    "prepublish": "npm run review && npm run build && npm test",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
