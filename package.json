@@ -14,7 +14,7 @@
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
-    "test": "npm run unit-tests && npm run inte",
+    "test": "npm run unit-tests && npm run integration-tests",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
     "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
