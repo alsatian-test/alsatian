@@ -9,16 +9,17 @@
   },
   "scripts": {
     "build": "typings install && tsc",
-    "clean": "git clean -X -d -f",   
+    "clean": "git clean -X -d -f",
     "prepublish": "npm run review && npm run build && npm test",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
-    "test": "npm run unit-tests",
+    "test": "npm run unit-tests && npm run inte",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/**/*.spec.js\" && npm run remap-coverage",
-    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/**/*.spec.js\"",
+    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
+    "integration-tests": "npm link && alsatian \"./test/integration-tests/*.spec.js\"",
+    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },
   "repository": {

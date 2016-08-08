@@ -69,6 +69,7 @@
         "./test/builders/test-builder.ts",
         "./test/builders/test-case-builder.ts",
         "./test/builders/test-fixture-builder.ts",
+        "./test/integration-tests/to-be.spec.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
         "./test/unit-tests/cli/cli-test-runner.spec.ts",
         "./test/unit-tests/decorators/async-test-decorator.spec.ts",
