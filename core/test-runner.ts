@@ -3,6 +3,7 @@ import { TestSet } from "./_core";
 import { ITestFixture } from "./_interfaces/test-fixture.i";
 import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
+import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -13,9 +14,10 @@ export class TestRunner {
    private _currentTestFixtureIndex: number = 0;
    private _currentTestIndex: number = 0;
    private _currentTestCaseIndex: number = 0;
-   private _testsFailed: boolean = false;
-   private _testResults: Array<any> = [];
    private _resultPromise: any = createPromise();
+   private _testResults = new TestSetResults();
+   private _currentTestResults: TestResults;
+   private _currentTestFixtureResults: TestFixtureResults;
 
    public run(testSet: TestSet) {
 
@@ -41,6 +43,9 @@ export class TestRunner {
 
          process.stdout.write("TAP version 13\n");
          process.stdout.write(`1..${totalTestCount}\n`);
+
+         this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
+         this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
 
          setTimeout(() => {
          this._runTest(this._testFixtures[this._currentTestFixtureIndex],
@@ -106,28 +111,16 @@ export class TestRunner {
    private _handleError(error: Error, test: ITest, testCaseArguments: Array<any>) {
 
      this._teardown();
-     this._testsFailed = true;
+
+     this._currentTestResults.addTestCaseResult(testCaseArguments, error);
      process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+
      if (error instanceof MatchError) {
        process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
-
-       this._testResults.push({
-         result: "Fail",
-         testDescription: this._getTestDescription(test, testCaseArguments),
-         message: error.message,
-         expected: error.expectedValue,
-         actual: error.actualValue
-       });
      }
      else {
         console.log(error);
        process.stdout.write("# Unknown Error\n");
-
-       this._testResults.push({
-         result: "Error",
-         testDescription: this._getTestDescription(test, testCaseArguments),
-         message: error.message
-       });
      }
 
      this._runNextTestCase();
@@ -137,10 +130,7 @@ export class TestRunner {
      this._teardown();
      process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
 
-    this._testResults.push({
-      result: "Pass",
-      testDescription: this._getTestDescription(test, testCaseArguments)
-    });
+     this._currentTestResults.addTestCaseResult(testCaseArguments);
 
      this._runNextTestCase();
    }
@@ -185,6 +175,8 @@ export class TestRunner {
        this._runNextTestFixture();
      }
      else {
+        this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
+
         setTimeout(() => {
           this._runTest(this._testFixtures[this._currentTestFixtureIndex],
                   this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
@@ -201,6 +193,8 @@ export class TestRunner {
        this._runNextTestFixture();
      }
      else {
+        this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
+
        this._runTest(this._testFixtures[this._currentTestFixtureIndex],
                this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
                this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
