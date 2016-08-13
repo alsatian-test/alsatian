@@ -21,8 +21,13 @@ export class TestRunner {
    private _currentTestFixtureResults: TestFixtureResults;
    private _output: TestOutput;
 
-   constructor (output: TestOutput) {
-       this._output = output;
+   constructor (output?: TestOutput) {
+       // If we were given a TestOutput, use it, otherwise make one
+       if (output !== undefined) {
+           this._output = output;
+       } else {
+           this._output = new TestOutput(process.stdout, process.stderr);
+       }
    }
 
    public run(testSet: TestSet) {
