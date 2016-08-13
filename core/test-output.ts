@@ -36,7 +36,7 @@ export class TestOutput {
             let yaml = this._getErrorYaml(error);
 
             this._writeOut(yaml);
-        } else {
+        } else if (error !== undefined) {
             console.log(error);
 
             this._writeOut("# Unknown Error\n");

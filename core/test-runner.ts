@@ -52,8 +52,8 @@ export class TestRunner {
       }
       else {
 
-         process.stdout.write("TAP version 13\n");
-         process.stdout.write(`1..${totalTestCount}\n`);
+          this._output.emitVersion();
+          this._output.emitPlan(totalTestCount);
 
          this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
          this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
@@ -72,7 +72,7 @@ export class TestRunner {
      this._currentTestId++;
 
      if (test.ignored) {
-       process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+         this._output.emitPass(this._currentTestId, test, testCaseArguments);
        this._runNextTest();
        return;
      }
@@ -124,36 +124,20 @@ export class TestRunner {
      this._teardown();
 
      this._currentTestResults.addTestCaseResult(testCaseArguments, error);
-     process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
 
-     if (error instanceof MatchError) {
-       process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
-     }
-     else {
-        console.log(error);
-       process.stdout.write("# Unknown Error\n");
-     }
+     this._output.emitFail(this._currentTestId, test, testCaseArguments, error);
 
      this._runNextTestCase();
    }
 
    private _notifySuccess(test: ITest, testCaseArguments: Array<any>) {
      this._teardown();
-     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
+
+     this._output.emitPass(this._currentTestId, test, testCaseArguments);
 
      this._currentTestResults.addTestCaseResult(testCaseArguments);
 
      this._runNextTestCase();
-   }
-
-   private _getTestDescription = (test: ITest, testCaseArguments: Array<any>) => {
-     let testDescription = `${this._currentTestId} ${test.ignored ? "# skip " : ""}${test.description}`;
-
-     if (testCaseArguments !== undefined) {
-       testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
-     }
-
-     return testDescription;
    }
 
    private _teardown() {
