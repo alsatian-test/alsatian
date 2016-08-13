@@ -23,7 +23,7 @@ export class EmitPassTests {
 
         testOutput.emitPass(testId, test, undefined);
 
-        let expected = `ok ${testId} ${test.description}`;
+        let expected = `ok ${testId} ${test.description}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
@@ -42,17 +42,15 @@ export class EmitPassTests {
 
         testOutput.emitPass(1, test, undefined);
 
-        let expected = `ok 1 ${description}`;
+        let expected = `ok 1 ${description}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
 
-    @Test([ 1, 5, 7, 8 ])
-    @Test([ "a", 3, true ])
-    @Test([ 5.25, 6.25, 7.22 ])
-    public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>) {
-        let testCaseOutput = testCaseArguments.join(", ");
-
+    @TestCase([ 1, 5, 7, 8 ], "[ 1, 5, 7, 8 ]")
+    @TestCase([ "a", 3, true ], "[ \"a\", 3, true ]")
+    @TestCase([ 5.25, 6.25, 7.22 ], "[ 5.25, 6.25, 7.22 ]")
+    public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>, testCaseOutput: string) {
         let outStream = getDummyStream();
         SpyOn(outStream, "write");
 
@@ -62,7 +60,7 @@ export class EmitPassTests {
 
         testOutput.emitPass(1, test, testCaseArguments);
 
-        let expected = `ok 1 ${test.description} ${testCaseOutput}`;
+        let expected = `ok 1 ${test.description} ${testCaseOutput}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }

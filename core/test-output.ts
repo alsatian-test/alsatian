@@ -21,7 +21,23 @@ export class TestOutput {
     }
 
     public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
+        let description = this._getTestDescription(test, testCaseArguments);
 
+        let out = `ok ${testId} ${description}\n`;
+
+        console.log(out);
+
+        this._writeOut(`ok ${testId} ${description}\n`);
+    }
+
+    private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
+        let testDescription = `${test.ignored ? "# skip " : ""}${test.description}`;
+
+        if (testCaseArguments !== undefined) {
+            testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
+        }
+
+        return testDescription;
     }
 
 }
