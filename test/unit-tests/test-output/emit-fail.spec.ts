@@ -4,7 +4,7 @@ import { TestBuilder } from "../../builders/test-builder";
 import { getDummyStream } from "./_utils";
 import { TestOutput } from "../../../core/test-output";
 
-export class EmitPassTests {
+export class EmitFailTests {
 
     @TestCase(1)
     @TestCase(2)
@@ -17,9 +17,9 @@ export class EmitPassTests {
 
         let test: ITest = new TestBuilder().build();
 
-        testOutput.emitPass(testId, test, undefined);
+        testOutput.emitFail(testId, test, undefined, undefined);
 
-        let expected = `ok ${testId} ${test.description}\n`;
+        let expected = `not ok ${testId} ${test.description}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
@@ -36,9 +36,9 @@ export class EmitPassTests {
         let test: ITest = new TestBuilder()
             .withDescription(description).build();
 
-        testOutput.emitPass(1, test, undefined);
+        testOutput.emitFail(1, test, undefined, undefined);
 
-        let expected = `ok 1 ${description}\n`;
+        let expected = `not ok 1 ${description}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
@@ -54,9 +54,9 @@ export class EmitPassTests {
 
         let test: ITest = new TestBuilder().build();
 
-        testOutput.emitPass(1, test, testCaseArguments);
+        testOutput.emitFail(1, test, testCaseArguments, undefined);
 
-        let expected = `ok 1 ${test.description} ${testCaseOutput}\n`;
+        let expected = `not ok 1 ${test.description} ${testCaseOutput}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
