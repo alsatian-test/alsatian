@@ -16,9 +16,7 @@ export class EmitPlanTests {
         let outStream = getDummyStream();
         SpyOn(outStream, "write");
 
-        let errStream = getDummyStream();
-
-        let testOutput = new TestOutput(outStream, errStream);
+        let testOutput = new TestOutput(outStream);
 
         testOutput.emitPlan(testCount);
 

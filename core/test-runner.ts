@@ -26,7 +26,7 @@ export class TestRunner {
        if (output !== undefined) {
            this._output = output;
        } else {
-           this._output = new TestOutput(process.stdout, process.stderr);
+           this._output = new TestOutput(process.stdout);
        }
    }
 
