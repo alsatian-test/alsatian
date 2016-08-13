@@ -38,7 +38,8 @@
     "unit test",
     "tap",
     "junit",
-    "nunit"
+    "nunit",
+    "tdd"
   ],
   "author": "James Richford <=> (=)",
   "license": "MIT",
