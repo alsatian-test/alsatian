@@ -1,21 +1,15 @@
 import { Expect, Test, SpyOn } from "../../../core/alsatian-core";
-
+import { getDummyStream } from "./_utils";
 import { TestOutput } from "../../../core/test-output";
 
 export class EmitVersionTests {
 
-    private static _getDummyStream(): any {
-        return {
-            write: (data: any) => { }
-        };
-    }
-
     @Test()
     public shouldEmitVersion13() {
-        let outStream = EmitVersionTests._getDummyStream();
+        let outStream = getDummyStream();
         SpyOn(outStream, "write");
 
-        let errStream = EmitVersionTests._getDummyStream();
+        let errStream = getDummyStream();
 
         let testOutput = new TestOutput(outStream, errStream);
 
