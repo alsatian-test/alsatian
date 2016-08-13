@@ -1,3 +1,5 @@
+import { ITest } from "./_interfaces/test.i";
+
 export class TestOutput {
 
     private _outStream: NodeJS.WritableStream;
@@ -16,6 +18,10 @@ export class TestOutput {
 
     public emitPlan(testCount: number): void {
         this._writeOut(`1..${testCount}\n`);
+    }
+
+    public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
+
     }
 
 }

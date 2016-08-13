@@ -28,6 +28,11 @@ export class TestBuilder {
     return this;
   }
 
+  public withDescription(description: string): TestBuilder {
+      this._test.description = description;
+      return this;
+  }
+
   public addTestCase(testCase: ITestCase): TestBuilder {
     this._test.testCases.push(testCase);
     return this;
