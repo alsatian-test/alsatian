@@ -1,4 +1,5 @@
 import { ITest } from "./_interfaces/test.i";
+import { MatchError } from "./errors/match-error";
 
 export class TestOutput {
 
@@ -23,11 +24,24 @@ export class TestOutput {
     public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
         let description = this._getTestDescription(test, testCaseArguments);
 
-        let out = `ok ${testId} ${description}\n`;
-
-        console.log(out);
-
         this._writeOut(`ok ${testId} ${description}\n`);
+    }
+
+    public emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
+        let description = this._getTestDescription(test, testCaseArguments);
+
+        this._writeOut(`not ok ${testId} ${description}\n`);
+
+        if (error instanceof MatchError) {
+            let yaml = this._getErrorYaml(error);
+
+            this._writeOut(yaml);
+        } else {
+            console.log(error);
+
+            this._writeOut("# Unknown Error\n");
+        }
+
     }
 
     private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
@@ -38,6 +52,10 @@ export class TestOutput {
         }
 
         return testDescription;
+    }
+
+    private _getErrorYaml(error: MatchError): string {
+        return ` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
     }
 
 }
