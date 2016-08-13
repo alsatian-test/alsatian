@@ -22,6 +22,11 @@ import {
     SpyOn
 } from "./_spying";
 
+import {
+    TestSetResults,
+    TestOutcome
+} from "./_results";
+
 export {
    AsyncTest,
    createTestSet,
@@ -37,5 +42,7 @@ export {
    TestCase,
    TestRunner,
    TestSet,
-   Timeout
+   Timeout,
+   TestSetResults,
+   TestOutcome
 };

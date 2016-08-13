@@ -1,4 +1,4 @@
-import { TestRunner, TestSet } from "../core/alsatian-core";
+import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsatian-core";
 import { createPromise } from "../promise/create-promise";
 
 export class CliTestRunner extends TestRunner {
@@ -8,8 +8,9 @@ export class CliTestRunner extends TestRunner {
     try {
        let testRunPromise = super.run(testSet);
 
-       testRunPromise.then((results: Array<any>) => {
-         if (results.filter(test => test.result !== "Pass"). length > 0) {
+       testRunPromise.then((results: TestSetResults) => {
+
+         if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
            process.exit(1);
          }
          else {
