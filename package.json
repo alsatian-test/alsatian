@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "TypeScript testing framework with test cases",
   "main": "./core/alsatian-core.js",
   "typings": "./core/alsatian-core.d.ts",
@@ -9,8 +9,9 @@
   },
   "scripts": {
     "build": "typings install && tsc",
+    "build-publish": "typings install && tsc --newLine 'lf'",
     "clean": "git clean -X -d -f",
-    "prepublish": "npm run review && npm run build && npm test",
+    "prepublish": "npm run review && npm run build-publish && npm test",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
