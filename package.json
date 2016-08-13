@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "typings install && tsc",
-    "build-publish": "typings install && tsc --newLine 'lf'",
+    "build-publish": "typings install && tsc --newLine \"LF\"",
     "clean": "git clean -X -d -f",
     "prepublish": "npm run review && npm run build-publish && npm test",
     "review": "npm run review-code & npm run review-tests",
