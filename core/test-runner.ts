@@ -4,6 +4,7 @@ import { ITestFixture } from "./_interfaces/test-fixture.i";
 import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
 import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
+import { TestOutput } from "./test-output";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -18,6 +19,11 @@ export class TestRunner {
    private _testResults = new TestSetResults();
    private _currentTestResults: TestResults;
    private _currentTestFixtureResults: TestFixtureResults;
+   private _output: TestOutput;
+
+   constructor (output: TestOutput) {
+       this._output = output;
+   }
 
    public run(testSet: TestSet) {
 

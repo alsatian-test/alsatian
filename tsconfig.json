@@ -72,6 +72,7 @@
         "./core/test-loader.ts",
         "./core/test-runner.ts",
         "./core/test-set.ts",
+        "./core/test-output.ts",
         "./test/builders/test-builder.ts",
         "./test/builders/test-case-builder.ts",
         "./test/builders/test-fixture-builder.ts",
