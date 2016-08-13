@@ -1,9 +1,9 @@
 export function createPromise(): any {
    let promise: any = {
-     resolve: () => {
+     resolve: (...args: Array<any>) => {
         try {
           if (promise.resolveCallback) {
-             promise.resolveCallback();
+             promise.resolveCallback.apply(this, args);
           }
        }
        catch (error) {
