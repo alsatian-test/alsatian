@@ -8,4 +8,8 @@ export class TestOutput {
         this._errStream = errStream;
     }
 
+    public emitVersion(): void {
+        this._outStream.write("TAP version 13\n");
+    }
+
 }
