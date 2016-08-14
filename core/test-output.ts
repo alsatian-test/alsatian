@@ -1,6 +1,6 @@
 import { ITest } from "./_interfaces/test.i";
 import { MatchError } from "./_errors";
-import { TestCaseResult } from "./_results";
+import { TestCaseResult, TestOutcome } from "./_results";
 
 export class TestOutput {
 
@@ -23,7 +23,19 @@ export class TestOutput {
     }
 
     public emitResult(testId: number, result: TestCaseResult): void {
+        let outcome = result.getOutcome();
+        let test = result.getTest();
+        let testCaseArguments = result.getArguments();
 
+        if (outcome === TestOutcome.Pass) {
+            this.emitPass(testId, test, testCaseArguments);
+        }
+
+        if (outcome === TestOutcome.Fail) {
+            let error = result.getError();
+
+            this.emitFail(testId, test, testCaseArguments, error);
+        }
     }
 
     public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
@@ -52,7 +64,7 @@ export class TestOutput {
     private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
         let testDescription = `${test.ignored ? "# skip " : ""}${test.description}`;
 
-        if (testCaseArguments !== undefined) {
+        if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
             testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
         }
 
