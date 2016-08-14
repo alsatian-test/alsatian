@@ -2,6 +2,17 @@
   "name": "alsatian",
   "version": "1.0.0-alpha.8",
   "description": "TypeScript testing framework with test cases",
+  "author": "James Richford",
+  "contributors": [
+    {
+      "name": "James Richford",
+      "url": "https://github.com/jamesrichford"
+    },
+    {
+      "name": "James Monger",
+      "url": "https://github.com/jameskmonger"
+    }
+  ],
   "main": "./core/alsatian-core.js",
   "typings": "./core/alsatian-core.d.ts",
   "bin": {
