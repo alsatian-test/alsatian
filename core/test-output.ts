@@ -1,5 +1,6 @@
 import { ITest } from "./_interfaces/test.i";
-import { MatchError } from "./errors/match-error";
+import { MatchError } from "./_errors";
+import { TestCaseResult } from "./_results";
 
 export class TestOutput {
 
@@ -19,6 +20,10 @@ export class TestOutput {
 
     public emitPlan(testCount: number): void {
         this._writeOut(`1..${testCount}\n`);
+    }
+
+    public emitResult(testId: number, result: TestCaseResult): void {
+
     }
 
     public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {

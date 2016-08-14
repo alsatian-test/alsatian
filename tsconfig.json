@@ -129,6 +129,7 @@
         "./test/unit-tests/test-output/emit-fail.spec.ts",
         "./test/unit-tests/test-output/emit-pass.spec.ts",
         "./test/unit-tests/test-output/emit-plan.spec.ts",
+        "./test/unit-tests/test-output/emit-result.spec.ts",
         "./test/unit-tests/test-output/emit-version.spec.ts",
         "./test/unit-tests/test-runner/async-test.spec.ts",
         "./test/unit-tests/test-runner/failing-tests.spec.ts",
