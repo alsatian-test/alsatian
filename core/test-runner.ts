@@ -4,6 +4,7 @@ import { ITestFixture } from "./_interfaces/test-fixture.i";
 import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
 import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
+import { TestOutput } from "./test-output";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -18,6 +19,16 @@ export class TestRunner {
    private _testResults = new TestSetResults();
    private _currentTestResults: TestResults;
    private _currentTestFixtureResults: TestFixtureResults;
+   private _output: TestOutput;
+
+   constructor (output?: TestOutput) {
+       // If we were given a TestOutput, use it, otherwise make one
+       if (output !== undefined) {
+           this._output = output;
+       } else {
+           this._output = new TestOutput(process.stdout);
+       }
+   }
 
    public run(testSet: TestSet) {
 
@@ -41,8 +52,8 @@ export class TestRunner {
       }
       else {
 
-         process.stdout.write("TAP version 13\n");
-         process.stdout.write(`1..${totalTestCount}\n`);
+          this._output.emitVersion();
+          this._output.emitPlan(totalTestCount);
 
          this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
          this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
@@ -61,9 +72,10 @@ export class TestRunner {
      this._currentTestId++;
 
      if (test.ignored) {
-       process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
-       this._runNextTest();
-       return;
+         let result = this._currentTestResults.addTestCaseResult(testCaseArguments, undefined);
+         this._output.emitResult(this._currentTestId, result);
+         this._runNextTest();
+         return;
      }
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
@@ -109,40 +121,21 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: ITest, testCaseArguments: Array<any>) {
-
      this._teardown();
 
-     this._currentTestResults.addTestCaseResult(testCaseArguments, error);
-     process.stdout.write(`not ok ${this._getTestDescription(test, testCaseArguments)}\n`);
-
-     if (error instanceof MatchError) {
-       process.stdout.write(` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`);
-     }
-     else {
-        console.log(error);
-       process.stdout.write("# Unknown Error\n");
-     }
+     let result = this._currentTestResults.addTestCaseResult(testCaseArguments, error);
+     this._output.emitResult(this._currentTestId, result);
 
      this._runNextTestCase();
    }
 
    private _notifySuccess(test: ITest, testCaseArguments: Array<any>) {
      this._teardown();
-     process.stdout.write(`ok ${this._getTestDescription(test, testCaseArguments)}\n`);
 
-     this._currentTestResults.addTestCaseResult(testCaseArguments);
+     let result = this._currentTestResults.addTestCaseResult(testCaseArguments);
+     this._output.emitResult(this._currentTestId, result);
 
      this._runNextTestCase();
-   }
-
-   private _getTestDescription = (test: ITest, testCaseArguments: Array<any>) => {
-     let testDescription = `${this._currentTestId} ${test.ignored ? "# skip " : ""}${test.description}`;
-
-     if (testCaseArguments !== undefined) {
-       testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
-     }
-
-     return testDescription;
    }
 
    private _teardown() {
