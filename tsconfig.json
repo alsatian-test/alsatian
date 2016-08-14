@@ -126,8 +126,6 @@
         "./test/unit-tests/test-loader/load-test-fixtures-tests/ignored-test.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/test-timeout.spec.ts",
         "./test/unit-tests/test-output/_utils.ts",
-        "./test/unit-tests/test-output/emit-fail.spec.ts",
-        "./test/unit-tests/test-output/emit-pass.spec.ts",
         "./test/unit-tests/test-output/emit-plan.spec.ts",
         "./test/unit-tests/test-output/emit-result.spec.ts",
         "./test/unit-tests/test-output/emit-version.spec.ts",

@@ -9,7 +9,7 @@ export class CliTestRunner extends TestRunner {
        let testRunPromise = super.run(testSet);
 
        testRunPromise.then((results: TestSetResults) => {
-
+           
          if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
            process.exit(1);
          }

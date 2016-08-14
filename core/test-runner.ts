@@ -72,9 +72,10 @@ export class TestRunner {
      this._currentTestId++;
 
      if (test.ignored) {
-         this._output.emitPass(this._currentTestId, test, testCaseArguments);
-       this._runNextTest();
-       return;
+         let result = this._currentTestResults.addTestCaseResult(testCaseArguments, undefined);
+         this._output.emitResult(this._currentTestId, result);
+         this._runNextTest();
+         return;
      }
 
      let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
@@ -120,12 +121,10 @@ export class TestRunner {
    }
 
    private _handleError(error: Error, test: ITest, testCaseArguments: Array<any>) {
-
      this._teardown();
 
-     this._currentTestResults.addTestCaseResult(testCaseArguments, error);
-
-     this._output.emitFail(this._currentTestId, test, testCaseArguments, error);
+     let result = this._currentTestResults.addTestCaseResult(testCaseArguments, error);
+     this._output.emitResult(this._currentTestId, result);
 
      this._runNextTestCase();
    }
@@ -133,9 +132,8 @@ export class TestRunner {
    private _notifySuccess(test: ITest, testCaseArguments: Array<any>) {
      this._teardown();
 
-     this._output.emitPass(this._currentTestId, test, testCaseArguments);
-
-     this._currentTestResults.addTestCaseResult(testCaseArguments);
+     let result = this._currentTestResults.addTestCaseResult(testCaseArguments);
+     this._output.emitResult(this._currentTestId, result);
 
      this._runNextTestCase();
    }

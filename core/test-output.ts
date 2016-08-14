@@ -28,23 +28,23 @@ export class TestOutput {
         let testCaseArguments = result.getArguments();
 
         if (outcome === TestOutcome.Pass) {
-            this.emitPass(testId, test, testCaseArguments);
+            this._emitPass(testId, test, testCaseArguments);
         }
 
         if (outcome === TestOutcome.Fail) {
             let error = result.getError();
 
-            this.emitFail(testId, test, testCaseArguments, error);
+            this._emitFail(testId, test, testCaseArguments, error);
         }
     }
 
-    public emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
+    private _emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
         let description = this._getTestDescription(test, testCaseArguments);
 
         this._writeOut(`ok ${testId} ${description}\n`);
     }
 
-    public emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
+    private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
         let description = this._getTestDescription(test, testCaseArguments);
 
         this._writeOut(`not ok ${testId} ${description}\n`);
