@@ -58,6 +58,11 @@ export class TestBuilder {
       return this;
   }
 
+  public focussed(): TestBuilder {
+      this._test.focussed = true;
+      return this;
+  }
+
   public build (): ITest {
     return this._test;
   }
