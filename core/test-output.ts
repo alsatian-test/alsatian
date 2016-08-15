@@ -29,12 +29,14 @@ export class TestOutput {
 
         if (outcome === TestOutcome.Pass) {
             this._emitPass(testId, test, testCaseArguments);
-        }
-
-        if (outcome === TestOutcome.Fail) {
+        } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
             let error = result.getError();
 
             this._emitFail(testId, test, testCaseArguments, error);
+        } else if (outcome === TestOutcome.Skip) {
+            this._emitSkip(testId, test, testCaseArguments);
+        } else {
+            throw new Error(`Invalid outcome for test ${outcome}`);
         }
     }
 
@@ -42,6 +44,12 @@ export class TestOutput {
         let description = this._getTestDescription(test, testCaseArguments);
 
         this._writeOut(`ok ${testId} ${description}\n`);
+    }
+
+    private _emitSkip(testId: number, test: ITest, testCaseArguments: Array<any>): void {
+        let description = this._getTestDescription(test, testCaseArguments);
+
+        this._writeOut(`ok ${testId} ${description} # skip\n`);
     }
 
     private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
@@ -62,7 +70,7 @@ export class TestOutput {
     }
 
     private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
-        let testDescription = `${test.ignored ? "# skip " : ""}${test.description}`;
+        let testDescription = test.description;
 
         if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
             testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;

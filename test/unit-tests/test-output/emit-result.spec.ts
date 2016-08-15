@@ -114,6 +114,60 @@ export class EmitResultTests {
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
 
+    @Test()
+    public shouldEmitSkipCorrectly() {
+        let outStream = getDummyStream();
+        SpyOn(outStream, "write");
+
+        let testOutput = new TestOutput(outStream);
+
+        let test: ITest = new TestBuilder().build();
+
+        let testCaseResult = new TestCaseResult(test, [], undefined);
+        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Skip);
+
+        testOutput.emitResult(1, testCaseResult);
+
+        let expected = `ok 1 ${test.description} # skip\n`;
+
+        Expect(outStream.write).toHaveBeenCalledWith(expected);
+    }
+
+    @Test()
+    public shouldEmitErrorCorrectly() {
+        let outStream = getDummyStream();
+        SpyOn(outStream, "write");
+
+        let testOutput = new TestOutput(outStream);
+
+        let test: ITest = new TestBuilder().build();
+
+        let testCaseResult = new TestCaseResult(test, [], undefined);
+        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Error);
+
+        testOutput.emitResult(1, testCaseResult);
+
+        let expected = `not ok 1 ${test.description}\n`;
+
+        Expect(outStream.write).toHaveBeenCalledWith(expected);
+    }
+
+    @Test()
+    public shouldThrowErrorOnInvalidOutcome() {
+        const outcomeCode = 99999;
+
+        let testOutput = new TestOutput(getDummyStream());
+
+        let test: ITest = new TestBuilder().build();
+
+        let testCaseResult = new TestCaseResult(test, [], undefined);
+        SpyOn(testCaseResult, "getOutcome").andReturn(outcomeCode); // not a valid test outcome
+
+        Expect(() => {
+            testOutput.emitResult(1, testCaseResult);
+        }).toThrowError(Error, `Invalid outcome for test ${outcomeCode}`);
+    }
+
     @TestCase("message one")
     @TestCase("another message")
     @TestCase("yaba daba doo")
