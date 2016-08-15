@@ -23,14 +23,14 @@ export class TestOutput {
     }
 
     public emitResult(testId: number, result: TestCaseResult): void {
-        let outcome = result.getOutcome();
-        let test = result.getTest();
-        let testCaseArguments = result.getArguments();
+        let outcome = result.outcome;
+        let test = result.test;
+        let testCaseArguments = result.arguments;
 
         if (outcome === TestOutcome.Pass) {
             this._emitPass(testId, test, testCaseArguments);
         } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
-            let error = result.getError();
+            let error = result.error;
 
             this._emitFail(testId, test, testCaseArguments, error);
         } else if (outcome === TestOutcome.Skip) {
@@ -61,10 +61,6 @@ export class TestOutput {
             let yaml = this._getErrorYaml(error);
 
             this._writeOut(yaml);
-        } else if (error !== undefined) {
-            console.log(error);
-
-            this._writeOut("# Unknown Error\n");
         }
 
     }

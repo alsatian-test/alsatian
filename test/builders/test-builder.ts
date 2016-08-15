@@ -53,6 +53,11 @@ export class TestBuilder {
     return this;
   }
 
+  public ignored(): TestBuilder {
+      this._test.ignored = true;
+      return this;
+  }
+
   public build (): ITest {
     return this._test;
   }

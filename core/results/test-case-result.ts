@@ -8,19 +8,19 @@ export class TestCaseResult {
     private _arguments: Array<any>;
     private _error: Error;
 
-    public getTest(): ITest {
+    public get test(): ITest {
         return this._test;
     }
 
-    public getArguments(): Array<any> {
+    public get arguments(): Array<any> {
         return this._arguments;
     }
 
-    public getError(): Error {
+    public get error(): Error {
         return this._error;
     }
 
-    public getOutcome(): TestOutcome {
+    public get outcome(): TestOutcome {
         if (this._error) {
             if (this._error instanceof MatchError) {
                 return TestOutcome.Fail;

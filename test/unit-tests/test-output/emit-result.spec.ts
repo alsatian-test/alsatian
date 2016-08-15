@@ -1,4 +1,4 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest } from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn } from "../../../core/alsatian-core";
 import { TestCaseResult, TestOutcome } from "../../../core/_results";
 import { ITest } from "../../../core/_interfaces/test.i";
 import { TestBuilder } from "../../builders/test-builder";
@@ -24,7 +24,6 @@ export class EmitResultTests {
         let test: ITest = new TestBuilder().build();
 
         let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Pass);
 
         testOutput.emitResult(testId, testCaseResult);
 
@@ -46,7 +45,6 @@ export class EmitResultTests {
             .withDescription(description).build();
 
         let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Pass);
 
         testOutput.emitResult(1, testCaseResult);
 
@@ -67,7 +65,6 @@ export class EmitResultTests {
         let test: ITest = new TestBuilder().build();
 
         let testCaseResult = new TestCaseResult(test, testCaseArguments, undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Pass);
 
         testOutput.emitResult(1, testCaseResult);
 
@@ -86,7 +83,6 @@ export class EmitResultTests {
         let test: ITest = new TestBuilder().build();
 
         let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Pass);
 
         testOutput.emitResult(1, testCaseResult);
 
@@ -104,8 +100,8 @@ export class EmitResultTests {
 
         let test: ITest = new TestBuilder().build();
 
-        let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Fail);
+        // match error causes a "fail"
+        let testCaseResult = new TestCaseResult(test, [], new MatchError(1, 2, "message"));
 
         testOutput.emitResult(1, testCaseResult);
 
@@ -121,10 +117,9 @@ export class EmitResultTests {
 
         let testOutput = new TestOutput(outStream);
 
-        let test: ITest = new TestBuilder().build();
+        let test: ITest = new TestBuilder().ignored().build();
 
         let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Skip);
 
         testOutput.emitResult(1, testCaseResult);
 
@@ -142,30 +137,14 @@ export class EmitResultTests {
 
         let test: ITest = new TestBuilder().build();
 
-        let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Error);
+        // any error apart from a MatchError causes an "error" outcome
+        let testCaseResult = new TestCaseResult(test, [], new Error("an error occured when running the test"));
 
         testOutput.emitResult(1, testCaseResult);
 
         let expected = `not ok 1 ${test.description}\n`;
 
         Expect(outStream.write).toHaveBeenCalledWith(expected);
-    }
-
-    @Test()
-    public shouldThrowErrorOnInvalidOutcome() {
-        const outcomeCode = 99999;
-
-        let testOutput = new TestOutput(getDummyStream());
-
-        let test: ITest = new TestBuilder().build();
-
-        let testCaseResult = new TestCaseResult(test, [], undefined);
-        SpyOn(testCaseResult, "getOutcome").andReturn(outcomeCode); // not a valid test outcome
-
-        Expect(() => {
-            testOutput.emitResult(1, testCaseResult);
-        }).toThrowError(Error, `Invalid outcome for test ${outcomeCode}`);
     }
 
     @TestCase("message one")
@@ -182,7 +161,6 @@ export class EmitResultTests {
         let error = new MatchError(1, 2, message);
 
         let testCaseResult = new TestCaseResult(test, [], error);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Fail);
 
         let expected = EmitResultTests._getErrorYaml(error);
 
@@ -205,7 +183,6 @@ export class EmitResultTests {
         let error = new MatchError(actualValue, 2, "error message");
 
         let testCaseResult = new TestCaseResult(test, [], error);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Fail);
 
         let expected = EmitResultTests._getErrorYaml(error);
 
@@ -228,7 +205,6 @@ export class EmitResultTests {
         let error = new MatchError(1, expectedValue, "error message");
 
         let testCaseResult = new TestCaseResult(test, [], error);
-        SpyOn(testCaseResult, "getOutcome").andReturn(TestOutcome.Fail);
 
         let expected = EmitResultTests._getErrorYaml(error);
 

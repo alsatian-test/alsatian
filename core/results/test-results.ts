@@ -7,7 +7,7 @@ export class TestResults {
    private _testCaseResults: Array<TestCaseResult> = [];
 
    get outcome(): TestOutcome {
-      const outcomes = this._testCaseResults.map(testCaseResult => testCaseResult.getOutcome());
+      const outcomes = this._testCaseResults.map(testCaseResult => testCaseResult.outcome);
 
       if (outcomes.indexOf(TestOutcome.Error) !== -1) {
          return TestOutcome.Error;
