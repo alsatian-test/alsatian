@@ -1,38 +1,41 @@
 import { TestRunner } from "../../../core/test-runner";
 import { TestSet } from "../../../core/test-set";
+import { TestOutput } from "../../../core/test-output";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { MatchError } from "../../../core/errors/match-error";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest, FocusTests } from "../../../core/alsatian-core";
 import { createPromise } from "../../../promise/create-promise";
+import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class FailingTestsTests {
 
-  private _originalStdOut: any;
   private _originalStdErr: any;
   private _originalProcessExit: any;
 
    @Setup
    private _spyProcess() {
      this._originalProcessExit = process.exit;
-     this._originalStdOut = process.stdout.write;
      this._originalStdErr = process.stderr.write;
 
      SpyOn(process, "exit").andStub();
-     SpyOn(process.stdout, "write").andStub();
      SpyOn(process.stderr, "write").andStub();
    }
 
    @Teardown
    private _resetProcess() {
      process.exit = this._originalProcessExit;
-     process.stdout.write = this._originalStdOut;
      process.stderr.write = this._originalStdErr;
    }
 
    @AsyncTest()
    public failingTestOutputsNotOk() {
+       let outputStream = new OutputStreamBuilder().build();
+       SpyOn(outputStream, "write");
+
+       let output = new TestOutput(outputStream);
+
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -46,10 +49,10 @@ export class FailingTestsTests {
 
       let resultPromise = createPromise();
 
-      let testRunner = new TestRunner();
+      let testRunner = new TestRunner(output);
 
-      testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
+      testRunner.run(testSet).then(() => {
+         Expect(outputStream.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
          resultPromise.resolve();
       });
 
@@ -58,6 +61,11 @@ export class FailingTestsTests {
 
    @AsyncTest()
    public testThrowsErrorOutputsNotOk() {
+       let outputStream = new OutputStreamBuilder().build();
+       SpyOn(outputStream, "write");
+
+       let output = new TestOutput(outputStream);
+
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -71,10 +79,10 @@ export class FailingTestsTests {
 
       let resultPromise: any = createPromise();
 
-      let testRunner = new TestRunner();
+      let testRunner = new TestRunner(output);
 
-      testRunner.run(testSet).then/*.call(testRunner, */(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
+      testRunner.run(testSet).then(() => {
+         Expect(outputStream.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
          resultPromise.resolve();
       });
 
