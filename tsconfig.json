@@ -10,8 +10,8 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },
-    "buildOnSave": true,
-    "compileOnSave": true,
+    "buildOnSave": false,
+    "compileOnSave": false,
     "exclude": [
         "./core/**/*.d.ts",
         "./cli/**/*.d.ts",
@@ -73,6 +73,7 @@
         "./core/test-output.ts",
         "./core/test-runner.ts",
         "./core/test-set.ts",
+        "./test/builders/output-stream-builder.ts",
         "./test/builders/test-builder.ts",
         "./test/builders/test-case-builder.ts",
         "./test/builders/test-fixture-builder.ts",
@@ -131,6 +132,7 @@
         "./test/unit-tests/test-output/emit-version.spec.ts",
         "./test/unit-tests/test-runner/async-test.spec.ts",
         "./test/unit-tests/test-runner/failing-tests.spec.ts",
+        "./test/unit-tests/test-runner/focussed-test.spec.ts",
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
