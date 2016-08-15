@@ -9,33 +9,34 @@ import { Expect, AsyncTest, Test, SpyOn, Setup, Teardown, FocusTest, IgnoreTest,
 import { createPromise } from "../../../promise/create-promise";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
-@FocusTests
 export class FocussedTestTests {
 
-    @Test()
+    @AsyncTest()
     public twoUnfocussedTestsBothRun() {
         let outputStream = new OutputStreamBuilder().build();
-        SpyOn(outputStream, "write");
+        SpyOn(outputStream, "write").andStub();
 
         let output = new TestOutput(outputStream);
 
         let testSet = <TestSet>{};
         (<any>testSet).testFixtures = [];
+
+        let testOneExecuted = false;
+        let testTwoExecuted = false;
+
         let testFixtureBuilder = new TestFixtureBuilder()
             .withFixture({
-                testOne: () => { },
-                testTwo: () => { }
+                testOne: () => { testOneExecuted = true; },
+                testTwo: () => { testTwoExecuted = true; }
             });
 
         let testOne = new TestBuilder()
             .withKey("testOne")
-            .withDescription("Test description one")
             .addTestCase(new TestCaseBuilder().build())
             .build();
 
         let testTwo = new TestBuilder()
             .withKey("testTwo")
-            .withDescription("Another test description")
             .addTestCase(new TestCaseBuilder().build())
             .build();
 
@@ -49,39 +50,41 @@ export class FocussedTestTests {
         let testRunner = new TestRunner(output);
 
         testRunner.run(testSet).then(() => {
-            Expect(outputStream.write).toHaveBeenCalledWith(`ok 1 ${testOne.description}\n`);
-            Expect(outputStream.write).toHaveBeenCalledWith(`ok 2 ${testTwo.description}\n`);
+            Expect(testOneExecuted).toBe(true);
+            Expect(testTwoExecuted).toBe(true);
             resultPromise.resolve();
         });
 
         return resultPromise;
     }
 
-    @Test()
+    @AsyncTest()
     public firstTestFocussedSecondUnfocussedFirstIsRun() {
         let outputStream = new OutputStreamBuilder().build();
-        SpyOn(outputStream, "write");
+        SpyOn(outputStream, "write").andStub();
 
         let output = new TestOutput(outputStream);
 
         let testSet = <TestSet>{};
         (<any>testSet).testFixtures = [];
+
+        let testOneExecuted = false;
+        let testTwoExecuted = false;
+
         let testFixtureBuilder = new TestFixtureBuilder()
             .withFixture({
-                testOne: () => { },
-                testTwo: () => { }
+                testOne: () => { testOneExecuted = true; },
+                testTwo: () => { testTwoExecuted = true; }
             });
 
         let testOne = new TestBuilder()
             .withKey("testOne")
-            .withDescription("Test description one")
             .addTestCase(new TestCaseBuilder().build())
             .focussed()
             .build();
 
         let testTwo = new TestBuilder()
             .withKey("testTwo")
-            .withDescription("Another test description")
             .addTestCase(new TestCaseBuilder().build())
             .build();
 
@@ -95,38 +98,40 @@ export class FocussedTestTests {
         let testRunner = new TestRunner(output);
 
         testRunner.run(testSet).then(() => {
-            Expect(outputStream.write).toHaveBeenCalledWith(`ok 1 ${testOne.description}\n`);
-            Expect(outputStream.write).not.toHaveBeenCalledWith(`ok 2 ${testTwo.description}\n`);
+            Expect(testOneExecuted).toBe(true);
+            Expect(testTwoExecuted).toBe(false);
             resultPromise.resolve();
         });
 
         return resultPromise;
     }
 
-    @Test()
+    @AsyncTest()
     public secondTestFocussedFirstUnfocussedFirstIsRun() {
         let outputStream = new OutputStreamBuilder().build();
-        SpyOn(outputStream, "write");
+        SpyOn(outputStream, "write").andStub();
 
         let output = new TestOutput(outputStream);
 
         let testSet = <TestSet>{};
         (<any>testSet).testFixtures = [];
+
+        let testOneExecuted = false;
+        let testTwoExecuted = false;
+
         let testFixtureBuilder = new TestFixtureBuilder()
             .withFixture({
-                testOne: () => { },
-                testTwo: () => { }
+                testOne: () => { testOneExecuted = true; },
+                testTwo: () => { testTwoExecuted = true; }
             });
 
         let testOne = new TestBuilder()
             .withKey("testOne")
-            .withDescription("Test description one")
             .addTestCase(new TestCaseBuilder().build())
             .build();
 
         let testTwo = new TestBuilder()
             .withKey("testTwo")
-            .withDescription("Another test description")
             .addTestCase(new TestCaseBuilder().build())
             .focussed()
             .build();
@@ -141,8 +146,8 @@ export class FocussedTestTests {
         let testRunner = new TestRunner(output);
 
         testRunner.run(testSet).then(() => {
-            Expect(outputStream.write).not.toHaveBeenCalledWith(`ok 1 ${testOne.description}\n`);
-            Expect(outputStream.write).toHaveBeenCalledWith(`ok 2 ${testTwo.description}\n`);
+            Expect(testOneExecuted).toBe(false);
+            Expect(testTwoExecuted).toBe(true);
             resultPromise.resolve();
         });
 
