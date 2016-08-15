@@ -4,25 +4,41 @@ import { MatchError } from "../_errors";
 
 export class TestCaseResult {
 
-   public arguments() {
-      return this._arguments;
-   }
+    private _test: ITest;
+    private _arguments: Array<any>;
+    private _error: Error;
 
-   get outcome(): TestOutcome {
-      if (this._error) {
-         if (this._error instanceof MatchError) {
-            return TestOutcome.Fail;
-         }
+    public get test(): ITest {
+        return this._test;
+    }
 
-         return TestOutcome.Error;
-      }
+    public get arguments(): Array<any> {
+        return this._arguments;
+    }
 
-      if (this._test.ignored) {
-         return TestOutcome.Skip;
-      }
+    public get error(): Error {
+        return this._error;
+    }
 
-      return TestOutcome.Pass;
-   }
+    public get outcome(): TestOutcome {
+        if (this._error) {
+            if (this._error instanceof MatchError) {
+                return TestOutcome.Fail;
+            }
 
-   public constructor(private _test: ITest, private _arguments: Array<any>, private _error?: Error) { }
+            return TestOutcome.Error;
+        }
+
+        if (this._test.ignored) {
+            return TestOutcome.Skip;
+        }
+
+        return TestOutcome.Pass;
+    }
+
+    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
+        this._test = test;
+        this._arguments = testCaseArguments;
+        this._error = error;
+    }
 }
