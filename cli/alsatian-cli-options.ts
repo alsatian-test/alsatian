@@ -10,20 +10,16 @@ export class AlsatianCliOptions {
       return this._timeout;
    }
 
-   public constructor (args: Array<string>) {
-      args.forEach((value, index) => {
-         const nextArgument = args[index + 1];
+   public constructor(args: Array<string>) {
+      this._extractFileGlobs(args);
+   }
+
+   private _extractFileGlobs(args: Array<string>) {
+      this._fileGlobs = args.filter((value, index) => {
          const previousArgument = args[index - 1];
 
-         if (value[0] === "-") {
-            const optionName = value.replace(/[-]*/, "");
-            this[optionName] = true;
-            if (nextArgument && nextArgument[0] !== "-") {
-               this[optionName] = nextArgument;
-            }
-         }
-         else if (nextArgument && nextArgument[0] !== "-") {
-            this._fileGlobs.push(value);
+         if ((!previousArgument || previousArgument[0]) !== "-" && value[0] !== "-") {
+            return value;
          }
       });
    }
