@@ -16,7 +16,7 @@ export class AlsatianCliOptions {
       args = this._extractTimeout(args);
 
       if (args.length > 0) {
-         throw new Error("unrecognised arguments " + JSON.stringify(args));
+         throw new Error("unrecognised arguments " + args.map(argument => argument.replace(/[-]*/, "")).join(" and "));
       }
    }
 
