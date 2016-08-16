@@ -25,6 +25,7 @@
         "./typings/index.d.ts"
     ],
     "files": [
+        "./cli/alsatian-cli-options.ts",
         "./cli/alsatian-cli.ts",
         "./cli/cli-test-runner.ts",
         "./core/_core.ts",
