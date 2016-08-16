@@ -1,18 +1,14 @@
 import { ITest } from "../../core/_interfaces/test.i";
 import { ITestFixture } from "../../core/_interfaces/test-fixture.i";
 import { TestBuilder } from "./test-builder";
+import { TestFixture } from "../../core/test-fixture";
 
 export class TestFixtureBuilder {
 
   private _testFixture: ITestFixture;
 
   public constructor() {
-    this._testFixture = {
-      focussed: false,
-      ignored: false,
-      fixture: {},
-      tests: []
-    };
+    this._testFixture = new TestFixture();
   }
 
   public withFixture(fixture: { [id: string]: (...args: Array<any>) => any }): TestFixtureBuilder {

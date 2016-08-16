@@ -32,18 +32,18 @@ export class TestRunner {
 
    public run(testSet: TestSet) {
 
-     let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
+     let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0).length > 0;
 
      this._testFixtures = testSet.testFixtures;
 
      // Filter out unfocussed tests if any are focussed
      if (anyTestsFocussed) {
-       this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0);
+       this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0);
      }
 
       let totalTestCount = this._testFixtures
-                                   .filter(x => x.tests.length > 0)
-                                   .map(x => x.tests.map((y: any) => y.testCases.length)
+                                   .filter(x => x.getTests().length > 0)
+                                   .map(x => x.getTests().map((y: any) => y.testCases.length)
                                    .reduce((a: number, b: number) => a + b, 0))
                                    .reduce((a: number, b: number) => a + b, 0);
 
@@ -56,12 +56,12 @@ export class TestRunner {
           this._output.emitPlan(totalTestCount);
 
          this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
-         this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
+         this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex]);
 
          setTimeout(() => {
          this._runTest(this._testFixtures[this._currentTestFixtureIndex],
-                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                 this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+                 this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
+                 this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
               });
       }
 
@@ -164,7 +164,7 @@ export class TestRunner {
        this._exit();
      }
      // no tests on this fixture
-     else if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     else if (!this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
@@ -172,8 +172,8 @@ export class TestRunner {
 
         setTimeout(() => {
           this._runTest(this._testFixtures[this._currentTestFixtureIndex],
-                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-                  this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+                  this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
+                  this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
         });
      }
    }
@@ -182,28 +182,28 @@ export class TestRunner {
      this._currentTestIndex++;
      this._currentTestCaseIndex = 0;
 
-     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex]) {
        this._runNextTestFixture();
      }
      else {
-        this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex]);
+        this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex]);
 
        this._runTest(this._testFixtures[this._currentTestFixtureIndex],
-               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+               this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 
    private _runNextTestCase = () => {
      this._currentTestCaseIndex++;
 
-     if (!this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
+     if (!this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex]) {
        this._runNextTest();
      }
      else {
        this._runTest(this._testFixtures[this._currentTestFixtureIndex],
-               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex],
-               this._testFixtures[this._currentTestFixtureIndex].tests[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
+               this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
+               this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
    }
 }

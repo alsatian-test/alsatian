@@ -2,6 +2,7 @@ import { ITestFixture } from "./_interfaces/test-fixture.i";
 import { ITest } from "./_interfaces/test.i";
 import { ITestCase } from "./_interfaces/test-case.i";
 import { FileRequirer } from "./file-requirer";
+import { TestFixture } from "./test-fixture";
 
 export class TestLoader {
 
@@ -33,7 +34,7 @@ export class TestLoader {
    }
 
   private _loadTestFixture(testFixtureConstructor: any): ITestFixture {
-      let testFixture = <ITestFixture>{};
+      let testFixture = new TestFixture();
 
       testFixture.ignored = false;
 
@@ -76,7 +77,7 @@ export class TestLoader {
 
         test.timeout = Reflect.getMetadata("alsatian:timeout", testFixture.fixture, test.key) || null;
 
-        testFixture.tests.push(test);
+        testFixture.addTest(test);
 
         if (!test.description) {
            test.description = test.key;

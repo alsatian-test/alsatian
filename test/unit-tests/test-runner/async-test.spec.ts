@@ -28,6 +28,7 @@ export class AsyncTestTests {
    }
 
    @AsyncTest()
+   @IgnoreTest // use a builder here
    public asyncTestRunsSucessfully() {
       let testSet = <TestSet>{};
 

@@ -1,8 +1,8 @@
-import { Expect, TestCase, Test, SpyOn } from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn, FocusTest } from "../../../core/alsatian-core";
 import { TestCaseResult, TestOutcome } from "../../../core/_results";
 import { ITest } from "../../../core/_interfaces/test.i";
 import { TestBuilder } from "../../builders/test-builder";
-import { getDummyStream } from "./_utils";
+import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 import { TestOutput } from "../../../core/test-output";
 import { MatchError } from "../../../core/errors/match-error";
 
@@ -16,7 +16,7 @@ export class EmitResultTests {
     @TestCase(2)
     @TestCase(3)
     public shouldEmitWithCorrectTestId(testId: number) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -36,7 +36,7 @@ export class EmitResultTests {
     @TestCase("bla bla bla")
     @TestCase("hello this is a test")
     public shouldEmitWithCorrectTestDescription(description: string) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -57,7 +57,7 @@ export class EmitResultTests {
     @TestCase([ "a", 3, true ], "[ \"a\", 3, true ]")
     @TestCase([ 5.25, 6.25, 7.22 ], "[ 5.25, 6.25, 7.22 ]")
     public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>, testCaseOutput: string) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -75,7 +75,7 @@ export class EmitResultTests {
 
     @Test()
     public shouldEmitWithOkIfPass() {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -93,7 +93,7 @@ export class EmitResultTests {
 
     @Test()
     public shouldEmitWithNotOkIfPass() {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -112,7 +112,7 @@ export class EmitResultTests {
 
     @Test()
     public shouldEmitSkipCorrectly() {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -130,7 +130,7 @@ export class EmitResultTests {
 
     @Test()
     public shouldEmitErrorCorrectly() {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -151,7 +151,7 @@ export class EmitResultTests {
     @TestCase("another message")
     @TestCase("yaba daba doo")
     public shouldEmitYamlWithCorrectMessage(message: string) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -173,7 +173,7 @@ export class EmitResultTests {
     @TestCase("tweny")
     @TestCase(false)
     public shouldEmitYamlWithCorrectActualValue(actualValue: any) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);
@@ -195,7 +195,7 @@ export class EmitResultTests {
     @TestCase(20)
     @TestCase(true)
     public shouldEmitYamlWithCorrectExpectedValue(expectedValue: any) {
-        let outStream = getDummyStream();
+        let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
         let testOutput = new TestOutput(outStream);

@@ -61,6 +61,8 @@ export class TestOutput {
             let yaml = this._getErrorYaml(error);
 
             this._writeOut(yaml);
+        } else {
+            this._writeOut(`# ERROR: ${error.message}\n`);
         }
 
     }
