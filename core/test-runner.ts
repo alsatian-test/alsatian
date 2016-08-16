@@ -43,7 +43,7 @@ export class TestRunner {
 
       let totalTestCount = this._testFixtures
                                    .filter(x => x.getTests().length > 0)
-                                   .map(x => x.tests.map((y: any) => y.testCases.length)
+                                   .map(x => x.getTests().map((y: any) => y.testCases.length)
                                    .reduce((a: number, b: number) => a + b, 0))
                                    .reduce((a: number, b: number) => a + b, 0);
 
