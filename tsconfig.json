@@ -10,8 +10,8 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },
-    "buildOnSave": false,
-    "compileOnSave": false,
+    "buildOnSave": true,
+    "compileOnSave": true,
     "exclude": [
         "./core/**/*.d.ts",
         "./cli/**/*.d.ts",
