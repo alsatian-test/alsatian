@@ -47,9 +47,10 @@ export class AlsatianCliOptions {
 
          this._timeout = timeout;
 
+         const argumentIndex = this._getArgumentIndexFromArgumentList(args, "timeout", "t");
+
          return args.filter((value, index) => {
-            const argumentIndex = this._getArgumentIndexFromArgumentList(args, "timeout", "t");
-            return index === argumentIndex || index === argumentIndex + 1;
+            return index !== argumentIndex && index !== argumentIndex + 1;
          });
       }
 
