@@ -255,9 +255,8 @@ import { Expect, Test, AsyncTest } from "alsatian";
 
 export class ExampleTestFixture {
 
-  @Test()
   @AsyncTest()
-  public ignoredTest() {
+  public asyncTest() {
 
     return new Promise((resolve, reject) => {
       waitForSomethingToHappen((result: number) => {
