@@ -9,6 +9,9 @@ export class TestFixture implements ITestFixture {
     tests: Array<ITest>;
 
     constructor () {
+        this.focussed = false;
+        this.ignored = false;
+        this.fixture = {};
         this.tests = [];
     }
 
