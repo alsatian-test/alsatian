@@ -8,6 +8,7 @@ import { LessThanMatchError } from "./errors/less-than-match-error";
 import { GreaterThanMatchError } from "./errors/greater-than-match-error";
 import { ErrorMatchError } from "./errors/error-match-error";
 import { FunctionCallMatchError } from "./errors/function-call-match-error";
+import { TestTimeoutError } from "./errors/test-timeout-error";
 
 export {
     MatchError,
@@ -19,5 +20,6 @@ export {
     LessThanMatchError,
     GreaterThanMatchError,
     ErrorMatchError,
-    FunctionCallMatchError
+    FunctionCallMatchError,
+    TestTimeoutError
 };

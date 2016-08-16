@@ -57,6 +57,7 @@
         "./core/errors/less-than-match-error.ts",
         "./core/errors/match-error.ts",
         "./core/errors/regex-match-error.ts",
+        "./core/errors/test-timeout-error.ts",
         "./core/errors/truthy-match-error.ts",
         "./core/expect.ts",
         "./core/file-requirer.ts",

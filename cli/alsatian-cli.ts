@@ -13,4 +13,4 @@ testSet.addTestsFromFiles(userArguments.fileGlobs);
 
 // run the test set
 let testRunner = new CliTestRunner();
-testRunner.run(testSet);
+testRunner.run(testSet, userArguments.timeout);
