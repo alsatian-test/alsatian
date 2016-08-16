@@ -6,11 +6,10 @@ export class IgnoreTestsDecoratorTests {
 
     @Test()
     public focusTestKeyMetaDataAdded(key: string) {
+        let ignoreTestsDecorator = IgnoreTestsDecorator();
+        let TestFixture = () => {};
 
-       let TestFixture = () => {};
-
-       IgnoreTestsDecorator(TestFixture);
-
-       Expect(Reflect.getMetadata("alsatian:ignore", TestFixture)).toBe(true);
+        ignoreTestsDecorator(TestFixture);
+        Expect(Reflect.getMetadata("alsatian:ignore", TestFixture)).toBe(true);
     }
 }

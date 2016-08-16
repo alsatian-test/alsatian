@@ -8,11 +8,10 @@ export class IgnoreTestDecoratorTests {
     @TestCase("another key")
     @TestCase("something-different")
     public ignoreTestKeyMetaDataAddedToCorrectKey(key: string) {
+        let ignoreTestDecorator = IgnoreTestDecorator();
+        let testFixture = {};
 
-       let testFixture = {};
-
-       IgnoreTestDecorator(testFixture, key, null);
-
-       Expect(Reflect.getMetadata("alsatian:ignore", testFixture, key)).toBe(true);
+        ignoreTestDecorator(testFixture, key, null);
+        Expect(Reflect.getMetadata("alsatian:ignore", testFixture, key)).toBe(true);
     }
 }

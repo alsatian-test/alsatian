@@ -28,7 +28,7 @@ export class AsyncTestTests {
    }
 
    @AsyncTest()
-   @IgnoreTest // use a builder here
+   @IgnoreTest("TextFixture should be constructed with the builder")
    public asyncTestRunsSucessfully() {
       let testSet = <TestSet>{};
 
@@ -62,7 +62,7 @@ export class AsyncTestTests {
    }
 
    @AsyncTest()
-   @IgnoreTest
+   @IgnoreTest("TextFixture should be constructed with the builder")
    public asyncTestTimeoutFails() {
       let testSet = <TestSet>{};
 
