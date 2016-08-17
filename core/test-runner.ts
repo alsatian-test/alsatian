@@ -4,6 +4,7 @@ import { ITestFixture } from "./_interfaces/test-fixture.i";
 import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
 import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
+import { TestTimeoutError } from "./_errors";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -18,8 +19,13 @@ export class TestRunner {
    private _testResults = new TestSetResults();
    private _currentTestResults: TestResults;
    private _currentTestFixtureResults: TestFixtureResults;
+   private _testTimeout: number = 500;
 
-   public run(testSet: TestSet) {
+   public run(testSet: TestSet, timeout?: number) {
+
+      if (timeout) {
+         this._testTimeout = timeout;
+      }
 
      let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.filter(test => test.focussed).length > 0).length > 0;
 
@@ -95,8 +101,8 @@ export class TestRunner {
            timeoutCheck = setTimeout(() => {
 
              timeout = true;
-             this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
-          }, test.timeout | 500);
+             this._handleError(new TestTimeoutError(test.timeout || this._testTimeout), test, testCaseArguments);
+          }, test.timeout || this._testTimeout);
         }
         else {
           testFixture.fixture[test.key].apply(testFixture, testCaseArguments);
