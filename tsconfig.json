@@ -37,6 +37,7 @@
         "./core/_spying.ts",
         "./core/alsatian-core.ts",
         "./core/create-test-set.ts",
+        "./core/decorators/_metadata-keys.ts",
         "./core/decorators/async-test-decorator.ts",
         "./core/decorators/focus-test-decorator.ts",
         "./core/decorators/focus-tests-decorator.ts",
