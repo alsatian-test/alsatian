@@ -28,7 +28,8 @@ import {
     TestSetResults,
     TestOutcome,
     TestFixtureResults,
-    TestResults
+    TestResults,
+    TestCaseResult
 } from "./_results";
 
 import {
@@ -60,5 +61,6 @@ export {
    TestOutput,
    MatchError,
    TestFixtureResults,
-   TestResults
+   TestResults,
+   TestCaseResult
 };

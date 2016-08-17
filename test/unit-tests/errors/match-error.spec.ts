@@ -1,5 +1,4 @@
-import { MatchError } from "../../../core/errors/match-error";
-import { Expect, TestCase } from "../../../core/alsatian-core";
+import { Expect, TestCase, MatchError } from "../../../core/alsatian-core";
 
 export class MatchErrorTests {
 

@@ -1,6 +1,5 @@
-import { Expect, Test, SpyOn } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn, TestOutput } from "../../../core/alsatian-core";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
-import { TestOutput } from "../../../core/test-output";
 
 export class EmitVersionTests {
 

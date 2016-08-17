@@ -1,9 +1,8 @@
 import { CliTestRunner } from "../../../cli/cli-test-runner";
-import { TestSet } from "../../../core/test-set";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet } from "../../../core/alsatian-core";
 import { createPromise } from "../../../promise/create-promise";
 
 export class CliTestRunnerTests {
