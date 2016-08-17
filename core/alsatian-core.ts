@@ -27,6 +27,8 @@ import {
     TestOutcome
 } from "./_results";
 
+import * as METADATA_KEYS from "./decorators/_metadata-keys";
+
 export {
    AsyncTest,
    createTestSet,
@@ -44,5 +46,6 @@ export {
    TestSet,
    Timeout,
    TestSetResults,
-   TestOutcome
+   TestOutcome,
+   METADATA_KEYS
 };

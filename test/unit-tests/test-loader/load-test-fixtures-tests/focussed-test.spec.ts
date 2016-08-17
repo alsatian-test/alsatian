@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../../core/test-loader";
 import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
 export class FocussedTestTests {
@@ -16,7 +16,7 @@ export class FocussedTestTests {
      let unfocussedTest = {
        key: "unfocussedTest"
      };
-     Reflect.defineMetadata("alsatian:tests", [ unfocussedTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [ unfocussedTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -40,8 +40,8 @@ export class FocussedTestTests {
       let unfocussedTest = {
         key: "focussedTest"
       };
-      Reflect.defineMetadata("alsatian:tests", [ unfocussedTest ], testFixtureInstance);
-      Reflect.defineMetadata("alsatian:focus", true, testFixtureInstance, "focussedTest");
+      Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [ unfocussedTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.FOCUS_KEY, true, testFixtureInstance, "focussedTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 

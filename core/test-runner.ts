@@ -5,6 +5,7 @@ import { ITest } from "./_interfaces/test.i";
 import { createPromise } from "../promise/create-promise";
 import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
 import { TestOutput } from "./test-output";
+import { METADATA_KEYS } from "./alsatian-core";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -78,7 +79,7 @@ export class TestRunner {
          return;
      }
 
-     let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
+     let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP_KEY, testFixture.fixture);
 
      if (setupFunctions) {
        setupFunctions.forEach(setupFunction => {
@@ -141,7 +142,7 @@ export class TestRunner {
    private _teardown() {
      let testFixture = this._testFixtures[this._currentTestFixtureIndex];
 
-     let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", testFixture.fixture);
+     let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN_KEY, testFixture.fixture);
 
      if (teardownFunctions) {
        teardownFunctions.forEach(teardownFunction => {

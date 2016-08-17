@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { TestCase as TestCaseDecorator } from "../../../core/decorators/test-case-decorator";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class TestCaseDecoratorTests {
 
@@ -12,7 +12,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, "test", null);
 
-    let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
 
     Expect(tests).toBeDefined();
     Expect(tests).not.toBeNull();
@@ -28,7 +28,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, key, null);
 
-    let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
 
     Expect(tests[0].key).toBe(key);
   }
@@ -45,7 +45,7 @@ export class TestCaseDecoratorTests {
       testCaseDecorator(testFixture, "key " + i, null);
     }
 
-    let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
 
     Expect(tests.length).toBe(testCount);
   }
@@ -62,7 +62,7 @@ export class TestCaseDecoratorTests {
       testCaseDecorator(testFixture, "key", null);
     }
 
-    let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
 
     Expect(tests.length).toBe(1);
   }
@@ -75,7 +75,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, "test", null);
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, "test");
+    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES_KEY, testFixture, "test");
 
     Expect(testCases).toBeDefined();
     Expect(testCases).not.toBeNull();
@@ -91,7 +91,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, "key", null);
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, "key");
+    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES_KEY, testFixture, "key");
 
     Expect(testCases[0].arguments).toEqual(expectedArguments);
   }
@@ -106,7 +106,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, key, null);
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, key);
+    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES_KEY, testFixture, key);
 
     Expect(testCases).toBeDefined();
     Expect(testCases).not.toBeNull();
@@ -128,7 +128,7 @@ export class TestCaseDecoratorTests {
     let args = [ 1, 2, 3 ];
     TestCaseDecorator.apply(TestCaseDecorator, args)(testFixture, "key", null);
 
-    let testCases = Reflect.getMetadata("alsatian:testcases", testFixture, "key");
+    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES_KEY, testFixture, "key");
 
     Expect(testCases[0].arguments).toEqual(args);
   }
