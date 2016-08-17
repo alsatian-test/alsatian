@@ -4,11 +4,13 @@ import { MatchError } from "../_errors";
 
 export class TestCaseResult {
 
-   public arguments() {
+  public constructor(private _test: ITest, private _arguments: Array<any>, private _error?: Error) { }
+
+   public get arguments() {
       return this._arguments;
    }
 
-   get outcome(): TestOutcome {
+   public get outcome(): TestOutcome {
       if (this._error) {
          if (this._error instanceof MatchError) {
             return TestOutcome.Fail;
@@ -23,6 +25,4 @@ export class TestCaseResult {
 
       return TestOutcome.Pass;
    }
-
-   public constructor(private _test: ITest, private _arguments: Array<any>, private _error?: Error) { }
 }
