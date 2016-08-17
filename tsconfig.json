@@ -30,7 +30,6 @@
         "./core/_core.ts",
         "./core/_decorators.ts",
         "./core/_errors.ts",
-        "./core/_interfaces/ignored-test-info.i.ts",
         "./core/_interfaces/test-case.i.ts",
         "./core/_interfaces/test-fixture.i.ts",
         "./core/_interfaces/test.i.ts",
