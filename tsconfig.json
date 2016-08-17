@@ -121,6 +121,7 @@
         "./test/unit-tests/expect-tests/to-throw-error.spec.ts",
         "./test/unit-tests/expect-tests/to-throw.spec.ts",
         "./test/unit-tests/results/test-case-result.spec.ts",
+        "./test/unit-tests/results/test-results.spec.ts",
         "./test/unit-tests/spying/restorable-spy/restore.spec.ts",
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on.spec.ts",

@@ -6,7 +6,9 @@ export class TestResults {
 
    private _testCaseResults: Array<TestCaseResult> = [];
 
-   get outcome(): TestOutcome {
+   public constructor(private _test: ITest) { }
+
+   public get outcome(): TestOutcome {
       const outcomes = this._testCaseResults.map(testCaseResult => testCaseResult.outcome);
 
       if (outcomes.indexOf(TestOutcome.Error) !== -1) {
@@ -23,8 +25,6 @@ export class TestResults {
 
       return TestOutcome.Skip;
    }
-
-   public constructor(private _test: ITest) { }
 
    public addTestCaseResult(args: Array<any>, error?: Error): TestCaseResult {
       const testCaseResult = new TestCaseResult(this._test, args, error);
