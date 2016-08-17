@@ -1,9 +1,6 @@
-import { ITestFixture } from "./_interfaces/test-fixture.i";
-import { ITest } from "./_interfaces/test.i";
-import { ITestCase } from "./_interfaces/test-case.i";
-import { FileRequirer } from "./file-requirer";
-import { TestFixture } from "./test-fixture";
-import { METADATA_KEYS } from "./alsatian-core";
+import { ITestFixture, ITest, ITestCase } from "./_interfaces";
+import { FileRequirer } from "./_core";
+import { TestFixture, METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
 

@@ -1,5 +1,5 @@
 import { GlobHelper, TestLoader } from "./_core";
-import { ITestFixture } from "./_interfaces/test-fixture.i";
+import { ITestFixture } from "./_interfaces";
 
 const path = require("path");
 

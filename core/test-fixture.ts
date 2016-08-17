@@ -1,5 +1,4 @@
-import { ITestFixture } from "./_interfaces/test-fixture.i";
-import { ITest } from "./_interfaces/test.i";
+import { ITestFixture, ITest } from "./_interfaces";
 
 export class TestFixture implements ITestFixture {
 

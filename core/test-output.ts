@@ -1,4 +1,4 @@
-import { ITest } from "./_interfaces/test.i";
+import { ITest } from "./_interfaces";
 import { MatchError } from "./_errors";
 import { TestCaseResult, TestOutcome } from "./_results";
 

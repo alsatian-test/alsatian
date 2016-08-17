@@ -1,11 +1,6 @@
-import { MatchError } from "./_errors";
-import { TestSet } from "./_core";
-import { ITestFixture } from "./_interfaces/test-fixture.i";
-import { ITest } from "./_interfaces/test.i";
+import { ITestFixture, ITest } from "./_interfaces";
 import { createPromise } from "../promise/create-promise";
-import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
-import { TestOutput } from "./test-output";
-import { METADATA_KEYS } from "./alsatian-core";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, METADATA_KEYS } from "./alsatian-core";
 import "reflect-metadata";
 
 export class TestRunner {
