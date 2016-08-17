@@ -1,3 +1,8 @@
+import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error";
+import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
+import { DuplicateCliArgumentError } from "./errors/duplicate-cli-argument-error";
+import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
+
 export class AlsatianCliOptions {
 
    private _fileGlobs: Array<string>;
@@ -16,7 +21,7 @@ export class AlsatianCliOptions {
       args = this._extractTimeout(args);
 
       if (args.length > 0) {
-         throw new Error("unrecognised arguments " + args.map(argument => argument.replace(/[-]*/, "")).join(" and "));
+         throw new InvalidArgumentNamesError(args);
       }
    }
 
@@ -41,8 +46,8 @@ export class AlsatianCliOptions {
 
          const timeout = parseInt(timeoutValue);
 
-         if (isNaN(timeout) || timeout.toString() !== timeoutValue) {
-            throw new Error("Invalid timeout argument \"" + timeoutValue + "\" given.");
+         if (isNaN(timeout) || timeout < 1 || timeout.toString() !== timeoutValue) {
+            throw new InvalidTimeoutValueError(timeoutValue);
          }
 
          this._timeout = timeout;
@@ -65,7 +70,7 @@ export class AlsatianCliOptions {
          return -1;
       }
       else if (matchingArguments.length > 1) {
-         throw new Error("Duplicate " + argumentName + " arguments.");
+         throw new DuplicateCliArgumentError(argumentName);
       }
 
       return args.indexOf(matchingArguments[0]);
@@ -80,11 +85,11 @@ export class AlsatianCliOptions {
 
       const valueArgument = args[argumentIndex + 1];
 
-      if (valueArgument && valueArgument[0] !== "-") {
+      if (valueArgument && (valueArgument[0] !== "-" || !isNaN(parseInt(valueArgument)))) {
          return valueArgument;
       }
       else {
-         throw new Error("Argument " + argumentName + " was given no value.");
+         throw new MissingArgumentValueError(argumentName);
       }
    }
 }
