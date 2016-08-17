@@ -67,6 +67,8 @@ export class TestLoader {
         test.ignored = false;
         if (Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
           test.ignored = true;
+
+          test.ignoreReason = Reflect.getMetadata("alsatian:ignore-reason", testFixture.fixture, test.key);
         }
 
         test.focussed = false;

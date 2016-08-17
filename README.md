@@ -278,7 +278,7 @@ import { Expect, Test, IgnoreTest } from "alsatian";
 export class ExampleTestFixture {
 
   @Test()
-  @IgnoreTest
+  @IgnoreTest()
   public ignoredTest() {
     Expect(1).toBe(1);
   }
@@ -290,7 +290,7 @@ or you can stop all tests in a given fixture from running using the ```IgnoreTes
 ```
 import { Expect, Test, IgnoreTests } from "alsatian";
 
-@IgnoreTests
+@IgnoreTests()
 export class ExampleTestFixture {
 
   @Test()
@@ -301,6 +301,21 @@ export class ExampleTestFixture {
   @Test()
   public neitherWillThisOne() {
    Expect(1).toBe(1);
+  }
+}
+```
+
+You can provide a reason to both of these, which will put it into the TAP output.
+
+```
+import { Expect, Test, IgnoreTest } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @Test()
+  @IgnoreTest("This test is useless, ignore for now.")
+  public ignoredTest() {
+    Expect(1).toBe(1);
   }
 }
 ```
