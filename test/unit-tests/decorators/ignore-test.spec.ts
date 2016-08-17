@@ -12,6 +12,41 @@ export class IgnoreTestDecoratorTests {
         let testFixture = {};
 
         ignoreTestDecorator(testFixture, key, null);
-        Expect(Reflect.getMetadata("alsatian:ignore", testFixture, key)).toBe(true);
+
+        let ignoreMetadata = Reflect.getMetadata("alsatian:ignore", testFixture, key);
+
+        Expect(ignoreMetadata).not.toBe(undefined);
+        Expect(ignoreMetadata).not.toBe(null);
     }
+
+    @Test()
+    public ignoreTestIgnoredSetToTrue() {
+        let key = "testKey";
+
+        let ignoreTestDecorator = IgnoreTestDecorator();
+        let testFixture = {};
+
+        ignoreTestDecorator(testFixture, key, null);
+
+        let ignoreMetadata = Reflect.getMetadata("alsatian:ignore", testFixture, key);
+
+        Expect(ignoreMetadata.ignored).toBe(true);
+    }
+
+    @TestCase("Ignored because of bla bla bla")
+    @TestCase("another reason for it being ignored")
+    @TestCase("bla bla bla")
+    public ignoreTestCorrectReasonAdded(reason: string) {
+        let key = "testKey";
+
+        let ignoreTestDecorator = IgnoreTestDecorator();
+        let testFixture = {};
+
+        ignoreTestDecorator(testFixture, key, null);
+
+        let ignoreMetadata = Reflect.getMetadata("alsatian:ignore", testFixture, key);
+
+        Expect(ignoreMetadata.reason).toBe(reason);
+    }
+
 }
