@@ -49,7 +49,14 @@ export class TestOutput {
     private _emitSkip(testId: number, test: ITest, testCaseArguments: Array<any>): void {
         let description = this._getTestDescription(test, testCaseArguments);
 
-        this._writeOut(`ok ${testId} ${description} # skip\n`);
+        // we only want to use the reason if it's not undefined
+        let reasonString = "";
+
+        if (test.ignoreReason !== undefined) {
+            reasonString = ` ${test.ignoreReason}`;
+        }
+
+        this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
     }
 
     private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
