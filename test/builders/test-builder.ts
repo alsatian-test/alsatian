@@ -10,6 +10,7 @@ export class TestBuilder {
     this._test = {
       focussed: false,
       ignored: false,
+      ignoreReason: undefined,
       isAsync: false,
       timeout: null,
       key: "testFunction",
@@ -53,8 +54,9 @@ export class TestBuilder {
     return this;
   }
 
-  public ignored(): TestBuilder {
+  public ignored(reason?: string): TestBuilder {
       this._test.ignored = true;
+      this._test.ignoreReason = reason;
       return this;
   }
 

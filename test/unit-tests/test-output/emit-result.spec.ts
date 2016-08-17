@@ -128,6 +128,26 @@ export class EmitResultTests {
         Expect(outStream.write).toHaveBeenCalledWith(expected);
     }
 
+    @TestCase("first reason")
+    @TestCase("this reason is the second one!")
+    @TestCase("last, but most certainly not least")
+    public shouldEmitSkipWithReasonCorrectly(reason: string) {
+        let outStream = new OutputStreamBuilder().build();
+        SpyOn(outStream, "write");
+
+        let testOutput = new TestOutput(outStream);
+
+        let test: ITest = new TestBuilder().ignored(reason).build();
+
+        let testCaseResult = new TestCaseResult(test, [], undefined);
+
+        testOutput.emitResult(1, testCaseResult);
+
+        let expected = `ok 1 ${test.description} # skip ${reason}\n`;
+
+        Expect(outStream.write).toHaveBeenCalledWith(expected);
+    }
+
     @Test()
     public shouldEmitErrorCorrectly() {
         let outStream = new OutputStreamBuilder().build();
