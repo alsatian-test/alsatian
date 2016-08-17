@@ -39,7 +39,7 @@ export class IgnoreTestDecoratorTests {
     public ignoreTestCorrectReasonAdded(reason: string) {
         let key = "testKey";
 
-        let ignoreTestDecorator = IgnoreTestDecorator();
+        let ignoreTestDecorator = IgnoreTestDecorator(reason);
         let testFixture = {};
 
         ignoreTestDecorator(testFixture, key, null);
