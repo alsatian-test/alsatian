@@ -1,25 +1,25 @@
 import "reflect-metadata";
-import { TEST_KEY, TEST_CASES_KEY } from "./_metadata-keys";
+import { TESTS_KEY, TEST_CASES_KEY } from "./_metadata-keys";
 
 export function TestCase(...testCaseArguments: Array<any>) {
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
 
     // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TEST_KEY, target);
+    let tests: Array<any> = Reflect.getMetadata(TESTS_KEY, target);
 
     // if there are no tests registered yet then register it
     if (!tests) {
       tests = [  {
          key: propertyKey
       } ];
-      Reflect.defineMetadata(TEST_KEY, tests, target);
+      Reflect.defineMetadata(TESTS_KEY, tests, target);
     }
     // otherwise add it to the register
     else if (tests.filter(test => test.key === propertyKey).length === 0) {
       tests.push( {
          key: propertyKey
       });
-      Reflect.defineMetadata(TEST_KEY, tests, target);
+      Reflect.defineMetadata(TESTS_KEY, tests, target);
     }
 
     // check if there are test cases already associated with this test

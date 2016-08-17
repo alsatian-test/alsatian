@@ -12,7 +12,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, "test", null);
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture);
 
     Expect(tests).toBeDefined();
     Expect(tests).not.toBeNull();
@@ -28,7 +28,7 @@ export class TestCaseDecoratorTests {
 
     testCaseDecorator(testFixture, key, null);
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture);
 
     Expect(tests[0].key).toBe(key);
   }
@@ -45,7 +45,7 @@ export class TestCaseDecoratorTests {
       testCaseDecorator(testFixture, "key " + i, null);
     }
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture);
 
     Expect(tests.length).toBe(testCount);
   }
@@ -62,7 +62,7 @@ export class TestCaseDecoratorTests {
       testCaseDecorator(testFixture, "key", null);
     }
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture);
+    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture);
 
     Expect(tests.length).toBe(1);
   }

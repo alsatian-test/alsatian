@@ -16,7 +16,7 @@ export class FocussedTestTests {
      let unfocussedTest = {
        key: "unfocussedTest"
      };
-     Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [ unfocussedTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ unfocussedTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -40,7 +40,7 @@ export class FocussedTestTests {
       let unfocussedTest = {
         key: "focussedTest"
       };
-      Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [ unfocussedTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ unfocussedTest ], testFixtureInstance);
       Reflect.defineMetadata(METADATA_KEYS.FOCUS_KEY, true, testFixtureInstance, "focussedTest");
 
       let testFixtureConstructor = () => testFixtureInstance;

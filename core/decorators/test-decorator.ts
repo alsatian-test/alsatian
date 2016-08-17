@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { TEST_KEY } from "./_metadata-keys";
+import { TESTS_KEY } from "./_metadata-keys";
 
 export function Test(description?: string) {
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
 
     // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TEST_KEY, target);
+    let tests: Array<any> = Reflect.getMetadata(TESTS_KEY, target);
 
     // if there are no tests registered yet then register it
     if (!tests) {
@@ -24,6 +24,6 @@ export function Test(description?: string) {
     tests.filter(test => test.key === propertyKey)[0].description = description;
 
     // update the register
-    Reflect.defineMetadata(TEST_KEY, tests, target);
+    Reflect.defineMetadata(TESTS_KEY, tests, target);
 };
 }

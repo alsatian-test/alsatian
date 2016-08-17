@@ -11,7 +11,7 @@ export class LoadTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
 
      let testFixtureSet = {
         testFixture: () => testFixtureInstance
@@ -32,7 +32,7 @@ export class LoadTestTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
 
       let testFixtureSet = {
          testFixture: () => testFixtureInstance
@@ -55,7 +55,7 @@ export class LoadTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
 
      let testFixtureSet = {
         testFixture: () => testFixtureInstance
@@ -76,7 +76,7 @@ export class LoadTestTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TEST_KEY, [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
 
       let testFixtureSet = {
          testFixture: () => testFixtureInstance

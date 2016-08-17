@@ -48,7 +48,7 @@ export class TestLoader {
       testFixture.fixture = new testFixtureConstructor();
 
       // find all the tests on this test fixture
-      let tests = Reflect.getMetadata(METADATA_KEYS.TEST_KEY, testFixture.fixture);
+      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture.fixture);
 
       testFixture.focussed = false;
 
