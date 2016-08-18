@@ -52,6 +52,31 @@ export class LoadTestTests {
      Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
    }
 
+   @TestCase("first reason")
+   @TestCase("the second, and the last")
+   public ignoreReasonShouldBeSetFromMetadata(reason: string) {
+
+     let fileRequirer = new FileRequirer();
+
+      let testFixtureInstance = {};
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+      let testFixtureSet = {
+         testFixture: () => testFixtureInstance
+      };
+
+     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
+     Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
+
+     let spy = SpyOn(fileRequirer, "require");
+     spy.andStub();
+     spy.andReturn(testFixtureSet);
+
+     let testLoader = new TestLoader(fileRequirer);
+
+     Expect(testLoader.loadTestFixture("test")[0].ignoreReason).toBe(reason);
+   }
+
    @Test()
    public focussedShouldBeFalseByDefault() {
 
