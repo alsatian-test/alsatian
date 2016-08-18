@@ -36,7 +36,7 @@ export class TestLoader {
 
       testFixture.ignored = false;
 
-      if (Reflect.getMetadata(METADATA_KEYS.IGNORE_KEY, testFixtureConstructor)) {
+      if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixtureConstructor)) {
         // fixture should be ignored
         testFixture.ignored = true;
       }
@@ -45,11 +45,11 @@ export class TestLoader {
       testFixture.fixture = new testFixtureConstructor();
 
       // find all the tests on this test fixture
-      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS_KEY, testFixture.fixture);
+      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture.fixture);
 
       testFixture.focussed = false;
 
-      if (Reflect.getMetadata(METADATA_KEYS.FOCUS_KEY, testFixtureConstructor)) {
+      if (Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixtureConstructor)) {
         testFixture.focussed = true;
       }
 
@@ -63,19 +63,19 @@ export class TestLoader {
       tests.forEach((test: ITest) => {
 
         test.ignored = false;
-        if (Reflect.getMetadata(METADATA_KEYS.IGNORE_KEY, testFixture.fixture, test.key)) {
+        if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture.fixture, test.key)) {
           test.ignored = true;
 
-          test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON_KEY, testFixture.fixture, test.key);
+          test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture.fixture, test.key);
         }
 
         test.focussed = false;
 
-        if (Reflect.getMetadata(METADATA_KEYS.FOCUS_KEY, testFixture.fixture, test.key)) {
+        if (Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture.fixture, test.key)) {
           test.focussed = true;
         }
 
-        test.timeout = Reflect.getMetadata(METADATA_KEYS.TIMEOUT_KEY, testFixture.fixture, test.key) || null;
+        test.timeout = Reflect.getMetadata(METADATA_KEYS.TIMEOUT, testFixture.fixture, test.key) || null;
 
         testFixture.addTest(test);
 
@@ -83,7 +83,7 @@ export class TestLoader {
            test.description = test.key;
         }
 
-        let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES_KEY, testFixture.fixture, test.key);
+        let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture.fixture, test.key);
         test.testCases = [];
 
         if (!testCases) {

@@ -11,6 +11,6 @@ export class FocusTestsDecoratorTests {
 
        FocusTestsDecorator(TestFixture);
 
-       Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS_KEY, TestFixture)).toBe(true);
+       Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixture)).toBe(true);
     }
 }

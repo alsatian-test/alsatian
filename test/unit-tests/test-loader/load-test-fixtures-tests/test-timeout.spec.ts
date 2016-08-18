@@ -16,7 +16,7 @@ export class TestTimeoutTests {
      let noTimeoutTest = {
        key: "noTimeoutTest"
      };
-     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ noTimeoutTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ noTimeoutTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -42,8 +42,8 @@ export class TestTimeoutTests {
       let timeoutTest = {
         key: "timeoutTest"
       };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ timeoutTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.TIMEOUT_KEY, timeoutPeriod, testFixtureInstance, "timeoutTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ timeoutTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TIMEOUT, timeoutPeriod, testFixtureInstance, "timeoutTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 

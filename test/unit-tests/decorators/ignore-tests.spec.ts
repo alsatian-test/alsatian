@@ -10,6 +10,6 @@ export class IgnoreTestsDecoratorTests {
         let TestFixture = () => {};
 
         ignoreTestsDecorator(TestFixture);
-        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE_KEY, TestFixture)).toBe(true);
+        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE, TestFixture)).toBe(true);
     }
 }

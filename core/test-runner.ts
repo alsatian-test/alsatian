@@ -74,7 +74,7 @@ export class TestRunner {
          return;
      }
 
-     let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP_KEY, testFixture.fixture);
+     let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture.fixture);
 
      if (setupFunctions) {
        setupFunctions.forEach(setupFunction => {
@@ -137,7 +137,7 @@ export class TestRunner {
    private _teardown() {
      let testFixture = this._testFixtures[this._currentTestFixtureIndex];
 
-     let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN_KEY, testFixture.fixture);
+     let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture.fixture);
 
      if (teardownFunctions) {
        teardownFunctions.forEach(teardownFunction => {

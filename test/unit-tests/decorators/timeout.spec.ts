@@ -14,7 +14,7 @@ export class TimeoutDecoratorTests {
 
       timeoutDecorator(testFixture, "test", null);
 
-      Expect(Reflect.getMetadata(METADATA_KEYS.TIMEOUT_KEY, testFixture, "test")).toBe(timeout);
+      Expect(Reflect.getMetadata(METADATA_KEYS.TIMEOUT, testFixture, "test")).toBe(timeout);
    }
 
    @TestCase(0)

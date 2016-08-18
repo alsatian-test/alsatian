@@ -13,7 +13,7 @@ export class IgnoreTestDecoratorTests {
 
         ignoreTestDecorator(testFixture, key, null);
 
-        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE_KEY, testFixture, key)).toBe(true);
+        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture, key)).toBe(true);
     }
 
     @TestCase("Ignored because of bla bla bla")
@@ -27,7 +27,7 @@ export class IgnoreTestDecoratorTests {
 
         ignoreTestDecorator(testFixture, key, null);
 
-        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON_KEY, testFixture, key)).toBe(reason);
+        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture, key)).toBe(reason);
     }
 
 }

@@ -11,7 +11,7 @@ export class TeardownDecoratorTests {
 
       Teardown(testFixture, "test", null);
 
-      let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN_KEY, testFixture);
+      let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
       Expect(teardownFunctions).toBeDefined();
       Expect(teardownFunctions).not.toBeNull();
@@ -26,7 +26,7 @@ export class TeardownDecoratorTests {
 
        Teardown(testFixture, key, null);
 
-       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN_KEY, testFixture);
+       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
        Expect(teardownFunctions[0]).toBe(key);
     }
@@ -42,7 +42,7 @@ export class TeardownDecoratorTests {
          Teardown(testFixture, "key " + i, null);
        }
 
-       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN_KEY, testFixture);
+       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
        Expect(teardownFunctions.length).toBe(teardownFunctionCount);
     }

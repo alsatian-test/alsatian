@@ -16,7 +16,7 @@ export class IgnoredTestTests {
      let unignoredTest = {
        key: "unignoredTest"
      };
-     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ unignoredTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -40,8 +40,8 @@ export class IgnoredTestTests {
       let unignoredTest = {
         key: "ignoredTest"
       };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE_KEY, true, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 
@@ -66,9 +66,9 @@ export class IgnoredTestTests {
       let unignoredTest = {
         key: "ignoredTest"
       };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE_KEY, true, testFixtureInstance, "ignoredTest");
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON_KEY, reason, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureInstance, "ignoredTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 

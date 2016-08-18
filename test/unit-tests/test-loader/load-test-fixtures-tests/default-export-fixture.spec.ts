@@ -11,7 +11,7 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -30,11 +30,11 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
       let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata(METADATA_KEYS.IGNORE_KEY, true,  testFixtureConstructor);
+     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
@@ -51,7 +51,7 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -70,11 +70,11 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS_KEY, [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
       let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata(METADATA_KEYS.FOCUS_KEY, true,  testFixtureConstructor);
+     Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();

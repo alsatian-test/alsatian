@@ -1,19 +1,19 @@
-const TESTS_KEY = "alsatian:tests";
-const FOCUS_KEY = "alsatian:focus";
-const IGNORE_KEY = "alsatian:ignore";
-const IGNORE_REASON_KEY = "alsatian:ignore-reason";
-const SETUP_KEY = "alsatian:setup";
-const TEARDOWN_KEY = "alsatian:teardown";
-const TEST_CASES_KEY = "alsatian:testcases";
-const TIMEOUT_KEY = "alsatian:timeout";
+const TESTS = "alsatian:tests";
+const FOCUS = "alsatian:focus";
+const IGNORE = "alsatian:ignore";
+const IGNORE_REASON = "alsatian:ignore-reason";
+const SETUP = "alsatian:setup";
+const TEARDOWN = "alsatian:teardown";
+const TEST_CASES = "alsatian:testcases";
+const TIMEOUT = "alsatian:timeout";
 
 export {
-    TESTS_KEY,
-    FOCUS_KEY,
-    IGNORE_KEY,
-    IGNORE_REASON_KEY,
-    SETUP_KEY,
-    TEARDOWN_KEY,
-    TEST_CASES_KEY,
-    TIMEOUT_KEY
+    TESTS,
+    FOCUS,
+    IGNORE,
+    IGNORE_REASON,
+    SETUP,
+    TEARDOWN,
+    TEST_CASES,
+    TIMEOUT
 };

@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { SETUP_KEY } from "./_metadata-keys";
+import { SETUP } from "./_metadata-keys";
 
 export function Setup(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<() => any>) {
 
-    let setupFunctions: Array<string> = Reflect.getMetadata(SETUP_KEY, target);
+    let setupFunctions: Array<string> = Reflect.getMetadata(SETUP, target);
 
     if (!setupFunctions) {
       setupFunctions = [];
@@ -12,5 +12,5 @@ export function Setup(target: any, propertyKey: string, descriptor: TypedPropert
     setupFunctions.push(propertyKey);
 
     // mark as setup test method
-    Reflect.defineMetadata(SETUP_KEY, setupFunctions, target);
+    Reflect.defineMetadata(SETUP, setupFunctions, target);
 };

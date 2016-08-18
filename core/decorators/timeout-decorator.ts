@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { TIMEOUT_KEY } from "./_metadata-keys";
+import { TIMEOUT } from "./_metadata-keys";
 
 export function Timeout(timeoutInMs: number) {
   if (timeoutInMs <= 0) {
@@ -8,6 +8,6 @@ export function Timeout(timeoutInMs: number) {
 
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
 
-    Reflect.defineMetadata(TIMEOUT_KEY, timeoutInMs, target, propertyKey);
+    Reflect.defineMetadata(TIMEOUT, timeoutInMs, target, propertyKey);
   };
 }
