@@ -1,6 +1,9 @@
 import { TestLoader } from "../../../core/test-loader";
 import { FileRequirer } from "../../../core/file-requirer";
 import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../core/alsatian-core";
+import { TestBuilder } from "../../builders/test-builder";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { TestCaseBuilder } from "../../builders/test-case-builder";
 import "reflect-metadata";
 
 export class LoadTestTests {
@@ -117,16 +120,26 @@ export class LoadTestTests {
    public shouldIgnoreTestsIfFixtureIgnored() {
        let fileRequirer = new FileRequirer();
 
-       let tests = {
-           testOne: () => { },
-           testTwo: () => { }
-       };
-       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], tests);
+       let testOne = new TestBuilder()
+        .withKey("testOne")
+        .addTestCase(new TestCaseBuilder().build())
+        .build();
+
+        let testTwo = new TestBuilder()
+         .withKey("testTwo")
+         .addTestCase(new TestCaseBuilder().build())
+         .build();
+
+        let fixture = new TestFixtureBuilder()
+            .addTest(testOne)
+            .addTest(testTwo)
+            .build();
 
        let testFixtureSet = {
-           testFixture: () => tests
+           testFixture: () => fixture
        };
-       Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
+       Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureSet.testFixture);
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
 
        let spy = SpyOn(fileRequirer, "require");
        spy.andStub();
@@ -144,17 +157,27 @@ export class LoadTestTests {
    public shouldIgnoreTestsWithReasonIfFixtureIgnored(reason: string) {
        let fileRequirer = new FileRequirer();
 
-       let tests = {
-           testOne: () => { },
-           testTwo: () => { }
-       };
-       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], tests);
+       let testOne = new TestBuilder()
+        .withKey("testOne")
+        .addTestCase(new TestCaseBuilder().build())
+        .build();
+
+        let testTwo = new TestBuilder()
+         .withKey("testTwo")
+         .addTestCase(new TestCaseBuilder().build())
+         .build();
+
+        let fixture = new TestFixtureBuilder()
+            .addTest(testOne)
+            .addTest(testTwo)
+            .build();
 
        let testFixtureSet = {
-           testFixture: () => tests
+           testFixture: () => fixture
        };
        Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureSet.testFixture);
        Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
 
        let spy = SpyOn(fileRequirer, "require");
        spy.andStub();
@@ -163,9 +186,7 @@ export class LoadTestTests {
        let testLoader = new TestLoader(fileRequirer);
        let loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
 
-       let expectedReason = `${reason} (from fixture)`;
-
-       Expect(loadedFixture.tests[0].ignoreReason).toBe(expectedReason);
-       Expect(loadedFixture.tests[1].ignoreReason).toBe(expectedReason);
+       Expect(loadedFixture.tests[0].ignoreReason).toBe(reason);
+       Expect(loadedFixture.tests[1].ignoreReason).toBe(reason);
    }
  }
