@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { TIMEOUT } from "./_metadata-keys";
 
 export function Timeout(timeoutInMs: number) {
   if (timeoutInMs <= 0) {
@@ -7,6 +8,6 @@ export function Timeout(timeoutInMs: number) {
 
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
 
-    Reflect.defineMetadata("alsatian:timeout", timeoutInMs, target, propertyKey);
+    Reflect.defineMetadata(TIMEOUT, timeoutInMs, target, propertyKey);
   };
 }

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { IgnoreTest as IgnoreTestDecorator } from "../../../core/decorators/ignore-test-decorator";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class IgnoreTestDecoratorTests {
 
@@ -13,7 +13,7 @@ export class IgnoreTestDecoratorTests {
 
         ignoreTestDecorator(testFixture, key, null);
 
-        Expect(Reflect.getMetadata("alsatian:ignore", testFixture, key)).toBe(true);
+        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture, key)).toBe(true);
     }
 
     @TestCase("Ignored because of bla bla bla")
@@ -27,7 +27,7 @@ export class IgnoreTestDecoratorTests {
 
         ignoreTestDecorator(testFixture, key, null);
 
-        Expect(Reflect.getMetadata("alsatian:ignore-reason", testFixture, key)).toBe(reason);
+        Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture, key)).toBe(reason);
     }
 
 }

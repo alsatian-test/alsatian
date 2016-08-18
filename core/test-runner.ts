@@ -1,10 +1,6 @@
-import { MatchError, TestTimeoutError } from "./_errors";
-import { TestSet } from "./_core";
-import { ITestFixture } from "./_interfaces/test-fixture.i";
-import { ITest } from "./_interfaces/test.i";
+import { ITestFixture, ITest } from "./_interfaces";
 import { createPromise } from "../promise/create-promise";
-import { TestSetResults, TestFixtureResults, TestResults } from "./_results";
-import { TestOutput } from "./test-output";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, METADATA_KEYS, TestTimeoutError } from "./alsatian-core";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -84,7 +80,7 @@ export class TestRunner {
          return;
      }
 
-     let setupFunctions: Array<string> = Reflect.getMetadata("alsatian:setup", testFixture.fixture);
+     let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture.fixture);
 
      if (setupFunctions) {
        setupFunctions.forEach(setupFunction => {
@@ -147,7 +143,7 @@ export class TestRunner {
    private _teardown() {
      let testFixture = this._testFixtures[this._currentTestFixtureIndex];
 
-     let teardownFunctions: Array<string> = Reflect.getMetadata("alsatian:teardown", testFixture.fixture);
+     let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture.fixture);
 
      if (teardownFunctions) {
        teardownFunctions.forEach(teardownFunction => {

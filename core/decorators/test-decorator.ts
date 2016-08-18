@@ -1,10 +1,11 @@
 import "reflect-metadata";
+import { TESTS } from "./_metadata-keys";
 
 export function Test(description?: string) {
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
 
     // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata("alsatian:tests", target);
+    let tests: Array<any> = Reflect.getMetadata(TESTS, target);
 
     // if there are no tests registered yet then register it
     if (!tests) {
@@ -23,6 +24,6 @@ export function Test(description?: string) {
     tests.filter(test => test.key === propertyKey)[0].description = description;
 
     // update the register
-    Reflect.defineMetadata("alsatian:tests", tests, target);
+    Reflect.defineMetadata(TESTS, tests, target);
 };
 }

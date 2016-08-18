@@ -1,8 +1,6 @@
-import { ITestFixture } from "./_interfaces/test-fixture.i";
-import { ITest } from "./_interfaces/test.i";
-import { ITestCase } from "./_interfaces/test-case.i";
-import { FileRequirer } from "./file-requirer";
-import { TestFixture } from "./test-fixture";
+import { ITestFixture, ITest, ITestCase } from "./_interfaces";
+import { FileRequirer } from "./_core";
+import { TestFixture, METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
 
@@ -38,7 +36,7 @@ export class TestLoader {
 
       testFixture.ignored = false;
 
-      if (Reflect.getMetadata("alsatian:ignore", testFixtureConstructor)) {
+      if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixtureConstructor)) {
         // fixture should be ignored
         testFixture.ignored = true;
       }
@@ -47,11 +45,11 @@ export class TestLoader {
       testFixture.fixture = new testFixtureConstructor();
 
       // find all the tests on this test fixture
-      let tests = Reflect.getMetadata("alsatian:tests", testFixture.fixture);
+      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture.fixture);
 
       testFixture.focussed = false;
 
-      if (Reflect.getMetadata("alsatian:focus", testFixtureConstructor)) {
+      if (Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixtureConstructor)) {
         testFixture.focussed = true;
       }
 
@@ -65,19 +63,19 @@ export class TestLoader {
       tests.forEach((test: ITest) => {
 
         test.ignored = false;
-        if (Reflect.getMetadata("alsatian:ignore", testFixture.fixture, test.key)) {
+        if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture.fixture, test.key)) {
           test.ignored = true;
 
-          test.ignoreReason = Reflect.getMetadata("alsatian:ignore-reason", testFixture.fixture, test.key);
+          test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture.fixture, test.key);
         }
 
         test.focussed = false;
 
-        if (Reflect.getMetadata("alsatian:focus", testFixture.fixture, test.key)) {
+        if (Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture.fixture, test.key)) {
           test.focussed = true;
         }
 
-        test.timeout = Reflect.getMetadata("alsatian:timeout", testFixture.fixture, test.key) || null;
+        test.timeout = Reflect.getMetadata(METADATA_KEYS.TIMEOUT, testFixture.fixture, test.key) || null;
 
         testFixture.addTest(test);
 
@@ -85,7 +83,7 @@ export class TestLoader {
            test.description = test.key;
         }
 
-        let testCases = Reflect.getMetadata("alsatian:testcases", testFixture.fixture, test.key);
+        let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture.fixture, test.key);
         test.testCases = [];
 
         if (!testCases) {

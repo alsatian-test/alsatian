@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../../core/test-loader";
 import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
 export class DefaultExportFixtureTests {
@@ -11,7 +11,7 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -30,11 +30,11 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
       let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata("alsatian:ignore", true,  testFixtureConstructor);
+     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
@@ -51,7 +51,7 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {};
-     Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -70,11 +70,11 @@ export class DefaultExportFixtureTests {
      let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {};
-      Reflect.defineMetadata("alsatian:tests", [], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
       let testFixtureConstructor = () => testFixtureInstance;
 
-     Reflect.defineMetadata("alsatian:focus", true,  testFixtureConstructor);
+     Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureConstructor);
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Setup } from "../../../core/decorators/setup-decorator";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class SetupDecoratorTests {
 
@@ -11,7 +11,7 @@ export class SetupDecoratorTests {
 
       Setup(testFixture, "test", null);
 
-      let setupFunctions = Reflect.getMetadata("alsatian:setup", testFixture);
+      let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
       Expect(setupFunctions).toBeDefined();
       Expect(setupFunctions).not.toBeNull();
@@ -26,7 +26,7 @@ export class SetupDecoratorTests {
 
        Setup(testFixture, key, null);
 
-       let setupFunctions = Reflect.getMetadata("alsatian:setup", testFixture);
+       let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
        Expect(setupFunctions[0]).toBe(key);
     }
@@ -42,7 +42,7 @@ export class SetupDecoratorTests {
          Setup(testFixture, "key " + i, null);
        }
 
-       let setupFunctions = Reflect.getMetadata("alsatian:setup", testFixture);
+       let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
        Expect(setupFunctions.length).toBe(setupFunctionCount);
     }

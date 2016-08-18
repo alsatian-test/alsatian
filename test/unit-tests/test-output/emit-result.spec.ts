@@ -1,10 +1,7 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest } from "../../../core/alsatian-core";
-import { TestCaseResult, TestOutcome } from "../../../core/_results";
-import { ITest } from "../../../core/_interfaces/test.i";
+import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, MatchError, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
-import { TestOutput } from "../../../core/test-output";
-import { MatchError } from "../../../core/errors/match-error";
 
 export class EmitResultTests {
 

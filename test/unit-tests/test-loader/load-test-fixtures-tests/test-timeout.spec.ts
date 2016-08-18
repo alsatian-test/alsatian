@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../../core/test-loader";
 import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
 export class TestTimeoutTests {
@@ -16,7 +16,7 @@ export class TestTimeoutTests {
      let noTimeoutTest = {
        key: "noTimeoutTest"
      };
-     Reflect.defineMetadata("alsatian:tests", [ noTimeoutTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ noTimeoutTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -42,8 +42,8 @@ export class TestTimeoutTests {
       let timeoutTest = {
         key: "timeoutTest"
       };
-      Reflect.defineMetadata("alsatian:tests", [ timeoutTest ], testFixtureInstance);
-      Reflect.defineMetadata("alsatian:timeout", timeoutPeriod, testFixtureInstance, "timeoutTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ timeoutTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.TIMEOUT, timeoutPeriod, testFixtureInstance, "timeoutTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 

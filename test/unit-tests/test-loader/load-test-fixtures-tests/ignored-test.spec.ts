@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../../core/test-loader";
 import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
 export class IgnoredTestTests {
@@ -16,7 +16,7 @@ export class IgnoredTestTests {
      let unignoredTest = {
        key: "unignoredTest"
      };
-     Reflect.defineMetadata("alsatian:tests", [ unignoredTest ], testFixtureInstance);
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
 
      let testFixtureConstructor = () => testFixtureInstance;
 
@@ -40,8 +40,8 @@ export class IgnoredTestTests {
       let unignoredTest = {
         key: "ignoredTest"
       };
-      Reflect.defineMetadata("alsatian:tests", [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata("alsatian:ignore", true, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 
@@ -66,9 +66,9 @@ export class IgnoredTestTests {
       let unignoredTest = {
         key: "ignoredTest"
       };
-      Reflect.defineMetadata("alsatian:tests", [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata("alsatian:ignore", true, testFixtureInstance, "ignoredTest");
-      Reflect.defineMetadata("alsatian:ignore-reason", reason, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
+      Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureInstance, "ignoredTest");
 
       let testFixtureConstructor = () => testFixtureInstance;
 

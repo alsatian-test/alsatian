@@ -2,7 +2,9 @@ import {
     createTestSet,
     Expect,
     TestRunner,
-    TestSet
+    TestSet,
+    TestFixture,
+    TestOutput
 } from "./_core";
 
 import {
@@ -24,8 +26,18 @@ import {
 
 import {
     TestSetResults,
-    TestOutcome
+    TestOutcome,
+    TestFixtureResults,
+    TestResults,
+    TestCaseResult
 } from "./_results";
+
+import {
+    MatchError,
+    TestTimeoutError
+} from "./_errors";
+
+import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
 export {
    AsyncTest,
@@ -44,5 +56,13 @@ export {
    TestSet,
    Timeout,
    TestSetResults,
-   TestOutcome
+   TestOutcome,
+   METADATA_KEYS,
+   TestFixture,
+   TestOutput,
+   MatchError,
+   TestFixtureResults,
+   TestResults,
+   TestCaseResult,
+   TestTimeoutError
 };

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { AsyncTest as AsyncTestDecorator } from "../../../core/decorators/async-test-decorator";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class AsyncTestDecoratorTests {
 
@@ -12,7 +12,7 @@ export class AsyncTestDecoratorTests {
 
       asyncTestDecorator(testFixture, "test", null);
 
-      let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
       Expect(tests).toBeDefined();
       Expect(tests).not.toBeNull();
@@ -26,7 +26,7 @@ export class AsyncTestDecoratorTests {
 
        asyncTestDecorator(testFixture, "test", null);
 
-       let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+       let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
        Expect(tests[0].isAsync).toBe(true);
     }
@@ -41,7 +41,7 @@ export class AsyncTestDecoratorTests {
 
        asyncTestDecorator(testFixture, key, null);
 
-       let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+       let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
        Expect(tests[0].key).toBe(key);
     }
@@ -56,7 +56,7 @@ export class AsyncTestDecoratorTests {
 
         asyncTestDecorator(testFixture, "key", null);
 
-        let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+        let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
         Expect(tests[0].description).toBe(description);
      }
@@ -73,7 +73,7 @@ export class AsyncTestDecoratorTests {
            asyncTestDecorator(testFixture, "key " + i, null);
          }
 
-         let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+         let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
          Expect(tests.length).toBe(testCount);
       }
@@ -90,7 +90,7 @@ export class AsyncTestDecoratorTests {
             testDecorator(testFixture, "key", null);
           }
 
-          let tests = Reflect.getMetadata("alsatian:tests", testFixture);
+          let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
           Expect(tests.length).toBe(1);
        }
