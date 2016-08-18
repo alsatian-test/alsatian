@@ -138,4 +138,34 @@ export class LoadTestTests {
        Expect(loadedFixture.tests[0].ignored).toBe(true);
        Expect(loadedFixture.tests[1].ignored).toBe(true);
    }
+
+   @TestCase("first test ignore reason")
+   @TestCase("another one!")
+   public shouldIgnoreTestsWithReasonIfFixtureIgnored(reason: string) {
+       let fileRequirer = new FileRequirer();
+
+       let tests = {
+           testOne: () => { },
+           testTwo: () => { }
+       };
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], tests);
+
+       let testFixtureSet = {
+           testFixture: () => tests
+       };
+       Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureSet.testFixture);
+       Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+       let loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
+
+       let expectedReason = `${reason} (from fixture)`;
+
+       Expect(loadedFixture.tests[0].ignoreReason).toBe(expectedReason);
+       Expect(loadedFixture.tests[1].ignoreReason).toBe(expectedReason);
+   }
  }
