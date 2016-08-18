@@ -112,4 +112,30 @@ export class LoadTestTests {
 
      Expect(testLoader.loadTestFixture("test").length).toBe(0);
    }
+
+   @Test()
+   public shouldIgnoreTestsIfFixtureIgnored() {
+       let fileRequirer = new FileRequirer();
+
+       let tests = {
+           testOne: () => { },
+           testTwo: () => { }
+       };
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], tests);
+
+       let testFixtureSet = {
+           testFixture: () => tests
+       };
+       Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+       let loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
+
+       Expect(loadedFixture.tests[0].ignored).toBe(true);
+       Expect(loadedFixture.tests[1].ignored).toBe(true);
+   }
  }
