@@ -8,16 +8,10 @@ export class TestCaseResult {
     private _arguments: Array<any>;
     private _error: Error;
 
-    public get test(): ITest {
-        return this._test;
-    }
-
-    public get arguments(): Array<any> {
-        return this._arguments;
-    }
-
-    public get error(): Error {
-        return this._error;
+    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
+        this._test = test;
+        this._arguments = testCaseArguments;
+        this._error = error;
     }
 
     public get outcome(): TestOutcome {
@@ -36,9 +30,16 @@ export class TestCaseResult {
         return TestOutcome.Pass;
     }
 
-    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
-        this._test = test;
-        this._arguments = testCaseArguments;
-        this._error = error;
+    public get test(): ITest {
+        return this._test;
     }
+
+    public get arguments() {
+        return this._arguments;
+    }
+
+    public get error(): Error {
+        return this._error;
+    }
+
 }

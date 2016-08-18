@@ -33,7 +33,8 @@ import {
 } from "./_results";
 
 import {
-    MatchError
+    MatchError,
+    TestTimeoutError
 } from "./_errors";
 
 import * as METADATA_KEYS from "./decorators/_metadata-keys";
@@ -62,5 +63,6 @@ export {
    MatchError,
    TestFixtureResults,
    TestResults,
-   TestCaseResult
+   TestCaseResult,
+   TestTimeoutError
 };

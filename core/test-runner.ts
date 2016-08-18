@@ -1,6 +1,6 @@
 import { ITestFixture, ITest } from "./_interfaces";
 import { createPromise } from "../promise/create-promise";
-import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, METADATA_KEYS } from "./alsatian-core";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, METADATA_KEYS, TestTimeoutError } from "./alsatian-core";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -26,7 +26,13 @@ export class TestRunner {
        }
    }
 
-   public run(testSet: TestSet) {
+   private _testTimeout: number = 500;
+
+   public run(testSet: TestSet, timeout?: number) {
+
+      if (timeout) {
+         this._testTimeout = timeout;
+      }
 
      let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0).length > 0;
 
@@ -103,8 +109,8 @@ export class TestRunner {
            timeoutCheck = setTimeout(() => {
 
              timeout = true;
-             this._handleError(new /*MatchError("longer than 500ms", "less than 500ms",*/Error("The test exceeded the given timeout."), test, testCaseArguments);
-          }, test.timeout | 500);
+             this._handleError(new TestTimeoutError(test.timeout || this._testTimeout), test, testCaseArguments);
+          }, test.timeout || this._testTimeout);
         }
         else {
           testFixture.fixture[test.key].apply(testFixture, testCaseArguments);

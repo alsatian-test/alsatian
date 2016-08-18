@@ -3,10 +3,10 @@ import { createPromise } from "../promise/create-promise";
 
 export class CliTestRunner extends TestRunner {
 
-  public run(testSet: TestSet) {
+  public run(testSet: TestSet, timeout?: number) {
 
     try {
-       let testRunPromise = super.run(testSet);
+       let testRunPromise = super.run(testSet, timeout);
 
        testRunPromise.then((results: TestSetResults) => {
          if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
