@@ -23,6 +23,7 @@
     "build-publish": "typings install && tsc --newLine \"LF\"",
     "clean": "git clean -X -d -f",
     "prepublish": "npm run review && npm run build-publish && npm test",
+    "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
