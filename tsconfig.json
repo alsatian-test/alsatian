@@ -16,6 +16,8 @@
         "./core/**/*.d.ts",
         "./cli/**/*.d.ts",
         "./test/**/*.d.ts",
+        "./scripts/**/*.d.ts",
+        "./test/integration-tests/node**/*.ts",
         "./node_modules/**/*.*"
     ],
     "filesGlob": [

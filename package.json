@@ -33,6 +33,7 @@
     "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
     "integration-tests": "npm link && npm run execute-integration-tests",
     "execute-integration-tests": "alsatian \"./test/integration-tests/*.spec.js\"",
+    "node-integration-tests": "tsc -p \"./test/integration-tests/node\" && node \"./test/integration-tests/node/runner\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },
