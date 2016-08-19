@@ -1,8 +1,8 @@
-import * as Alsatian from "alsatian";
+import * as Alsatian from "../../../core/alsatian-core";
 
 // create test set
 let testSet = Alsatian.createTestSet();
-testSet.addTestsFromFiles("./tests/**/*.spec.ts");
+testSet.addTestsFromFiles("./test/integration-tests/node/tests/**/*.spec.js");
 
 // run the test set
 let testRunner = new Alsatian.TestRunner();
