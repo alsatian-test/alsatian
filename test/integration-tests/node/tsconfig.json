@@ -12,12 +12,13 @@
     },
     "buildOnSave": false,
     "compileOnSave": true,
-    "exclude": [],
+    "exclude": [
+        "./**/*.d.ts"
+    ],
     "filesGlob": [
         "./**/*.ts"
     ],
     "files": [
-        "./runner.d.ts",
         "./runner.ts",
         "./tests/to-be.spec.ts"
     ],
