@@ -4,7 +4,7 @@ import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, T
 import "reflect-metadata";
 
 export class TestRunner {
-
+/*
    private _testsFocussed: boolean;
    private _testFixtures: Array<ITestFixture>;
    private _currentTestId: number = 0;
@@ -15,6 +15,7 @@ export class TestRunner {
    private _testResults = new TestSetResults();
    private _currentTestResults: TestResults;
    private _currentTestFixtureResults: TestFixtureResults;
+   private _testTimeout: number = 500;*/
    private _output: TestOutput;
 
    constructor (output?: TestOutput) {
@@ -26,28 +27,104 @@ export class TestRunner {
        }
    }
 
-   private _testTimeout: number = 500;
-
    public run(testSet: TestSet, timeout?: number) {
 
-      if (timeout) {
+      /*if (timeout) {
          this._testTimeout = timeout;
       }
 
-     let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0).length > 0;
+     /*let anyTestsFocussed = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0).length > 0;
 
      this._testFixtures = testSet.testFixtures;
 
      // Filter out unfocussed tests if any are focussed
      if (anyTestsFocussed) {
        this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0);
+     }*/
+
+     if (!timeout) {
+        timeout = 500;
      }
+
+     const testPlan: Array<any> = [];
+
+     testSet.testFixtures.forEach(testFixture => {
+       testFixture.tests.forEach(test => {
+         test.testCases.forEach(testCase => {
+
+           testPlan.push({
+             fixture: testFixture.fixture,
+             testFunction: testFixture.fixture[test.key],
+             test: test,
+             arguments: testCase.arguments
+           });
+
+         });
+       });
+     });
+
+     if (testPlan.length === 0) {
+       throw new Error("no tests to run.");
+     }
+
+     var currentTestPlanItem = testPlan[0];
+
+     var scheduleNextTestPlanItem = (testPlanItem) => {
+       setTimeout(() => {
+         runtTestPlan(testPlanItem);
+       }
+     };
+
+     var runTestPlan = (test: any) => {
+       setup(test.fixture);
+
+       if (!test.isAsync) {
+         test.testFunction.apply(test.fixture, test.arguments);
+         tearDown(test.fixture);
+
+         const nextTestPlanIndex = testPlan.indexOf(test);
+         scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);
+       }
+     }
+
+     var tearDown = (testFixture) => {
+       let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+
+       if (teardownFunctions) {
+         teardownFunctions.forEach(teardownFunction => {
+             testFixture[teardownFunction].call(testFixture);
+         });
+       }
+     }
+
+     var setup = (testFixture) => {
+       let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+
+       if (setupFunctions) {
+         setupFunctions.forEach(setupFunction => {
+             testFixture[setupFunction].call(testFixture);
+         });
+       }
+     }
+
+     this._output.emitVersion();
+     this._output.emitPlan(totalTestCount);
+
+     scheduleNextTestPlanItem(testPlan[0]);
+
+
+
+
+   }
+   /*
 
       let totalTestCount = this._testFixtures
                                    .filter(x => x.getTests().length > 0)
                                    .map(x => x.getTests().map((y: any) => y.testCases.length)
                                    .reduce((a: number, b: number) => a + b, 0))
                                    .reduce((a: number, b: number) => a + b, 0);
+
+
 
       if (totalTestCount === 0) {
         throw new Error("no tests to run.");
@@ -207,5 +284,5 @@ export class TestRunner {
                this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
                this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex].testCases[this._currentTestCaseIndex].arguments);
      }
-   }
+   }*/
 }
