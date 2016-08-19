@@ -32,7 +32,7 @@ export class TestLoader {
    }
 
   private _loadTestFixture(testFixtureConstructor: any): ITestFixture {
-      let testFixture = new TestFixture();
+      let testFixture = new TestFixture("Unnamed Test Fixture");
 
       testFixture.ignored = false;
 
