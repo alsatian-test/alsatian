@@ -22,6 +22,10 @@ export class TestOutput {
         this._writeOut(`1..${testCount}\n`);
     }
 
+    public emitFixture(fixtureName: string): void {
+        this._writeOut(`# FIXTURE ${fixtureName}\n`);
+    }
+
     public emitResult(testId: number, result: TestCaseResult): void {
         let outcome = result.outcome;
         let test = result.test;
