@@ -149,6 +149,7 @@
         "./test/unit-tests/test-output/emit-version.spec.ts",
         "./test/unit-tests/test-runner/async-test.spec.ts",
         "./test/unit-tests/test-runner/failing-tests.spec.ts",
+        "./test/unit-tests/test-runner/fixture-info.spec.ts",
         "./test/unit-tests/test-runner/focussed-test.spec.ts",
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
