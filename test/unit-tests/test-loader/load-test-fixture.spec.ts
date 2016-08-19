@@ -132,4 +132,24 @@ export class LoadTestTests {
 
        Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
    }
+
+   @Test()
+   public descriptionShouldBeSetWhenConstructor() {
+       let fileRequirer = new FileRequirer();
+
+       let testFixtureInstance = {};
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+       let testFixtureSet = function testFixture() {
+          return testFixtureInstance;
+       };
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+   }
  }
