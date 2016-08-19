@@ -17,6 +17,9 @@
         "./**/*.ts"
     ],
     "files": [
+        "./runner.d.ts",
+        "./runner.ts",
+        "./tests/to-be.spec.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
