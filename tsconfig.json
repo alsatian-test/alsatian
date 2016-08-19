@@ -143,6 +143,7 @@
         "./test/unit-tests/test-loader/load-test-fixtures-tests/focussed-test.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/ignored-test.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/test-timeout.spec.ts",
+        "./test/unit-tests/test-output/emit-fixture.spec.ts",
         "./test/unit-tests/test-output/emit-plan.spec.ts",
         "./test/unit-tests/test-output/emit-result.spec.ts",
         "./test/unit-tests/test-output/emit-version.spec.ts",
