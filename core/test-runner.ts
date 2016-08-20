@@ -42,6 +42,8 @@ export class TestRunner {
        this._testFixtures = testSet.testFixtures.filter(testFixture => testFixture.focussed || testFixture.getTests().filter(test => test.focussed).length > 0);
      }*/
 
+     let promise = createPromise();
+
      if (!timeout) {
         timeout = 500;
      }
@@ -160,7 +162,7 @@ export class TestRunner {
 
      scheduleNextTestPlanItem(testPlan[0]);
 
-
+     return promise;
 
 
    }
