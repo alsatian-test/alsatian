@@ -3,7 +3,10 @@ import { ITestFixture, ITest } from "./_interfaces";
 export class TestFixture implements ITestFixture {
 
     fixture: { [id: string]: (...args: Array<any>) => any };
+
     ignored: boolean;
+    ignoreReason: string;
+
     focussed: boolean;
     tests: Array<ITest>;
     description: string;
@@ -11,6 +14,7 @@ export class TestFixture implements ITestFixture {
     constructor (description: string) {
         this.focussed = false;
         this.ignored = false;
+        this.ignoreReason = undefined;
         this.fixture = {};
         this.tests = [];
         this.description = description;

@@ -1,3 +1,5 @@
+import "../typings/index.d.ts";
+
 import {
     createTestSet,
     Expect,

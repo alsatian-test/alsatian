@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.11",
   "description": "TypeScript testing framework with test cases",
   "author": "James Richford <=> (=)",
   "contributors": [
@@ -23,6 +23,7 @@
     "build-publish": "typings install && tsc --newLine \"LF\"",
     "clean": "git clean -X -d -f",
     "prepublish": "npm run review && npm run build-publish && npm test",
+    "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
@@ -30,8 +31,9 @@
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
     "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
-    "integration-tests": "npm link && npm run execute-integration-tests",
-    "execute-integration-tests": "alsatian \"./test/integration-tests/*.spec.js\"",
+    "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests",
+    "cli-integration-tests": "alsatian \"./test/integration-tests/*.spec.js\"",
+    "node-integration-tests": "tsc -p \"./test/integration-tests/node\" && node \"./test/integration-tests/node/runner\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
   },

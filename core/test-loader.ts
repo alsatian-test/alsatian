@@ -40,6 +40,8 @@ export class TestLoader {
       if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixtureConstructor)) {
         // fixture should be ignored
         testFixture.ignored = true;
+
+        testFixture.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixtureConstructor);
       }
 
       // create an instance of the test fixture
@@ -63,11 +65,13 @@ export class TestLoader {
 
       tests.forEach((test: ITest) => {
 
+        // the test is ignored if the fixture is, or if it's specifically ignored
         test.ignored = false;
-        if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture.fixture, test.key)) {
+        if (testFixture.ignored || Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture.fixture, test.key)) {
           test.ignored = true;
 
-          test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture.fixture, test.key);
+          // individual test ignore reasons take precedence over test fixture ignore reasons
+          test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture.fixture, test.key) || testFixture.ignoreReason;
         }
 
         test.focussed = false;

@@ -16,12 +16,15 @@
         "./core/**/*.d.ts",
         "./cli/**/*.d.ts",
         "./test/**/*.d.ts",
+        "./scripts/**/*.d.ts",
+        "./test/integration-tests/node**/*.ts",
         "./node_modules/**/*.*"
     ],
     "filesGlob": [
         "./cli/**/*.ts",
         "./core/**/*.ts",
         "./test/**/*.ts",
+        "./scripts/**/*.ts",
         "./typings/index.d.ts"
     ],
     "files": [
@@ -86,6 +89,7 @@
         "./test/builders/test-builder.ts",
         "./test/builders/test-case-builder.ts",
         "./test/builders/test-fixture-builder.ts",
+        "./test/integration-tests/node/tests/to-be.spec.ts",
         "./test/integration-tests/to-be.spec.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
         "./test/unit-tests/cli/alsatian-cli-options/file-globs.spec.ts",
@@ -154,6 +158,7 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
+        "./scripts/tag-release.ts",
         "./typings/index.d.ts"
     ],
     "atom": {
