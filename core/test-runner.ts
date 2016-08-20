@@ -46,6 +46,11 @@ export class TestRunner {
         timeout = 500;
      }
 
+     const testSetResults = new TestSetResults();
+     // TODO: handle these neatly
+     let currentTestFixtureResults = testSetResults.addTestFixtureResult(testSet.testFixtures[0]);
+     let currentTestResults = currentTestFixtureResults.addTestResult(testSet.testFixtures[0].tests[0]);
+
      const testPlan: Array<any> = [];
 
      testSet.testFixtures.forEach(testFixture => {
@@ -69,13 +74,19 @@ export class TestRunner {
 
      var currentTestPlanItem = testPlan[0];
 
-     var scheduleNextTestPlanItem = (testPlanItem) => {
+     var scheduleNextTestPlanItem = (testPlanItem: any) => {
        setTimeout(() => {
-         runtTestPlan(testPlanItem);
-       }
+         runTestPlan(testPlanItem);
+       });
      };
 
      var runTestPlan = (test: any) => {
+
+       if (test.test.ignored) {
+         let result = currentTestResults.addTestCaseResult(test.arguments);
+         this._output.emitResult(testPlan.indexOf(test) + 1, result);
+       }
+
        setup(test.fixture);
 
        if (!test.isAsync) {
@@ -85,9 +96,32 @@ export class TestRunner {
          const nextTestPlanIndex = testPlan.indexOf(test);
          scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);
        }
+       else {
+         let timeout = false;
+
+         let promise: any = test.fixture[test.key].apply(test.fixture, test.arguments);
+         let timeoutCheck: number = null;
+
+        promise.then(() => {
+
+           if (!timeout) {
+             //this._notifySuccess(test, testCaseArguments);
+             clearTimeout(timeoutCheck);
+           }
+         })
+         .catch((error: Error) => {
+           //this._handleError(error, test, testCaseArguments);
+         });
+
+         timeoutCheck = setTimeout(() => {
+
+           timeout = true;
+           //this._handleError(new TestTimeoutError(test.timeout || timeout), test, testCaseArguments);
+        }, test.timeout || timeout);
+       }
      }
 
-     var tearDown = (testFixture) => {
+     var tearDown = (testFixture: { [id: string ]: () => any }) => {
        let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
        if (teardownFunctions) {
@@ -97,7 +131,7 @@ export class TestRunner {
        }
      }
 
-     var setup = (testFixture) => {
+     var setup = (testFixture: { [id: string ]: () => any }) => {
        let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
        if (setupFunctions) {
@@ -108,7 +142,7 @@ export class TestRunner {
      }
 
      this._output.emitVersion();
-     this._output.emitPlan(totalTestCount);
+     this._output.emitPlan(testPlan.length);
 
      scheduleNextTestPlanItem(testPlan[0]);
 
