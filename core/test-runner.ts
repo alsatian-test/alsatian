@@ -77,9 +77,14 @@ export class TestRunner {
      var currentTestPlanItem = testPlan[0];
 
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
-       setTimeout(() => {
-         runTestPlan(testPlanItem);
-       });
+       if (testPlanItem) {
+         setTimeout(() => {
+           runTestPlan(testPlanItem);
+         });
+       }
+       else {
+         promise.resolve(testPlan);
+       }
      };
 
      var runTestPlan = (test: any) => {
