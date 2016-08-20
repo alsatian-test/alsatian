@@ -172,6 +172,8 @@ export class TestRunner {
      else {
         this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
 
+        this._output.emitFixture(this._testFixtures[this._currentTestFixtureIndex]);
+
         setTimeout(() => {
           this._runTest(this._testFixtures[this._currentTestFixtureIndex],
                   this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex],
