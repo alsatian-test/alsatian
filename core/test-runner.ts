@@ -99,7 +99,6 @@ export class TestRunner {
          catch (error) {
             let result = currentTestResults.addTestCaseResult(test.arguments, error);
             this._output.emitResult(testPlan.indexOf(test) + 1, result);
-
          }
          tearDown(test.fixture);
 
@@ -115,18 +114,23 @@ export class TestRunner {
         promise.then(() => {
 
            if (!timeout) {
-             //this._notifySuccess(test, testCaseArguments);
              clearTimeout(timeoutCheck);
+             let result = currentTestResults.addTestCaseResult(test.arguments);
+             this._output.emitResult(testPlan.indexOf(test) + 1, result);
            }
          })
          .catch((error: Error) => {
-           //this._handleError(error, test, testCaseArguments);
+             let result = currentTestResults.addTestCaseResult(test.arguments, error);
+             this._output.emitResult(testPlan.indexOf(test) + 1, result);
          });
 
          timeoutCheck = setTimeout(() => {
 
            timeout = true;
-           //this._handleError(new TestTimeoutError(test.timeout || timeout), test, testCaseArguments);
+           let error = new TestTimeoutError(test.timeout || timeout);
+
+            let result = currentTestResults.addTestCaseResult(test.arguments, error);
+            this._output.emitResult(testPlan.indexOf(test) + 1, result);
         }, test.timeout || timeout);
        }
      }
