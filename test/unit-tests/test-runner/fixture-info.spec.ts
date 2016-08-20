@@ -45,6 +45,8 @@ export class FixtureInfoTests {
         let testRunner = new TestRunner(output);
 
         testRunner.run(testSet).then(() => {
+            console.log(JSON.stringify(writeCalls));
+
             // it should output version, then plan, then fixture, then test
             Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(name));
             Expect(writeCalls[3]).toBe(`ok 1 ${test.description}\n`);

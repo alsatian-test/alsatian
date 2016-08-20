@@ -29,7 +29,7 @@
     "test": "npm run unit-tests",
     "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
     "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
+    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/fixture-info.spec.js\" && npm run remap-coverage",
     "integration-tests": "npm link && npm run execute-integration-tests",
     "execute-integration-tests": "alsatian \"./test/integration-tests/*.spec.js\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
