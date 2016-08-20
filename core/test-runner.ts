@@ -72,58 +72,57 @@ export class TestRunner {
        }
      };
 
+     var createResultAndRunNextTest = (test: any, error?: Error) => {
+       let result = currentTestResults.addTestCaseResult(test.arguments, error);
+       this._output.emitResult(testPlan.indexOf(test) + 1, result);
+       tearDown(test.fixture);
+      const nextTestPlanIndex = testPlan.indexOf(test) + 1;
+      scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);
+     }
+
      var runTestPlan = (test: any) => {
 
        if (test.test.ignored) {
-         let result = currentTestResults.addTestCaseResult(test.arguments);
-         this._output.emitResult(testPlan.indexOf(test) + 1, result);
-       }
-
-       setup(test.fixture);
-
-       if (!test.isAsync) {
-         try {
-           test.testFunction.apply(test.fixture, test.arguments);
-           let result = currentTestResults.addTestCaseResult(test.arguments);
-           this._output.emitResult(testPlan.indexOf(test) + 1, result);
-
-         }
-         catch (error) {
-            let result = currentTestResults.addTestCaseResult(test.arguments, error);
-            this._output.emitResult(testPlan.indexOf(test) + 1, result);
-         }
-         tearDown(test.fixture);
-
-         const nextTestPlanIndex = testPlan.indexOf(test) + 1;
-         scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);
+         createResultAndRunNextTest(test);
        }
        else {
-         let timeout = false;
 
-         let promise: any = test.fixture[test.key].apply(test.fixture, test.arguments);
-         let timeoutCheck: number = null;
+         setup(test.fixture);
 
-        promise.then(() => {
+         if (!test.isAsync) {
+           try {
+             test.testFunction.apply(test.fixture, test.arguments);
+             createResultAndRunNextTest(test);
 
-           if (!timeout) {
-             clearTimeout(timeoutCheck);
-             let result = currentTestResults.addTestCaseResult(test.arguments);
-             this._output.emitResult(testPlan.indexOf(test) + 1, result);
            }
-         })
-         .catch((error: Error) => {
-             let result = currentTestResults.addTestCaseResult(test.arguments, error);
-             this._output.emitResult(testPlan.indexOf(test) + 1, result);
-         });
+           catch (error) {
+             createResultAndRunNextTest(test, error);
+           }
+         }
+         else {
+           let timeout = false;
 
-         timeoutCheck = setTimeout(() => {
+           let promise: any = test.fixture[test.key].apply(test.fixture, test.arguments);
+           let timeoutCheck: number = null;
 
-           timeout = true;
-           let error = new TestTimeoutError(test.timeout || timeout);
+          promise.then(() => {
 
-            let result = currentTestResults.addTestCaseResult(test.arguments, error);
-            this._output.emitResult(testPlan.indexOf(test) + 1, result);
-        }, test.timeout || timeout);
+             if (!timeout) {
+               clearTimeout(timeoutCheck);
+               createResultAndRunNextTest(test);
+             }
+           })
+           .catch((error: Error) => {
+             createResultAndRunNextTest(test, error);
+           });
+
+           timeoutCheck = setTimeout(() => {
+
+             timeout = true;
+             let error = new TestTimeoutError(test.timeout || timeout);
+             createResultAndRunNextTest(test, error);
+          }, test.timeout || timeout);
+         }
        }
      }
 
@@ -153,7 +152,5 @@ export class TestRunner {
      scheduleNextTestPlanItem(testPlan[0]);
 
      return promise;
-
-
    }
 }
