@@ -109,7 +109,7 @@ export class TestRunner {
          }
          tearDown(test.fixture);
 
-         const nextTestPlanIndex = testPlan.indexOf(test);
+         const nextTestPlanIndex = testPlan.indexOf(test) + 1;
          scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);
        }
        else {
