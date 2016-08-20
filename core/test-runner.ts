@@ -90,7 +90,17 @@ export class TestRunner {
        setup(test.fixture);
 
        if (!test.isAsync) {
-         test.testFunction.apply(test.fixture, test.arguments);
+         try {
+           test.testFunction.apply(test.fixture, test.arguments);
+           let result = currentTestResults.addTestCaseResult(test.arguments);
+           this._output.emitResult(testPlan.indexOf(test) + 1, result);
+
+         }
+         catch (error) {
+            let result = currentTestResults.addTestCaseResult(test.arguments, error);
+            this._output.emitResult(testPlan.indexOf(test) + 1, result);
+
+         }
          tearDown(test.fixture);
 
          const nextTestPlanIndex = testPlan.indexOf(test);
