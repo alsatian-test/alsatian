@@ -57,6 +57,8 @@ export class TestRunner {
           this._output.emitVersion();
           this._output.emitPlan(totalTestCount);
 
+          this._output.emitFixture(this._testFixtures[this._currentTestFixtureIndex]);
+
          this._currentTestFixtureResults = this._testResults.addTestFixtureResult(this._testFixtures[this._currentTestFixtureIndex]);
          this._currentTestResults = this._currentTestFixtureResults.addTestResult(this._testFixtures[this._currentTestFixtureIndex].getTests()[this._currentTestIndex]);
 

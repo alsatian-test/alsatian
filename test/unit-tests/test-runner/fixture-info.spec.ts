@@ -1,4 +1,4 @@
-import { Expect, TestCase, SpyOn, TestOutput, TestSet, AsyncTest, TestRunner } from "../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn, TestOutput, TestSet, AsyncTest, TestRunner, MatchError } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
@@ -14,7 +14,7 @@ export class FixtureInfoTests {
     @AsyncTest()
     @TestCase("SomeFixtureName")
     @TestCase("AnotherFixture")
-    public outputsFixtureNameWithPassingTest(name: string) {
+    public outputsFixtureNameWithPassingTest(description: string) {
         let writeCalls: Array<string> = [ ];
 
         let outputStream = new OutputStreamBuilder().build();
@@ -35,6 +35,7 @@ export class FixtureInfoTests {
 
         let testFixture = new TestFixtureBuilder()
             .withFixture({ test: () => { }})
+            .withDescription(description)
             .addTest(test)
             .build();
 
@@ -45,10 +46,8 @@ export class FixtureInfoTests {
         let testRunner = new TestRunner(output);
 
         testRunner.run(testSet).then(() => {
-            console.log(JSON.stringify(writeCalls));
-
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(name));
+            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
             Expect(writeCalls[3]).toBe(`ok 1 ${test.description}\n`);
             resultPromise.resolve();
         });
@@ -59,7 +58,7 @@ export class FixtureInfoTests {
     @AsyncTest()
     @TestCase("SomeFixtureName")
     @TestCase("AnotherFixture")
-    public outputsFixtureNameWithFailingTest(name: string) {
+    public outputsFixtureNameWithFailingTest(description: string) {
         let writeCalls: Array<string> = [ ];
 
         let outputStream = new OutputStreamBuilder().build();
@@ -79,8 +78,9 @@ export class FixtureInfoTests {
             .build();
 
         let testFixture = new TestFixtureBuilder()
-            .withFixture({ test: () => { new Error(""); }})
+            .withFixture({ test: () => { throw new MatchError("nothing", "something", "expected nothing to be something."); }})
             .addTest(test)
+            .withDescription(description)
             .build();
 
         testSet.testFixtures.push(testFixture);
@@ -91,7 +91,7 @@ export class FixtureInfoTests {
 
         testRunner.run(testSet).then(() => {
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(name));
+            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
             Expect(writeCalls[3]).toBe(`not ok 1 ${test.description}\n`);
             resultPromise.resolve();
         });
