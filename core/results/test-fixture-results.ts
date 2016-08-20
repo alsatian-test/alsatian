@@ -7,6 +7,12 @@ export class TestFixtureResults {
 
    private _testResults: Array<TestResults> = [];
 
+   public constructor(private _testFixture: ITestFixture) { }
+
+   get fixture(): ITestFixture {
+     return this._testFixture;
+   }
+
    get outcome(): TestOutcome {
       const outcomes = this._testResults.map(testResult => testResult.outcome);
 
@@ -24,8 +30,6 @@ export class TestFixtureResults {
 
       return TestOutcome.Skip;
    }
-
-   public constructor(private _testFixture: ITestFixture) { }
 
    public addTestResult(test: ITest): TestResults {
       const testResults = new TestResults(test);

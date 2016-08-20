@@ -61,6 +61,7 @@ export class TestRunner {
 
            testPlan.push({
              fixture: testFixture.fixture,
+             testFixture: testFixture,
              testFunction: testFixture.fixture[test.key],
              test: test,
              arguments: testCase.arguments
@@ -78,6 +79,14 @@ export class TestRunner {
 
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
        if (testPlanItem) {
+         if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
+           currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
+         }
+
+         if (currentTestResults.test !== testPlanItem.test) {
+           currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
+         }
+
          setTimeout(() => {
            runTestPlan(testPlanItem);
          });
