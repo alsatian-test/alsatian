@@ -2,6 +2,7 @@ import { ITestFixture, ITest } from "./_interfaces";
 import { createPromise } from "../promise/create-promise";
 import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, TestTimeoutError } from "./alsatian-core";
 import { TestPlan } from "./test-plan";
+import { TestItem } from "./test-item";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -36,8 +37,6 @@ export class TestRunner {
        throw new Error("no tests to run.");
      }
 
-     var currentTestPlanItem = testPlan.testItems[0];
-
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
        if (testPlanItem) {
          if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
@@ -48,8 +47,9 @@ export class TestRunner {
            currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
          }
 
-         setTimeout(() => {
-           runTestPlan(testPlanItem);
+         testPlanItem.run(timeout)
+         .then((testResults: { test: ITest, error: Error }) => {
+           createResultAndRunNextTest(testPlanItem, testResults.test, testResults.error);
          });
        }
        else {
@@ -57,19 +57,18 @@ export class TestRunner {
        }
      };
 
-     var createResultAndRunNextTest = (test: any, error?: Error) => {
+     var createResultAndRunNextTest = (testItem: TestItem, test: any, error?: Error) => {
        let result = currentTestResults.addTestCaseResult(test.arguments, error);
-       this._output.emitResult(testPlan.testItems.indexOf(test) + 1, result);
-       /*
-       tearDown(test.fixture);
+       this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
+
       const nextTestPlanIndex = testPlan.testItems.indexOf(test) + 1;
-      scheduleNextTestPlanItem(testPlan[nextTestPlanIndex]);*/
-     }     
+      scheduleNextTestPlanItem(testPlan.testItems[nextTestPlanIndex]);
+     }
 
      this._output.emitVersion();
      this._output.emitPlan(testPlan.testItems.length);
 
-     scheduleNextTestPlanItem(testPlan[0]);
+     scheduleNextTestPlanItem(testPlan.testItems[0]);
 
      return promise;
    }

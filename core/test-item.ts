@@ -7,14 +7,14 @@ export class TestItem {
 
   public constructor(private _testFixture: ITestFixture, private _test: ITest, private _testCase: ITestCase) {}
 
-  public run(): any {
+  public run(timeout: number): any {
 
     const promise = createPromise();
 
     setTimeout(() => {
 
       if (this._test.ignored) {
-        createResultAndRunNextTest(test);
+        promise.resolve({ test: this._test });
       }
       else {
 
@@ -22,35 +22,41 @@ export class TestItem {
 
         if (!this._test.isAsync) {
           try {
-            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-            createResultAndRunNextTest(test);
-
+            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);            
+            this._tearDown();
+            promise.resolve({ test: this._test });
           }
           catch (error) {
-            createResultAndRunNextTest(test, error);
+            this._tearDown();
+            promise.resolve({ test: this._test, error: error });
           }
         }
         else {
-          let timeout = false;
+          let timeoutExpired = false;
 
           let promise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-          let timeoutCheck: number = null;
+          let timeoutCheck: NodeJS.Timer = null;
 
          promise.then(() => {
-            if (!timeout) {
+            if (!timeoutExpired) {
               clearTimeout(timeoutCheck);
-              createResultAndRunNextTest(test);
+                this._tearDown();
+                promise.resolve({ test: this._test });
             }
           })
           .catch((error: Error) => {
-            createResultAndRunNextTest(test, error);
+            this._tearDown();
+            promise.resolve({ test: this._test, error: error });
           });
 
+          const testTimeout: number = this._test.timeout || timeout;
+
           timeoutCheck = setTimeout(() => {
-            timeout = true;
-            let error = new TestTimeoutError(this._test.timeout || timeout);
-            createResultAndRunNextTest(test, error);
-         }, this._test.timeout || timeout);
+            timeoutExpired = true;
+            let error = new TestTimeoutError(testTimeout);
+            this._tearDown();
+            promise.resolve({ test: this._test, error: error });
+         }, testTimeout);
         }
       }
     });
