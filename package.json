@@ -72,7 +72,6 @@
     "typings": "^1.3.0"
   },
   "dependencies": {
-    "fn-name": "^2.0.1",
     "glob": "^7.0.3",
     "reflect-metadata": "^0.1.3"
   }
