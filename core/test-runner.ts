@@ -89,7 +89,7 @@ export class TestRunner {
 
          setup(test.fixture);
 
-         if (!test.isAsync) {
+         if (!test.test.isAsync) {
            try {
              test.testFunction.apply(test.fixture, test.arguments);
              createResultAndRunNextTest(test);
@@ -102,21 +102,23 @@ export class TestRunner {
          else {
            let timeout = false;
 
-           let promise: any = test.fixture[test.key].apply(test.fixture, test.arguments);
+           let promise: any = test.testFunction.apply(test.fixture, test.arguments);
            let timeoutCheck: number = null;
 
           promise.then(() => {
-
+            console.log("yes");
              if (!timeout) {
                clearTimeout(timeoutCheck);
                createResultAndRunNextTest(test);
              }
            })
            .catch((error: Error) => {
+             console.log("no");
              createResultAndRunNextTest(test, error);
            });
 
            timeoutCheck = setTimeout(() => {
+             console.log("timeout");
 
              timeout = true;
              let error = new TestTimeoutError(test.timeout || timeout);
