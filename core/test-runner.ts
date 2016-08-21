@@ -106,20 +106,16 @@ export class TestRunner {
            let timeoutCheck: number = null;
 
           promise.then(() => {
-            console.log("yes");
              if (!timeout) {
                clearTimeout(timeoutCheck);
                createResultAndRunNextTest(test);
              }
            })
            .catch((error: Error) => {
-             console.log("no");
              createResultAndRunNextTest(test, error);
            });
 
            timeoutCheck = setTimeout(() => {
-             console.log("timeout");
-
              timeout = true;
              let error = new TestTimeoutError(test.timeout || timeout);
              createResultAndRunNextTest(test, error);
