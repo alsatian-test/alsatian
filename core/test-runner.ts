@@ -38,6 +38,7 @@ export class TestRunner {
      }
 
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
+       console.log(testPlanItem);
        if (testPlanItem) {
          if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
            currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
@@ -50,6 +51,9 @@ export class TestRunner {
          testPlanItem.run(timeout)
          .then((testResults: { test: ITest, error: Error }) => {
            createResultAndRunNextTest(testPlanItem, testResults.test, testResults.error);
+         })
+         .catch((error: Error) => {
+           console.log(error);
          });
        }
        else {
@@ -59,6 +63,7 @@ export class TestRunner {
 
      var createResultAndRunNextTest = (testItem: TestItem, test: any, error?: Error) => {
        let result = currentTestResults.addTestCaseResult(test.arguments, error);
+       console.log("result", currentTestResults.test);
        this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
 
       const nextTestPlanIndex = testPlan.testItems.indexOf(test) + 1;

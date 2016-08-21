@@ -22,7 +22,7 @@ export class TestItem {
 
         if (!this._test.isAsync) {
           try {
-            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);            
+            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
             this._tearDown();
             promise.resolve({ test: this._test });
           }
