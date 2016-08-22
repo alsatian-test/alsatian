@@ -1,7 +1,6 @@
 import { ITestFixture, ITest, ITestCase } from "./_interfaces";
 import { FileRequirer } from "./_core";
 import { TestFixture, METADATA_KEYS } from "./alsatian-core";
-const getFunctionName = require("fn-name");
 
 export class TestLoader {
 
@@ -14,7 +13,7 @@ export class TestLoader {
 
     // if the default export is class constructor
     if (typeof Test === "function") {
-      let testFixture = this._loadTestFixture(Test, getFunctionName(Test));
+      let testFixture = this._loadTestFixture(Test, Test.name);
       if (testFixture !== null) {
         testFixtures.push(testFixture);
       }
