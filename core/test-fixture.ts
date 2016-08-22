@@ -9,13 +9,15 @@ export class TestFixture implements ITestFixture {
 
     focussed: boolean;
     tests: Array<ITest>;
+    description: string;
 
-    constructor () {
+    constructor (description: string) {
         this.focussed = false;
         this.ignored = false;
         this.ignoreReason = undefined;
         this.fixture = {};
         this.tests = [];
+        this.description = description;
     }
 
     public addTest(test: ITest): void {

@@ -142,6 +142,44 @@ export class LoadTestTests {
    }
 
    @Test()
+   public descriptionShouldBeSetWhenNotConstructor() {
+       let fileRequirer = new FileRequirer();
+
+       let testFixtureInstance = {};
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+       let testFixtureSet = {
+          testFixture: () => testFixtureInstance
+       };
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+   }
+
+   @Test()
+   public descriptionShouldBeSetWhenConstructor() {
+       let fileRequirer = new FileRequirer();
+
+       let testFixtureInstance = {};
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+       let testFixtureSet = function testFixture() {
+           return testFixtureInstance;
+       };
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+   }
+
    public shouldIgnoreTestsIfFixtureIgnored() {
        let fileRequirer = new FileRequirer();
 
@@ -171,6 +209,7 @@ export class LoadTestTests {
        spy.andReturn(testFixtureSet);
 
        let testLoader = new TestLoader(fileRequirer);
+
        let loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
 
        Expect(loadedFixture.tests[0].ignored).toBe(true);
@@ -209,6 +248,7 @@ export class LoadTestTests {
        spy.andReturn(testFixtureSet);
 
        let testLoader = new TestLoader(fileRequirer);
+
        let loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
 
        Expect(loadedFixture.tests[0].ignoreReason).toBe(reason);

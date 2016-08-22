@@ -75,6 +75,7 @@ export class FailingTestsTests {
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
+
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       let resultPromise: any = createPromise();

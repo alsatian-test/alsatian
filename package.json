@@ -2,7 +2,7 @@
   "name": "alsatian",
   "version": "1.0.0-alpha.11",
   "description": "TypeScript testing framework with test cases",
-  "author": "James Richford",
+  "author": "James Richford <=> (=)",
   "contributors": [
     {
       "name": "James Richford",
@@ -55,7 +55,6 @@
     "nunit",
     "tdd"
   ],
-  "author": "James Richford <=> (=)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alsatian-test/alsatian/issues"
@@ -73,7 +72,7 @@
     "typings": "^1.3.0"
   },
   "dependencies": {
-    "reflect-metadata": "^0.1.3",
-    "glob": "^7.0.3"
+    "glob": "^7.0.3",
+    "reflect-metadata": "^0.1.3"
   }
 }

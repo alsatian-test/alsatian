@@ -1,4 +1,4 @@
-import { ITest } from "./_interfaces";
+import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./_errors";
 import { TestCaseResult, TestOutcome } from "./_results";
 
@@ -20,6 +20,10 @@ export class TestOutput {
 
     public emitPlan(testCount: number): void {
         this._writeOut(`1..${testCount}\n`);
+    }
+
+    public emitFixture(fixture: ITestFixture): void {
+        this._writeOut(`# FIXTURE ${fixture.description}\n`);
     }
 
     public emitResult(testId: number, result: TestCaseResult): void {

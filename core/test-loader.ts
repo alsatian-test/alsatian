@@ -13,7 +13,7 @@ export class TestLoader {
 
     // if the default export is class constructor
     if (typeof Test === "function") {
-      let testFixture = this._loadTestFixture(Test);
+      let testFixture = this._loadTestFixture(Test, Test.name);
       if (testFixture !== null) {
         testFixtures.push(testFixture);
       }
@@ -21,7 +21,7 @@ export class TestLoader {
     // otherwise there are multiple exports and we must handle all of them
     else {
       testFixtureKeys.forEach(testFixtureKey => {
-        let testFixture = this._loadTestFixture(Test[testFixtureKey]);
+        let testFixture = this._loadTestFixture(Test[testFixtureKey], testFixtureKey);
         if (testFixture !== null) {
           testFixtures.push(testFixture);
         }
@@ -31,8 +31,8 @@ export class TestLoader {
      return testFixtures;
    }
 
-  private _loadTestFixture(testFixtureConstructor: any): ITestFixture {
-      let testFixture = new TestFixture();
+  private _loadTestFixture(testFixtureConstructor: any, name: string): ITestFixture {
+      let testFixture = new TestFixture(name);
 
       testFixture.ignored = false;
 
