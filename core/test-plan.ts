@@ -10,6 +10,10 @@ export class TestPlan {
 
   public constructor(testSet: TestSet) {
 
+     if (testSet.testFixtures.length === 0) {
+        return;
+     }
+
     let testFixtures = testSet.testFixtures;
 
     const focussedTestFixtures = testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.some(test => test.focussed));

@@ -35,17 +35,6 @@ export class NotestsErrorTests {
       Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
-   @Test()
-   public emptyTestFixturesOutputsNoTestError() {
-      let testSet = <TestSet>{};
-
-      (<any>testSet).testFixtures = [];
-
-      let testRunner = new TestRunner();
-
-      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
-   }
-
    @TestCase(1)
    @TestCase(2)
    @TestCase(13)
