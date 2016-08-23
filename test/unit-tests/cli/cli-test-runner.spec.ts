@@ -5,7 +5,6 @@ import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet } from "../../../core/alsatian-core";
 import { createPromise } from "../../../promise/create-promise";
 
-@FocusTests
 export class CliTestRunnerTests {
 
   private _originalStdErr: any;
