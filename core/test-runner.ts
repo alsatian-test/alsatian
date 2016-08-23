@@ -37,43 +37,77 @@ export class TestRunner {
      let currentTestFixtureResults = testSetResults.addTestFixtureResult(testSet.testFixtures[0]);
      let currentTestResults = currentTestFixtureResults.addTestResult(testSet.testFixtures[0].tests[0]);
 
-     var scheduleNextTestPlanItem = (testPlanItem: any) => {
-
-       if (testPlanItem) {
-         if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
-           currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
-         }
-
-         if (currentTestResults.test !== testPlanItem.test) {
-           currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
-         }
-
-         testPlanItem.run(timeout)
-         .then((testResults: { test: ITest, error: Error }) => {
-           createResultAndRunNextTest(testPlanItem, testResults.test, testResults.error);
-         })
-         .catch((error: Error) => {
-           console.log(error);
-         });
-       }
-       else {
-         promise.resolve(testSetResults);
-       }
-     };
-
-     var createResultAndRunNextTest = (testItem: TestItem, test: any, error?: Error) => {
-       let result = currentTestResults.addTestCaseResult(test.arguments, error);
-       this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
-
-      const nextTestPlanIndex = testPlan.testItems.indexOf(testItem) + 1;
-      scheduleNextTestPlanItem(testPlan.testItems[nextTestPlanIndex]);
-     }
-
      this._output.emitVersion();
      this._output.emitPlan(testPlan.testItems.length);
 
-     scheduleNextTestPlanItem(testPlan.testItems[0]);
+     this._scheduleNextTestPlanItem(promise,
+                                    testPlan,
+                                    testSetResults,
+                                    timeout,
+                                    testPlan.testItems[0]);
 
      return promise;
    }
+
+   private _createResultAndRunNextTest(
+                                        promise: any,
+                                        testPlan: TestPlan,
+                                        testSetResults: TestSetResults,
+                                        timeout: number,
+                                        testItem: TestItem,
+                                        test: any,
+                                        error?: Error) {
+
+     const currentTestFixtureResults = testSetResults
+                .testFixtureResults[testSetResults.testFixtureResults.length - 1];
+
+     const currentTestResults = currentTestFixtureResults
+                .testResults[currentTestFixtureResults.testResults.length - 1]
+
+     let result = currentTestResults.addTestCaseResult(test.arguments, error);
+     this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
+
+     const nextTestPlanIndex = testPlan.testItems.indexOf(testItem) + 1;
+     this._scheduleNextTestPlanItem(promise,
+                                    testPlan,
+                                    testSetResults,
+                                    timeout,
+                                    testPlan.testItems[nextTestPlanIndex]);
+   }
+
+   private _scheduleNextTestPlanItem(
+                                      promise: any,
+                                      testPlan: TestPlan,
+                                      testSetResults: TestSetResults,
+                                      timeout: number,
+                                      testPlanItem: TestItem) {
+
+     if (testPlanItem) {
+
+        let currentTestFixtureResults = testSetResults
+                   .testFixtureResults[testSetResults.testFixtureResults.length - 1];
+
+       let currentTestResults = currentTestFixtureResults
+                  .testResults[currentTestFixtureResults.testResults.length - 1];
+
+       if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
+         currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
+       }
+
+       if (currentTestResults.test !== testPlanItem.test) {
+         currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
+       }
+
+       testPlanItem.run(timeout)
+       .then((testResults: { test: ITest, error: Error }) => {
+         this._createResultAndRunNextTest(promise, testPlan, testSetResults, timeout, testPlanItem, testResults.test, testResults.error);
+       })
+       .catch((error: Error) => {
+         console.log(error);
+       });
+     }
+     else {
+       promise.resolve(testSetResults);
+     }
+   };
 }

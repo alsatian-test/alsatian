@@ -5,6 +5,9 @@ import { TestFixtureResults } from "./test-fixture-results";
 export class TestSetResults {
 
    private _testFixtureResults: Array<TestFixtureResults> = [];
+   public get testFixtureResults() {
+     return this._testFixtureResults;
+   }
 
    get outcome(): TestOutcome {
       const outcomes = this._testFixtureResults.map(testFixtureResult => testFixtureResult.outcome);

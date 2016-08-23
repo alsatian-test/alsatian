@@ -6,6 +6,9 @@ import { TestResults } from "./test-results";
 export class TestFixtureResults {
 
    private _testResults: Array<TestResults> = [];
+   public get testResults() {
+     return this._testResults;
+   }
 
    public constructor(private _testFixture: ITestFixture) { }
 
