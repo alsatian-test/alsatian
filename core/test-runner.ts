@@ -55,7 +55,6 @@ export class TestRunner {
                                         testSetResults: TestSetResults,
                                         timeout: number,
                                         testItem: TestItem,
-                                        test: any,
                                         error?: Error) {
 
      const currentTestFixtureResults = testSetResults
@@ -64,7 +63,7 @@ export class TestRunner {
      const currentTestResults = currentTestFixtureResults
                 .testResults[currentTestFixtureResults.testResults.length - 1]
 
-     let result = currentTestResults.addTestCaseResult(test.arguments, error);
+     let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
      this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
 
      const nextTestPlanIndex = testPlan.testItems.indexOf(testItem) + 1;
@@ -100,7 +99,7 @@ export class TestRunner {
 
        testPlanItem.run(timeout)
        .then((testResults: { test: ITest, error: Error }) => {
-         this._createResultAndRunNextTest(promise, testPlan, testSetResults, timeout, testPlanItem, testResults.test, testResults.error);
+         this._createResultAndRunNextTest(promise, testPlan, testSetResults, timeout, testPlanItem, testResults.error);
        })
        .catch((error: Error) => {
          console.log(error);
