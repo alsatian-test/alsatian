@@ -18,7 +18,7 @@ export class CliTestRunner extends TestRunner {
        });
     }
     catch (error) {
-       process.stderr.write(error.message);
+       process.stderr.write(error.message + "\n");
        process.exit(1);
     }
   }
