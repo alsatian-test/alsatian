@@ -154,6 +154,7 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
+        "./scripts/tag-release.d.ts",
         "./scripts/tag-release.ts",
         "./typings/index.d.ts"
     ],
