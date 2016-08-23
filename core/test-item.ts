@@ -24,7 +24,7 @@ export class TestItem {
     const promise = createPromise();
 
     setTimeout(() => {
-      
+
       if (this._test.ignored) {
         promise.resolve({ test: this._test });
       }

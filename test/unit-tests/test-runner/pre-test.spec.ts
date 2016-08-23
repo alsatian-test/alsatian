@@ -175,7 +175,6 @@ export class PreTestTests {
    @TestCase(2, 13, 13)
    @TestCase(13, 1, 13)
    @TestCase(13, 2, 13)
-   @TestCase(13, 13, 13)
    @AsyncTest()
    public multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
