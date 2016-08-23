@@ -26,16 +26,16 @@ export class TestRunner {
         timeout = 500;
      }
 
-     const testSetResults = new TestSetResults();
-     // TODO: handle these neatly
-     let currentTestFixtureResults = testSetResults.addTestFixtureResult(testSet.testFixtures[0]);
-     let currentTestResults = currentTestFixtureResults.addTestResult(testSet.testFixtures[0].tests[0]);
-
      const testPlan = new TestPlan(testSet);
 
      if (testPlan.testItems.length === 0) {
        throw new Error("no tests to run.");
      }
+
+     const testSetResults = new TestSetResults();
+     // TODO: handle these neatly
+     let currentTestFixtureResults = testSetResults.addTestFixtureResult(testSet.testFixtures[0]);
+     let currentTestResults = currentTestFixtureResults.addTestResult(testSet.testFixtures[0].tests[0]);
 
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
 
