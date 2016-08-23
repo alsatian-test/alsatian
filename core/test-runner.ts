@@ -38,7 +38,7 @@ export class TestRunner {
      }
 
      var scheduleNextTestPlanItem = (testPlanItem: any) => {
-       console.log(testPlanItem);
+
        if (testPlanItem) {
          if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
            currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
@@ -57,16 +57,15 @@ export class TestRunner {
          });
        }
        else {
-         promise.resolve(testPlan);
+         promise.resolve(testSetResults);
        }
      };
 
      var createResultAndRunNextTest = (testItem: TestItem, test: any, error?: Error) => {
        let result = currentTestResults.addTestCaseResult(test.arguments, error);
-       console.log("result", currentTestResults.test);
        this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
 
-      const nextTestPlanIndex = testPlan.testItems.indexOf(test) + 1;
+      const nextTestPlanIndex = testPlan.testItems.indexOf(testItem) + 1;
       scheduleNextTestPlanItem(testPlan.testItems[nextTestPlanIndex]);
      }
 

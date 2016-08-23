@@ -5,6 +5,18 @@ import { TestTimeoutError } from "./_errors";
 
 export class TestItem {
 
+   public get testCase() {
+      return this._testCase;
+   }
+
+   public get test() {
+      return this._test;
+   }
+
+   public get testFixture() {
+      return this._testFixture;
+   }
+
   public constructor(private _testFixture: ITestFixture, private _test: ITest, private _testCase: ITestCase) {}
 
   public run(timeout: number): any {
@@ -12,7 +24,7 @@ export class TestItem {
     const promise = createPromise();
 
     setTimeout(() => {
-
+      
       if (this._test.ignored) {
         promise.resolve({ test: this._test });
       }
@@ -34,14 +46,14 @@ export class TestItem {
         else {
           let timeoutExpired = false;
 
-          let promise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+          let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
           let timeoutCheck: NodeJS.Timer = null;
 
-         promise.then(() => {
+         testPromise.then(() => {
             if (!timeoutExpired) {
-              clearTimeout(timeoutCheck);
-                this._tearDown();
-                promise.resolve({ test: this._test });
+             clearTimeout(timeoutCheck);
+             this._tearDown();
+             promise.resolve({ test: this._test });
             }
           })
           .catch((error: Error) => {
