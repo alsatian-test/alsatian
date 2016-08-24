@@ -7,7 +7,7 @@ export class TestSetRunInfo {
    public get promise() {
       return this._promise;
    }
-   
+
    public get timeout() {
       return this._timeout;
    }
