@@ -61,7 +61,7 @@ export class TestRunner {
                 .testFixtureResults[testSetResults.testFixtureResults.length - 1];
 
      const currentTestResults = currentTestFixtureResults
-                .testResults[currentTestFixtureResults.testResults.length - 1]
+                .testResults[currentTestFixtureResults.testResults.length - 1];
 
      let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
      this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
