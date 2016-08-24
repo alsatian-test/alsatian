@@ -40,8 +40,7 @@ export class TestRunner {
       const testSetRunInfo = new TestSetRunInfo(promise,
          testPlan,
          testSetResults,
-         timeout,
-         testPlan.testItems[0]);
+         timeout);
 
          this._scheduleNextTestPlanItem(testSetRunInfo);
 

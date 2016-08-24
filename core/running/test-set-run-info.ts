@@ -20,6 +20,7 @@ export class TestSetRunInfo {
       return this._testSetResults;
    }
 
+   private _testPlanItem: TestItem;
    public get testPlanItem() {
       return this._testPlanItem;
    }
@@ -37,6 +38,5 @@ export class TestSetRunInfo {
       private _promise: any,
       private _testPlan: TestPlan,
       private _testSetResults: TestSetResults,
-      private _timeout: number,
-      private _testPlanItem: TestItem) {}
+      private _timeout: number) {}
 }
