@@ -43,6 +43,7 @@
         "./core/_interfaces/test-fixture.i.ts",
         "./core/_interfaces/test.i.ts",
         "./core/_results.ts",
+        "./core/_running.ts",
         "./core/_spying.ts",
         "./core/alsatian-core.ts",
         "./core/create-test-set.ts",
