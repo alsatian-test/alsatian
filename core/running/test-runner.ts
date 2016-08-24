@@ -1,6 +1,6 @@
-import { ITestFixture, ITest } from "./_interfaces";
-import { createPromise } from "../promise/create-promise";
-import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, TestTimeoutError } from "./alsatian-core";
+import { ITestFixture, ITest } from "../_interfaces";
+import { createPromise } from "../../promise/create-promise";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, TestTimeoutError } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
 import "reflect-metadata";

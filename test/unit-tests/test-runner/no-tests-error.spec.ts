@@ -1,4 +1,4 @@
-import { TestRunner } from "../../../core/test-runner";
+import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
 import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";

@@ -1,4 +1,4 @@
-import { TestSet } from "./test-set";
+import { TestSet } from "../test-set";
 import { TestItem } from "./test-item";
 
 export class TestPlan {
