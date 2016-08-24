@@ -8,7 +8,7 @@ export class TestFixtureBuilder {
   private _testFixture: ITestFixture;
 
   public constructor() {
-    this._testFixture = new TestFixture();
+    this._testFixture = new TestFixture("Unnamed Test Fixture");
   }
 
   public withFixture(fixture: { [id: string]: (...args: Array<any>) => any }): TestFixtureBuilder {
@@ -42,6 +42,11 @@ export class TestFixtureBuilder {
     }
 
     return this;
+  }
+
+  public withDescription(description: string): TestFixtureBuilder {
+      this._testFixture.description = description;
+      return this;
   }
 
   public build (): ITestFixture {

@@ -79,6 +79,7 @@ export class TestRunner {
          .testFixtureResults[testSetResults.testFixtureResults.length - 1];
 
          if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== nextTestPlanItem.testFixture) {
+            this._output.emitFixture(nextTestPlanItem.testFixture);
             currentTestFixtureResults = testSetResults.addTestFixtureResult(nextTestPlanItem.testFixture);
          }
 

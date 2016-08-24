@@ -30,7 +30,7 @@ export class CliTestRunnerTests {
    }
 
    @AsyncTest()
-   public noTestFixturesExitswithError() {
+   public noTestFixturesExitsWithError() {
       let testSet = <TestSet>{};
 
       let testPromise = createPromise();
@@ -44,6 +44,31 @@ export class CliTestRunnerTests {
       setTimeout(() => {
         try {
           Expect(process.exit).toHaveBeenCalledWith(1);
+          testPromise.resolve();
+        }
+        catch (error) {
+          testPromise.reject(error);
+        }
+      });
+
+      return testPromise;
+   }
+
+   @AsyncTest()
+   public noTestFixturesPrintsErrorMessageWithNewLine() {
+      let testSet = <TestSet>{};
+
+      let testPromise = createPromise();
+
+      (<any>testSet).testFixtures = [ ];
+
+      let cliTestRunner = new CliTestRunner();
+
+      cliTestRunner.run(testSet);
+
+      setTimeout(() => {
+        try {
+          Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run.\n");
           testPromise.resolve();
         }
         catch (error) {

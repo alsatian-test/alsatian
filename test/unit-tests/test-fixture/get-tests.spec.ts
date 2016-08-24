@@ -7,7 +7,7 @@ export class GetTestsTests {
     @TestCase(2)
     @TestCase(3)
     public shouldReturnCorrectAmountWhenNoneFocussed(count: number) {
-        let testFixture = new TestFixture();
+        let testFixture = new TestFixture("Unnamed Test Fixture");
 
         for (let i = 0; i < count; i++) {
             testFixture.addTest(
@@ -22,7 +22,7 @@ export class GetTestsTests {
 
     @Test()
     public shouldContainFocusedTest() {
-        let testFixture = new TestFixture();
+        let testFixture = new TestFixture("Unnamed Test Fixture");
 
         let focussedTest = new TestBuilder()
             .focussed()
@@ -43,7 +43,7 @@ export class GetTestsTests {
 
     @Test()
     public shouldNotContainUnfocusedTest() {
-        let testFixture = new TestFixture();
+        let testFixture = new TestFixture("Unnamed Test Fixture");
 
         let focussedTest = new TestBuilder()
             .focussed()
