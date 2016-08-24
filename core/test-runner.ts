@@ -33,9 +33,6 @@ export class TestRunner {
      }
 
      const testSetResults = new TestSetResults();
-     // TODO: handle these neatly
-     let currentTestFixtureResults = testSetResults.addTestFixtureResult(testSet.testFixtures[0]);
-     let currentTestResults = currentTestFixtureResults.addTestResult(testSet.testFixtures[0].tests[0]);
 
      this._output.emitVersion();
      this._output.emitPlan(testPlan.testItems.length);
@@ -86,14 +83,14 @@ export class TestRunner {
         let currentTestFixtureResults = testSetResults
                    .testFixtureResults[testSetResults.testFixtureResults.length - 1];
 
-       let currentTestResults = currentTestFixtureResults
-                  .testResults[currentTestFixtureResults.testResults.length - 1];
-
-       if (currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
+       if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
          currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
        }
 
-       if (currentTestResults.test !== testPlanItem.test) {
+      let currentTestResults = currentTestFixtureResults
+            .testResults[currentTestFixtureResults.testResults.length - 1];
+
+       if (!currentTestResults || currentTestResults.test !== testPlanItem.test) {
          currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
        }
 
