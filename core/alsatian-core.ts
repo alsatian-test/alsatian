@@ -3,7 +3,6 @@ import "../typings/index.d.ts";
 import {
     createTestSet,
     Expect,
-    TestRunner,
     TestSet,
     TestFixture,
     TestOutput
@@ -40,6 +39,10 @@ import {
 } from "./_errors";
 
 import * as METADATA_KEYS from "./decorators/_metadata-keys";
+
+import {
+    TestRunner
+} from "./_running";
 
 export {
    AsyncTest,

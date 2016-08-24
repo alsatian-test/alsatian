@@ -1,4 +1,4 @@
-import { TestRunner } from "../../../core/test-runner";
+import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
 import { TestOutput } from "../../../core/test-output";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
