@@ -25,8 +25,6 @@ export class TestRunner {
          throw new Error("no tests to run.");
       }
 
-      let promise = createPromise();
-
       if (!timeout) {
          timeout = 500;
       }
@@ -36,6 +34,7 @@ export class TestRunner {
       this._output.emitVersion();
       this._output.emitPlan(testPlan.testItems.length);
 
+      let promise = createPromise();
       this._scheduleNextTestPlanItem(promise,
          testPlan,
          testSetResults,
