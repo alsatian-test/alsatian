@@ -3,6 +3,7 @@ import { createPromise } from "../../promise/create-promise";
 import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, TestTimeoutError } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
+import { TestSetRunInfo } from "./test-set-run-info";
 import "reflect-metadata";
 
 export class TestRunner {
@@ -34,74 +35,71 @@ export class TestRunner {
       this._output.emitVersion();
       this._output.emitPlan(testPlan.testItems.length);
 
-      let promise = createPromise();
-      this._scheduleNextTestPlanItem(promise,
+      const promise = createPromise();
+
+      const testSetRunInfo = new TestSetRunInfo(promise,
          testPlan,
          testSetResults,
          timeout,
          testPlan.testItems[0]);
 
-         return promise;
+         this._scheduleNextTestPlanItem(testSetRunInfo);
+
+      return promise;
+   }
+
+   private _createResultAndRunNextTest(testSetRunInfo: TestSetRunInfo, error?: Error) {
+
+      const testSetResults = testSetRunInfo.testSetResults;
+
+      const currentTestFixtureResults = testSetResults
+      .testFixtureResults[testSetResults.testFixtureResults.length - 1];
+
+      const currentTestResults = currentTestFixtureResults
+      .testResults[currentTestFixtureResults.testResults.length - 1];
+
+      const testItem = testSetRunInfo.testPlanItem;
+
+      let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
+      this._output.emitResult(testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1, result);
+      this._scheduleNextTestPlanItem(testSetRunInfo);
+   }
+
+   private _scheduleNextTestPlanItem(testSetRunInfo: TestSetRunInfo) {
+
+      const nextTestPlanIndex = testSetRunInfo.testPlan.testItems.indexOf(testSetRunInfo.testPlanItem) + 1;
+      const nextTestPlanItem = testSetRunInfo.testPlan.testItems[nextTestPlanIndex];
+
+      if (nextTestPlanItem) {
+
+         testSetRunInfo.testPlanItem = nextTestPlanItem;
+
+         const testSetResults = testSetRunInfo.testSetResults;
+
+         let currentTestFixtureResults = testSetResults
+         .testFixtureResults[testSetResults.testFixtureResults.length - 1];
+
+         if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== nextTestPlanItem.testFixture) {
+            currentTestFixtureResults = testSetResults.addTestFixtureResult(nextTestPlanItem.testFixture);
+         }
+
+         let currentTestResults = currentTestFixtureResults
+         .testResults[currentTestFixtureResults.testResults.length - 1];
+
+         if (!currentTestResults || currentTestResults.test !== nextTestPlanItem.test) {
+            currentTestResults = currentTestFixtureResults.addTestResult(nextTestPlanItem.test);
+         }
+
+         nextTestPlanItem.run(testSetRunInfo.timeout)
+         .then((testResults: { test: ITest, error: Error }) => {
+            this._createResultAndRunNextTest(testSetRunInfo, testResults.error);
+         })
+         .catch((error: Error) => {
+            console.log(error);
+         });
       }
-
-      private _createResultAndRunNextTest(
-         promise: any,
-         testPlan: TestPlan,
-         testSetResults: TestSetResults,
-         timeout: number,
-         testItem: TestItem,
-         error?: Error) {
-
-            const currentTestFixtureResults = testSetResults
-            .testFixtureResults[testSetResults.testFixtureResults.length - 1];
-
-            const currentTestResults = currentTestFixtureResults
-            .testResults[currentTestFixtureResults.testResults.length - 1];
-
-            let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
-            this._output.emitResult(testPlan.testItems.indexOf(testItem) + 1, result);
-
-            const nextTestPlanIndex = testPlan.testItems.indexOf(testItem) + 1;
-            this._scheduleNextTestPlanItem(promise,
-               testPlan,
-               testSetResults,
-               timeout,
-               testPlan.testItems[nextTestPlanIndex]);
-            }
-
-            private _scheduleNextTestPlanItem(
-               promise: any,
-               testPlan: TestPlan,
-               testSetResults: TestSetResults,
-               timeout: number,
-               testPlanItem: TestItem) {
-
-                  if (testPlanItem) {
-
-                     let currentTestFixtureResults = testSetResults
-                     .testFixtureResults[testSetResults.testFixtureResults.length - 1];
-
-                     if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== testPlanItem.testFixture) {
-                        currentTestFixtureResults = testSetResults.addTestFixtureResult(testPlanItem.testFixture);
-                     }
-
-                     let currentTestResults = currentTestFixtureResults
-                     .testResults[currentTestFixtureResults.testResults.length - 1];
-
-                     if (!currentTestResults || currentTestResults.test !== testPlanItem.test) {
-                        currentTestResults = currentTestFixtureResults.addTestResult(testPlanItem.test);
-                     }
-
-                     testPlanItem.run(timeout)
-                     .then((testResults: { test: ITest, error: Error }) => {
-                        this._createResultAndRunNextTest(promise, testPlan, testSetResults, timeout, testPlanItem, testResults.error);
-                     })
-                     .catch((error: Error) => {
-                        console.log(error);
-                     });
-                  }
-                  else {
-                     promise.resolve(testSetResults);
-                  }
-               };
-            }
+      else {
+         testSetRunInfo.promise.resolve(testSetRunInfo.testSetResults);
+      }
+   };
+}

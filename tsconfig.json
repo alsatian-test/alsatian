@@ -80,6 +80,7 @@
         "./core/running/test-item.ts",
         "./core/running/test-plan.ts",
         "./core/running/test-runner.ts",
+        "./core/running/test-set-run-info.ts",
         "./core/spying/restorable-spy.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on.ts",
@@ -159,8 +160,7 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
-        "./scripts/tag-release.ts",
-        "./typings/index.d.ts"
+        "./scripts/tag-release.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
