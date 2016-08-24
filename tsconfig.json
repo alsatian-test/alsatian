@@ -76,6 +76,7 @@
         "./core/results/test-outcome.ts",
         "./core/results/test-results.ts",
         "./core/results/test-set-results.ts",
+        "./core/spying/property-spy.ts",
         "./core/spying/restorable-spy.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on.ts",
