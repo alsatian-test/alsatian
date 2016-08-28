@@ -4,3 +4,14 @@ npm-debug.log
 
 #Testing
 test
+coverage
+
+#CI
+.travis.yml
+.codeclimate.yml
+
+#Typings
+typings
+
+#DevOps
+scripts
