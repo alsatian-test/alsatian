@@ -2,11 +2,5 @@
 node_modules
 npm-debug.log
 
-#TypeScript
-*.ts
-*.js.map
-!*.d.ts
-
-
 #Testing
 test
