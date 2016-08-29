@@ -29,6 +29,19 @@ alsatian [list of globs]
 alsatian ./test/**/*.spec.js ./special-test.js
 ```
 
+### CLI Options
+
+You can change how Alsatian runs your tests using the available options
+
+#### Timeout
+
+The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
+
+```
+alsatian --timeout 5000
+alsatian -t 5000
+```
+
 ## Using alsatian
 
 Create your first spec file
