@@ -1,7 +1,4 @@
-import {
-   RestorableSpy,
-   PropertySpy
-} from "../_spying";
+import { RestorableSpy } from "../_spying";
 
 export function SpyOn(target: any, functionName: string): RestorableSpy {
 
