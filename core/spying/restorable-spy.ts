@@ -11,7 +11,7 @@ export class RestorableSpy extends Spy {
       this._functionName = functionName;
       this._target = target;
 
-      target[functionName] = this.call;
+      target[functionName] = this.call.bind(this);
 
       // expose spy's calls on function
       target[functionName].calls = this.calls;

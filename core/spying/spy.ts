@@ -19,7 +19,7 @@ export class Spy {
     this._originalContext = originalContext;
   }
 
-  public call(args: Array<any>) {
+  public call(...args: Array<any>) {
 
     this.calls.push(new SpyCall(args));
 

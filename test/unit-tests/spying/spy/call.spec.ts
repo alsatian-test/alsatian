@@ -3,95 +3,95 @@ import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class CallTests {
 
-  @TestCase([])
-  @TestCase([ 1 ])
-  @TestCase([ 1, 2 ])
-  @TestCase([ "one", 2 ])
-  @TestCase([ { "some": "thing" }, [] ])
-  public argumentsRecorded(args: Array<any>) {
-    let originalFunction = () => {};
+   @TestCase([])
+   @TestCase([ 1 ])
+   @TestCase([ 1, 2 ])
+   @TestCase([ "one", 2 ])
+   @TestCase([ { "some": "thing" }, [] ])
+   public argumentsRecorded(args: Array<any>) {
+      let originalFunction = () => {};
 
-    let spy = new Spy(originalFunction, this);
+      let spy = new Spy(originalFunction, this);
 
-    spy.call(args);
+      spy.call.apply(spy, args);
 
-    Expect(spy.calls[0].args).toBe(args);
-  }
+      Expect(spy.calls[0].args).toEqual(args);
+   }
 
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  public callAddedForEachCall(callCount: number) {
-    let originalFunction = () => {};
+   @TestCase(0)
+   @TestCase(1)
+   @TestCase(42)
+   public callAddedForEachCall(callCount: number) {
+      let originalFunction = () => {};
 
-    let spy = new Spy(originalFunction, this);
+      let spy = new Spy(originalFunction, this);
 
-    for (let i = 0; i < callCount; i++) {
-      spy.call([]);
-    }
+      for (let i = 0; i < callCount; i++) {
+         spy.call.apply(spy, []);
+      }
 
-    Expect(spy.calls.length).toBe(callCount);
-  }
+      Expect(spy.calls.length).toBe(callCount);
+   }
 
-  @Test()
-  public originalFunctionIsCalled() {
-    let object = {
-      originalFunction: () => {}
-    };
+   @Test()
+   public originalFunctionIsCalled() {
+      let object = {
+         originalFunction: () => {}
+      };
 
-    SpyOn(object, "originalFunction");
+      SpyOn(object, "originalFunction");
 
-    let originalFunction = object.originalFunction;
+      let originalFunction = object.originalFunction;
 
-    let spy = new Spy(object.originalFunction, object);
+      let spy = new Spy(object.originalFunction, object);
 
-    spy.call([]);
+      spy.call.apply(spy, []);
 
-    Expect(originalFunction).toHaveBeenCalled();
-  }
+      Expect(originalFunction).toHaveBeenCalled();
+   }
 
-  @Test()
-  public originalFunctionNotCalledIfSpyStub() {
-    let object = {
-      originalFunction: () => {}
-    };
+   @Test()
+   public originalFunctionNotCalledIfSpyStub() {
+      let object = {
+         originalFunction: () => {}
+      };
 
-    SpyOn(object, "originalFunction");
+      SpyOn(object, "originalFunction");
 
-    let originalFunction = object.originalFunction;
+      let originalFunction = object.originalFunction;
 
-    let spy = new Spy(object.originalFunction, object);
+      let spy = new Spy(object.originalFunction, object);
 
-    spy.andStub();
+      spy.andStub();
 
-    spy.call([]);
+      spy.call.apply(spy, []);
 
-    Expect(originalFunction).not.toHaveBeenCalled();
-  }
+      Expect(originalFunction).not.toHaveBeenCalled();
+   }
 
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(42)
-  @TestCase(4.2)
-  @TestCase(-4.2)
-  @TestCase("")
-  @TestCase("something")
-  public givenReturnValueIsReturned(expectedReturnValue: any) {
-    let object = {
-      originalFunction: () => {}
-    };
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(42)
+   @TestCase(4.2)
+   @TestCase(-4.2)
+   @TestCase("")
+   @TestCase("something")
+   public givenReturnValueIsReturned(expectedReturnValue: any) {
+      let object = {
+         originalFunction: () => {}
+      };
 
-    SpyOn(object, "originalFunction");
+      SpyOn(object, "originalFunction");
 
-    let originalFunction = object.originalFunction;
+      let originalFunction = object.originalFunction;
 
-    let spy = new Spy(object.originalFunction, object);
+      let spy = new Spy(object.originalFunction, object);
 
-    spy.andReturn(expectedReturnValue);
+      spy.andReturn(expectedReturnValue);
 
-    let actualReturnValue = spy.call([]);
+      let actualReturnValue = spy.call.apply(spy, []);
 
-    Expect(actualReturnValue).toBe(expectedReturnValue);
-  }
+      Expect(actualReturnValue).toBe(expectedReturnValue);
+   }
 }
