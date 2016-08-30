@@ -10,8 +10,5 @@ coverage
 .travis.yml
 .codeclimate.yml
 
-#Typings
-typings
-
 #DevOps
 scripts
