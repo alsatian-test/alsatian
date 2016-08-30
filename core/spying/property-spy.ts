@@ -6,6 +6,7 @@ export class PropertySpy<PropertyType> {
   private _originialSetter: (value: PropertyType) => void;
   private _value: PropertyType;
   private _getCalls: Array<SpyCall> = [];
+  private _setCalls: Array<SpyCall> = [];
 
   public constructor(target: any, propertyName: string) {
 
@@ -18,6 +19,7 @@ export class PropertySpy<PropertyType> {
      });
 
      target[propertyName].getCalls = this._getCalls;
+     target[propertyName].setCalls = this._setCalls;
   }
 
   private _get() {
@@ -26,6 +28,7 @@ export class PropertySpy<PropertyType> {
   }
 
   private _set(value: PropertyType) {
+    this._getCalls.push(new SpyCall([ value ]));
     this._value = value;
   }
 }
