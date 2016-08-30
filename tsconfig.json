@@ -79,6 +79,7 @@
         "./core/spying/property-spy.ts",
         "./core/spying/restorable-spy.ts",
         "./core/spying/spy-call.ts",
+        "./core/spying/spy-on-property.ts",
         "./core/spying/spy-on.ts",
         "./core/spying/spy.ts",
         "./core/test-fixture.ts",

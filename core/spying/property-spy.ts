@@ -1,8 +1,8 @@
-export class PropertySpy {
+export class PropertySpy<PropertyType> {
 
-  private _originialGetter: () => any;
-  private _originialSetter: (value: any) => void;
-  private _value: any;
+  private _originialGetter: () => PropertyType;
+  private _originialSetter: (value: PropertyType) => void;
+  private _value: PropertyType;
 
   public constructor(target: any, functionName: string) {
 
@@ -17,5 +17,9 @@ export class PropertySpy {
 
   private _get() {
     return this._value;
+  }
+
+  private _set(value: PropertyType) {
+    this._value = value;
   }
 }
