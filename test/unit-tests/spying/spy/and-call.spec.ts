@@ -22,6 +22,24 @@ export class AndCallTests {
     Expect(originalFunction).not.toHaveBeenCalled();
   }
 
+  @TestCase(null)
+  @TestCase(undefined)
+  @TestCase(42)
+  @TestCase("something")
+  @TestCase({ "an": "object" })
+  @TestCase([ "an", "array" ])
+  public spyShoulReturnCorrectValue(returnValue: any) {
+      let someObject = {
+          func: () => { }
+      };
+
+      SpyOn(someObject, "func").andCall(() => {
+          return returnValue;
+      });
+
+      Expect(someObject.func()).toBe(returnValue);
+  }
+
  @Test()
  public originalFunctionNotCalledIfSpyNotFaked() {
    let object = {
