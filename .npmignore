@@ -2,11 +2,16 @@
 node_modules
 npm-debug.log
 
-#TypeScript
-*.ts
-*.js.map
-!*.d.ts
-
-
 #Testing
 test
+coverage
+
+#CI
+.travis.yml
+.codeclimate.yml
+
+#Typings
+typings
+
+#DevOps
+scripts
