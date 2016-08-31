@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.13",
   "description": "TypeScript testing framework with test cases",
   "author": "James Richford <=> (=)",
   "contributors": [

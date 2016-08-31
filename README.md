@@ -1,8 +1,12 @@
 # alsatian
+[![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
 [![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
 [![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
 [![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
 [![Issue Count](https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
+[![bitHound Code](https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg)](https://www.bithound.io/github/alsatian-test/alsatian)
+[![bitHound Dependencies](https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg)](https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm)
+[![Known Vulnerabilities](https://snyk.io/test/github/alsatian-test/alsatian/badge.svg)](https://snyk.io/test/github/alsatian-test/alsatian)
 
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
@@ -27,6 +31,19 @@ Alsatian has a CLI for easy use with your package.json or your favourite cli too
 alsatian [list of globs]
 
 alsatian ./test/**/*.spec.js ./special-test.js
+```
+
+### CLI Options
+
+You can change how Alsatian runs your tests using the available options
+
+#### Timeout
+
+The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
+
+```
+alsatian --timeout 5000
+alsatian -t 5000
 ```
 
 ## Using alsatian

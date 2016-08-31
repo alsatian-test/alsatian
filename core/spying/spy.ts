@@ -29,7 +29,7 @@ export class Spy {
       returnValue = this.originalFunction.apply(this._originalContext, args);
     }
     else if (this._fakeFunction) {
-      this._fakeFunction.apply(this._originalContext, args);
+      returnValue = this._fakeFunction.apply(this._originalContext, args);
     }
 
     if (this._hasReturnValue) {
