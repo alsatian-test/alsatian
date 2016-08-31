@@ -1,6 +1,6 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, IgnoreTests } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
@@ -61,7 +61,7 @@ export class PreTestTests {
 
    @TestCase(1)
    @TestCase(2)
-   @TestCase(13)
+   @TestCase(5)
    @AsyncTest()
    public multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
       let testSet = <TestSet>{};
@@ -100,13 +100,13 @@ export class PreTestTests {
 
    @TestCase(1, 1)
    @TestCase(1, 2)
-   @TestCase(1, 13)
+   @TestCase(1, 5)
    @TestCase(2, 1)
    @TestCase(2, 2)
-   @TestCase(2, 13)
-   @TestCase(13, 1)
-   @TestCase(13, 2)
-   @TestCase(13, 13)
+   @TestCase(2, 5)
+   @TestCase(5, 1)
+   @TestCase(5, 2)
+   @TestCase(5, 5)
    @AsyncTest()
    public multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
@@ -151,30 +151,31 @@ export class PreTestTests {
 
    @TestCase(1, 1, 1)
    @TestCase(1, 2, 1)
-   @TestCase(1, 13, 1)
+   @TestCase(1, 5, 1)
    @TestCase(2, 1, 1)
    @TestCase(2, 2, 1)
-   @TestCase(2, 13, 1)
-   @TestCase(13, 1, 1)
-   @TestCase(13, 2, 1)
-   @TestCase(13, 13, 1)
+   @TestCase(2, 5, 1)
+   @TestCase(5, 1, 1)
+   @TestCase(5, 2, 1)
+   @TestCase(5, 5, 1)
    @TestCase(1, 1, 2)
    @TestCase(1, 2, 2)
-   @TestCase(1, 13, 2)
+   @TestCase(1, 5, 2)
    @TestCase(2, 1, 2)
    @TestCase(2, 2, 2)
-   @TestCase(2, 13, 2)
-   @TestCase(13, 1, 2)
-   @TestCase(13, 2, 2)
-   @TestCase(13, 13, 2)
-   @TestCase(1, 1, 13)
-   @TestCase(1, 2, 13)
-   @TestCase(1, 13, 13)
-   @TestCase(2, 1, 13)
-   @TestCase(2, 2, 13)
-   @TestCase(2, 13, 13)
-   @TestCase(13, 1, 13)
-   @TestCase(13, 2, 13)
+   @TestCase(2, 5, 2)
+   @TestCase(5, 1, 2)
+   @TestCase(5, 2, 2)
+   @TestCase(5, 5, 2)
+   @TestCase(1, 1, 5)
+   @TestCase(1, 2, 5)
+   @TestCase(1, 5, 5)
+   @TestCase(2, 1, 5)
+   @TestCase(2, 2, 5)
+   @TestCase(2, 5, 5)
+   @TestCase(5, 1, 5)
+   @TestCase(5, 2, 5)
+   @Timeout(1000)
    @AsyncTest()
    public multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
@@ -222,7 +223,7 @@ export class PreTestTests {
 
    @TestCase(1)
    @TestCase(2)
-   @TestCase(13)
+   @TestCase(5)
    @AsyncTest()
    public testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
       let testSet = <TestSet>{};
