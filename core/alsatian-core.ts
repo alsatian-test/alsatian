@@ -22,7 +22,8 @@ import {
 } from "./_decorators";
 
 import {
-    SpyOn
+    SpyOn,
+    SpyOnProperty
 } from "./_spying";
 
 import {
@@ -54,6 +55,7 @@ export {
    IgnoreTests,
    Setup,
    SpyOn,
+   SpyOnProperty,
    Teardown,
    Test,
    TestCase,
