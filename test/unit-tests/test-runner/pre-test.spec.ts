@@ -1,34 +1,32 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout, FocusTest } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { createPromise } from "../../../promise/create-promise";
 import { Promise } from "../../../promise/promise";
 
 export class PreTestTests {
 
-  private _originalStdOut: any;
-  private _originalProcessExit: any;
+   private _originalStdOut: any;
+   private _originalProcessExit: any;
 
    @Setup
    private _spyProcess() {
-     this._originalProcessExit = process.exit;
-     this._originalStdOut = process.stdout.write;
+      this._originalProcessExit = process.exit;
+      this._originalStdOut = process.stdout.write;
 
-     SpyOn(process, "exit").andStub();
-     SpyOn(process.stdout, "write").andStub();
+      SpyOn(process, "exit").andStub();
+      SpyOn(process.stdout, "write").andStub();
    }
 
    @Teardown
    private _resetProcess() {
-     process.exit = this._originalProcessExit;
-     process.stdout.write = this._originalStdOut;
+      process.exit = this._originalProcessExit;
+      process.stdout.write = this._originalStdOut;
    }
 
    @AsyncTest()
-   @FocusTest
    public tapVersionHeaderOutput() {
       let testSet = <TestSet>{};
 
@@ -50,7 +48,6 @@ export class PreTestTests {
             reject(error);
          });
       });
-
    }
 
    @TestCase(1)
@@ -70,26 +67,18 @@ export class PreTestTests {
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let resultPromise: any = {
-        resolve: () => {
+      return new Promise<void>((resolve, reject) => {
 
-        },
-        then: (callback: (testResults: Array<any>) => any) => {
-          resultPromise.resolve = callback;
-          return resultPromise;
-        },
-        catch: (error: Error) => {
-        }
-     };
+         let testRunner = new TestRunner();
 
-      let testRunner = new TestRunner();
-
-      testRunner.run(testSet).then(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
-         resultPromise.resolve();
+         testRunner.run(testSet).then(() => {
+            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            resolve();
+         })
+         .catch((error: Error) => {
+            reject(error);
+         });
       });
-
-      return resultPromise;
    }
 
    @TestCase(1, 1)
@@ -109,29 +98,29 @@ export class PreTestTests {
 
       for (let i = 0; i < testFixtureCount; i++) {
 
-        let testFixtureBuilder = new TestFixtureBuilder();
+         let testFixtureBuilder = new TestFixtureBuilder();
 
-        for (let j = 0; j < testCount; j++) {
-          let testFunctionKey = "testFunction" + j;
-          let testBuilder = new TestBuilder().withKey(testFunctionKey);
-          testBuilder.addTestCase(new TestCaseBuilder().build());
-          testFixtureBuilder.addTest(testBuilder.build());
-        }
+         for (let j = 0; j < testCount; j++) {
+            let testFunctionKey = "testFunction" + j;
+            let testBuilder = new TestBuilder().withKey(testFunctionKey);
+            testBuilder.addTestCase(new TestCaseBuilder().build());
+            testFixtureBuilder.addTest(testBuilder.build());
+         }
 
-        testSet.testFixtures.push(testFixtureBuilder.build());
+         testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
       let resultPromise: any = {
-        resolve: () => {
+         resolve: () => {
 
-        },
-        then: (callback: (testResults: Array<any>) => any) => {
-          resultPromise.resolve = callback;
-          return resultPromise;
-        },
-        catch: (error: Error) => {
-        }
-     };
+         },
+         then: (callback: (testResults: Array<any>) => any) => {
+            resultPromise.resolve = callback;
+            return resultPromise;
+         },
+         catch: (error: Error) => {
+         }
+      };
 
       let testRunner = new TestRunner();
 
@@ -178,41 +167,33 @@ export class PreTestTests {
 
       for (let i = 0; i < testFixtureCount; i++) {
 
-        let testFixtureBuilder = new TestFixtureBuilder();
+         let testFixtureBuilder = new TestFixtureBuilder();
 
-        for (let j = 0; j < testCount; j++) {
-          let testFunctionKey = "testFunction" + j;
-          let testBuilder = new TestBuilder().withKey(testFunctionKey);
-          testFixtureBuilder.addTest(testBuilder.build());
+         for (let j = 0; j < testCount; j++) {
+            let testFunctionKey = "testFunction" + j;
+            let testBuilder = new TestBuilder().withKey(testFunctionKey);
+            testFixtureBuilder.addTest(testBuilder.build());
 
-          for (let k = 0; k < testCaseCount; k++) {
-             testBuilder.addTestCase(new TestCaseBuilder().build());
-          }
-        }
+            for (let k = 0; k < testCaseCount; k++) {
+               testBuilder.addTestCase(new TestCaseBuilder().build());
+            }
+         }
 
-        testSet.testFixtures.push(testFixtureBuilder.build());
+         testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let resultPromise: any = {
-        resolve: () => {
+      return new Promise<void>((resolve, reject) => {
 
-        },
-        then: (callback: (testResults: Array<any>) => any) => {
-          resultPromise.resolve = callback;
-          return resultPromise;
-        },
-        catch: (error: Error) => {
-        }
-     };
+         let testRunner = new TestRunner();
 
-      let testRunner = new TestRunner();
-
-      testRunner.run(testSet).then(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
-         resultPromise.resolve();
+         testRunner.run(testSet).then(() => {
+            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+            resolve();
+         })
+         .catch((error: Error) => {
+            reject(error);
+         });
       });
-
-      return resultPromise;
    }
 
    @TestCase(1)
@@ -235,25 +216,17 @@ export class PreTestTests {
       let testFixtureBuilder = new TestFixtureBuilder();
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let resultPromise: any = {
-        resolve: () => {
+      return new Promise<void>((resolve, reject) => {
 
-        },
-        then: (callback: (testResults: Array<any>) => any) => {
-          resultPromise.resolve = callback;
-          return resultPromise;
-        },
-        catch: (error: Error) => {
-        }
-     };
+         let testRunner = new TestRunner();
 
-      let testRunner = new TestRunner();
-
-      testRunner.run(testSet).then(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
-         resultPromise.resolve();
+         testRunner.run(testSet).then(() => {
+            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            resolve();
+         })
+         .catch((error: Error) => {
+            reject(error);
+         });
       });
-
-      return resultPromise;
    }
 }
