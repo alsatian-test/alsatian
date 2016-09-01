@@ -70,6 +70,8 @@ export class TestItem {
          }
       })
       .catch((error: Error) => {
+         console.log(error);
+         clearTimeout(timeoutCheck);
          this._tearDown();
          promise.resolve({ test: this._test, error: error });
       });

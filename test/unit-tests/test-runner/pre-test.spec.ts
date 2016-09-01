@@ -1,9 +1,10 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout, FocusTest } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { createPromise } from "../../../promise/create-promise";
 
 export class PreTestTests {
 
@@ -26,6 +27,7 @@ export class PreTestTests {
    }
 
    @AsyncTest()
+   @FocusTest
    public tapVersionHeaderOutput() {
       let testSet = <TestSet>{};
 
@@ -36,24 +38,16 @@ export class PreTestTests {
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let resultPromise: any = {
-        resolve: () => {
-
-        },
-        then: (callback: (testResults: Array<any>) => any) => {
-          resultPromise.resolve = callback;
-          return resultPromise;
-        },
-        catch: (error: Error) => {
-           return resultPromise;
-        }
-     };
+      let resultPromise: any = createPromise();
 
       let testRunner = new TestRunner();
 
-      testRunner.run(testSet).then.call(testRunner, () => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
+      testRunner.run(testSet).then(() => {
+         Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 14\n");
          resultPromise.resolve();
+      })
+      .catch((error: Error) => {
+         resultPromise.reject(error);
       });
 
       return resultPromise;
