@@ -82,7 +82,7 @@ export class TestOutput {
         let testDescription = test.description;
 
         if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-            testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
+            testDescription += ` [ ${testCaseArguments.map(argument => JSON.stringify(argument) || "undefined").join(", ")} ]`;
         }
 
         return testDescription;
