@@ -1,24 +1,26 @@
 import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsatian-core";
 
-export class CliTestRunner extends TestRunner {
+export class CliTestRunner {
 
-  public run(testSet: TestSet, timeout?: number) {
+   private _testRunner = new TestRunner();
 
-    try {
-       let testRunPromise = super.run(testSet, timeout);
+   public run(testSet: TestSet, timeout?: number) {
 
-       testRunPromise.then((results: TestSetResults) => {
-         if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
-           process.exit(1);
-         }
-         else {
-           process.exit(0);
-         }
-       });
-    }
-    catch (error) {
-       process.stderr.write(error.message + "\n");
-       process.exit(1);
-    }
-  }
+      try {
+         let testRunPromise = this._testRunner.run(testSet, timeout);
+
+         testRunPromise.then((results: TestSetResults) => {
+            if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
+               process.exit(1);
+            }
+            else {
+               process.exit(0);
+            }
+         });
+      }
+      catch (error) {
+         process.stderr.write(error.message + "\n");
+         process.exit(1);
+      }
+   }
 }
