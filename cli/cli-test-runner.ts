@@ -1,5 +1,4 @@
 import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsatian-core";
-import { createPromise } from "../promise/create-promise";
 
 export class CliTestRunner extends TestRunner {
 
