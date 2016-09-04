@@ -1,7 +1,6 @@
 import { Promise } from "../../../promise/promise";
-import { Expect, AsyncTest, TestCase, SpyOn, FocusTests } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn } from "../../../core/alsatian-core";
 
-@FocusTests
 export class PromiseTests {
 
    @AsyncTest()
@@ -34,7 +33,7 @@ export class PromiseTests {
       return new Promise((resolve, reject) => {
 
          new Promise((subResolve, subReject) => {
-            Expect(() => subResolve("")).not.toThrow();
+            Expect(() => subResolve(null)).not.toThrow();
             resolve();
          });
       });
@@ -70,6 +69,31 @@ export class PromiseTests {
             Expect(() => subReject(new Error())).not.toThrow();
             resolve();
          });
+      });
+   }
+
+   @AsyncTest()
+   @TestCase(new TypeError("something wrong"))
+   @TestCase(new RangeError("everything else is awful"))
+   @TestCase(new Error("just bad!"))
+   public rsolveCallsCatchWithErrorFromThenCallback(error: Error) {
+      return new Promise((resolve, reject) => {
+
+         const handler = {
+            then: () => { throw error; },
+            catch: () => {
+               Expect(handler.catch).toHaveBeenCalledWith(error);
+               resolve();
+            }
+         };
+
+         SpyOn(handler, "catch");
+
+         new Promise((subResolve, subReject) => {
+            subResolve(null);
+         })
+         .then(handler.then)
+         .catch(handler.catch);
       });
    }
 }
