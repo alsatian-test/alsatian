@@ -82,10 +82,27 @@ export class TestOutput {
         let testDescription = test.description;
 
         if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-            testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
+            testDescription += ` [ ${testCaseArguments.map(argument => this._getArgumentDescription(argument)).join(", ")} ]`;
         }
 
         return testDescription;
+    }
+
+    private _getArgumentDescription(argument: any): string {
+
+      const jsonArgument = JSON.stringify(argument);
+
+      // if the argument can be expresed as JSON return that
+      if (jsonArgument) {
+         return JSON.stringify(argument);
+      }
+      // otherwise if it's a function return it's name
+      else if (argument && argument.name) {
+         return argument.name;
+      }
+
+      // otherwise must be undefined
+      return "undefined";
     }
 
     private _getErrorYaml(error: MatchError): string {
