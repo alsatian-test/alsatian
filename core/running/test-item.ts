@@ -1,6 +1,6 @@
 import { ITestFixture, ITest, ITestCase } from "../_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
-import { createPromise } from "../../promise/create-promise";
+import { Promise } from "../../promise/promise";
 import { TestTimeoutError } from "../_errors";
 
 export class TestItem {
@@ -19,69 +19,70 @@ export class TestItem {
 
    public constructor(private _testFixture: ITestFixture, private _test: ITest, private _testCase: ITestCase) {}
 
-   public run(timeout: number): any {
-
-      const promise = createPromise();
-      setTimeout(() => this._run(promise, timeout));
-      return promise;
-   }
-
-   private _run(promise: any, timeout: number) {
+   public run(timeout: number): Promise<any> {
 
       if (this._test.ignored) {
-         promise.resolve({ test: this._test });
+         return new Promise((resolve, reject) => {
+            resolve({ test: this._test });
+         });
       }
       else {
 
          this._setup();
 
          if (this._test.isAsync) {
-            this._runAsync(promise, timeout);
+            return this._runAsync(timeout);
          }
          else {
-            this._runSync(promise);
+            return this._runSync();
          }
       }
    }
 
-   private _runSync(promise: any) {
-      try {
-         this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-         this._tearDown();
-         promise.resolve({ test: this._test });
-      }
-      catch (error) {
-         this._tearDown();
-         promise.resolve({ test: this._test, error: error });
-      }
+   private _runSync(): Promise<any> {
+      return new Promise<any>((resolve, reject) => {
+         try {
+            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+            this._tearDown();
+            resolve({ test: this._test });
+         }
+         catch (error) {
+            this._tearDown();
+            resolve({ test: this._test, error: error });
+         }
+      });
    }
 
-   private _runAsync(promise: any, timeout: number) {
-      let timeoutExpired = false;
+   private _runAsync(timeout: number) {
+      return new Promise<any>((resolve, reject) => {
+         let timeoutExpired = false;
 
-      let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-      let timeoutCheck: NodeJS.Timer = null;
+         let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+         let timeoutCheck: NodeJS.Timer = null;
 
-      testPromise.then(() => {
-         if (!timeoutExpired) {
+         testPromise.then(() => {
+            if (!timeoutExpired) {
+               clearTimeout(timeoutCheck);
+               this._tearDown();
+               resolve({ test: this._test });
+            }
+         })
+         .catch((error: Error) => {
+            console.log(error);
             clearTimeout(timeoutCheck);
             this._tearDown();
-            promise.resolve({ test: this._test });
-         }
-      })
-      .catch((error: Error) => {
-         this._tearDown();
-         promise.resolve({ test: this._test, error: error });
+            resolve({ test: this._test, error: error });
+         });
+
+         const testTimeout: number = this._test.timeout || timeout;
+
+         timeoutCheck = setTimeout(() => {
+            timeoutExpired = true;
+            let error = new TestTimeoutError(testTimeout);
+            this._tearDown();
+            resolve({ test: this._test, error: error });
+         }, testTimeout);
       });
-
-      const testTimeout: number = this._test.timeout || timeout;
-
-      timeoutCheck = setTimeout(() => {
-         timeoutExpired = true;
-         let error = new TestTimeoutError(testTimeout);
-         this._tearDown();
-         promise.resolve({ test: this._test, error: error });
-      }, testTimeout);
    }
 
    private _reportResult(promise: any, error?: Error) {
