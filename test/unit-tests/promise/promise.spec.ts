@@ -76,7 +76,30 @@ export class PromiseTests {
    @TestCase(new TypeError("something wrong"))
    @TestCase(new RangeError("everything else is awful"))
    @TestCase(new Error("just bad!"))
-   public rsolveCallsCatchWithErrorFromThenCallback(error: Error) {
+   public resolveCallsCatchWithErrorFromConstructorCallback(error: Error) {
+      return new Promise((resolve, reject) => {
+
+         const handler = {
+            catch: () => {
+               Expect(handler.catch).toHaveBeenCalledWith(error);
+               resolve();
+            }
+         };
+
+         SpyOn(handler, "catch");
+
+         new Promise((subResolve, subReject) => {
+            throw error;
+         })
+         .catch(handler.catch);
+      });
+   }
+
+   @AsyncTest()
+   @TestCase(new TypeError("something wrong"))
+   @TestCase(new RangeError("everything else is awful"))
+   @TestCase(new Error("just bad!"))
+   public resolveCallsCatchWithErrorFromThenCallback(error: Error) {
       return new Promise((resolve, reject) => {
 
          const handler = {
