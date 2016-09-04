@@ -90,7 +90,7 @@ export class FixtureInfoTests {
       testSet.testFixtures.push(testFixture);
 
       return new Promise<void>((resolve, reject) => {
-         
+
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
