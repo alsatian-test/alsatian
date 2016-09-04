@@ -5,6 +5,42 @@ import { Expect, AsyncTest, TestCase, SpyOn, FocusTests } from "../../../core/al
 export class PromiseTests {
 
    @AsyncTest()
+   @TestCase("string")
+   @TestCase(42)
+   @TestCase(null)
+   @TestCase(undefined)
+   @TestCase({ "an": "object" })
+   @TestCase([ "an", "array" ])
+   public resolveCallsThenWithGivenError(resolvedValue: any) {
+      return new Promise((resolve, reject) => {
+
+         const handler = {
+            then: () => {}
+         };
+
+         SpyOn(handler, "then");
+
+         new Promise((subResolve, subReject) => {
+            subResolve(resolvedValue);
+            Expect(handler.then).toHaveBeenCalledWith(resolvedValue);
+            resolve();
+         })
+         .then(handler.then);
+      });
+   }
+
+   @AsyncTest()
+   public resolvetDoesNotThrowErrorIfThenNotCalled() {
+      return new Promise((resolve, reject) => {
+
+         new Promise((subResolve, subReject) => {
+            Expect(() => subResolve("")).not.toThrow();
+            resolve();
+         });
+      });
+   }
+
+   @AsyncTest()
    @TestCase(new TypeError("something wrong"))
    @TestCase(new RangeError("everything else is awful"))
    @TestCase(new Error("just bad!"))
