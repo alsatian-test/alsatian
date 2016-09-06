@@ -6,56 +6,29 @@ export class AddTestsTests {
     @TestCase(1)
     @TestCase(2)
     @TestCase(3)
-    public shouldAddCorrectAmountOfTests(count: number) {
-        let testFixture = new TestFixture("Unnamed Test Fixture");
+    public shouldAddCorrectAmountOfTests(testCount: number) {
+        const testFixture = new TestFixture("Unnamed Test Fixture");
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < testCount; i++) {
             testFixture.addTest(
                 new TestBuilder().build()
             );
         }
 
-        Expect(testFixture.tests.length).toBe(count);
+        Expect(testFixture.tests.length).toBe(testCount);
     }
 
     @Test()
-    public shouldAddSingleTest() {
-        let testFixture = new TestFixture("Unnamed Test Fixture");
+    public shouldNotAddDuplicateTests(testCount: number) {
+        const testFixture = new TestFixture("Unnamed Test Fixture");
 
-        let focussedTest = new TestBuilder()
-            .focussed()
-            .withKey("shouldContainFocusedTest_focussedTest")
-            .build();
+        const test = new TestBuilder().build();
 
-        let unfocussedTest = new TestBuilder()
-            .withKey("shouldContainFocusedTest_unfocussedTest")
-            .build();
+        for (let i = 0; i < testCount; i++) {
+            testFixture.addTest(test);
+        }
 
-        testFixture.addTest(focussedTest);
-        testFixture.addTest(unfocussedTest);
-
-        Expect(testFixture.tests).toContain(focussedTest);
-    }
-
-    @Test()
-    public shouldNotContainUnfocusedTest() {
-        let testFixture = new TestFixture("Unnamed Test Fixture");
-
-        let focussedTest = new TestBuilder()
-            .focussed()
-            .withKey("shouldNotContainUnfocusedTest_focussedTest")
-            .build();
-
-        let unfocussedTest = new TestBuilder()
-            .withKey("shouldNotContainUnfocusedTest_unfocussedTest")
-            .build();
-
-        testFixture.addTest(focussedTest);
-        testFixture.addTest(unfocussedTest);
-
-        let tests = testFixture.getTests();
-
-        Expect(tests).not.toContain(unfocussedTest);
+        Expect(testFixture.tests.length).toBe(1);
     }
 
 }
