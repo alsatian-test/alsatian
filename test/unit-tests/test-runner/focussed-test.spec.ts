@@ -5,11 +5,10 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { MatchError } from "../../../core/errors/match-error";
-import { Expect, AsyncTest, Test, SpyOn, Setup, Teardown, FocusTest, IgnoreTest, FocusTests } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, Test, SpyOn } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
-@FocusTests
 export class FocussedTestTests {
 
    @AsyncTest()
