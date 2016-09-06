@@ -9,6 +9,7 @@ import { Expect, AsyncTest, Test, SpyOn, Setup, Teardown, FocusTest, IgnoreTest,
 import { Promise } from "../../../promise/promise";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
+@FocusTests
 export class FocussedTestTests {
 
    @AsyncTest()
