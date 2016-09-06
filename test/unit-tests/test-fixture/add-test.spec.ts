@@ -1,7 +1,7 @@
 import { Expect, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 
-export class GetTestTests {
+export class AddTestsTests {
 
     @TestCase(1)
     @TestCase(2)
@@ -42,7 +42,7 @@ export class GetTestTests {
     }
 
     @Test()
-    public shouldContainUnfocusedTest() {
+    public shouldNotContainUnfocusedTest() {
         let testFixture = new TestFixture("Unnamed Test Fixture");
 
         let focussedTest = new TestBuilder()
@@ -59,8 +59,7 @@ export class GetTestTests {
 
         let tests = testFixture.getTests();
 
-        Expect(tests).toContain(focussedTest);
-        Expect(tests).toContain(unfocussedTest);
+        Expect(tests).not.toContain(unfocussedTest);
     }
 
 }

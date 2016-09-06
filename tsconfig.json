@@ -146,6 +146,7 @@
         "./test/unit-tests/spying/spy/and-return.spec.ts",
         "./test/unit-tests/spying/spy/and-stub.spec.ts",
         "./test/unit-tests/spying/spy/call.spec.ts",
+        "./test/unit-tests/test-fixture/add-test.spec.ts",
         "./test/unit-tests/test-fixture/get-tests.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixture.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/default-export-fixture.spec.ts",
