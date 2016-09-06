@@ -8,7 +8,7 @@ export interface ITestFixture {
 
   focussed: boolean;
   tests: Array<ITest>;
+  
   description: string;
   addTest(test: ITest): void;
-  getTests(): Array<ITest>;
 }
