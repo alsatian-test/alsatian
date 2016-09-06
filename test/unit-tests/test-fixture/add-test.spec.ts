@@ -18,7 +18,9 @@ export class AddTestsTests {
         Expect(testFixture.tests.length).toBe(testCount);
     }
 
-    @Test()
+    @TestCase(1)
+    @TestCase(2)
+    @TestCase(3)
     public shouldNotAddDuplicateTests(testCount: number) {
         const testFixture = new TestFixture("Unnamed Test Fixture");
 
