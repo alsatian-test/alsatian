@@ -1,5 +1,6 @@
 import { TestSet } from "../test-set";
 import { TestItem } from "./test-item";
+import { ITest } from "../_interfaces";
 
 export class TestPlan {
 
@@ -16,22 +17,29 @@ export class TestPlan {
 
     let testFixtures = testSet.testFixtures;
 
-    const focussedTestFixtures = testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.some(test => test.focussed));
-
-    if (focussedTestFixtures.length > 0) {
-      testFixtures = focussedTestFixtures;
-
-      testFixtures.forEach(testFixture => {
-         if (testFixture.tests.some(test => test.focussed)) {
-            testFixture.tests = testFixture.tests.filter(test => test.focussed);
-         }
-      });
-    }
+    // are there any tests or test fixtures focussed
+    const focussedTestsOrTestFixtures = testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.some(test => test.focussed)).length > 0;
 
     testFixtures.forEach(testFixture => {
-      testFixture.tests.forEach(test => {
-        test.testCases.forEach(testCase => {
 
+      // run all tests if no tests or fixtures anywhere are focussed
+      let testsToRun: Array<ITest> = testFixture.tests;
+
+      // otherwise if there are tests or fixtures focussed
+      if (focussedTestsOrTestFixtures) {
+
+         // if any of the tests are focussed choose just those
+         if (testFixture.tests.some(test => test.focussed)) {
+            testsToRun = testFixture.tests.filter(test => test.focussed);
+         }
+         // if no tests are focussed and the fixture itself is not focussed run no tests
+         else if (testFixture.focussed === false) {
+            testsToRun = [];
+         }
+      }
+
+      testsToRun.forEach(test => {
+        test.testCases.forEach(testCase => {
           this._testItems.push(new TestItem(testFixture, test, testCase));
         });
       });
