@@ -40,5 +40,6 @@ export class PropertySpy<PropertyType> {
 
    public andReturnValue(value: PropertyType) {
       this._value = value;
+      return this;
    }
 }
