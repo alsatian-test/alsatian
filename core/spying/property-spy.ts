@@ -37,4 +37,8 @@ export class PropertySpy<PropertyType> {
       this._setCalls.push(new SpyCall([ value ]));
       this._value = value;
    }
+
+   public andReturnValue(value: PropertyType) {
+      this._value = value;
+   }
 }
