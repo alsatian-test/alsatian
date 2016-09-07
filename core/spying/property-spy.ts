@@ -34,7 +34,7 @@ export class PropertySpy<PropertyType> {
    }
 
    private _set(value: PropertyType) {
-      this._getCalls.push(new SpyCall([ value ]));
+      this._setCalls.push(new SpyCall([ value ]));
       this._value = value;
    }
 }
