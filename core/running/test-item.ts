@@ -43,12 +43,10 @@ export class TestItem {
       return new Promise<any>((resolve, reject) => {
          try {
             this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-            this._tearDown();
-            resolve({ test: this._test });
+            this._reportResult(resolve);
          }
          catch (error) {
-            this._tearDown();
-            resolve({ test: this._test, error: error });
+         this._reportResult(resolve, error);
          }
       });
    }
@@ -63,15 +61,13 @@ export class TestItem {
          testPromise.then(() => {
             if (!timeoutExpired) {
                clearTimeout(timeoutCheck);
-               this._tearDown();
-               resolve({ test: this._test });
+               this._reportResult(resolve);
             }
          })
          .catch((error: Error) => {
             console.log(error);
             clearTimeout(timeoutCheck);
-            this._tearDown();
-            resolve({ test: this._test, error: error });
+            this._reportResult(resolve, error);
          });
 
          const testTimeout: number = this._test.timeout || timeout;
@@ -79,15 +75,14 @@ export class TestItem {
          timeoutCheck = setTimeout(() => {
             timeoutExpired = true;
             let error = new TestTimeoutError(testTimeout);
-            this._tearDown();
-            resolve({ test: this._test, error: error });
+            this._reportResult(resolve, error);
          }, testTimeout);
       });
    }
 
-   private _reportResult(promise: any, error?: Error) {
-      this._tearDown();
-      promise.resolve({ test: this._test, error: error });
+   private _reportResult(resolve: (resolvedValue: any) => any, error?: Error) {
+      this._teardown();
+      resolve({ test: this._test, error: error });
    }
 
    private _setup() {
@@ -100,7 +95,7 @@ export class TestItem {
       }
    }
 
-   private _tearDown() {
+   private _teardown() {
       let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
 
       if (teardownFunctions) {
