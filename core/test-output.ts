@@ -40,7 +40,7 @@ export class TestOutput {
         } else if (outcome === TestOutcome.Skip) {
             this._emitSkip(testId, test, testCaseArguments);
         } else {
-            throw new Error(`Invalid outcome for test ${outcome}`);
+            throw new TypeError(`Invalid test outcome: ${outcome}`);
         }
     }
 
