@@ -119,6 +119,7 @@
         "./test/unit-tests/errors/less-than-match-error.spec.ts",
         "./test/unit-tests/errors/match-error.spec.ts",
         "./test/unit-tests/errors/regex-match-error.spec.ts",
+        "./test/unit-tests/errors/test-timeout-error.spec.ts",
         "./test/unit-tests/errors/truthy-match-error.spec.ts",
         "./test/unit-tests/expect-tests/to-be-defined.spec.ts",
         "./test/unit-tests/expect-tests/to-be-greater-than.spec.ts",
