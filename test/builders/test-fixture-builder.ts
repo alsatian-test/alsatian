@@ -25,9 +25,9 @@ export class TestFixtureBuilder {
   }
 
   public withTests(tests: Array<ITest>): TestFixtureBuilder {
-    this._testFixture.tests = tests;
 
     tests.forEach(test => {
+      this._testFixture.addTest(test);
       this._testFixture.fixture[test.key] = () => {};
     });
 

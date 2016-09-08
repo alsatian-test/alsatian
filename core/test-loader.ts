@@ -55,8 +55,6 @@ export class TestLoader {
         testFixture.focussed = true;
       }
 
-      testFixture.tests = [];
-
       if (tests === undefined) {
         // no tests on the fixture
         return null;
