@@ -140,6 +140,7 @@
         "./test/unit-tests/results/test-results.spec.ts",
         "./test/unit-tests/results/test-set-results.spec.ts",
         "./test/unit-tests/spying/property-spy/and-return-value.spec.ts",
+        "./test/unit-tests/spying/property-spy/constructor.spec.ts",
         "./test/unit-tests/spying/restorable-spy/restore.spec.ts",
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on-property.spec.ts",
@@ -166,7 +167,8 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
-        "./scripts/tag-release.ts"
+        "./scripts/tag-release.ts",
+        "./typings/index.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

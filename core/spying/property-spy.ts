@@ -10,7 +10,10 @@ export class PropertySpy<PropertyType> {
 
    public constructor(target: any, propertyName: string) {
 
-      const propertyDescriptor = Object.getOwnPropertyDescriptor(target, propertyName);
+      // for TypeScript may need to search target.constructor.prototype for propertyDescriptor
+      const propertyDescriptor =
+         Object.getOwnPropertyDescriptor(target, propertyName)
+      || Object.getOwnPropertyDescriptor(target.constructor.prototype, propertyName);
 
       if (propertyDescriptor === undefined) {
          throw new TypeError(`${propertyName} is not a property.`);
@@ -18,7 +21,6 @@ export class PropertySpy<PropertyType> {
 
       this._value = target[propertyName];
 
-      // for TypeScript may need to search target.constructor.prototype for propertyDescriptor
 
       this._originialGetter = propertyDescriptor.get;
       this._originialSetter = propertyDescriptor.set;
