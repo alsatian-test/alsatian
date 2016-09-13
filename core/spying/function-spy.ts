@@ -1,6 +1,6 @@
 import { Spy } from "./spy";
 
-export class RestorableSpy extends Spy {
+export class FunctionSpy extends Spy {
 
    private _functionName: string;
    private _target: any;

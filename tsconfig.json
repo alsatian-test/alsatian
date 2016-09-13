@@ -81,8 +81,8 @@
         "./core/running/test-plan.ts",
         "./core/running/test-runner.ts",
         "./core/running/test-set-run-info.ts",
+        "./core/spying/function-spy.ts",
         "./core/spying/property-spy.ts",
-        "./core/spying/restorable-spy.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on-property.ts",
         "./core/spying/spy-on.ts",
@@ -139,9 +139,9 @@
         "./test/unit-tests/results/test-fixture-results.spec.ts",
         "./test/unit-tests/results/test-results.spec.ts",
         "./test/unit-tests/results/test-set-results.spec.ts",
+        "./test/unit-tests/spying/function-spy/restore.spec.ts",
         "./test/unit-tests/spying/property-spy/and-return-value.spec.ts",
         "./test/unit-tests/spying/property-spy/constructor.spec.ts",
-        "./test/unit-tests/spying/restorable-spy/restore.spec.ts",
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on-property.spec.ts",
         "./test/unit-tests/spying/spy-on.spec.ts",
@@ -167,8 +167,7 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
-        "./scripts/tag-release.ts",
-        "./typings/index.d.ts"
+        "./scripts/tag-release.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
