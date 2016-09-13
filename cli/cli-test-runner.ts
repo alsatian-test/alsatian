@@ -2,7 +2,7 @@ import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsati
 
 export class CliTestRunner {
 
-   private _testRunner = new TestRunner();
+   public constructor(private _testRunner: TestRunner) { }
 
    public run(testSet: TestSet, timeout?: number) {
 
