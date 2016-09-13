@@ -1,8 +1,11 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, FocusTests, FocusTest } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/_spying";
 
 class Testing {
-   get test() {
+   set property(value: number) {
+
+   }
+   get property() {
       return 42;
    }
 }
@@ -37,11 +40,7 @@ export class PropertySpyConstructorTests {
 
    @Test()
    public typescriptGetterIsReplacedWithSpy() {
-      const object = {
-         constructor: {
-            prototype: { }
-         }
-      };
+      const object = new Testing();
 
       const originalGetter = () => {};
 
@@ -54,15 +53,9 @@ export class PropertySpyConstructorTests {
 
    @Test()
    public typescriptSetterIsReplacedWithSpy() {
-      const object = {
-         constructor: {
-            prototype: { }
-         }
-      };
+      const object = new Testing();
 
-      const originalSetter = () => {};
-
-      Object.defineProperty(object.constructor.prototype, "property", { set: originalSetter, configurable: true });
+      const originalSetter = Object.getOwnPropertyDescriptor(object.constructor.prototype, "property").set;
 
       new PropertySpy(object, "property");
 

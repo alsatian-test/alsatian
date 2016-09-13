@@ -7,13 +7,18 @@ export class PropertySpy<PropertyType> {
    private _value: PropertyType;
    private _getCalls: Array<SpyCall> = [];
    private _setCalls: Array<SpyCall> = [];
+   private _descriptorTarget: any;
 
    public constructor(target: any, propertyName: string) {
 
+      this._descriptorTarget = target;
+
       // for TypeScript may need to search target.constructor.prototype for propertyDescriptor
-      const propertyDescriptor =
-         Object.getOwnPropertyDescriptor(target, propertyName)
-      || Object.getOwnPropertyDescriptor(target.constructor.prototype, propertyName);
+      if (!Object.getOwnPropertyDescriptor(target, propertyName)) {
+         this._descriptorTarget = target.constructor.prototype;
+      }
+
+      const propertyDescriptor = Object.getOwnPropertyDescriptor(this._descriptorTarget, propertyName);
 
       if (propertyDescriptor === undefined) {
          throw new TypeError(`${propertyName} is not a property.`);
@@ -27,7 +32,7 @@ export class PropertySpy<PropertyType> {
 
       //Object.getOwnPropertyDescriptor(target, propertyName).get = this._get;
       ///Object.getOwnPropertyDescriptor(target, propertyName).set = this._set;
-      Object.defineProperty(target, propertyName, {
+      Object.defineProperty(this._descriptorTarget, propertyName, {
          get: this._get.bind(this),
          set: this._set.bind(this)
       });
