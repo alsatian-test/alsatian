@@ -20,11 +20,16 @@ export class CliTestRunner {
             else {
                process.exit(0);
             }
-         });
+         })
+         .catch(this._handleTestSetRunError);
       }
       catch (error) {
-         process.stderr.write(error.message + "\n");
-         process.exit(1);
+         this._handleTestSetRunError(error);
       }
+   }
+
+   private _handleTestSetRunError(error: Error)  {
+      process.stderr.write(error.message + "\n");
+      process.exit(1);
    }
 }
