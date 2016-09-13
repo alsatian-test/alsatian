@@ -1,4 +1,4 @@
-import { Spy } from "../../../../core/spying/spy";
+import { FunctionSpy } from "../../../../core/spying/function-spy";
 import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class CallTests {
@@ -9,9 +9,11 @@ export class CallTests {
    @TestCase([ "one", 2 ])
    @TestCase([ { "some": "thing" }, [] ])
    public argumentsRecorded(args: Array<any>) {
-      let originalFunction = () => {};
+      let object = {
+         originalFunction: () => {}
+      };
 
-      let spy = new Spy(originalFunction, this);
+      let spy = new FunctionSpy(object, "originalFunction");
 
       spy.call.apply(spy, args);
 
@@ -22,9 +24,11 @@ export class CallTests {
    @TestCase(1)
    @TestCase(42)
    public callAddedForEachCall(callCount: number) {
-      let originalFunction = () => {};
+      let object = {
+         originalFunction: () => {}
+      };
 
-      let spy = new Spy(originalFunction, this);
+      let spy = new FunctionSpy(object, "originalFunction");
 
       for (let i = 0; i < callCount; i++) {
          spy.call.apply(spy, []);
@@ -43,7 +47,7 @@ export class CallTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new Spy(object.originalFunction, object);
+      let spy = new FunctionSpy(object, "originalFunction");
 
       spy.call.apply(spy, []);
 
@@ -60,7 +64,7 @@ export class CallTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new Spy(object.originalFunction, object);
+      let spy = new FunctionSpy(object, "originalFunction");
 
       spy.andStub();
 
@@ -86,7 +90,7 @@ export class CallTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new Spy(object.originalFunction, object);
+      let spy = new FunctionSpy(object, "originalFunction");
 
       spy.andReturn(expectedReturnValue);
 
