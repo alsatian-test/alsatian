@@ -2,7 +2,11 @@ import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsati
 
 export class CliTestRunner {
 
-   public constructor(private _testRunner: TestRunner) { }
+   public constructor(private _testRunner: TestRunner) {
+      if (!_testRunner) {
+         throw new TypeError("_testRunner must not be null or undefined.");
+      }
+   }
 
    public run(testSet: TestSet, timeout?: number) {
 

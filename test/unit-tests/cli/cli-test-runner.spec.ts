@@ -2,7 +2,7 @@ import { CliTestRunner } from "../../../cli/cli-test-runner";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet, TestRunner } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
 
 export class CliTestRunnerTests {
@@ -29,6 +29,12 @@ export class CliTestRunnerTests {
       process.stderr.write = this._originalStdErr;
    }
 
+   @TestCase(null)
+   @TestCase(undefined)
+   public nullOrUndefinedTestRunnerThrowsError(testRunner: TestRunner) {
+      Expect(() => new CliTestRunner(testRunner)).toThrowError(TypeError, "_testRunner must not be null or undefined.");
+   }
+
    @AsyncTest()
    public noTestFixturesExitsWithError() {
       let testSet = <TestSet>{};
@@ -37,7 +43,7 @@ export class CliTestRunnerTests {
 
          (<any>testSet).testFixtures = [ ];
 
-         let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
          cliTestRunner.run(testSet);
 
@@ -61,7 +67,7 @@ export class CliTestRunnerTests {
 
          (<any>testSet).testFixtures = [ ];
 
-         let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
          cliTestRunner.run(testSet);
 
@@ -88,7 +94,7 @@ export class CliTestRunnerTests {
             .addTest(new TestBuilder().addTestCase(new TestCaseBuilder().build()).build())
             .build() ];
 
-            let cliTestRunner = new CliTestRunner();
+            let cliTestRunner = new CliTestRunner(new TestRunner());
 
             cliTestRunner.run(testSet);
 
@@ -117,7 +123,7 @@ export class CliTestRunnerTests {
                .addTest(new TestBuilder().withKey("erroringTest").build())
                .build() ];
 
-               let cliTestRunner = new CliTestRunner();
+               let cliTestRunner = new CliTestRunner(new TestRunner());
 
                cliTestRunner.run(testSet);
 
