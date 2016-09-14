@@ -11,6 +11,9 @@ let userArguments = new AlsatianCliOptions(process.argv.slice(2));
 let testSet = createTestSet();
 testSet.addTestsFromFiles(userArguments.fileGlobs);
 
+// create alsatian test runner
+let testRunner = new TestRunner();
+
 // run the test set
-let testRunner = new CliTestRunner();
-testRunner.run(testSet, userArguments.timeout);
+let cliTestRunner = new CliTestRunner(testRunner);
+cliTestRunner.run(testSet, userArguments.timeout);

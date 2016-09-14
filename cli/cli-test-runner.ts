@@ -2,7 +2,11 @@ import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsati
 
 export class CliTestRunner {
 
-   private _testRunner = new TestRunner();
+   public constructor(private _testRunner: TestRunner) {
+      if (!_testRunner) {
+         throw new TypeError("_testRunner must not be null or undefined.");
+      }
+   }
 
    public run(testSet: TestSet, timeout?: number) {
 
@@ -16,11 +20,16 @@ export class CliTestRunner {
             else {
                process.exit(0);
             }
-         });
+         })
+         .catch(this._handleTestSetRunError);
       }
       catch (error) {
-         process.stderr.write(error.message + "\n");
-         process.exit(1);
+         this._handleTestSetRunError(error);
       }
+   }
+
+   private _handleTestSetRunError(error: Error)  {
+      process.stderr.write(error.message + "\n");
+      process.exit(1);
    }
 }
