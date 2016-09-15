@@ -69,6 +69,6 @@ export class SpyOnTests {
 
       object[propertyName] = propertyValue;
 
-      Expect(() => SpyOn(object, propertyName)).toThrowError(TypeError, `${propertyName} is not a function.`)
+      Expect(() => SpyOn(object, propertyName)).toThrowError(TypeError, `${propertyName} is not a function.`);
    }
 }

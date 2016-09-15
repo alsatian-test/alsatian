@@ -27,7 +27,7 @@ export class AndStubTests {
       let object = {
          originalFunction: () => {}
       };
-      
+
       SpyOn(object, "originalFunction");
 
       let originalFunction = object.originalFunction;

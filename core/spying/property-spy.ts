@@ -30,7 +30,7 @@ export class PropertySpy<PropertyType> {
       this._originialGetter = propertyDescriptor.get;
       this._originialSetter = propertyDescriptor.set;
 
-      //Object.getOwnPropertyDescriptor(target, propertyName).get = this._get;
+      // Object.getOwnPropertyDescriptor(target, propertyName).get = this._get;
       ///Object.getOwnPropertyDescriptor(target, propertyName).set = this._set;
       Object.defineProperty(this._descriptorTarget, propertyName, {
          get: this._get.bind(this),

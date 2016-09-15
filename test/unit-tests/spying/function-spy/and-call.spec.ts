@@ -63,7 +63,7 @@ export class AndCallTests {
       let object = {
          originalFunction: () => {}
       };
-      
+
       let fake = {
          function: fakeFunction
       };

@@ -11,7 +11,7 @@ export class PropertySpyTests {
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 
-      const propertySpy = new PropertySpy(object, "property")
+      const propertySpy = new PropertySpy(object, "property");
 
       const returnValue = propertySpy.andReturnValue("value");
 
