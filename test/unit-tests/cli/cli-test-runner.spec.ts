@@ -2,138 +2,269 @@ import { CliTestRunner } from "../../../cli/cli-test-runner";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet } from "../../../core/alsatian-core";
-import { createPromise } from "../../../promise/create-promise";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet, TestOutcome, TestRunner } from "../../../core/alsatian-core";
+import { Promise } from "../../../promise/promise";
 
 export class CliTestRunnerTests {
 
-  private _originalStdErr: any;
-  private _originalStdOut: any;
-  private _originalProcessExit: any;
+   private _originalStdErr: any;
+   private _originalStdOut: any;
+   private _originalProcessExit: any;
 
    @Setup
    private _spyProcess() {
-     this._originalProcessExit = process.exit;
-     this._originalStdOut = process.stdout.write;
-     this._originalStdErr = process.stderr.write;
+      this._originalProcessExit = process.exit;
+      this._originalStdOut = process.stdout.write;
+      this._originalStdErr = process.stderr.write;
 
-     SpyOn(process, "exit").andStub();
-     SpyOn(process.stderr, "write").andStub();
-     SpyOn(process.stdout, "write").andStub();
+      SpyOn(process, "exit").andStub();
+      SpyOn(process.stderr, "write").andStub();
+      SpyOn(process.stdout, "write").andStub();
    }
 
    @Teardown
    private _resetProcess() {
-     process.exit = this._originalProcessExit;
-     process.stdout.write = this._originalStdOut;
-     process.stderr.write = this._originalStdErr;
+      process.exit = this._originalProcessExit;
+      process.stdout.write = this._originalStdOut;
+      process.stderr.write = this._originalStdErr;
+   }
+
+   @TestCase(null)
+   @TestCase(undefined)
+   public nullOrUndefinedTestRunnerThrowsError(testRunner: TestRunner) {
+      Expect(() => new CliTestRunner(testRunner)).toThrowError(TypeError, "_testRunner must not be null or undefined.");
    }
 
    @AsyncTest()
    public noTestFixturesExitsWithError() {
       let testSet = <TestSet>{};
 
-      let testPromise = createPromise();
+      return new Promise<void>((resolve, reject) => {
 
-      (<any>testSet).testFixtures = [ ];
+         (<any>testSet).testFixtures = [ ];
 
-      let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
-      cliTestRunner.run(testSet);
+         cliTestRunner.run(testSet);
 
-      setTimeout(() => {
-        try {
-          Expect(process.exit).toHaveBeenCalledWith(1);
-          testPromise.resolve();
-        }
-        catch (error) {
-          testPromise.reject(error);
-        }
+         setTimeout(() => {
+            try {
+               Expect(process.exit).toHaveBeenCalledWith(1);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
       });
-
-      return testPromise;
    }
 
    @AsyncTest()
    public noTestFixturesPrintsErrorMessageWithNewLine() {
       let testSet = <TestSet>{};
 
-      let testPromise = createPromise();
+      return new Promise<void>((resolve, reject) => {
 
-      (<any>testSet).testFixtures = [ ];
+         (<any>testSet).testFixtures = [ ];
 
-      let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
-      cliTestRunner.run(testSet);
+         cliTestRunner.run(testSet);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run.\n");
-          testPromise.resolve();
-        }
-        catch (error) {
-          testPromise.reject(error);
-        }
+         setTimeout(() => {
+            try {
+               Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run.\n");
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
       });
-
-      return testPromise;
    }
 
    @AsyncTest()
    public onePassingTestFixturesExitsWithNoError() {
       let testSet = <TestSet>{};
 
-      let testPromise = createPromise();
+      return new Promise<void>((resolve, reject) => {
 
-      (<any>testSet).testFixtures = [
-         new TestFixtureBuilder()
-              .addTest(new TestBuilder().addTestCase(new TestCaseBuilder().build()).build())
-              .build() ];
+         (<any>testSet).testFixtures = [
+            new TestFixtureBuilder()
+            .addTest(new TestBuilder().addTestCase(new TestCaseBuilder().build()).build())
+            .build() ];
 
-      let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
-      cliTestRunner.run(testSet);
+         cliTestRunner.run(testSet);
 
-      setTimeout(() => {
-        try {
-          Expect(process.exit).not.toHaveBeenCalledWith(1);
-          testPromise.resolve();
-        }
-        catch (error) {
-          console.log((process.exit as any).calls);
-          testPromise.reject(error);
-        }
+         setTimeout(() => {
+            try {
+               Expect(process.exit).not.toHaveBeenCalledWith(1);
+               resolve();
+            }
+            catch (error) {
+               console.log((process.exit as any).calls);
+               reject(error);
+            }
+         });
       });
-
-      return testPromise;
    }
 
    @AsyncTest()
    public oneErroringTestFixturesExitsWithError() {
       let testSet = <TestSet>{};
 
-      let testPromise = createPromise();
+      return new Promise<void>((resolve, reject) => {
 
-      (<any>testSet).testFixtures = [
-         new TestFixtureBuilder()
-              .withFixture({ "erroringTest": () => { throw new Error(); } })
-              .addTest(new TestBuilder().withKey("erroringTest").build())
-              .build() ];
+         (<any>testSet).testFixtures = [
+            new TestFixtureBuilder()
+            .withFixture({ "erroringTest": () => { throw new Error(); } })
+            .addTest(new TestBuilder().withKey("erroringTest").build())
+            .build() ];
 
-      let cliTestRunner = new CliTestRunner();
+         let cliTestRunner = new CliTestRunner(new TestRunner());
 
-      cliTestRunner.run(testSet);
+         cliTestRunner.run(testSet);
 
-      setTimeout(() => {
-        try {
-          Expect(process.exit).toHaveBeenCalledWith(1);
-          testPromise.resolve();
-        }
-        catch (error) {
-          testPromise.reject(error);
-        }
+         setTimeout(() => {
+            try {
+               Expect(process.exit).toHaveBeenCalledWith(1);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
       });
+   }
 
-      return testPromise;
+   @TestCase(TestOutcome.Error)
+   @TestCase(TestOutcome.Fail)
+   @AsyncTest()
+   public failingResultsOutcomeExitsWithError(outcome: TestOutcome) {
+      let testSet = <TestSet>{};
+
+      let testRunner = new TestRunner();
+      let testRunnerResolve: (resolvedValue: any) => any;
+
+      let testRunnerSpy = SpyOn(testRunner, "run");
+
+      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
+         testRunnerResolve = resolve;
+      }));
+
+      testRunnerSpy.andStub();
+
+      return new Promise<void>((resolve, reject) => {
+
+         let cliTestRunner = new CliTestRunner(testRunner);
+
+         cliTestRunner.run(testSet);
+
+         testRunnerResolve({ outcome: outcome });
+
+         setTimeout(() => {
+            try {
+               Expect(process.exit).toHaveBeenCalledWith(1);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public runThrowsErrorExitsWithError(outcome: TestOutcome) {
+      let testSet = <TestSet>{};
+
+      let testRunner = new TestRunner();
+
+      SpyOn(testRunner, "run").andCall(() => { throw new Error(); });
+
+      return new Promise<void>((resolve, reject) => {
+
+         let cliTestRunner = new CliTestRunner(testRunner);
+
+         cliTestRunner.run(testSet);
+
+         setTimeout(() => {
+            try {
+               Expect(process.exit).toHaveBeenCalledWith(1);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @TestCase("something bad")
+   @TestCase("another even worse thing")
+   @TestCase("awfully terrible")
+   @AsyncTest()
+   public runThrowsErrorOutputsErrorMessage(errorMessage: string) {
+      let testSet = <TestSet>{};
+
+      let testRunner = new TestRunner();
+
+      SpyOn(testRunner, "run").andCall(() => { throw new Error(errorMessage); });
+
+      return new Promise<void>((resolve, reject) => {
+
+         let cliTestRunner = new CliTestRunner(testRunner);
+
+         cliTestRunner.run(testSet);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stderr.write).toHaveBeenCalledWith(errorMessage + "\n");
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @TestCase(TestOutcome.Skip)
+   @TestCase(TestOutcome.Pass)
+   @AsyncTest()
+   public passingResultsOutcomeExitsWithNoError(outcome: TestOutcome) {
+      let testSet = <TestSet>{};
+
+      let testRunner = new TestRunner();
+      let testRunnerResolve: (resolvedValue: any) => any;
+
+      let testRunnerSpy = SpyOn(testRunner, "run");
+
+      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
+         testRunnerResolve = resolve;
+      }));
+
+      testRunnerSpy.andStub();
+
+      return new Promise<void>((resolve, reject) => {
+
+         let cliTestRunner = new CliTestRunner(testRunner);
+
+         cliTestRunner.run(testSet);
+
+         testRunnerResolve({ outcome: outcome });
+
+         setTimeout(() => {
+            try {
+               Expect(process.exit).toHaveBeenCalledWith(0);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
    }
 }

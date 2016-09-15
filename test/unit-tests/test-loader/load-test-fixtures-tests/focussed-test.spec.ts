@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../../core/test-loader";
 import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
 
 export class FocussedTestTests {

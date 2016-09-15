@@ -4,10 +4,6 @@ import { TestItem } from "./test-item";
 
 export class TestSetRunInfo {
 
-   public get promise() {
-      return this._promise;
-   }
-
    public get timeout() {
       return this._timeout;
    }
@@ -35,7 +31,6 @@ export class TestSetRunInfo {
    }
 
    public constructor(
-      private _promise: any,
       private _testPlan: TestPlan,
       private _testSetResults: TestSetResults,
       private _timeout: number) {}

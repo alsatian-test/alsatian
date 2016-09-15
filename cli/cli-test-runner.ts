@@ -1,25 +1,35 @@
 import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsatian-core";
-import { createPromise } from "../promise/create-promise";
 
-export class CliTestRunner extends TestRunner {
+export class CliTestRunner {
 
-  public run(testSet: TestSet, timeout?: number) {
+   public constructor(private _testRunner: TestRunner) {
+      if (!_testRunner) {
+         throw new TypeError("_testRunner must not be null or undefined.");
+      }
+   }
 
-    try {
-       let testRunPromise = super.run(testSet, timeout);
+   public run(testSet: TestSet, timeout?: number) {
 
-       testRunPromise.then((results: TestSetResults) => {
-         if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
-           process.exit(1);
-         }
-         else {
-           process.exit(0);
-         }
-       });
-    }
-    catch (error) {
-       process.stderr.write(error.message + "\n");
-       process.exit(1);
-    }
-  }
+      try {
+         let testRunPromise = this._testRunner.run(testSet, timeout);
+
+         testRunPromise.then((results: TestSetResults) => {
+            if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
+               process.exit(1);
+            }
+            else {
+               process.exit(0);
+            }
+         })
+         .catch(this._handleTestSetRunError);
+      }
+      catch (error) {
+         this._handleTestSetRunError(error);
+      }
+   }
+
+   private _handleTestSetRunError(error: Error)  {
+      process.stderr.write(error.message + "\n");
+      process.exit(1);
+   }
 }
