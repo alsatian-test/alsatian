@@ -1,7 +1,7 @@
-import { FunctionSpy } from "../../../../core/spying/function-spy";
-import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
+import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
+import { Expect, Test, TestCase, SpyOn, FocusTest } from "../../../../core/alsatian-core";
 
-export class AndStubTests {
+export class AndCallThroughTests {
 
    @Test()
    public originalFunctionNotCalledIfSpyStub() {
@@ -13,7 +13,7 @@ export class AndStubTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy(object, "originalFunction");
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.andStub();
 
@@ -23,7 +23,7 @@ export class AndStubTests {
    }
 
    @Test()
-   public originalFunctionNotCalledIfSpyNotStubbed() {
+   public originalFunctionCalledIfSpyStubbedThenRestored() {
       let object = {
          originalFunction: () => {}
       };
@@ -32,7 +32,10 @@ export class AndStubTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy(object, "originalFunction");
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
+
+      spy.andStub();
+      spy.andCallThrough();
 
       spy.call([]);
 

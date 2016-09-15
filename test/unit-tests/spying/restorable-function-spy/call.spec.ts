@@ -1,4 +1,4 @@
-import { FunctionSpy } from "../../../../core/spying/function-spy";
+import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
 import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class CallTests {
@@ -13,7 +13,7 @@ export class CallTests {
          originalFunction: () => {}
       };
 
-      let spy = new FunctionSpy();
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.call.apply(spy, args);
 
@@ -28,13 +28,49 @@ export class CallTests {
          originalFunction: () => {}
       };
 
-      let spy = new FunctionSpy();
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
 
       for (let i = 0; i < callCount; i++) {
          spy.call.apply(spy, []);
       }
 
       Expect(spy.calls.length).toBe(callCount);
+   }
+
+   @Test()
+   public originalFunctionIsCalled() {
+      let object = {
+         originalFunction: () => {}
+      };
+
+      SpyOn(object, "originalFunction");
+
+      let originalFunction = object.originalFunction;
+
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
+
+      spy.call.apply(spy, []);
+
+      Expect(originalFunction).toHaveBeenCalled();
+   }
+
+   @Test()
+   public originalFunctionNotCalledIfSpyStub() {
+      let object = {
+         originalFunction: () => {}
+      };
+
+      SpyOn(object, "originalFunction");
+
+      let originalFunction = object.originalFunction;
+
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
+
+      spy.andStub();
+
+      spy.call.apply(spy, []);
+
+      Expect(originalFunction).not.toHaveBeenCalled();
    }
 
    @TestCase(undefined)
@@ -54,7 +90,7 @@ export class CallTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy();
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.andReturn(expectedReturnValue);
 

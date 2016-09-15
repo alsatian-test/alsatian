@@ -3,25 +3,6 @@ import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class AndCallTests {
 
-   @Test()
-   public originalFunctionNotCalledIfSpyFaked() {
-      let object = {
-         originalFunction: () => {}
-      };
-
-      SpyOn(object, "originalFunction");
-
-      let originalFunction = object.originalFunction;
-
-      let spy = new FunctionSpy(object, "originalFunction");
-
-      spy.andCall(() => {});
-
-      spy.call([]);
-
-      Expect(originalFunction).not.toHaveBeenCalled();
-   }
-
    @TestCase(null)
    @TestCase(undefined)
    @TestCase(42)
@@ -40,23 +21,6 @@ export class AndCallTests {
       Expect(someObject.func()).toBe(returnValue);
    }
 
-   @Test()
-   public originalFunctionNotCalledIfSpyNotFaked() {
-      let object = {
-         originalFunction: () => {}
-      };
-
-      SpyOn(object, "originalFunction");
-
-      let originalFunction = object.originalFunction;
-
-      let spy = new FunctionSpy(object, "originalFunction");
-
-      spy.call([]);
-
-      Expect(originalFunction).toHaveBeenCalled();
-   }
-
    @TestCase(() => {})
    @TestCase(() => 1 + 1)
    public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
@@ -72,7 +36,7 @@ export class AndCallTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy(object, "originalFunction");
+      let spy = new FunctionSpy();
 
       spy.call([]);
 

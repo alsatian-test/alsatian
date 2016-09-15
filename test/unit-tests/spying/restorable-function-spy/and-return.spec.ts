@@ -1,4 +1,4 @@
-import { FunctionSpy } from "../../../../core/spying/function-spy";
+import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
 import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class ReturnTests {
@@ -20,7 +20,7 @@ export class ReturnTests {
 
       let originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy();
+      let spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.andReturn(expectedReturnValue);
 

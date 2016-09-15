@@ -35,16 +35,6 @@ export class FunctionSpy {
       this.hasReturnValue = true;
    }
 
-   public andCallThrough() {
-      this.isStubbed = false;
-      this._fakeFunction = undefined;
-   }
-
-   public andStub() {
-      this.isStubbed = true;
-      this._fakeFunction = undefined;
-   }
-
    public andCall(fakeFunction: Function) {
       this.isStubbed = true;
       this._fakeFunction = fakeFunction;

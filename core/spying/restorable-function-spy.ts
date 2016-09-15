@@ -29,16 +29,22 @@ export class RestorableFunctionSpy extends FunctionSpy {
       this._target[this._functionName] = this._originalFunction;
    }
 
+   public andCallThrough() {
+      this.isStubbed = false;
+   }
+
+   public andStub() {
+      this.isStubbed = true;
+   }
+
    public call(...args: Array<any>) {
 
       const returnValue = super.call.apply(this, args);
 
-      if (this.hasReturnValue) {
-         return returnValue;
-      }
-
-      if (!this.isStubbed) {
+      if (!this.isStubbed && !this.hasReturnValue) {
          return this._originalFunction.apply(this.context, args);
       }
+
+      return returnValue;
    }
 }
