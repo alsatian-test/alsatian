@@ -3,11 +3,13 @@ import { SpyCall } from "./spying/spy-call";
 import { SpyOn } from "./spying/spy-on";
 import { SpyOnProperty } from "./spying/spy-on-property";
 import { FunctionSpy } from "./spying/function-spy";
+import { RestorableFunctionSpy } from "./spying/restorable-function-spy";
 
 export {
    PropertySpy,
    SpyCall,
    SpyOn,
    SpyOnProperty,
-   FunctionSpy
+   FunctionSpy,
+   RestorableFunctionSpy
 };

@@ -83,6 +83,7 @@
         "./core/running/test-set-run-info.ts",
         "./core/spying/function-spy.ts",
         "./core/spying/property-spy.ts",
+        "./core/spying/restorable-function-spy.ts",
         "./core/spying/spy-call.ts",
         "./core/spying/spy-on-property.ts",
         "./core/spying/spy-on.ts",
