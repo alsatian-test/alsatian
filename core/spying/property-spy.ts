@@ -9,6 +9,7 @@ export class PropertySpy<PropertyType> {
    private _setCalls: Array<SpyCall> = [];
    private _descriptorTarget: any;
    private _getter: () => PropertyType;
+   private _setter: (value: PropertyType) => void;
    private _returnValue: boolean;
 
    public constructor(target: any, propertyName: string) {
@@ -28,7 +29,9 @@ export class PropertySpy<PropertyType> {
 
       this._originialGetter = propertyDescriptor.get;
       this._originialSetter = propertyDescriptor.set;
+
       this._getter = this._originialGetter;
+      this._setter = this._originialSetter;
 
       Object.defineProperty(this._descriptorTarget, propertyName, {
          get: this._get.bind(this),
@@ -48,7 +51,12 @@ export class PropertySpy<PropertyType> {
 
    private _set(value: PropertyType) {
       this._setCalls.push(new SpyCall([ value ]));
-      this._value = value;
+
+      this._setter.call(this._descriptorTarget, value);
+
+      if (!this._returnValue) {
+         this._value = value;
+      }
    }
 
    public andReturnValue(value: PropertyType): PropertySpy<PropertyType> {
@@ -59,6 +67,12 @@ export class PropertySpy<PropertyType> {
 
    public andCallGetter(getter: () => PropertyType): PropertySpy<PropertyType> {
       this._getter = getter;
+      this._returnValue = false;
+      return this;
+   }
+
+   public andCallSetter(setter: (value: PropertyType) => void): PropertySpy<PropertyType> {
+      this._setter = setter;
       this._returnValue = false;
       return this;
    }

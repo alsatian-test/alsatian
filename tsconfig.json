@@ -146,6 +146,7 @@
         "./test/unit-tests/spying/function-spy/and-return.spec.ts",
         "./test/unit-tests/spying/function-spy/call.spec.ts",
         "./test/unit-tests/spying/property-spy/and-call-getter.spec.ts",
+        "./test/unit-tests/spying/property-spy/and-call-setter.spec.ts",
         "./test/unit-tests/spying/property-spy/and-return-value.spec.ts",
         "./test/unit-tests/spying/property-spy/constructor.spec.ts",
         "./test/unit-tests/spying/restorable-function-spy/and-call-through.spec.ts",
