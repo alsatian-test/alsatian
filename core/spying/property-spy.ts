@@ -8,6 +8,8 @@ export class PropertySpy<PropertyType> {
    private _getCalls: Array<SpyCall> = [];
    private _setCalls: Array<SpyCall> = [];
    private _descriptorTarget: any;
+   private _getter: () => PropertyType;
+   private _returnValue: boolean;
 
    public constructor(target: any, propertyName: string) {
 
@@ -24,26 +26,24 @@ export class PropertySpy<PropertyType> {
          throw new TypeError(`${propertyName} is not a property.`);
       }
 
-      this._value = target[propertyName];
-
-
       this._originialGetter = propertyDescriptor.get;
       this._originialSetter = propertyDescriptor.set;
+      this._getter = this._originialGetter;
 
-      // Object.getOwnPropertyDescriptor(target, propertyName).get = this._get;
-      ///Object.getOwnPropertyDescriptor(target, propertyName).set = this._set;
       Object.defineProperty(this._descriptorTarget, propertyName, {
          get: this._get.bind(this),
          set: this._set.bind(this)
       });
-
-      /*target[propertyName].getCalls = this._getCalls;
-      target[propertyName].setCalls = this._setCalls;*/
    }
 
    private _get() {
       this._getCalls.push(new SpyCall([]));
-      return this._value;
+
+      if (this._returnValue) {
+         return this._value;
+      }
+
+      return this._getter.call(this._descriptorTarget);
    }
 
    private _set(value: PropertyType) {
@@ -51,8 +51,15 @@ export class PropertySpy<PropertyType> {
       this._value = value;
    }
 
-   public andReturnValue(value: PropertyType) {
+   public andReturnValue(value: PropertyType): PropertySpy<PropertyType> {
       this._value = value;
+      this._returnValue = true;
+      return this;
+   }
+
+   public andCallGetter(getter: () => PropertyType): PropertySpy<PropertyType> {
+      this._getter = getter;
+      this._returnValue = false;
       return this;
    }
 }
