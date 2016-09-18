@@ -11,17 +11,19 @@ export class PropertySpy<PropertyType> {
    private _getter: () => PropertyType;
    private _setter: (value: PropertyType) => void;
    private _returnValue: boolean;
+   private _propertyName: string;
 
    public constructor(target: any, propertyName: string) {
 
       this._descriptorTarget = target;
+      this._propertyName = propertyName;
 
       // for TypeScript may need to search target.constructor.prototype for propertyDescriptor
-      if (!Object.getOwnPropertyDescriptor(target, propertyName)) {
+      if (!Object.getOwnPropertyDescriptor(target, this._propertyName)) {
          this._descriptorTarget = target.constructor.prototype;
       }
 
-      const propertyDescriptor = Object.getOwnPropertyDescriptor(this._descriptorTarget, propertyName);
+      const propertyDescriptor = Object.getOwnPropertyDescriptor(this._descriptorTarget, this._propertyName);
 
       if (propertyDescriptor === undefined) {
          throw new TypeError(`${propertyName} is not a property.`);
@@ -33,7 +35,7 @@ export class PropertySpy<PropertyType> {
       this._getter = this._originialGetter;
       this._setter = this._originialSetter;
 
-      Object.defineProperty(this._descriptorTarget, propertyName, {
+      Object.defineProperty(this._descriptorTarget, this._propertyName, {
          get: this._get.bind(this),
          set: this._set.bind(this)
       });
@@ -75,5 +77,12 @@ export class PropertySpy<PropertyType> {
       this._setter = setter;
       this._returnValue = false;
       return this;
+   }
+
+   public restore() {
+      Object.defineProperty(this._descriptorTarget, this._propertyName, {
+         get: this._get.bind(this),
+         set: this._set.bind(this)
+      });
    }
 }
