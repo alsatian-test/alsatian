@@ -1,7 +1,6 @@
 import { PropertySetMatchError } from "../../../core/_errors";
 import { Expect, Test, SpyOnProperty } from "../../../core/alsatian-core";
 
-@FocusTests
 export class ToHaveBeenSetTests {
 
    @Test()
