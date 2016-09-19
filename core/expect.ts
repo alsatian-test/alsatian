@@ -8,7 +8,8 @@ import {
     LessThanMatchError,
     GreaterThanMatchError,
     ErrorMatchError,
-    FunctionCallMatchError
+    FunctionCallMatchError,
+    PropertySetMatchError
 } from "./_errors";
 
 /**
@@ -231,6 +232,15 @@ export class Matcher {
              call.args.length === args.length; // and the call has the same amount of arguments
     }).length === 0 === this._shouldMatch) {
       throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
+    }
+  }
+
+  /**
+   * Checks that a property spy has been set
+   */
+  public toHaveBeenSet() {
+    if (this._actualValue.setCalls.length === 0 === this._shouldMatch) {
+      throw new PropertySetMatchError(this._actualValue, this._shouldMatch);
     }
   }
 }

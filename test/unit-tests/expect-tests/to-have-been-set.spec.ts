@@ -1,4 +1,4 @@
-//import { PropertySetMatchError } from "../../../core/_errors";
+// import { PropertySetMatchError } from "../../../core/_errors";
 import { Expect, Test, SpyOnProperty, FocusTests } from "../../../core/alsatian-core";
 
 @FocusTests
@@ -6,15 +6,15 @@ export class ToHaveBeenSetTests {
 
   @Test()
   public propertySetPasses() {
-    let some = {
+    const some = {
       set property(value: any) {}
     };
 
-    SpyOnProperty(some, "property");
+    const propertySpy = SpyOnProperty(some, "property");
 
     some.property = "something";
 
-    Expect(() => Expect(some.property).toHaveBeenSet()).not.toThrow();
+    Expect(() => Expect(propertySpy).toHaveBeenSet()).not.toThrow();
   }
 /*
   @Test()
