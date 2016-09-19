@@ -5,13 +5,21 @@ export class PropertySpy<PropertyType> {
    private _originialGetter: () => PropertyType;
    private _originialSetter: (value: PropertyType) => void;
    private _value: PropertyType;
-   private _getCalls: Array<SpyCall> = [];
-   private _setCalls: Array<SpyCall> = [];
    private _descriptorTarget: any;
    private _getter: () => PropertyType;
    private _setter: (value: PropertyType) => void;
    private _returnValue: boolean;
    private _propertyName: string;
+
+   private _getCalls: Array<SpyCall> = [];
+   public get getCalls() {
+      return this._getCalls;
+   }
+
+   private _setCalls: Array<SpyCall> = [];
+   public get setCalls() {
+      return this._setCalls;
+   }
 
    public constructor(target: any, propertyName: string) {
 

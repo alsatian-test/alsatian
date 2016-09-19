@@ -133,6 +133,7 @@
         "./test/unit-tests/expect-tests/to-equal.spec.ts",
         "./test/unit-tests/expect-tests/to-have-been-called-with.spec.ts",
         "./test/unit-tests/expect-tests/to-have-been-called.spec.ts",
+        "./test/unit-tests/expect-tests/to-have-been-set.spec.ts",
         "./test/unit-tests/expect-tests/to-match.spec.ts",
         "./test/unit-tests/expect-tests/to-throw-error.spec.ts",
         "./test/unit-tests/expect-tests/to-throw.spec.ts",
