@@ -12,9 +12,6 @@ export class PropertySpy<PropertyType> {
    private _propertyName: string;
 
    private _getCalls: Array<SpyCall> = [];
-   public get getCalls() {
-      return this._getCalls;
-   }
 
    private _setCalls: Array<SpyCall> = [];
    public get setCalls() {
