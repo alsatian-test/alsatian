@@ -243,4 +243,14 @@ export class Matcher {
       throw new PropertySetMatchError(this._actualValue, this._shouldMatch);
     }
   }
+
+  /**
+   * Checks that a property spy has been set to a specific value
+   * @param value - a value to which the property should be set to
+   */
+  public toHaveBeenSetTo(value: any) {
+    if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this._shouldMatch) {
+      throw new PropertySetMatchError(this._actualValue, this._shouldMatch, value);
+    }
+  }
 }

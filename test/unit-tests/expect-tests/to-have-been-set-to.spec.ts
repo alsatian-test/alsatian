@@ -1,245 +1,162 @@
-import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
+import { PropertySetMatchError } from "../../../core/_errors";
+import { Expect, Test, TestCase, SpyOnProperty, FocusTests } from "../../../core/alsatian-core";
 
-export class ToHaveBeenCalledWithTests {
+export class ToHaveBeenSetToTests {
 
-  @Test()
-  public functionCalledPasses() {
-    let some = {
-      function: () => {}
-    };
+   @Test()
+   public propertySetPasses() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function();
+      some.property = "something";
 
-    Expect(() => Expect(some.function).toHaveBeenCalledWith()).not.toThrow();
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo("something")).not.toThrow();
+   }
 
-  @Test()
-  public functionNotCalledFails() {
-    let some = {
-      function: () => {}
-    };
+   @Test()
+   public propertyNotSetFails() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    Expect(() => Expect(some.function).toHaveBeenCalledWith()).toThrow();
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo("something")).toThrow();
+   }
 
-  @Test()
-  public functionNotCalledFailsWithCorrectError() {
-    let some = {
-      function: () => {}
-    };
+   @Test()
+   public propertyNotSetFailsWithCorrectError() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    Expect(() => Expect(some.function).toHaveBeenCalledWith()).toThrowError(FunctionCallMatchError, "Expected function to be called with [].");
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo("something")).toThrowError(PropertySetMatchError, "Expected property to be set to \"something\".");
+   }
 
-  @TestCase([1])
-  @TestCase(["argument"])
-  @TestCase([1, "argument"])
-  @TestCase(["argument", 1])
-  public functionCalledWithCorrectArgumentsPasses(expectedArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(42)
+   @TestCase(4.2)
+   @TestCase(-4.2)
+   @TestCase("")
+   @TestCase("value")
+   @TestCase({ "an": "object" })
+   @TestCase([ "an", "array" ])
+   public propertySetToCorrectValuePasses(value: any) {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function.apply(some, expectedArguments);
+      some.property = value;
 
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).not.toThrow();
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo(value)).not.toThrow();
+   }
 
-  @TestCase(["1"], [1])
-  @TestCase([1], ["1"])
-  @TestCase(["42"], [42])
-  @TestCase([42], ["42"])
-  @TestCase([1, "42"], [1, 42])
-  @TestCase([1, 42], [1, "42"])
-  @TestCase([1, "42"], ["1", 42])
-  @TestCase(["1", 42], [1, "42"])
-  @TestCase(["1", "42"], [1, 42])
-  @TestCase([1, 42], ["1", "42"])
-  public functionCalledWithSimilarArgumentsFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
+   @TestCase(undefined, [ "an", "array" ])
+   @TestCase(null, { "an": "object" })
+   @TestCase(0, "value")
+   @TestCase(42, "")
+   @TestCase(4.2, -4.2)
+   @TestCase(-4.2, 4.2)
+   @TestCase("", 0)
+   @TestCase("value", null)
+   @TestCase({ "an": "object" }, undefined)
+   @TestCase([ "an", "array" ], "something completely different")
+   public functionCalledWithSimilarArgumentsFailsWithCorrectError(expectedValue: any, actualValue: any) {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function.apply(some, actualArguments);
+      some.property = actualValue;
 
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).toThrowError(FunctionCallMatchError, "Expected function to be called with [" + expectedArguments.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo(expectedValue)).toThrowError(PropertySetMatchError, `Expected property to be set to ${JSON.stringify(expectedValue)}.`);
+   }
 
-  @TestCase([], [1])
-  @TestCase([1], [])
-  @TestCase([], ["argument"])
-  @TestCase(["argument"], [])
-  @TestCase([1], [1, 42])
-  @TestCase([42], [1, 42])
-  @TestCase([], [1, 42])
-  @TestCase([42, 1], [])
-  public functionCalledWithWrongNumberOfArgumentsFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
+   @Test()
+   public propertyNotSetPassesWhenShouldNotCall() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function.apply(some, actualArguments);
+      Expect(() => Expect(propertySpy).not.toHaveBeenSetTo("something")).not.toThrow();
+   }
 
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).toThrowError(FunctionCallMatchError, "Expected function to be called with [" + expectedArguments.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+   @Test()
+   public propertySetWhenShouldNotBeSetThrowsError() {
+      const some = {
+         set property(value: any) {}
+      };
 
-  @TestCase(["argument", 1], [1, "argument"])
-  @TestCase([1, "argument"], ["argument", 1])
-  public functionCalledWithRightArgumentsInWrongOrderFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
+      const propertySpy = SpyOnProperty(some, "property");
 
-    SpyOn(some, "function");
+      some.property = "something";
 
-    some.function.apply(some, actualArguments);
+      Expect(() => Expect(propertySpy).not.toHaveBeenSetTo("something")).toThrow();
+   }
 
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).toThrowError(FunctionCallMatchError, "Expected function to be called with [" + expectedArguments.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(42)
+   @TestCase(4.2)
+   @TestCase(-4.2)
+   @TestCase("")
+   @TestCase("value")
+   @TestCase({ "an": "object" })
+   @TestCase([ "an", "array" ])
+   public propertySetWhenShouldNotBeSetThrowsCorrectError(value: any) {
+      const some = {
+         set property(value: any) {}
+      };
 
-  @Test()
-  public functionNotCalledPassesWhenShouldNotCall() {
-    let some = {
-      function: () => {}
-    };
+      const propertySpy = SpyOnProperty(some, "property");
 
-    SpyOn(some, "function");
+      some.property = value;
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalledWith()).not.toThrow();
-  }
+      Expect(() => Expect(propertySpy).not.toHaveBeenSetTo(value)).toThrowError(PropertySetMatchError, `Expected property not to be set to ${JSON.stringify(value)}.`);
+   }
 
-  @Test()
-  public functionThrowsErrorFailsWhenShouldNotThrow() {
-    let some = {
-      function: () => {}
-    };
+   @TestCase("1", 1)
+   @TestCase(1, "1")
+   @TestCase("42", 42)
+   @TestCase(42, "42")
+   public propertySetToSimilarValuePassesWhenShouldNotBeSet(expectedValue: any, similarValue: any) {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function();
+      some.property = similarValue;
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalledWith()).toThrow();
-  }
+      Expect(() => Expect(propertySpy).not.toHaveBeenSetTo(expectedValue)).not.toThrow();
+   }
 
-  @Test()
-  public functionThrowsErrorFailsWithCorrectError() {
-    let some = {
-      function: () => {}
-    };
+   @TestCase("1", 1)
+   @TestCase(1, "1")
+   @TestCase("42", 42)
+   @TestCase(42, "42")
+   public propertySetToSimilarValueFailsWhenShouldBeSet(expectedValue: any, similarValue: any) {
+      const some = {
+         set property(value: any) {}
+      };
 
-    SpyOn(some, "function");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.function();
+      some.property = similarValue;
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalledWith()).toThrowError(FunctionCallMatchError, "Expected function not to be called with [].");
-  }
-
-  @TestCase(["1"], [1])
-  @TestCase([1], ["1"])
-  @TestCase(["42"], [42])
-  @TestCase([42], ["42"])
-  @TestCase([1, "42"], [1, 42])
-  @TestCase([1, 42], [1, "42"])
-  @TestCase([1, "42"], ["1", 42])
-  @TestCase(["1", 42], [1, "42"])
-  @TestCase(["1", "42"], [1, 42])
-  @TestCase([1, 42], ["1", "42"])
-  public functionCalledWithSimilarArgumentsPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
-
-    SpyOn(some, "function");
-
-    some.function.apply(some, actualArguments);
-
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.not.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).not.toThrow();
-  }
-
-  @TestCase([], [1])
-  @TestCase([1], [])
-  @TestCase([], ["argument"])
-  @TestCase(["argument"], [])
-  @TestCase([1], [1, 42])
-  @TestCase([42], [1, 42])
-  @TestCase([], [1, 42])
-  @TestCase([42, 1], [])
-  public functionCalledWithWrongNumberOfArgumentsPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
-
-    SpyOn(some, "function");
-
-    some.function.apply(some, actualArguments);
-
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.not.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).not.toThrow();
-  }
-
-  @TestCase(["argument", 1], [1, "argument"])
-  @TestCase([1, "argument"], ["argument", 1])
-  public functionNotCalledWithRightArgumentsInWrongOrderPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
-
-    SpyOn(some, "function");
-
-    some.function.apply(some, actualArguments);
-
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.not.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).not.toThrow();
-  }
-
-  @TestCase([1])
-  @TestCase(["argument"])
-  @TestCase([1, "argument"])
-  @TestCase(["argument", 1])
-  public functionNotCalledWithDifferentArgumentsFailsWithCorrectError(expectedArguments: Array<any>) {
-    let some = {
-      function: () => {}
-    };
-
-    SpyOn(some, "function");
-
-    some.function.apply(some, expectedArguments);
-
-    Expect(() => {
-      let matcher = Expect(some.function);
-      matcher.not.toHaveBeenCalledWith.apply(matcher, expectedArguments);
-    }).toThrowError(FunctionCallMatchError, "Expected function not to be called with [" + expectedArguments.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+      Expect(() => Expect(propertySpy).toHaveBeenSetTo(expectedValue)).toThrowError(PropertySetMatchError, `Expected property to be set to ${JSON.stringify(expectedValue)}.`);
+   }
 }
