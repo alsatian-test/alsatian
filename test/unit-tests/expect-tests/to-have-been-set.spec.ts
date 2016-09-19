@@ -1,78 +1,79 @@
-// import { PropertySetMatchError } from "../../../core/_errors";
-import { Expect, Test, SpyOnProperty, FocusTests } from "../../../core/alsatian-core";
+import { PropertySetMatchError } from "../../../core/_errors";
+import { Expect, Test, SpyOnProperty } from "../../../core/alsatian-core";
 
 @FocusTests
 export class ToHaveBeenSetTests {
 
-  @Test()
-  public propertySetPasses() {
-    const some = {
-      set property(value: any) {}
-    };
+   @Test()
+   public propertySetPasses() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    const propertySpy = SpyOnProperty(some, "property");
+      const propertySpy = SpyOnProperty(some, "property");
 
-    some.property = "something";
+      some.property = "something";
 
-    Expect(() => Expect(propertySpy).toHaveBeenSet()).not.toThrow();
-  }
-/*
-  @Test()
-  public functionNotCalledFails() {
-    let some = {
-      function: () => {}
-    };
+      Expect(() => Expect(propertySpy).toHaveBeenSet()).not.toThrow();
+   }
 
-    SpyOn(some, "function");
+   @Test()
+   public propertyNotSetFails() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    Expect(() => Expect(some.function).toHaveBeenCalled()).toThrow();
-  }
+      const propertySpy = SpyOnProperty(some, "property");
 
-  @Test()
-  public functionNotCalledFailsWithCorrectError() {
-    let some = {
-      function: () => {}
-    };
+      Expect(() => Expect(propertySpy).toHaveBeenSet()).toThrow();
+   }
 
-    SpyOn(some, "function");
+   @Test()
+   public propertyNotSetFailsWithCorrectError() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    Expect(() => Expect(some.function).toHaveBeenCalled()).toThrowError(FunctionCallMatchError, "Expected function to be called.");
-  }
+      const propertySpy = SpyOnProperty(some, "property");
 
-  @Test()
-  public functionNotCalledPassesWhenShouldNotCall() {
-    let some = {
-      function: () => {}
-    };
+      Expect(() => Expect(propertySpy).toHaveBeenSet()).toThrowError(PropertySetMatchError, "Expected property to be set.");
+   }
 
-    SpyOn(some, "function");
+   @Test()
+   public propertyNotSetPassesWhenShouldNotCall() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalled()).not.toThrow();
-  }
+      const propertySpy = SpyOnProperty(some, "property");
 
-  @Test()
-  public functionThrowsErrorFailsWhenShouldNotThrow() {
-    let some = {
-      function: () => {}
-    };
+      Expect(() => Expect(propertySpy).not.toHaveBeenSet()).not.toThrow();
+   }
 
-    SpyOn(some, "function");
+   @Test()
+   public propertySetButShouldNotBeThrowsError() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    some.function();
+      const propertySpy = SpyOnProperty(some, "property");
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalled()).toThrow();
-  }
+      some.property = "something";
 
-  @Test()
-  public functionThrowsErrorFailsWithCorrectError() {
-    let some = {
-      function: () => {}
-    };
+      Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrow();
+   }
 
-    SpyOn(some, "function");
 
-    some.function();
+   @Test()
+   public propertySetButShouldNotBeThrowsCorrectError() {
+      const some = {
+         set property(value: any) {}
+      };
 
-    Expect(() => Expect(some.function).not.toHaveBeenCalled()).toThrowError(FunctionCallMatchError, "Expected function not to be called.");
-}*/
+      const propertySpy = SpyOnProperty(some, "property");
+
+      some.property = "something";
+
+      Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrowError(PropertySetMatchError, "Expected property not to be set.");
+   }
 }
