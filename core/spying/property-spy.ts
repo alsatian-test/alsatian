@@ -81,8 +81,8 @@ export class PropertySpy<PropertyType> {
 
    public restore() {
       Object.defineProperty(this._descriptorTarget, this._propertyName, {
-         get: this._get.bind(this),
-         set: this._set.bind(this)
+         get: this._originialGetter,
+         set: this._originialSetter
       });
    }
 }
