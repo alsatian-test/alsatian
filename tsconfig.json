@@ -121,6 +121,7 @@
         "./test/unit-tests/errors/greater-than-match-error.spec.ts",
         "./test/unit-tests/errors/less-than-match-error.spec.ts",
         "./test/unit-tests/errors/match-error.spec.ts",
+        "./test/unit-tests/errors/property-set-match-error.spec.ts",
         "./test/unit-tests/errors/regex-match-error.spec.ts",
         "./test/unit-tests/errors/test-timeout-error.spec.ts",
         "./test/unit-tests/errors/truthy-match-error.spec.ts",
