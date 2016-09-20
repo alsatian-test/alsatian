@@ -104,9 +104,13 @@ export class Matcher {
    * @param regex - the regular expression that the actual value should match
    */
    public toMatch(regex: RegExp) {
-      //TODO: regex is null, undefined
+      if (regex === null || regex === undefined) {
+         throw new TypeError("toMatch regular expression must not be null or undefined.");
+      }
 
-      //TODO: actual value should be string
+      if (typeof this._actualValue !== "string") {
+         throw new TypeError("toMatch must only be used to match on strings.");
+      }
 
       if (!regex.test(this._actualValue) === this._shouldMatch) {
          throw new RegexMatchError(this._actualValue, regex, this._shouldMatch);
@@ -282,7 +286,7 @@ export class Matcher {
    */
    public toHaveBeenSetTo(value: any) {
       //TODO: actualValue must be a property spy
-      
+
       if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this._shouldMatch) {
          throw new PropertySetMatchError(this._actualValue, this._shouldMatch, value);
       }
