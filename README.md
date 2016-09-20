@@ -257,10 +257,93 @@ SpyOn(some, "function").andStub();
 SpyOn(some, "function").andCall(() => console.log("I are called"));
 ```
 
-... or make it return whatever you desire
+... or make it return whatever you desire ...
 
 ```
 SpyOn(some, "function").andReturn(42);
+```
+
+... and even return it to how it started
+
+```
+SpyOn(some, "function");
+
+some.function.restore();
+
+// OR
+
+const spy = SpyOn(some, "function");
+
+spy.restore();
+```
+
+#### Creating a spy from thin air
+
+You may want to just create a fake spy property this is easy to do and has all the same functionality as a Spy created through ```SpyOn```
+
+```
+import { FunctionSpy } from "alsatian";
+
+const spy = new FunctionSpy();
+```
+
+#### Spying on a property
+
+Similarly to spying on functions you can also spy on properties as below ...
+
+```
+import { SpyOnProperty } from "alsatian";
+
+class Test {
+
+   private _property: number = 42;
+
+   get property() {
+      return this._property;
+   }
+
+   set property(value: number) {
+      this._property = value;
+   }
+}
+
+const test = new Test();
+
+SpyOnProperty(test, "property");
+
+```
+
+... then add a fake getter ...
+
+
+```
+SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
+
+```
+
+... or setter ...
+
+
+```
+SpyOnProperty(test, "property").andCallSetter((value: any) => { doSomethingWith(value); });
+
+```
+
+... return a set value ...
+
+
+```
+SpyOnProperty(test, "property").andReturnValue(42);
+
+```
+
+... and restore it to how it was before
+
+
+```
+const spy = SpyOnProperty(test, "property");
+
+spy.restore();
 ```
 
 ### Async Tests

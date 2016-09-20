@@ -2,40 +2,40 @@ import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
 
 export class SpyOnTests {
 
-  @Test()
-  public functionIsReplacedWithSpy() {
-    let object = {
-      function: () => {}
-    };
+   @Test()
+   public functionIsReplacedWithSpy() {
+      let object = {
+         function: () => {}
+      };
 
-    let originalFunction = object.function;
+      let originalFunction = object.function;
 
-    SpyOn(object, "function");
+      SpyOn(object, "function");
 
-    Expect(object.function).not.toBe(originalFunction);
-  }
+      Expect(object.function).not.toBe(originalFunction);
+   }
 
-  @Test()
-  public functionStillWorks() {
-    let object = {
-      functionCalled: false,
-      function: () => {
-        object.functionCalled = true;
-      }
-    };
+   @Test()
+   public functionStillWorks() {
+      let object = {
+         functionCalled: false,
+         function: () => {
+            object.functionCalled = true;
+         }
+      };
 
-    let originalFunction = object.function;
+      let originalFunction = object.function;
 
-    SpyOn(object, "function");
-    object.function();
+      SpyOn(object, "function");
+      object.function();
 
-    Expect(object.functionCalled).toBe(true);
-  }
+      Expect(object.functionCalled).toBe(true);
+   }
 
    @Test()
    public callsPropertyIsSetOnFunction() {
       let object = {
-        function: () => {}
+         function: () => {}
       };
 
       let originalFunction = object.function;
@@ -46,17 +46,29 @@ export class SpyOnTests {
       Expect((<any>object.function).calls).not.toBeNull();
    }
 
-    @Test()
-    public spyShouldBeReturned() {
-       let object = {
+   @Test()
+   public spyShouldBeReturned() {
+      let object = {
          function: () => {}
-       };
+      };
 
-       let originalFunction = object.function;
+      let originalFunction = object.function;
 
-       let spy = SpyOn(object, "function");
+      let spy = SpyOn(object, "function");
 
-       Expect(spy).toBeDefined();
-       Expect(spy).not.toBeNull();
-    }
+      Expect(spy).toBeDefined();
+      Expect(spy).not.toBeNull();
+   }
+
+   @TestCase("undefined", undefined)
+   @TestCase("null", null)
+   @TestCase("number", 42)
+   @TestCase("string", "something")
+   public spyingOnNonFunctionShouldThrowError(propertyName: string, propertyValue: any) {
+      let object: { [propertyName: string]: any } = { };
+
+      object[propertyName] = propertyValue;
+
+      Expect(() => SpyOn(object, propertyName)).toThrowError(TypeError, `${propertyName} is not a function.`);
+   }
 }

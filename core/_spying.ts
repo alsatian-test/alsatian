@@ -1,11 +1,15 @@
+import { PropertySpy } from "./spying/property-spy";
 import { SpyCall } from "./spying/spy-call";
 import { SpyOn } from "./spying/spy-on";
-import { Spy } from "./spying/spy";
-import { RestorableSpy } from "./spying/restorable-spy";
+import { SpyOnProperty } from "./spying/spy-on-property";
+import { FunctionSpy } from "./spying/function-spy";
+import { RestorableFunctionSpy } from "./spying/restorable-function-spy";
 
 export {
-    SpyCall,
-    SpyOn,
-    Spy,
-    RestorableSpy
+   PropertySpy,
+   SpyCall,
+   SpyOn,
+   SpyOnProperty,
+   FunctionSpy,
+   RestorableFunctionSpy
 };
