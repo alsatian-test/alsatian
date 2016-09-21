@@ -55,7 +55,6 @@ export class ToBeGreaterThanTests {
       Expect(() => expect.toBeGreaterThan(lowerLimit)).toThrowError(<any>GreaterThanMatchError, "Expected " + value + " to be greater than " + lowerLimit + ".");
    }
 
-
    @TestCase(1, 0)
    @TestCase(42, 1)
    public shouldNotBeGreaterThanMessage(value: number, lowerLimit: number) {
@@ -64,4 +63,93 @@ export class ToBeGreaterThanTests {
       Expect(() => expect.not.toBeGreaterThan(lowerLimit)).toThrowError(<any>GreaterThanMatchError, "Expected " + value + " not to be greater than " + lowerLimit + ".");
    }
 
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public greaterThanShouldSetErrorActualValueToGivenValue(actualValue: number) {
+      let greaterThanError: GreaterThanMatchError;
+
+      try {
+         Expect(actualValue).toBeGreaterThan(512);
+      }
+      catch (error) {
+         greaterThanError = error;
+      }
+
+      Expect(greaterThanError).toBeDefined();
+      Expect(greaterThanError).not.toBeNull();
+      Expect(greaterThanError.actualValue).toBe(actualValue);
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public notGreaterThanShouldSetErrorActualValueToGivenValue(actualValue: number) {
+      let greaterThanError: GreaterThanMatchError;
+
+      try {
+         Expect(actualValue).not.toBeGreaterThan(-42);
+      }
+      catch (error) {
+         greaterThanError = error;
+      }
+
+      Expect(greaterThanError).toBeDefined();
+      Expect(greaterThanError).not.toBeNull();
+      Expect(greaterThanError.actualValue).toBe(actualValue);
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public shouldSetExpectedValueToGreaterThanLowerLimit(lowerLimit: number) {
+      let greaterThanError: GreaterThanMatchError;
+
+      try {
+         Expect(-42).toBeGreaterThan(lowerLimit);
+      }
+      catch (error) {
+         greaterThanError = error;
+      }
+
+      Expect(greaterThanError).toBeDefined();
+      Expect(greaterThanError).not.toBeNull();
+      Expect(greaterThanError.expectedValue).toBe("a number greater than " + lowerLimit);
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public shouldSetExpectedValueToNotGreaterThanLowerLimit(lowerLimit: number) {
+      let greaterThanError: GreaterThanMatchError;
+
+      try {
+         Expect(512).not.toBeGreaterThan(lowerLimit);
+      }
+      catch (error) {
+         greaterThanError = error;
+      }
+
+      Expect(greaterThanError).toBeDefined();
+      Expect(greaterThanError).not.toBeNull();
+      Expect(greaterThanError.expectedValue).toBe("a number not greater than " + lowerLimit);
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   public checkingGreaterThanNullOrUndefinedShouldThrow(lowerLimit: number) {
+      Expect(() => Expect(42).toBeGreaterThan(lowerLimit)).toThrowError(TypeError, "toBeGreaterThan lower limit must not be null or undefined.");
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase("")
+   @TestCase("something")
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   public checkingNonNumberGreaterThanSomethingShouldThrow(value: number) {
+      Expect(() => Expect(value).toBeGreaterThan(42)).toThrowError(TypeError, "toBeGreaterThan can only check numbers.");
+   }
 }

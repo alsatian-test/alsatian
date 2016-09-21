@@ -186,9 +186,13 @@ export class Matcher {
    * @param lowerLimit - the number that the number under test should be greater than
    */
    public toBeGreaterThan(lowerLimit: number) {
-      //TODO: lowerLimit must not be null or undefined
+      if (lowerLimit === null || lowerLimit === undefined) {
+         throw new TypeError("toBeGreaterThan lower limit must not be null or undefined.");
+      }
 
-      //TODO: _actualValue must be number
+      if (typeof this._actualValue !== "number") {
+         throw new TypeError("toBeGreaterThan can only check numbers.");
+      }
 
       if (this._actualValue > lowerLimit !== this._shouldMatch) {
          throw new GreaterThanMatchError(this._actualValue, lowerLimit, this._shouldMatch);
