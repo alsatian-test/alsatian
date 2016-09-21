@@ -150,9 +150,13 @@ export class Matcher {
    */
    public toContain(expectedContent: any) {
 
-      //TODO: _actualValue must be string or array
+      if (this._actualValue instanceof Array === false && typeof this._actualValue !== "string") {
+         throw new TypeError("toContain must only be used to check whether strings or arrays contain given contents.");
+      }
 
-      //TODO: expectedContent must be string if _actualValue string
+      if (typeof this._actualValue === "string" && typeof expectedContent !== "string") {
+         throw new TypeError("toContain cannot check whether a string contains a non string value.");
+      }
 
       if (this._actualValue.indexOf(expectedContent) === -1 === this._shouldMatch) {
          throw new ContentsMatchError(this._actualValue, expectedContent, this._shouldMatch);
