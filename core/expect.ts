@@ -205,7 +205,7 @@ export class Matcher {
    public toThrow() {
 
       if (this._actualValue instanceof Function === false) {
-         throw new TypeError("toThrow requires value passed in to Expect to be a function.");         
+         throw new TypeError("toThrow requires value passed in to Expect to be a function.");
       }
 
       let errorThrown: Error;
@@ -228,10 +228,13 @@ export class Matcher {
    * @param errorMessage - the message that the error should have
    */
    public toThrowError(errorType: new (...args: Array<any>) => Error, errorMessage: string) {
+
+      if (this._actualValue instanceof Function === false) {
+         throw new TypeError("toThrowError requires value passed in to Expect to be a function.");
+      }
+
       let threwRightError = false;
       let actualError: Error;
-
-      //TODO: actualValue must be a function
 
       try {
          this._actualValue();
