@@ -12,6 +12,11 @@ import {
    PropertySetMatchError
 } from "./_errors";
 
+import {
+   FunctionSpy,
+   PropertySpy
+} from "./_spying";
+
 /**
 * Allows checking of test outcomes
 * @param actualValue - the value or function under test
@@ -256,7 +261,9 @@ export class Matcher {
    * Checks that a spy has been called
    */
    public toHaveBeenCalled() {
-      //TODO: actualValue must be a spy
+      if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
+         throw new TypeError("toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
+      }
 
       if (this._actualValue.calls.length === 0 === this._shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch);
@@ -278,6 +285,10 @@ export class Matcher {
       }).length === 0 === this._shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
       }
+   }
+
+   private _isFunctionSpyOrSpiedOnFunction(value: any) {
+      return value instanceof FunctionSpy || (value instanceof Function && value.calls !== undefined);
    }
 
    /**
