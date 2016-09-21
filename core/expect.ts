@@ -204,7 +204,9 @@ export class Matcher {
    */
    public toThrow() {
 
-      //TODO: actualValue must be a function
+      if (this._actualValue instanceof Function === false) {
+         throw new TypeError("toThrow requires value passed in to Expect to be a function.");         
+      }
 
       let errorThrown: Error;
 
@@ -212,17 +214,11 @@ export class Matcher {
          this._actualValue();
       }
       catch (error) {
-         //TODO: should be able to refactor this into one
-         if (!this._shouldMatch) {
-            throw new ErrorMatchError(error, this._shouldMatch);
-         }
-
          errorThrown = error;
       }
 
-      //TODO: should be able to refactor this into one
-      if (this._shouldMatch && errorThrown === undefined) {
-         throw new ErrorMatchError(undefined, this._shouldMatch);
+      if (errorThrown === undefined === this._shouldMatch) {
+         throw new ErrorMatchError(errorThrown, this._shouldMatch);
       }
    }
 
