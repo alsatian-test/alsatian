@@ -1,5 +1,5 @@
 import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { Expect, Test, SpyOn, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn, TestCase, FunctionSpy } from "../../../core/alsatian-core";
 
 export class ToHaveBeenCalledTests {
 
@@ -103,5 +103,97 @@ export class ToHaveBeenCalledTests {
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenCalled()).toThrowError(TypeError, "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
+   }
+
+   @Test()
+   public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled();
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.actualValue).toBe("function was not called.");
+   }
+
+   @Test()
+   public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function();
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).not.toHaveBeenCalled();
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.actualValue).toBe("function was called.");
+   }
+
+   @Test()
+   public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled();
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.expectedValue).toBe("function to be called.");
+   }
+
+   @Test()
+   public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function();
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).not.toHaveBeenCalled();
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.expectedValue).toBe("function not to be called.");
    }
 }
