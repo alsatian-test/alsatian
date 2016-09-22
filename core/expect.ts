@@ -275,9 +275,9 @@ export class Matcher {
    * @param args - a list of arguments that the spy should have been called with
    */
    public toHaveBeenCalledWith(...args: Array<any>) {
-      //TODO: actualValue must be a spy
-
-      //TODO: args must not be null or undefined
+      if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
+         throw new TypeError("toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
+      }
 
       if (this._actualValue.calls.filter((call: any) => {
          return call.args.filter((arg: any, index: number) => arg === args[index]).length === args.length && // all call arguments match expected arguments
