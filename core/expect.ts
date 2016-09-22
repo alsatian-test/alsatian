@@ -295,7 +295,9 @@ export class Matcher {
    * Checks that a property spy has been set
    */
    public toHaveBeenSet() {
-      //TODO: actualValue must be a property spy
+      if (this._actualValue instanceof PropertySpy === false) {
+         throw new TypeError("toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
+      }
 
       if (this._actualValue.setCalls.length === 0 === this._shouldMatch) {
          throw new PropertySetMatchError(this._actualValue, this._shouldMatch);
@@ -307,7 +309,9 @@ export class Matcher {
    * @param value - a value to which the property should be set to
    */
    public toHaveBeenSetTo(value: any) {
-      //TODO: actualValue must be a property spy
+      if (this._actualValue instanceof PropertySpy === false) {
+         throw new TypeError("toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
+      }
 
       if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this._shouldMatch) {
          throw new PropertySetMatchError(this._actualValue, this._shouldMatch, value);

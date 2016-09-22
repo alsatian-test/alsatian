@@ -1,5 +1,5 @@
 import { PropertySetMatchError } from "../../../core/_errors";
-import { Expect, Test, SpyOnProperty } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOnProperty, TestCase } from "../../../core/alsatian-core";
 
 export class ToHaveBeenSetTests {
 
@@ -74,5 +74,35 @@ export class ToHaveBeenSetTests {
       some.property = "something";
 
       Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrowError(PropertySetMatchError, "Expected property not to be set.");
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(() => {})
+   @TestCase((thisCouldBe: any) => "function")
+   public checkingWhetherNonPropertySpyHasBeenSetShouldThrow(actualValue: any) {
+      Expect(() => Expect(actualValue).toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(() => {})
+   @TestCase((thisCouldBe: any) => "function")
+   public checkingWhetherNonPropertySpyHasNotBeenSetShouldThrow(actualValue: any) {
+      Expect(() => Expect(actualValue).not.toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
 }
