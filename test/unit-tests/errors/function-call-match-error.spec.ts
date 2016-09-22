@@ -3,49 +3,93 @@ import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
 export class FunctionCallMatchErrorTests {
 
-  @Test()
-  public shouldBeCalledMessage() {
-    let fakeFunction: any = { calls: [ ] };
+   @Test()
+   public shouldBeCalledMessage() {
+      let fakeFunction: any = { calls: [ ] };
 
-    let error = new FunctionCallMatchError(fakeFunction, true);
+      let error = new FunctionCallMatchError(fakeFunction, true);
 
-    Expect(error.message).toBe("Expected function to be called.");
-  }
+      Expect(error.message).toBe("Expected function to be called.");
+   }
 
-  @Test()
-  public shouldNotBeCalledMessage() {
-    let fakeFunction: any = { calls: [ ] };
+   @Test()
+   public shouldNotBeCalledMessage() {
+      let fakeFunction: any = { calls: [ ] };
 
-    fakeFunction.calls.push({ args: [] });
+      fakeFunction.calls.push({ args: [] });
 
-    let error = new FunctionCallMatchError(fakeFunction, false);
+      let error = new FunctionCallMatchError(fakeFunction, false);
 
-    Expect(error.message).toBe("Expected function not to be called.");
-  }
+      Expect(error.message).toBe("Expected function not to be called.");
+   }
 
-  @TestCase([ "this" ])
-  @TestCase([ "this", "that" ])
-  @TestCase([ 1, 2, 3 ])
-  public shouldBeCalledWithArgsMessage(args: Array<any>) {
-    let fakeFunction: any = { calls: [ ] };
+   @Test()
+   public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
+      let fakeFunction: any = { calls: [ ] };
 
-    fakeFunction.calls.push({ args: [] });
+      fakeFunction.calls.push({ args: [] });
 
-    let error = new FunctionCallMatchError(fakeFunction, true, args);
+      let error = new FunctionCallMatchError(fakeFunction, true);
 
-    Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+      Expect(error.actualValue).toBe("function was not called.");
+   }
 
-  @TestCase([ "this" ])
-  @TestCase([ "this", "that" ])
-  @TestCase([ 1, 2, 3 ])
-  public shouldNotBeCalledWithArgsMessage(args: Array<any>) {
-    let fakeFunction: any = { calls: [ ] };
+   @Test()
+   public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
+      let fakeFunction: any = { calls: [ ] };
 
-    fakeFunction.calls.push({ args: args });
+      fakeFunction.calls.push({ args: [] });
 
-    let error = new FunctionCallMatchError(fakeFunction, false, args);
+      let error = new FunctionCallMatchError(fakeFunction, false);
 
-    Expect(error.message).toBe("Expected function not to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
-  }
+      Expect(error.actualValue).toBe("function was called.");
+   }
+
+   @Test()
+   public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: [] });
+
+      let error = new FunctionCallMatchError(fakeFunction, true);
+
+      Expect(error.expectedValue).toBe("function to be called.");
+   }
+
+   @Test()
+   public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: [] });
+
+      let error = new FunctionCallMatchError(fakeFunction, false);
+
+      Expect(error.expectedValue).toBe("function not to be called.");
+   }
+
+   @TestCase([ "this" ])
+   @TestCase([ "this", "that" ])
+   @TestCase([ 1, 2, 3 ])
+   public shouldBeCalledWithArgsMessage(args: Array<any>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: [] });
+
+      let error = new FunctionCallMatchError(fakeFunction, true, args);
+
+      Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
+   }
+
+   @TestCase([ "this" ])
+   @TestCase([ "this", "that" ])
+   @TestCase([ 1, 2, 3 ])
+   public shouldNotBeCalledWithArgsMessage(args: Array<any>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: args });
+
+      let error = new FunctionCallMatchError(fakeFunction, false, args);
+
+      Expect(error.message).toBe("Expected function not to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
+   }
 }
