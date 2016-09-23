@@ -272,4 +272,122 @@ export class ToHaveBeenCalledWithTests {
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenCalledWith()).toThrowError(TypeError, "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
    }
+
+   @TestCase([[]])
+   @TestCase([[], []])
+   @TestCase([[1], [2], [3]])
+   @TestCase([["something", "and", "another", "thing"]])
+   @TestCase([["this", "or"], ["that", "other", "thing"]])
+   public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
+      let some = {
+         function: (args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      actualArgumentsList.forEach(actualArguments => {
+         some.function.apply(some, actualArguments);
+      });
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalledWith([]);
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+   }
+
+   @TestCase([[]])
+   @TestCase([[], []])
+   @TestCase([[1], [2], [3]])
+   @TestCase([["something", "and", "another", "thing"]])
+   @TestCase([["this", "or"], ["that", "other", "thing"]])
+   public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
+      let some = {
+         function: (args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      actualArgumentsList.forEach(actualArguments => {
+         some.function.apply(some, actualArguments);
+      });
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         const expect = Expect(some.function);
+
+         expect.not.toHaveBeenCalledWith.apply(expect, actualArgumentsList[0]);
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+   }
+
+   @TestCase([])
+   @TestCase([1])
+   @TestCase(["something"])
+   @TestCase([1, "or", 2, "other", "things"])
+   public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalledWithArguments(expectedArguments: Array<any>) {
+      let some = {
+         function: (args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         const expect = Expect(some.function);
+
+         expect.toHaveBeenCalledWith.apply(expect, expectedArguments);
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments) + ".");
+   }
+
+   @TestCase([])
+   @TestCase([1])
+   @TestCase(["something"])
+   @TestCase([1, "or", 2, "other", "things"])
+   public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalledWithArguments(expectedArguments: Array<any>) {
+      let some = {
+         function: (args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function.apply(some, expectedArguments);
+
+      let functionError: FunctionCallMatchError;
+
+      try {
+         const expect = Expect(some.function);
+
+         expect.not.toHaveBeenCalledWith.apply(expect, expectedArguments);
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments) + ".");
+   }
 }
