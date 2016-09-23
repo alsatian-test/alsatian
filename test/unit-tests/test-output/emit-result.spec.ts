@@ -1,13 +1,14 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, MatchError, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { MatchError, EqualMatchError } from "../../../core/_errors";
 import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
-export class EmitResultTests {
+const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
+    return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
+};
 
-   private static _getErrorYaml(error: MatchError): string {
-      return  ` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
-   }
+export class EmitResultTests {
 
    @TestCase(1)
    @TestCase(2)
@@ -181,7 +182,7 @@ export class EmitResultTests {
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = EmitResultTests._getErrorYaml(error);
+      let expected = _getErrorYaml(error);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -199,11 +200,11 @@ export class EmitResultTests {
 
       let test: ITest = new TestBuilder().build();
 
-      let error = new MatchError(actualValue, 2, "error message");
+      let error = new EqualMatchError(actualValue, 2, true);
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = EmitResultTests._getErrorYaml(error);
+      let expected = _getErrorYaml(error);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -221,11 +222,11 @@ export class EmitResultTests {
 
       let test: ITest = new TestBuilder().build();
 
-      let error = new MatchError(1, expectedValue, "error message");
+      let error = new EqualMatchError(1, expectedValue, true);
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = EmitResultTests._getErrorYaml(error);
+      let expected = _getErrorYaml(error);
 
       testOutput.emitResult(1, testCaseResult);
 

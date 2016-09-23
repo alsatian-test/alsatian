@@ -106,7 +106,12 @@ export class TestOutput {
     }
 
     private _getErrorYaml(error: MatchError): string {
-        return ` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
+        return " ---\n" +
+                "   message: \"" + error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"\n" +
+                "   severity: fail\n" +
+                "   data:\n" +
+                "     got: " + JSON.stringify(error.actualValue) + "\n" +
+                "     expect: " + JSON.stringify(error.expectedValue) + "\n ...\n";
     }
 
 }
