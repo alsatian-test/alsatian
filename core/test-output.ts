@@ -1,4 +1,4 @@
-import { ITest } from "./_interfaces";
+import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./_errors";
 import { TestCaseResult, TestOutcome } from "./_results";
 
@@ -22,6 +22,10 @@ export class TestOutput {
         this._writeOut(`1..${testCount}\n`);
     }
 
+    public emitFixture(fixture: ITestFixture): void {
+        this._writeOut(`# FIXTURE ${fixture.description}\n`);
+    }
+
     public emitResult(testId: number, result: TestCaseResult): void {
         let outcome = result.outcome;
         let test = result.test;
@@ -36,7 +40,7 @@ export class TestOutput {
         } else if (outcome === TestOutcome.Skip) {
             this._emitSkip(testId, test, testCaseArguments);
         } else {
-            throw new Error(`Invalid outcome for test ${outcome}`);
+            throw new TypeError(`Invalid test outcome: ${outcome}`);
         }
     }
 
@@ -78,10 +82,27 @@ export class TestOutput {
         let testDescription = test.description;
 
         if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-            testDescription += ` [ ${testCaseArguments.map(x => JSON.stringify(x) || "undefined").join(", ")} ]`;
+            testDescription += ` [ ${testCaseArguments.map(argument => this._getArgumentDescription(argument)).join(", ")} ]`;
         }
 
         return testDescription;
+    }
+
+    private _getArgumentDescription(argument: any): string {
+
+      const jsonArgument = JSON.stringify(argument);
+
+      // if the argument can be expresed as JSON return that
+      if (jsonArgument) {
+         return JSON.stringify(argument);
+      }
+      // otherwise if it's a function return it's name
+      else if (argument && argument.name) {
+         return argument.name;
+      }
+
+      // otherwise must be undefined
+      return "undefined";
     }
 
     private _getErrorYaml(error: MatchError): string {

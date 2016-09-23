@@ -8,14 +8,20 @@ export class TestFixture implements ITestFixture {
     ignoreReason: string;
 
     focussed: boolean;
-    tests: Array<ITest>;
 
-    constructor () {
+    description: string;
+
+    private _tests: Array<ITest> = [];
+    public get tests() {
+      return this._tests;
+   }
+
+    constructor (description: string) {
         this.focussed = false;
         this.ignored = false;
         this.ignoreReason = undefined;
         this.fixture = {};
-        this.tests = [];
+        this.description = description;
     }
 
     public addTest(test: ITest): void {
@@ -26,16 +32,4 @@ export class TestFixture implements ITestFixture {
 
         this.tests.push(test);
     }
-
-    public getTests(): Array<ITest> {
-        let anyTestsFocussed = this.tests.filter(t => t.focussed).length > 0;
-
-        // if there are no tests focussed, return them all
-        if (!anyTestsFocussed) {
-            return this.tests;
-        }
-
-        return this.tests.filter(t => t.focussed);
-    }
-
 }

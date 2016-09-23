@@ -8,6 +8,10 @@ export class TestResults {
 
    public constructor(private _test: ITest) { }
 
+   public get test(): ITest {
+     return this._test;
+   }
+
    public get outcome(): TestOutcome {
       const outcomes = this._testCaseResults.map(testCaseResult => testCaseResult.outcome);
 

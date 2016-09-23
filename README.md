@@ -1,8 +1,12 @@
 # alsatian
+[![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
 [![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
 [![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
 [![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
 [![Issue Count](https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
+[![bitHound Code](https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg)](https://www.bithound.io/github/alsatian-test/alsatian)
+[![bitHound Dependencies](https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg)](https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm)
+[![Known Vulnerabilities](https://snyk.io/test/github/alsatian-test/alsatian/badge.svg)](https://snyk.io/test/github/alsatian-test/alsatian)
 
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
@@ -27,6 +31,19 @@ Alsatian has a CLI for easy use with your package.json or your favourite cli too
 alsatian [list of globs]
 
 alsatian ./test/**/*.spec.js ./special-test.js
+```
+
+### CLI Options
+
+You can change how Alsatian runs your tests using the available options
+
+#### Timeout
+
+The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
+
+```
+alsatian --timeout 5000
+alsatian -t 5000
 ```
 
 ## Using alsatian
@@ -240,10 +257,93 @@ SpyOn(some, "function").andStub();
 SpyOn(some, "function").andCall(() => console.log("I are called"));
 ```
 
-... or make it return whatever you desire
+... or make it return whatever you desire ...
 
 ```
 SpyOn(some, "function").andReturn(42);
+```
+
+... and even return it to how it started
+
+```
+SpyOn(some, "function");
+
+some.function.restore();
+
+// OR
+
+const spy = SpyOn(some, "function");
+
+spy.restore();
+```
+
+#### Creating a spy from thin air
+
+You may want to just create a fake spy property this is easy to do and has all the same functionality as a Spy created through ```SpyOn```
+
+```
+import { FunctionSpy } from "alsatian";
+
+const spy = new FunctionSpy();
+```
+
+#### Spying on a property
+
+Similarly to spying on functions you can also spy on properties as below ...
+
+```
+import { SpyOnProperty } from "alsatian";
+
+class Test {
+
+   private _property: number = 42;
+
+   get property() {
+      return this._property;
+   }
+
+   set property(value: number) {
+      this._property = value;
+   }
+}
+
+const test = new Test();
+
+SpyOnProperty(test, "property");
+
+```
+
+... then add a fake getter ...
+
+
+```
+SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
+
+```
+
+... or setter ...
+
+
+```
+SpyOnProperty(test, "property").andCallSetter((value: any) => { doSomethingWith(value); });
+
+```
+
+... return a set value ...
+
+
+```
+SpyOnProperty(test, "property").andReturnValue(42);
+
+```
+
+... and restore it to how it was before
+
+
+```
+const spy = SpyOnProperty(test, "property");
+
+spy.restore();
 ```
 
 ### Async Tests

@@ -1,21 +1,11 @@
-import {
-    SpyCall,
-    RestorableSpy
-} from "../_spying";
+import { RestorableFunctionSpy } from "../_spying";
 
-export function SpyOn(target: any, functionName: string): RestorableSpy {
+export function SpyOn(target: any, functionName: string): RestorableFunctionSpy {
 
-  let spy = new RestorableSpy(target, functionName);
-
-  target[functionName] = (...args: Array<any>) => {
-    return spy.call(args);
-  };
-
-  // expose spy's calls on function
-  target[functionName].calls = spy.calls;
-
-  // expose spy's restore function
-  target[functionName].restore = spy.restore.bind(spy);
-
-  return spy;
+   if (target[functionName] instanceof Function) {
+      return new RestorableFunctionSpy(target, functionName);
+   }
+   else {
+      throw new TypeError(`${functionName} is not a function.`);
+   }
 }
