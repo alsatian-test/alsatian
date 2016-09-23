@@ -105,4 +105,97 @@ export class ToHaveBeenSetTests {
    public checkingWhetherNonPropertySpyHasNotBeenSetShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
+
+   @Test()
+   public actualValueAndShouldMatchShouldBeSetToPropertyNotSet() {
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+
+      let propertyError: PropertySetMatchError;
+
+      try {
+         Expect(propertySpy).toHaveBeenSet();
+      }
+      catch (error) {
+         propertyError = error;
+      }
+
+      Expect(propertyError).toBeDefined();
+      Expect(propertyError).not.toBeNull();
+      Expect(propertyError.actualValue).toBe("property was not set.");
+   }
+
+   @Test()
+   public actualValueAndShouldNotMatchShouldBeSetToPropertySet() {
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+
+      some.property = "something";
+
+      let propertyError: PropertySetMatchError;
+
+      try {
+         Expect(propertySpy).not.toHaveBeenSet();
+      }
+      catch (error) {
+         propertyError = error;
+      }
+
+      Expect(propertyError).toBeDefined();
+      Expect(propertyError).not.toBeNull();
+      Expect(propertyError.actualValue).toBe("property was set.");
+   }
+
+   @Test()
+   public expectedValueAndShouldMatchShouldBeSetToPropertyToBeSet() {
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+
+      let propertyError: PropertySetMatchError;
+
+      try {
+         Expect(propertySpy).toHaveBeenSet();
+      }
+      catch (error) {
+         propertyError = error;
+      }
+
+      Expect(propertyError).toBeDefined();
+      Expect(propertyError).not.toBeNull();
+      Expect(propertyError.expectedValue).toBe("property to be set.");
+   }
+
+   @Test()
+   public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
+
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+
+      some.property = "something";
+
+      let propertyError: PropertySetMatchError;
+
+      try {
+         Expect(propertySpy).not.toHaveBeenSet();
+      }
+      catch (error) {
+         propertyError = error;
+      }
+
+      Expect(propertyError).toBeDefined();
+      Expect(propertyError).not.toBeNull();
+      Expect(propertyError.expectedValue).toBe("property not to be set.");
+   }
 }
