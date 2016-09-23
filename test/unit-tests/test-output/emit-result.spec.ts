@@ -1,4 +1,5 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, MatchError, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { MatchError, EqualMatchError } from "../../../core/_errors";
 import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
@@ -6,7 +7,7 @@ import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 export class EmitResultTests {
 
     private static _getErrorYaml(error: MatchError): string {
-        return  ` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
+        return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
     }
 
     @TestCase(1)
@@ -197,7 +198,7 @@ export class EmitResultTests {
 
         let test: ITest = new TestBuilder().build();
 
-        let error = new MatchError(actualValue, 2, "error message");
+        let error = new EqualMatchError(actualValue, 2, false);
 
         let testCaseResult = new TestCaseResult(test, [], error);
 
@@ -219,7 +220,7 @@ export class EmitResultTests {
 
         let test: ITest = new TestBuilder().build();
 
-        let error = new MatchError(1, expectedValue, "error message");
+        let error = new EqualMatchError(1, expectedValue, false);
 
         let testCaseResult = new TestCaseResult(test, [], error);
 
