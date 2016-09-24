@@ -313,8 +313,24 @@ SpyOnProperty(test, "property");
 
 ```
 
-... then add a fake getter ...
+... then check it's been set ...
 
+```
+const propertySpy = SpyOnProperty(test, "property");
+
+// unlike function spies expect calls on property spies
+// only works using the returned spy from SpyOnProperty
+// and not the property itself
+Expect(propertySpy).toHaveBeenSet();
+```
+
+... or check it's been set to a specific value ...
+
+```
+Expect(propertySpy).toHaveBeenSetTo(42);
+```
+
+... add a fake getter ...
 
 ```
 SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
@@ -323,14 +339,12 @@ SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
 
 ... or setter ...
 
-
 ```
 SpyOnProperty(test, "property").andCallSetter((value: any) => { doSomethingWith(value); });
 
 ```
 
 ... return a set value ...
-
 
 ```
 SpyOnProperty(test, "property").andReturnValue(42);
@@ -339,11 +353,10 @@ SpyOnProperty(test, "property").andReturnValue(42);
 
 ... and restore it to how it was before
 
-
 ```
-const spy = SpyOnProperty(test, "property");
+const properySpy = SpyOnProperty(test, "property");
 
-spy.restore();
+properySp.restore();
 ```
 
 ### Async Tests
