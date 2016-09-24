@@ -24,8 +24,7 @@
         "./cli/**/*.ts",
         "./core/**/*.ts",
         "./test/**/*.ts",
-        "./scripts/**/*.ts",
-        "./typings/index.d.ts"
+        "./scripts/**/*.ts"
     ],
     "files": [
         "./cli/alsatian-cli-options.ts",
@@ -180,8 +179,7 @@
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
-        "./scripts/tag-release.ts",
-        "./typings/index.d.ts"
+        "./scripts/tag-release.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
