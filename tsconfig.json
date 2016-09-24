@@ -18,7 +18,7 @@
         "./test/**/*.d.ts",
         "./scripts/**/*.d.ts",
         "./test/integration-tests/node**/*.ts",
-        "./node_modules/**/*.*"
+        "node_modules"
     ],
     "filesGlob": [
         "./cli/**/*.ts",
