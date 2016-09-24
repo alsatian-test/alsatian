@@ -46,6 +46,14 @@ alsatian --timeout 5000
 alsatian -t 5000
 ```
 
+#### TAP
+
+The default reporter is the super snazzy [tap-bark](http://github.com/alsatian-test/tap-bark). If you want raw TAP output (so that it can be piped into a reporter of your choice), you can use the `tap` argument.
+
+```
+alsatian --tap
+```
+
 ## Using alsatian
 
 Create your first spec file
