@@ -3,7 +3,9 @@ import { MatchError } from "../_errors";
 export class ErrorMatchError extends MatchError {
 
    public constructor(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {
-      super(actualError, expectedErrorMessage, "");
+      super(`${actualError ? (<any>actualError.constructor).name + " " : ""}error was ${!actualError ? "not " : ""}thrown${actualError ? " with message \"" + actualError.message + "\"" : ""}.`,
+            `${expectedErrorType ? (<any>expectedErrorType).name + " " : ""}error ${!shouldMatch ? "not " : ""}to be thrown${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`,
+            "");
 
       if (expectedErrorType || expectedErrorMessage) {
          this._setWrongSpecificErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
