@@ -1,7 +1,6 @@
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
-import { Expect, Test, TestCase, FocusTests } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 
-@FocusTests
 export class ToThrowTests {
 
    @Test()
