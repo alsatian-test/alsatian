@@ -252,7 +252,7 @@ export class Matcher {
          }
       }
 
-      if (!threwRightError === this._shouldMatch) {
+      if (threwRightError !== this._shouldMatch) {//} || (threwRightError && !this._shouldMatch)) {
          throw new ErrorMatchError(actualError, this._shouldMatch, (<any>errorType), errorMessage);
       }
    }
