@@ -15,11 +15,18 @@ let userArguments = new AlsatianCliOptions(process.argv.slice(2));
 let testSet = createTestSet();
 testSet.addTestsFromFiles(userArguments.fileGlobs);
 
-// create the tap bark reporter
-let reporter = TapBark.create().getPipeable();
+let reporter: any;
 
-// pipe the reporter into stdout
-reporter.pipe(process.stdout);
+if (userArguments.tap) {
+  // if they want TAP output then just write to stdout directly
+  reporter = process.stdout;
+} else {
+  // otherwise create the tap bark reporter
+  reporter = TapBark.create().getPipeable();
+
+  // pipe the reporter into stdout
+  reporter.pipe(process.stdout);
+}
 
 let output = new TestOutput(reporter);
 
