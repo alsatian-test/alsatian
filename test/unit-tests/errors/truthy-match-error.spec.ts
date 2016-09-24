@@ -51,6 +51,6 @@ export class TruthyMatchErrorTests {
    public expectedValueSetToFalsyIfShouldNotMatch() {
       const error = new TruthyMatchError("something", false);
 
-      Expect(error.expectedValue).toBe("falsy");   
+      Expect(error.expectedValue).toBe("falsy");
    }
 }
