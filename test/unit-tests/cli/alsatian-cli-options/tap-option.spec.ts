@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
+import { Expect, Test, IgnoreTests } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-argument-error";
 
