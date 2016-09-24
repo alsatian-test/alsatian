@@ -36,5 +36,3 @@ let testRunner = new TestRunner(output);
 // run the test set
 let cliTestRunner = new CliTestRunner(testRunner);
 cliTestRunner.run(testSet, userArguments.timeout);
-
-//console.log (TapBark.create.toString());
