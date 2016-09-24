@@ -10,7 +10,7 @@ export class GreaterThanMatchErrorTests {
 
       Expect(error.message).toBe("Expected " + actualValue + " to be greater than " + lowerLimit + ".");
    }
-   
+
    @TestCase(1, 0)
    @TestCase(2, 2)
    @TestCase(42, 1)
