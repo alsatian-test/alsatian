@@ -5,7 +5,6 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestSet } from "../../../core/test-set";
-import * as rewire from "rewire";
 
 export class TestSetRunInfoTests {
 
