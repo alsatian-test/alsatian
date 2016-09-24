@@ -100,7 +100,7 @@ export class ToThrowTests {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => { throw new ActualErrorType(actualErrorMessage)}).not.toThrow();
+         Expect(() => { throw new ActualErrorType(actualErrorMessage); }).not.toThrow();
       }
       catch (error) {
          errorMatchError = error;
@@ -134,7 +134,7 @@ export class ToThrowTests {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => { throw new Error()}).not.toThrow();
+         Expect(() => { throw new Error(); }).not.toThrow();
       }
       catch (error) {
          errorMatchError = error;
