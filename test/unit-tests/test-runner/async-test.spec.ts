@@ -94,5 +94,9 @@ export class AsyncTestTests {
          testRunner.run(testSet);
 
       });
+
+      //TODO: timeout set to given value
+
+      //TODO: defaulted to 500ms
    }
 }

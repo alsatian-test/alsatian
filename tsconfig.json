@@ -144,6 +144,9 @@
         "./test/unit-tests/results/test-fixture-results.spec.ts",
         "./test/unit-tests/results/test-results.spec.ts",
         "./test/unit-tests/results/test-set-results.spec.ts",
+        "./test/unit-tests/running/test-item/run-async.spec.ts",
+        "./test/unit-tests/running/test-item/run-sync.spec.ts",
+        "./test/unit-tests/running/test-plan.spec.ts",
         "./test/unit-tests/running/test-set-run-info.spec.ts",
         "./test/unit-tests/spying/function-spy/and-call.spec.ts",
         "./test/unit-tests/spying/function-spy/and-return.spec.ts",
@@ -178,6 +181,7 @@
         "./test/unit-tests/test-runner/focussed-test.spec.ts",
         "./test/unit-tests/test-runner/no-tests-error.spec.ts",
         "./test/unit-tests/test-runner/pre-test.spec.ts",
+        "./test/unit-tests/test-runner/run-test.spec.ts",
         "./test/unit-tests/test-set/load-test.spec.ts",
         "./scripts/tag-release.ts"
     ],
