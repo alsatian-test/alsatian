@@ -100,6 +100,9 @@ export class TestOutput {
       else if (argument && argument.name) {
          return argument.name;
       }
+      else if (argument instanceof Function) {
+         return "anonymous function";
+      }
 
       // otherwise must be undefined
       return "undefined";
