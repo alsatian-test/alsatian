@@ -55,7 +55,7 @@ export class EmitResultTests {
    @TestCase([ "a", 3, true ], "[ \"a\", 3, true ]")
    @TestCase([ 5.25, 6.25, 7.22 ], "[ 5.25, 6.25, 7.22 ]")
    @TestCase([ TypeError, RangeError ], "[ TypeError, RangeError ]")
-   @TestCase([ () => { } ], "[ function ]")
+   @TestCase([ () => { } ], "[ anonymous function ]")
    @TestCase([ undefined ], "[ undefined ]")
    public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>, testCaseOutput: string) {
       let outStream = new OutputStreamBuilder().build();
