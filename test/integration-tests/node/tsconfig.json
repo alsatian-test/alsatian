@@ -19,6 +19,7 @@
         "./**/*.ts"
     ],
     "files": [
+        "./cli/runner.ts",
         "./runner.ts",
         "./tests/to-be.spec.ts"
     ],
