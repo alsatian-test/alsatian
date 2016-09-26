@@ -19,11 +19,8 @@
         "./**/*.ts"
     ],
     "files": [
-        "./cli/runner.ts",
-        "./runner.ts",
-        "./tests/to-be.spec.ts"
     ],
     "atom": {
-        "rewriteTsconfig": true
+        "rewriteTsconfig": false
     }
 }
