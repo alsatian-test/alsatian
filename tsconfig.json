@@ -97,7 +97,6 @@
         "./test/builders/test-fixture-builder.ts",
         "./test/integration-tests/cli/runner.ts",
         "./test/integration-tests/node/tests/to-be.spec.ts",
-        "./test/integration-tests/to-be.spec.ts",
         "./test/unit-tests/alsatian-core.spec.ts",
         "./test/unit-tests/cli/alsatian-cli-options/file-globs.spec.ts",
         "./test/unit-tests/cli/alsatian-cli-options/timeout-option.spec.ts",
