@@ -1,6 +1,8 @@
 import * as child from "child_process";
 import * as path from "path";
 
+console.log(path.join(__dirname, "../node/tests"))
+
 try {
 const p = child.spawn("alsatian", [ path.join(__dirname, "../node/tests/**/*.spec.js") ]);
 
