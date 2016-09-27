@@ -7,6 +7,8 @@ import { AlsatianCliOptions } from "./alsatian-cli-options";
 // get all arguments from the user
 let userArguments = new AlsatianCliOptions(process.argv.slice(2));
 
+console.log("args", process.argv);
+
 // create test set from given file globs
 let testSet = createTestSet();
 testSet.addTestsFromFiles(userArguments.fileGlobs);

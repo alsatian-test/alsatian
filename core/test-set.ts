@@ -26,8 +26,11 @@ export class TestSet {
 
   private _loadTestFixtures(testFileLocations: Array<string>) {
      testFileLocations.forEach(testFileLocation => {
+             console.log(testFileLocations);
 
         testFileLocation = path.join(process.cwd(), testFileLocation);
+
+        console.log(testFileLocation);
 
         if (this._globHelper.isGlob(testFileLocation)) {
           let physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
