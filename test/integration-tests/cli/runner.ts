@@ -3,7 +3,10 @@ import * as path from "path";
 
 console.log("hello", process.argv)
 
-child.execSync("alsatian \"./test/integration-tests/node/tests/**/*.spec.js\"");
+child.spawnSync("alsatian", [ "test/integration-tests/node/tests/**/*.spec.js" ]);
+
+console.log("hello after", process.argv)
+//child.execSync("alsatian \"./test/integration-tests/node/tests/**/*.spec.js\"");
 
 //child.exec("alsatian \"./test/integration-tests/node/tests/**/*.spec.js\"", (error, stdout, stderr) => {
 //   console.log(`error ${error}`);
