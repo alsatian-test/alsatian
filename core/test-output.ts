@@ -100,13 +100,21 @@ export class TestOutput {
       else if (argument && argument.name) {
          return argument.name;
       }
+      else if (argument instanceof Function) {
+         return "anonymous function";
+      }
 
       // otherwise must be undefined
       return "undefined";
     }
 
     private _getErrorYaml(error: MatchError): string {
-        return ` ---\n   message: "${error.message}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
+        return " ---\n" +
+                "   message: \"" + error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"\n" +
+                "   severity: fail\n" +
+                "   data:\n" +
+                "     got: " + JSON.stringify(error.actualValue) + "\n" +
+                "     expect: " + JSON.stringify(error.expectedValue) + "\n ...\n";
     }
 
 }

@@ -21,10 +21,10 @@ export class ErrorMatchError extends MatchError {
    }
 
    private _setWrongSpecificErrorMessage(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {
-      if (expectedErrorType === undefined || expectedErrorType === null || (expectedErrorMessage && actualError instanceof expectedErrorType && expectedErrorMessage !== actualError.message)) {
+      if (!expectedErrorType || (expectedErrorMessage && actualError instanceof expectedErrorType && expectedErrorMessage !== actualError.message)) {
          this._setWrongMessageMessage(shouldMatch, expectedErrorMessage);
       }
-      else if (expectedErrorMessage === undefined || (actualError && !(actualError instanceof expectedErrorType) && expectedErrorMessage === actualError.message)) {
+      else if (expectedErrorMessage === undefined || (actualError && expectedErrorMessage === actualError.message && !(actualError instanceof expectedErrorType))) {
          this._setWrongTypeMessage(actualError, shouldMatch, expectedErrorType);
       }
       else {
