@@ -6,8 +6,8 @@ export class CliIntegrationTests {
    @Test()
    public proofOfConcept() {
 
-      const result = child.exec("alsatian ./test/integration-tests/node/tests/**/*.spec.js", { cwd: process.cwd() });
+      const result = child.exec("alsatian ./test/integration-tests/node/tests/**/*.spec.js");
 
-      Expect(result.stderr).toBeDefined();
+      Expect(result.on("exit or something", () => {})).toBeDefined();
    }
 }
