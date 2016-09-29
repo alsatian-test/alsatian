@@ -7,6 +7,11 @@ export class ErrorMatchError extends MatchError {
             `${expectedErrorType ? (<any>expectedErrorType).name + " " : ""}error ${!shouldMatch ? "not " : ""}to be thrown${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`,
             "");
 
+      this._setErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
+   }
+
+   private _setErrorMessage(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {        
+
       if (expectedErrorType || expectedErrorMessage) {
          this._setWrongSpecificErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
       }
