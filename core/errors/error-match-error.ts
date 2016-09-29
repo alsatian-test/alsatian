@@ -10,8 +10,7 @@ export class ErrorMatchError extends MatchError {
       this._setErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
    }
 
-   private _setErrorMessage(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {        
-
+   private _setErrorMessage(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {
       if (expectedErrorType || expectedErrorMessage) {
          this._setWrongSpecificErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
       }
