@@ -1,15 +1,13 @@
 import * as child from "child_process";
 import * as path from "path";
+import { Expect, Test } from "../../../core/alsatian-core";
 
-console.log("hello", process.argv)
+export class CliIntegrationTests {
+   @Test()
+   public proofOfConcept() {
 
-child.spawnSync("alsatian", [ "test/integration-tests/node/tests/**/*.spec.js" ]);
+      const result = child.exec("alsatian ./test/integration-tests/node/tests/**/*.spec.js", { cwd: process.cwd() });
 
-console.log("hello after", process.argv)
-//child.execSync("alsatian \"./test/integration-tests/node/tests/**/*.spec.js\"");
-
-//child.exec("alsatian \"./test/integration-tests/node/tests/**/*.spec.js\"", (error, stdout, stderr) => {
-//   console.log(`error ${error}`);
-//   console.log(`stdout ${stdout}`);
-//   console.log(`stderr ${stderr}`);
-//});
+      Expect(result.stderr).toBeDefined();
+   }
+}
