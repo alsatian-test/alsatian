@@ -1,4 +1,0 @@
-TAP version 13
-1..1
-# FIXTURE ExampleTestFixture
-ok 1 exampleTest
