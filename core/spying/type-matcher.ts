@@ -1,8 +1,8 @@
 export class TypeMatcher {
 
-   private _type: new (...args: Array<any>) => any;
+   private _type: new (...args: Array<any>) => Object;
 
-   public constructor(type: new (...args: Array<any>) => any) {
+   public constructor(type: new (...args: Array<any>) => Object) {
       if (type === null || type === undefined) {
          throw new TypeError("type must not be null or undefined");
       }

@@ -148,6 +148,7 @@
         "./test/unit-tests/results/test-results.spec.ts",
         "./test/unit-tests/results/test-set-results.spec.ts",
         "./test/unit-tests/running/test-set-run-info.spec.ts",
+        "./test/unit-tests/spying/any-arguments.spec.ts",
         "./test/unit-tests/spying/function-spy/and-call.spec.ts",
         "./test/unit-tests/spying/function-spy/and-return.spec.ts",
         "./test/unit-tests/spying/function-spy/call.spec.ts",
