@@ -1,7 +1,6 @@
 import { TypeMatcher } from "../../../../core/spying/type-matcher";
-import { Expect, TestCase, FocusTests } from "../../../../core/alsatian-core";
+import { Expect, TestCase } from "../../../../core/alsatian-core";
 
-@FocusTests
 export class TypeMatcherTestFunctionTests {
 
    @TestCase(0)
