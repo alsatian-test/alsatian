@@ -15,10 +15,16 @@ export class AlsatianCliOptions {
       return this._timeout;
    }
 
+   private _versionRequested: boolean = false;
+   public get versionRequested(): boolean {
+      return this._versionRequested;
+   }
+
    public constructor(args: Array<string>) {
 
       args = this._extractFileGlobs(args);
       args = this._extractTimeout(args);
+      args = this._extractVersionRequested(args);
 
       if (args.length > 0) {
          throw new InvalidArgumentNamesError(args);
@@ -56,6 +62,21 @@ export class AlsatianCliOptions {
 
          return args.filter((value, index) => {
             return index !== argumentIndex && index !== argumentIndex + 1;
+         });
+      }
+
+      return args;
+   }
+
+   private _extractVersionRequested(args: Array<string>) {
+      let versionRequesteIndex = this._getArgumentIndexFromArgumentList(args, "version", "v");
+
+      if (versionRequesteIndex > -1) {
+
+         this._versionRequested = true;
+
+         return args.filter((value, index) => {
+            return index !== versionRequesteIndex;
          });
       }
 
