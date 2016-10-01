@@ -166,6 +166,7 @@
         "./test/unit-tests/spying/spy-call.spec.ts",
         "./test/unit-tests/spying/spy-on-property.spec.ts",
         "./test/unit-tests/spying/spy-on.spec.ts",
+        "./test/unit-tests/spying/type-matcher/constructor.spec.ts",
         "./test/unit-tests/test-fixture/add-test.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixture.spec.ts",
         "./test/unit-tests/test-loader/load-test-fixtures-tests/default-export-fixture.spec.ts",
