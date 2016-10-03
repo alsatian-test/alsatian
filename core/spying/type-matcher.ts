@@ -1,6 +1,9 @@
 export class TypeMatcher {
 
    private _type: new (...args: Array<any>) => Object;
+   public get type() {
+      return this._type;
+   }
 
    public constructor(type: new (...args: Array<any>) => Object) {
       if (type === null || type === undefined) {
