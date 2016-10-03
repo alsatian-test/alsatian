@@ -248,6 +248,7 @@ Expect(some.function).toHaveBeenCalledWith(this, "and that");
 ... or any arguments ...
 
 ```
+// you can use the Any function to signify an argument can be anything or any specific type
 Expect(some.function).toHaveBeenCalledWith(Any, Any(Number), Any(String));
 ```
 
