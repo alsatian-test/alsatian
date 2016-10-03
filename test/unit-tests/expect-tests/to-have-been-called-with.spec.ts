@@ -1,6 +1,7 @@
 import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, Any, FocusTests, FocusTest } from "../../../core/alsatian-core";
 
+@FocusTests
 export class ToHaveBeenCalledWithTests {
 
    @Test()
@@ -389,5 +390,106 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
       Expect(functionError.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments) + ".");
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase(-42)
+   @TestCase(new Number(0))
+   @TestCase(new Number(1))
+   @TestCase(new Number(42))
+   @TestCase(new Number(-42))
+   @TestCase("")
+   @TestCase(new String(""))
+   @TestCase("test")
+   @TestCase(new String("test"))
+   @TestCase(true)
+   @TestCase(false)
+   @TestCase(new Boolean(true))
+   @TestCase(new Boolean(false))
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase(new Object({}))
+   @TestCase(new Object({ "an": "object"}))
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(new Array([]))
+   @TestCase(new Array([ "an", "array" ]))
+   @TestCase(new Error())
+   @TestCase(new Error("something went wrong"))
+   public anyArgumentShouldNotThrowIfOneArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any)).not.toThrow();
+   }
+
+   @Test()
+   public anyArgumentShouldNotThrowIfTwoArguments() {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(1, "two");
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any)).not.toThrow();
+   }
+
+   @Test()
+   public anyArgumentShouldNotThrowIfThreeArguments() {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(1, "two", undefined);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any, Any)).not.toThrow();
+   }
+
+   @TestCase([])
+   @TestCase([1, 2])
+   @TestCase([42, undefined])
+   @TestCase([1, 2, 3])
+   @TestCase(["some", "function", "arguments"])
+   @FocusTest
+   public anyArgumentShouldThrowIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function.apply(some, args);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any)).not.toThrow();
+   }
+
+   @TestCase([])
+   @TestCase([42])
+   @TestCase(["argument"])
+   @TestCase([1, 2, undefined])
+   @TestCase(["some", "function", "arguments"])
+   public anyArgumentShouldThrowIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function.apply(some, args);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any)).not.toThrow();
    }
 }
