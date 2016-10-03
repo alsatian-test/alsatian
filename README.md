@@ -245,6 +245,12 @@ Expect(some.function).toHaveBeenCalled();
 Expect(some.function).toHaveBeenCalledWith(this, "and that");
 ```
 
+... or any arguments ...
+
+```
+Expect(some.function).toHaveBeenCalledWith(Any, Any(Number), Any(String));
+```
+
 ... you can stub it out ...
 
 ```
