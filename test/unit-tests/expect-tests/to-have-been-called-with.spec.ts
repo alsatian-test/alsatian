@@ -566,6 +566,26 @@ export class ToHaveBeenCalledWithTests {
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number))).not.toThrow();
    }
 
+   @TestCase(0)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase(-42)
+   @TestCase(new Number(0))
+   @TestCase(new Number(1))
+   @TestCase(new Number(42))
+   @TestCase(new Number(-42))
+   public anyNumberArgumentShouldNotBeCalledShouldThrowIfNumberArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(Number))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any Number].");
+   }
+
    @TestCase(undefined)
    @TestCase(null)
    @TestCase("")
@@ -654,6 +674,22 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(String))).not.toThrow();
+   }
+
+   @TestCase("")
+   @TestCase(new String(""))
+   @TestCase("test")
+   @TestCase(new String("test"))
+   public anyStringArgumentShouldNotBeCalledShouldThrowIfStringArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(String))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any String].");
    }
 
    @TestCase(undefined)
@@ -752,6 +788,22 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Boolean))).not.toThrow();
+   }
+
+   @TestCase(true)
+   @TestCase(false)
+   @TestCase(new Boolean(true))
+   @TestCase(new Boolean(false))
+   public anyBooleanArgumentShouldNotBeCalledShouldThrowIfBooleanArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(Boolean))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any Boolean].");
    }
 
    @TestCase(undefined)
@@ -866,6 +918,36 @@ export class ToHaveBeenCalledWithTests {
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Object))).not.toThrow();
    }
 
+   @TestCase(new Number(0))
+   @TestCase(new Number(1))
+   @TestCase(new Number(42))
+   @TestCase(new Number(-42))
+   @TestCase(new String(""))
+   @TestCase(new String("test"))
+   @TestCase(new Boolean(true))
+   @TestCase(new Boolean(false))
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase(new Object({}))
+   @TestCase(new Object({ "an": "object"}))
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(new Array([]))
+   @TestCase(new Array([ "an", "array" ]))
+   @TestCase(new Error())
+   @TestCase(new Error("something went wrong"))
+   public anyObjectArgumentShouldNotBeCalledShouldThrowIfObjectArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(Object))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any Object].");
+   }
+
    @TestCase(undefined)
    @TestCase(null)
    @TestCase(0)
@@ -934,6 +1016,22 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Array))).not.toThrow();
+   }
+
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(new Array([]))
+   @TestCase(new Array([ "an", "array" ]))
+   public anyArrayArgumentShouldNotBeCalledShouldThrowIfArrayArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(Array))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any Array].");
    }
 
    @TestCase(undefined)
@@ -1032,6 +1130,20 @@ export class ToHaveBeenCalledWithTests {
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Error))).not.toThrow();
    }
 
+   @TestCase(new Error())
+   @TestCase(new Error("something went wrong"))
+   public anyErrorArgumentShouldNotBeCalledShouldThrowIfErrorArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      some.function(argument);
+
+      Expect(() => Expect(some.function).not.toHaveBeenCalledWith(Any(Error))).toThrowError(FunctionCallMatchError, "Expected function not to be called with [Any Error].");
+   }
+
    @TestCase(undefined)
    @TestCase(null)
    @TestCase(0)
@@ -1118,10 +1230,51 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionCallError.expectedValue).toBe("function to be called with [Any Error].");
    }
 
+   // not Any (Types)
+
+   @TestCase(0, Number)
+   @TestCase(1, Number)
+   @TestCase(42, Number)
+   @TestCase(-42, Number)
+   @TestCase(new Number(0), Number)
+   @TestCase(new Number(1), Number)
+   @TestCase(new Number(42), Number)
+   @TestCase(new Number(-42), Number)
+   @TestCase("", String)
+   @TestCase("test", String)
+   @TestCase(new String(""), String)
+   @TestCase(new String("test"), String)
+   @TestCase(true, Boolean)
+   @TestCase(false, Boolean)
+   @TestCase(new Boolean(true), Boolean)
+   @TestCase(new Boolean(false), Boolean)
+   @TestCase({}, Object)
+   @TestCase({ "an": "object"}, Object)
+   @TestCase(new Object({}), Object)
+   @TestCase(new Object({ "an": "object"}), Object)
+   @TestCase([], Array)
+   @TestCase([ "an", "array" ], Array)
+   @TestCase(new Array([]), Array)
+   @TestCase(new Array([ "an", "array" ]), Array)
+   public expectedAnyArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+      some.function(42, argument);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(Type))).not.toThrow();
+   }
    // Any Any(Type)
+
    // Any(Type) Any
+
    // precise value Any(Type)
+
    // Any precise value
+
    // precise value Any
+
    // Any(Type) precise value
 }
