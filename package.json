@@ -61,7 +61,7 @@
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
-    "codeclimate-test-reporter": "^0.3.3",
+    "codeclimate-test-reporter": "^0.4.0",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "node-inspector": "^0.12.8",
