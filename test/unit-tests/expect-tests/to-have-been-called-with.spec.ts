@@ -360,7 +360,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments) + ".");
+      Expect(functionError.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @TestCase([])
@@ -389,7 +389,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments) + ".");
+      Expect(functionError.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @TestCase(undefined)
@@ -490,6 +490,56 @@ export class ToHaveBeenCalledWithTests {
       some.function.apply(some, args);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Anything, Anything].");
+   }
+
+   @TestCase()
+   @TestCase(1, 2)
+   @TestCase(42, undefined)
+   @TestCase(1, 2, 3)
+   @TestCase("some", "function", "arguments")
+   public anyArgumentShouldThrowWithExpectedMessageIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+      some.function.apply(some, args);
+
+      let functionCallError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalledWith(Any);
+      }
+      catch (error) {
+         functionCallError = error;
+      }
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything].");
+   }
+
+   @TestCase()
+   @TestCase(42)
+   @TestCase("argument")
+   @TestCase(1, 2, undefined)
+   @TestCase("some", "function", "arguments")
+   public anyArgumentShouldThrowWithexpectedMessageIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+      some.function.apply(some, args);
+
+      let functionCallError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalledWith(Any, Any);
+      }
+      catch (error) {
+         functionCallError = error;
+      }
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything].");
    }
 
    @TestCase(0)
