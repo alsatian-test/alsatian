@@ -1117,4 +1117,11 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionCallError).not.toBeNull();
       Expect(functionCallError.expectedValue).toBe("function to be called with [Any Error].");
    }
+
+   // Any Any(Type)
+   // Any(Type) Any
+   // precise value Any(Type)
+   // Any precise value
+   // precise value Any
+   // Any(Type) precise value
 }
