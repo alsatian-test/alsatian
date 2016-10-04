@@ -514,6 +514,8 @@ export class ToHaveBeenCalledWithTests {
          functionCallError = error;
       }
 
+      Expect(functionCallError).toBeDefined();
+      Expect(functionCallError).not.toBeNull();
       Expect(functionCallError.expectedValue).toBe("function to be called with [Anything].");
    }
 
@@ -539,6 +541,8 @@ export class ToHaveBeenCalledWithTests {
          functionCallError = error;
       }
 
+      Expect(functionCallError).toBeDefined();
+      Expect(functionCallError).not.toBeNull();
       Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything].");
    }
 
@@ -592,5 +596,47 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number))).toThrowError(FunctionCallMatchError, "Expected function to be called with [Any Number].");
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase("")
+   @TestCase(new String(""))
+   @TestCase("test")
+   @TestCase(new String("test"))
+   @TestCase(true)
+   @TestCase(false)
+   @TestCase(new Boolean(true))
+   @TestCase(new Boolean(false))
+   @TestCase({})
+   @TestCase({ "an": "object"})
+   @TestCase(new Object({}))
+   @TestCase(new Object({ "an": "object"}))
+   @TestCase([])
+   @TestCase([ "an", "array" ])
+   @TestCase(new Array([]))
+   @TestCase(new Array([ "an", "array" ]))
+   @TestCase(new Error())
+   @TestCase(new Error("something went wrong"))
+   public anyNumberArgumentShouldThrowWithExpectedValueIfNonArgument(argument: any) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+      some.function(argument);
+
+      let functionCallError: FunctionCallMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalledWith(Any(Number));
+      }
+      catch (error) {
+         functionCallError = error;
+      }
+
+      Expect(functionCallError).toBeDefined();
+      Expect(functionCallError).not.toBeNull();
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Number].");
    }
 }
