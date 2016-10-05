@@ -137,7 +137,7 @@ export class FunctionCallMatchErrorTests {
 
       let error = new FunctionCallMatchError(fakeFunction, true, expectedArguments);
 
-      Expect(error.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments) + ".");
+      Expect(error.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @TestCase([])
@@ -151,7 +151,7 @@ export class FunctionCallMatchErrorTests {
 
       let error = new FunctionCallMatchError(fakeFunction, false, expectedArguments);
 
-      Expect(error.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments) + ".");
+      Expect(error.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @Test()
