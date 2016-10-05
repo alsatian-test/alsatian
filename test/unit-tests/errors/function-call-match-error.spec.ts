@@ -310,4 +310,10 @@ export class FunctionCallMatchErrorTests {
       Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Anything].");
    }
    */
+
+   // Any, Any(Type) and reverse
+
+   // Any, Exact and reverse
+
+   // Any(Type), Exact and reverse
 }
