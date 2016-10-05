@@ -273,43 +273,54 @@ export class FunctionCallMatchErrorTests {
 
       Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
    }
-/*
-   @Test()
-   public anyArgumentOutputAsAnythingInExpectedValue() {
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeArgumentOutputAsAnyTypeInExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any ])
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(Type) ])
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name +  "].");
    }
 
-   @Test()
-   public twoAnyArgumentsBothOutputAsAnythingInExpectedValue() {
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeArgumentsBothOutputAsAnyTypeInExpectedValue(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any ])
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(TypeOne), Any(TypeTwo) ])
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
    }
 
-   @Test()
-   public anyArgumentOutputAsAnythingInNotExpectedValue() {
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any ])
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(Type) ])
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + "].");
    }
 
-   @Test()
-   public twoAnyArgumentsBothOutputAsAnythingInNotExpectedValue() {
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedValue(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any ])
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(TypeOne), Any(TypeTwo) ])
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
    }
-   */
 
    // Any, Any(Type) and reverse
 
