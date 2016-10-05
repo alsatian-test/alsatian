@@ -70,7 +70,7 @@ export class AlsatianCliOptions {
    }
 
    private _extractTap(args: Array<string>): Array<string> {
-      const argumentIndex = this._getArgumentIndexFromArgumentList(args, "tap");
+      const argumentIndex = this._getArgumentIndexFromArgumentList(args, "tap", "T");
 
       // if we found the tap argument, we want to enable tap output
       this._tap = (argumentIndex !== -1);
