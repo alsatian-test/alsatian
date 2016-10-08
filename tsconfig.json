@@ -24,8 +24,7 @@
         "./cli/**/*.ts",
         "./core/**/*.ts",
         "./test/**/*.ts",
-        "./scripts/**/*.ts",
-        "./typings/index.d.ts"
+        "./scripts/**/*.ts"
     ],
     "atom": {
         "rewriteTsconfig": false

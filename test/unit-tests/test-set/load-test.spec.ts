@@ -1,7 +1,6 @@
 import { TestSet } from "../../../core/test-set";
 import { TestLoader, GlobHelper } from "../../../core/_core";
 import { Expect, Test, TestCase, IgnoreTest, SpyOn } from "../../../core/alsatian-core";
-import * as rewire from "rewire";
 
 export class LoadTestTests {
 
