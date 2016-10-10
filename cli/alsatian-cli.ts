@@ -17,25 +17,26 @@ let testSet = createTestSet();
 testSet.addTestsFromFiles(userArguments.fileGlobs);
 
 let reporter: any;
-const stream = new Writable();
-stream._write = (a, b, callback) => { console.log("stream:", a.toString()), callback() };
+let stream = new Readable();
+stream._read = () => {};
 
 if (userArguments.tap) {
   // if they want TAP output then just write to stdout directly
   reporter = stream;
+  stream.pipe(process.stdout);
 } else {
   // otherwise create the tap bark reporter
   var bark = TapBark.create();
 
-  var barkStream = new Readable();
-  barkStream._read = (data) => { } ;
+  stream = new Readable();
+  stream._read = (data) => { } ;
   //barkStream.pipe(stream);
 
   // pipe the reporter into stdout
-  barkStream.pipe(bark.getPipeable()).pipe(process.stdout);
+  stream.pipe(bark.getPipeable()).pipe(process.stdout);
 }
 
-let output = new TestOutput(barkStream);
+let output = new TestOutput(stream);
 
 // create alsatian test runner
 let testRunner = new TestRunner(output);

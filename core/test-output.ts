@@ -10,6 +10,17 @@ export class TestOutput {
 
     constructor (outStream: NodeJS.WritableStream) {
         this._outStream = outStream;
+        //this._outStream.readable = true;
+         /*this._outStream._read = () => {
+            if (this._currIndex === this._messages.length) {
+               console.log(this._currIndex, this._messages);
+              //this._outStream.push(null);
+           }
+           else {
+              console.log("pushing", this._messages[this._currIndex]);
+              this._outStream.push(this._messages[this._currIndex ++])
+           }
+        }*/
     }
 
     public end() {
@@ -17,15 +28,9 @@ export class TestOutput {
    }
 
     private _writeOut(message: string): void {
-      this._messages.push();
-        this._outStream._read = () => {
-           if (this._currIndex === this._messages.length) {
-             this._outStream.push(null);
-          }
-          else {
-             this._outStream.push(this._messages[this._currIndex ++])
-          }
-         }
+      //console.log("writing");
+      this._messages.push(message);
+      this._outStream.push(message);
     }
 
     public emitVersion(): void {
