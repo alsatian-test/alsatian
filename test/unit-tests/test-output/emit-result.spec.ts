@@ -15,7 +15,7 @@ export class EmitResultTests {
    @TestCase(3)
    public shouldEmitWithCorrectTestId(testId: number) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -35,7 +35,7 @@ export class EmitResultTests {
    @TestCase("hello this is a test")
    public shouldEmitWithCorrectTestDescription(description: string) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -59,7 +59,7 @@ export class EmitResultTests {
    @TestCase([ undefined ], "[ undefined ]")
    public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>, testCaseOutput: string) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -77,7 +77,7 @@ export class EmitResultTests {
    @Test()
    public shouldEmitWithOkIfPass() {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -95,7 +95,7 @@ export class EmitResultTests {
    @Test()
    public shouldEmitWithNotOkIfPass() {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -114,7 +114,7 @@ export class EmitResultTests {
    @Test()
    public shouldEmitSkipCorrectly() {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -134,7 +134,7 @@ export class EmitResultTests {
    @TestCase("last, but most certainly not least")
    public shouldEmitSkipWithReasonCorrectly(reason: string) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -152,7 +152,7 @@ export class EmitResultTests {
    @Test()
    public shouldEmitErrorCorrectly() {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -173,7 +173,7 @@ export class EmitResultTests {
    @TestCase("yaba daba doo")
    public shouldEmitYamlWithCorrectMessage(message: string) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -195,7 +195,7 @@ export class EmitResultTests {
    @TestCase(false)
    public shouldEmitYamlWithCorrectActualValue(actualValue: any) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -217,7 +217,7 @@ export class EmitResultTests {
    @TestCase(true)
    public shouldEmitYamlWithCorrectExpectedValue(expectedValue: any) {
       let outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       let testOutput = new TestOutput(outStream);
 
@@ -240,7 +240,7 @@ export class EmitResultTests {
    public invalidResultOutcomeThrowsError(testOutcome: number) {
       const testCaseResult = <TestCaseResult>{ outcome: testOutcome };
       const outStream = new OutputStreamBuilder().build();
-      SpyOn(outStream, "write");
+      SpyOn(outStream, "push");
 
       const testOutput = new TestOutput(outStream);
 
