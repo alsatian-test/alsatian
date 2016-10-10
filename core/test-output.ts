@@ -5,13 +5,27 @@ import { TestCaseResult, TestOutcome } from "./_results";
 export class TestOutput {
 
     private _outStream: NodeJS.WritableStream;
+    private _messages = [];
+    private _currIndex = 0;
 
     constructor (outStream: NodeJS.WritableStream) {
         this._outStream = outStream;
     }
 
+    public end() {
+      this._outStream.end();
+   }
+
     private _writeOut(message: string): void {
-        this._outStream.write(message);
+      this._messages.push();
+        this._outStream._read = () => {
+           if (this._currIndex === this._messages.length) {
+             this._outStream.push(null);
+          }
+          else {
+             this._outStream.push(this._messages[this._currIndex ++])
+          }
+         }
     }
 
     public emitVersion(): void {
