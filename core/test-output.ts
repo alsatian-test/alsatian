@@ -4,11 +4,11 @@ import { TestCaseResult, TestOutcome } from "./_results";
 
 export class TestOutput {
 
-    private _outStream: NodeJS.WritableStream;
+    private _outStream: NodeJS.ReadableStream;
     private _messages = [];
     private _currIndex = 0;
 
-    constructor (outStream: NodeJS.WritableStream) {
+    constructor (outStream: NodeJS.ReadableStream) {
         this._outStream = outStream;
         //this._outStream.readable = true;
          /*this._outStream._read = () => {

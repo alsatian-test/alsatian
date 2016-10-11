@@ -98,9 +98,7 @@ export class TestRunner {
             });
          }
          else {
-
-            //this._output.end();
-            console.log(nextTestPlanIndex, "end");
+            this._output.end();
             resolve(testSetRunInfo.testSetResults);
          }
       };
