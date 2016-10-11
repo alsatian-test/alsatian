@@ -54,21 +54,26 @@ export class TestItem {
    private _runAsync(timeout: number) {
       return new Promise<any>((resolve, reject) => {
          let timeoutExpired = false;
-
-         let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
          let timeoutCheck: NodeJS.Timer = null;
 
-         testPromise.then(() => {
-            if (!timeoutExpired) {
+         try {
+            let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+
+            testPromise.then(() => {
+               if (!timeoutExpired) {
+                  clearTimeout(timeoutCheck);
+                  this._reportResult(resolve);
+               }
+            })
+            .catch((error: Error) => {
+               console.log(error);
                clearTimeout(timeoutCheck);
-               this._reportResult(resolve);
-            }
-         })
-         .catch((error: Error) => {
-            console.log(error);
-            clearTimeout(timeoutCheck);
+               this._reportResult(resolve, error);
+            });
+         }
+         catch (error) {
             this._reportResult(resolve, error);
-         });
+         }
 
          const testTimeout: number = this._test.timeout || timeout;
 
