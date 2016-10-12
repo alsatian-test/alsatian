@@ -29,7 +29,6 @@ export class CliTestRunner {
    }
 
    private _handleTestSetRunError(error: Error)  {
-      console.log(error.message);
       process.stderr.write(error.message + "\n");
       process.exit(1);
    }

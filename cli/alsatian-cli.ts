@@ -4,6 +4,7 @@ import { createTestSet, TestRunner, TestOutput } from "../core/alsatian-core";
 import { CliTestRunner } from "./cli-test-runner";
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 import { Writable, Readable } from "stream";
+
 const {
   TapBark
 } = require("tap-bark");
