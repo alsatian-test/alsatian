@@ -114,7 +114,9 @@ export class TestOutput {
 
             this._writeOut(yaml);
         } else {
-            this._writeOut(`# ERROR: ${error.message}\n`);
+           error.expectedValue = "the test to run";
+           error.actualValue= "the test threw an error";
+            this._writeOut(this._getErrorYaml(error));
         }
 
     }
