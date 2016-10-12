@@ -98,7 +98,6 @@ export class TestRunner {
             });
          }
          else {
-            console.log("resolving");
             resolve(testSetRunInfo.testSetResults);
             this._output.end();
          }
