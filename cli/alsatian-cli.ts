@@ -4,7 +4,6 @@ import { createTestSet, TestRunner, TestOutput } from "../core/alsatian-core";
 import { CliTestRunner } from "./cli-test-runner";
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 import { Writable, Readable } from "stream";
-
 const {
   TapBark
 } = require("tap-bark");
@@ -16,21 +15,14 @@ let userArguments = new AlsatianCliOptions(process.argv.slice(2));
 let testSet = createTestSet();
 testSet.addTestsFromFiles(userArguments.fileGlobs);
 
-let reporter: any;
-let stream = new Readable();
-stream._read = () => {};
+const stream = new Readable();
 
 if (userArguments.tap) {
   // if they want TAP output then just write to stdout directly
-  reporter = stream;
   stream.pipe(process.stdout);
 } else {
   // otherwise create the tap bark reporter
-  var bark = TapBark.create();
-
-  stream = new Readable();
-  stream._read = (data) => { } ;
-  //barkStream.pipe(stream);
+  const bark = TapBark.create();
 
   // pipe the reporter into stdout
   stream.pipe(bark.getPipeable()).pipe(process.stdout);

@@ -1,11 +1,12 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout, IgnoreTests } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { Promise } from "../../../promise/promise";
 
+@IgnoreTests()
 export class PreTestTests {
 
    private _originalStdOut: any;
@@ -38,7 +39,7 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
-         let testRunner = new TestRunner();
+         let testRunner = new TestRunner(<any>{ end: () => {} });
 
          testRunner.run(testSet).then(() => {
             Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");

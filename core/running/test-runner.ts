@@ -94,12 +94,13 @@ export class TestRunner {
                this._createResultAndRunNextTest(testSetRunInfo, resolve, testResults.error);
             })
             .catch((error: Error) => {
-               console.log(error);
+               this._createResultAndRunNextTest(testSetRunInfo, resolve, error);
             });
          }
          else {
-            this._output.end();
+            console.log("resolving");
             resolve(testSetRunInfo.testSetResults);
+            this._output.end();
          }
       };
    }

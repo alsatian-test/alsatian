@@ -5,11 +5,26 @@ import { TestCaseResult, TestOutcome } from "./_results";
 export class TestOutput {
 
     private _outStream: NodeJS.ReadableStream;
+    private _ended: boolean = false;
     private _messages = [];
+    private _curIndex = 0;
     private _currIndex = 0;
 
     constructor (outStream: NodeJS.ReadableStream) {
         this._outStream = outStream;
+        this._outStream._read = () => {
+           //console.log("read called");
+           if (this._ended) {
+             this._outStream.push(null);
+          }
+          else if (this._messages.length < this._curIndex) {
+             this._outStream.push(this._messages[this._curIndex++]);
+          }
+        }
+
+        this._outStream.on("error", (error) => {
+           console.log("stream error", error);
+        });
         //this._outStream.readable = true;
          /*this._outStream._read = () => {
             if (this._currIndex === this._messages.length) {
@@ -24,13 +39,20 @@ export class TestOutput {
     }
 
     public end() {
-      this._outStream.end();
+      this._ended = true;
+      this._outStream.push(null);
+      //this._outStream.emit("end");
+      //this._outStream.emit("close");
    }
 
     private _writeOut(message: string): void {
       //console.log("writing");
       this._messages.push(message);
-      this._outStream.push(message);
+      if (!this._ended) {
+         //this._outStream.emit("readable", true);
+         //this._outStream.resume();//.emit("readable");
+         this._outStream.push(message);
+      }
     }
 
     public emitVersion(): void {

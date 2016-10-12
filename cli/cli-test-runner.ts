@@ -14,12 +14,12 @@ export class CliTestRunner {
          let testRunPromise = this._testRunner.run(testSet, timeout);
 
          testRunPromise.then((results: TestSetResults) => {
-            if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
+            /*if (results.outcome === TestOutcome.Error || results.outcome === TestOutcome.Fail) {
                process.exit(1);
             }
             else {
                process.exit(0);
-            }
+            }*/
          })
          .catch(this._handleTestSetRunError);
       }
@@ -29,6 +29,7 @@ export class CliTestRunner {
    }
 
    private _handleTestSetRunError(error: Error)  {
+      console.log(error.message);
       process.stderr.write(error.message + "\n");
       process.exit(1);
    }
