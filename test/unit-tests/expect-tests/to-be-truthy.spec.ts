@@ -42,4 +42,82 @@ export class ToBeTruthyTests {
 
       Expect(() => expect.not.toBeTruthy()).toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " not to be truthy.");
    }
+
+   @TestCase(0)
+   @TestCase(false)
+   @TestCase("")
+   public shouldBeTruthyActualValueSet(actualValue: any) {
+      let truthyError: TruthyMatchError;
+
+      try {
+         Expect(actualValue).toBeTruthy();
+      }
+      catch (error) {
+         truthyError = error;
+      }
+
+      Expect(truthyError).toBeDefined();
+      Expect(truthyError).not.toBeNull();
+      Expect(truthyError.actualValue).toBe(actualValue);
+   }
+
+   @TestCase(-1)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase(true)
+   @TestCase("something")
+   public shouldNotBeTruthyActualValueSet(actualValue: any) {
+
+      let truthyError: TruthyMatchError;
+
+      try {
+         Expect(actualValue).not.toBeTruthy();
+      }
+      catch (error) {
+         truthyError = error;
+      }
+
+      Expect(truthyError).toBeDefined();
+      Expect(truthyError).not.toBeNull();
+      Expect(truthyError.actualValue).toBe(actualValue);
+   }
+
+   @TestCase(0)
+   @TestCase(false)
+   @TestCase("")
+   public shouldBeTruthyExpectedValueSetToTruthy(actualValue: any) {
+      let truthyError: TruthyMatchError;
+
+      try {
+         Expect(actualValue).toBeTruthy();
+      }
+      catch (error) {
+         truthyError = error;
+      }
+
+      Expect(truthyError).toBeDefined();
+      Expect(truthyError).not.toBeNull();
+      Expect(truthyError.expectedValue).toBe("truthy");
+   }
+
+   @TestCase(-1)
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase(true)
+   @TestCase("something")
+   public shouldNotBeTruthyExpectedValueSetToFalsy(actualValue: any) {
+
+      let truthyError: TruthyMatchError;
+
+      try {
+         Expect(actualValue).not.toBeTruthy();
+      }
+      catch (error) {
+         truthyError = error;
+      }
+
+      Expect(truthyError).toBeDefined();
+      Expect(truthyError).not.toBeNull();
+      Expect(truthyError.expectedValue).toBe("falsy");
+   }
  }

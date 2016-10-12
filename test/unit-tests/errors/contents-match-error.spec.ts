@@ -1,7 +1,7 @@
 import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
 
-export class EqualMatchErrorTests {
+export class ContentsMatchErrorTests {
 
    @TestCase([], 1)
    @TestCase([ 1, 2 ], 42)
@@ -22,4 +22,20 @@ export class EqualMatchErrorTests {
 
       Expect(error.message).toBe("Expected " + JSON.stringify(container) + " not to contain " + JSON.stringify(expectedContent) + ".");
    }
- }
+
+   @TestCase([ 1 ])
+   @TestCase([ 1, 42 ])
+   @TestCase("something")
+   @TestCase("something")
+   public actualValueContainsTheContainer(container: any) {
+      Expect(new ContentsMatchError(container, "", true).actualValue).toBe(container);
+   }
+
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase("something")
+   @TestCase("thing")
+   public expectedValueContainsTheExpectedContent(expectedContent: any) {
+      Expect(new ContentsMatchError("", expectedContent, true).expectedValue).toBe(expectedContent);
+   }
+}
