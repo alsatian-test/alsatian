@@ -25,7 +25,12 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
-         let testRunner = new TestRunner(<any>{ end: () => {} });
+         let outputStream = new OutputStreamBuilder().build();
+         SpyOn(outputStream, "push").andStub();
+
+         let output = new TestOutput(outputStream);
+
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
@@ -56,7 +61,12 @@ export class PreTestTests {
 
       return new Promise<void>((resolve, reject) => {
 
-         let testRunner = new TestRunner();
+         let outputStream = new OutputStreamBuilder().build();
+         SpyOn(outputStream, "push").andStub();
+
+         let output = new TestOutput(outputStream);
+
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
@@ -109,7 +119,12 @@ export class PreTestTests {
          }
       };
 
-      let testRunner = new TestRunner();
+      let outputStream = new OutputStreamBuilder().build();
+      SpyOn(outputStream, "push").andStub();
+
+      let output = new TestOutput(outputStream);
+
+      let testRunner = new TestRunner(output);
 
       testRunner.run(testSet).then(() => {
          Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
@@ -170,8 +185,12 @@ export class PreTestTests {
       }
 
       return new Promise<void>((resolve, reject) => {
+         let outputStream = new OutputStreamBuilder().build();
+         SpyOn(outputStream, "push").andStub();
 
-         let testRunner = new TestRunner();
+         let output = new TestOutput(outputStream);
+
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
@@ -209,7 +228,7 @@ export class PreTestTests {
 
          let output = new TestOutput(outputStream);
 
-         let testRunner = new TestRunner();
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             Expect(outputStream.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
