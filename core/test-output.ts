@@ -21,21 +21,6 @@ export class TestOutput {
              this._outStream.push(this._messages[this._curIndex++]);
           }
         }
-
-        this._outStream.on("error", (error) => {
-           console.log("stream error", error);
-        });
-        //this._outStream.readable = true;
-         /*this._outStream._read = () => {
-            if (this._currIndex === this._messages.length) {
-               console.log(this._currIndex, this._messages);
-              //this._outStream.push(null);
-           }
-           else {
-              console.log("pushing", this._messages[this._currIndex]);
-              this._outStream.push(this._messages[this._currIndex ++])
-           }
-        }*/
     }
 
     public end() {
