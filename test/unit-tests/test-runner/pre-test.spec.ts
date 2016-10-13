@@ -6,7 +6,6 @@ import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { Promise } from "../../../promise/promise";
 import { TestOutputStream } from "../../../core/test-output-stream";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class PreTestTests {
 
@@ -25,9 +24,6 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
-         let outputStream = new OutputStreamBuilder().build();
-         SpyOn(outputStream, "push").andStub();
-
          let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
@@ -60,10 +56,6 @@ export class PreTestTests {
       }
 
       return new Promise<void>((resolve, reject) => {
-
-         let outputStream = new OutputStreamBuilder().build();
-         SpyOn(outputStream, "push").andStub();
-
          let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
@@ -118,9 +110,6 @@ export class PreTestTests {
          catch: (error: Error) => {
          }
       };
-
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "push").andStub();
 
       let output = new TestOutputStream();
 
@@ -185,9 +174,6 @@ export class PreTestTests {
       }
 
       return new Promise<void>((resolve, reject) => {
-         let outputStream = new OutputStreamBuilder().build();
-         SpyOn(outputStream, "push").andStub();
-
          let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
@@ -223,15 +209,13 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
-         let outputStream = new OutputStreamBuilder().build();
-         SpyOn(outputStream, "push").andStub();
-
          let output = new TestOutputStream();
+         SpyOn(output, "push");
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(outputStream.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
             resolve();
          })
          .catch((error: Error) => {

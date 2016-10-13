@@ -2,7 +2,6 @@ import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunn
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 import { Promise } from "../../../promise/promise";
 
 export class FixtureInfoTests {
@@ -16,11 +15,6 @@ export class FixtureInfoTests {
    @TestCase("AnotherFixture")
    public outputsFixtureNameWithPassingTest(description: string) {
       let writeCalls: Array<string> = [ ];
-
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andCall((s: string) => {
-         writeCalls.push(s);
-      });
 
       let output = new TestOutputStream();
 
@@ -65,11 +59,6 @@ export class FixtureInfoTests {
    public outputsFixtureNameWithFailingTest(description: string) {
       let writeCalls: Array<string> = [ ];
 
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andCall((s: string) => {
-         writeCalls.push(s);
-      });
-
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{
@@ -105,5 +94,4 @@ export class FixtureInfoTests {
 
       });
    }
-
 }

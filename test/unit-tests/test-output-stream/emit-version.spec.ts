@@ -1,18 +1,15 @@
 import { Expect, Test, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class EmitVersionTests {
 
     @Test()
     public shouldEmitVersion13() {
-        let outStream = new OutputStreamBuilder().build();
-        SpyOn(outStream, "write");
-
         let testOutput = new TestOutputStream();
+        SpyOn(testOutput, "push");
 
         testOutput.emitVersion();
 
-        Expect(outStream.write).toHaveBeenCalledWith("TAP version 13\n");
+        Expect(testOutput.push).toHaveBeenCalledWith("TAP version 13\n");
     }
 
 }

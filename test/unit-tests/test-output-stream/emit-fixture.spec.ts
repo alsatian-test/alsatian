@@ -1,5 +1,4 @@
 import { Expect, TestCase, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class EmitFixtureTests {
@@ -12,10 +11,8 @@ export class EmitFixtureTests {
     @TestCase("AnotherTestFixture")
     @TestCase("lastOneIPromise")
     public shouldEmitCorrectFixtureInfo(description: string) {
-        let outStream = new OutputStreamBuilder().build();
-        SpyOn(outStream, "write");
-
         let testOutput = new TestOutputStream();
+        SpyOn(testOutput, "push");
 
         let fixture = new TestFixtureBuilder()
             .withDescription(description)
@@ -23,7 +20,7 @@ export class EmitFixtureTests {
 
         testOutput.emitFixture(fixture);
 
-        Expect(outStream.write).toHaveBeenCalledWith(
+        Expect(testOutput.push).toHaveBeenCalledWith(
             EmitFixtureTests._getExpectedFixtureOutput(description)
         );
     }

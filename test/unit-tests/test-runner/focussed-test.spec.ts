@@ -7,15 +7,11 @@ import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { MatchError } from "../../../core/errors/match-error";
 import { Expect, AsyncTest, Test, SpyOn } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class FocussedTestTests {
 
    @AsyncTest()
    public twoUnfocussedTestsBothRun() {
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andStub();
-
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -63,9 +59,6 @@ export class FocussedTestTests {
 
    @AsyncTest()
    public firstTestFocussedSecondUnfocussedFirstIsRun() {
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andStub();
-
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -114,9 +107,6 @@ export class FocussedTestTests {
 
    @AsyncTest()
    public secondTestFocussedFirstUnfocussedFirstIsRun() {
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andStub();
-
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -159,8 +149,6 @@ export class FocussedTestTests {
          .catch((error: Error) => {
             reject(error);
          });
-
       });
    }
-
 }
