@@ -1,4 +1,4 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutput, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutputStream, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
 import { MatchError, EqualMatchError } from "../../../core/_errors";
 import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
@@ -17,7 +17,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -37,7 +37,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder()
       .withDescription(description).build();
@@ -61,7 +61,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -79,7 +79,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -97,7 +97,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -116,7 +116,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().ignored().build();
 
@@ -136,7 +136,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().ignored(reason).build();
 
@@ -154,7 +154,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -175,7 +175,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -197,7 +197,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -219,7 +219,7 @@ export class EmitResultTests {
       let outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      let testOutput = new TestOutput(outStream);
+      let testOutput = new TestOutputStream();
 
       let test: ITest = new TestBuilder().build();
 
@@ -242,7 +242,7 @@ export class EmitResultTests {
       const outStream = new OutputStreamBuilder().build();
       SpyOn(outStream, "push");
 
-      const testOutput = new TestOutput(outStream);
+      const testOutput = new TestOutputStream();
 
       Expect(() => testOutput.emitResult(1, testCaseResult)).toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
    }

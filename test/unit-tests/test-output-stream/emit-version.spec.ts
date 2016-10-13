@@ -1,4 +1,4 @@
-import { Expect, Test, SpyOn, TestOutput } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class EmitVersionTests {
@@ -8,7 +8,7 @@ export class EmitVersionTests {
         let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
-        let testOutput = new TestOutput(outStream);
+        let testOutput = new TestOutputStream();
 
         testOutput.emitVersion();
 

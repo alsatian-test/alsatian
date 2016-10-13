@@ -5,7 +5,7 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { Promise } from "../../../promise/promise";
-import { TestOutput } from "../../../core/test-output";
+import { TestOutputStream } from "../../../core/test-output-stream";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class PreTestTests {
@@ -28,7 +28,7 @@ export class PreTestTests {
          let outputStream = new OutputStreamBuilder().build();
          SpyOn(outputStream, "push").andStub();
 
-         let output = new TestOutput(outputStream);
+         let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
 
@@ -64,7 +64,7 @@ export class PreTestTests {
          let outputStream = new OutputStreamBuilder().build();
          SpyOn(outputStream, "push").andStub();
 
-         let output = new TestOutput(outputStream);
+         let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
 
@@ -122,7 +122,7 @@ export class PreTestTests {
       let outputStream = new OutputStreamBuilder().build();
       SpyOn(outputStream, "push").andStub();
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testRunner = new TestRunner(output);
 
@@ -188,7 +188,7 @@ export class PreTestTests {
          let outputStream = new OutputStreamBuilder().build();
          SpyOn(outputStream, "push").andStub();
 
-         let output = new TestOutput(outputStream);
+         let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
 
@@ -226,7 +226,7 @@ export class PreTestTests {
          let outputStream = new OutputStreamBuilder().build();
          SpyOn(outputStream, "push").andStub();
 
-         let output = new TestOutput(outputStream);
+         let output = new TestOutputStream();
 
          let testRunner = new TestRunner(output);
 

@@ -1,4 +1,4 @@
-import { Expect, TestCase, SpyOn, TestOutput } from "../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
@@ -15,7 +15,7 @@ export class EmitFixtureTests {
         let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
-        let testOutput = new TestOutput(outStream);
+        let testOutput = new TestOutputStream();
 
         let fixture = new TestFixtureBuilder()
             .withDescription(description)

@@ -1,4 +1,4 @@
-import { Expect, TestCase, SpyOn, TestOutput } from "../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
 import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
 export class EmitPlanTests {
@@ -15,7 +15,7 @@ export class EmitPlanTests {
         let outStream = new OutputStreamBuilder().build();
         SpyOn(outStream, "write");
 
-        let testOutput = new TestOutput(outStream);
+        let testOutput = new TestOutputStream(outStream);
 
         testOutput.emitPlan(testCount);
 

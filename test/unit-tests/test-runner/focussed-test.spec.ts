@@ -1,6 +1,6 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { TestOutput } from "../../../core/test-output";
+import { TestOutputStream } from "../../../core/test-output-stream";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
@@ -16,7 +16,7 @@ export class FocussedTestTests {
       let outputStream = new OutputStreamBuilder().build();
       SpyOn(outputStream, "write").andStub();
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
       (<any>testSet).testFixtures = [];
@@ -66,7 +66,7 @@ export class FocussedTestTests {
       let outputStream = new OutputStreamBuilder().build();
       SpyOn(outputStream, "write").andStub();
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
       (<any>testSet).testFixtures = [];
@@ -117,7 +117,7 @@ export class FocussedTestTests {
       let outputStream = new OutputStreamBuilder().build();
       SpyOn(outputStream, "write").andStub();
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
       (<any>testSet).testFixtures = [];

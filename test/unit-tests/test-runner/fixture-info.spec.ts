@@ -1,4 +1,4 @@
-import { Expect, TestCase, SpyOn, TestOutput, TestSet, AsyncTest, TestRunner, MatchError } from "../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunner, MatchError } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
@@ -22,7 +22,7 @@ export class FixtureInfoTests {
          writeCalls.push(s);
       });
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testSet = <TestSet>{
          testFixtures: []
@@ -70,7 +70,7 @@ export class FixtureInfoTests {
          writeCalls.push(s);
       });
 
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
 
       let testSet = <TestSet>{
          testFixtures: []
