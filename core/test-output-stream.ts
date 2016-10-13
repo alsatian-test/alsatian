@@ -70,7 +70,7 @@ export class TestOutputStream extends ReadableStream {
       this._writeOut(`not ok ${testId} ${description}\n`);
 
       if (error instanceof MatchError === false) {
-         error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"")
+         error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"");
       }
 
       this._writeOut(this._getErrorYaml(<MatchError>error));
@@ -114,5 +114,4 @@ export class TestOutputStream extends ReadableStream {
       "     got: " + JSON.stringify(error.actualValue) + "\n" +
       "     expect: " + JSON.stringify(error.expectedValue) + "\n ...\n";
    }
-
 }
