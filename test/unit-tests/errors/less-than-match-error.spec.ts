@@ -1,7 +1,7 @@
 import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
 
-export class GreaterThanMatchErrorTests {
+export class LessThanMatchErrorTests {
 
    @TestCase(1, 0)
    @TestCase(42, 1)
@@ -11,7 +11,6 @@ export class GreaterThanMatchErrorTests {
       Expect(error.message).toBe("Expected " + actualValue + " to be less than " + upperLimit + ".");
    }
 
-
    @TestCase(0, 1)
    @TestCase(2, 2)
    @TestCase(1, 42)
@@ -20,4 +19,25 @@ export class GreaterThanMatchErrorTests {
 
       Expect(error.message).toBe("Expected " + actualValue + " not to be less than " + upperLimit + ".");
    }
- }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public shouldSetActualValueToGivenValue(actualValue: number) {
+      Expect(new LessThanMatchError(actualValue, -42, true).actualValue).toBe(actualValue);
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public shouldSetExpectedValueToLessThanUpperLimit(upperLimit: number) {
+      Expect(new LessThanMatchError(512, upperLimit, true).expectedValue).toBe("a number less than " + upperLimit);
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(42)
+   public shouldSetExpectedValueToNotLessThanUpperLimit(upperLimit: number) {
+      Expect(new LessThanMatchError(512, upperLimit, false).expectedValue).toBe("a number not less than " + upperLimit);
+   }
+}
