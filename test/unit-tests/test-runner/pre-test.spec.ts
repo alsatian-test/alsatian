@@ -175,11 +175,12 @@ export class PreTestTests {
 
       return new Promise<void>((resolve, reject) => {
          let output = new TestOutputStream();
+         SpyOn(output, "push");
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
             resolve();
          })
          .catch((error: Error) => {
