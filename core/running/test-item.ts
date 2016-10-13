@@ -69,18 +69,18 @@ export class TestItem {
                clearTimeout(timeoutCheck);
                this._reportResult(resolve, error);
             });
+
+            const testTimeout: number = this._test.timeout || timeout;
+
+            timeoutCheck = setTimeout(() => {
+               timeoutExpired = true;
+               let error = new TestTimeoutError(testTimeout);
+               this._reportResult(resolve, error);
+            }, testTimeout);
          }
          catch (error) {
             this._reportResult(resolve, error);
          }
-
-         const testTimeout: number = this._test.timeout || timeout;
-
-         timeoutCheck = setTimeout(() => {
-            timeoutExpired = true;
-            let error = new TestTimeoutError(testTimeout);
-            this._reportResult(resolve, error);
-         }, testTimeout);
       });
    }
 
