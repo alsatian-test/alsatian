@@ -90,4 +90,79 @@ export class ErrorMatchErrorTests {
 
       Expect(error.message).toBe("Expected an error with message \"" + message + "\" and type " + (<any>ExpectedErrorType)["name"] + " to not have been thrown, but it was.");
    }
+
+   @Test()
+   public actualValueAndShouldMatchShouldBeSetToErrorWasNotThrown() {
+      let error = new ErrorMatchError(undefined, true);
+
+      Expect(error.actualValue).toBe("error was not thrown.");
+   }
+
+   @TestCase(EvalError, "something went wrong")
+   @TestCase(ReferenceError, "A much worse thing happened!")
+   @TestCase(SyntaxError, "THE END IS NIGH")
+   public actualValueAndShouldNotMatchShouldBeSetToErrorWasThrown(ActualErrorType: new (message: string) => Error, actualErrorMessage: string) {
+      let error = new ErrorMatchError(new ActualErrorType(actualErrorMessage), false);
+
+      Expect(error.actualValue).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+   }
+
+   @Test()
+   public expectedValueAndShouldMatchShouldBeSetToErrorToBeThrown() {
+      let error = new ErrorMatchError(undefined, true);
+
+      Expect(error.expectedValue).toBe("error to be thrown.");
+   }
+
+   @Test()
+   public expectedValueAndShouldNotMatchShouldBeSetToErrorNotToBeThrown() {
+      let error = new ErrorMatchError(new Error(), false);
+
+      Expect(error.expectedValue).toBe("error not to be thrown.");
+   }
+
+   @TestCase(EvalError, "something went wrong")
+   @TestCase(ReferenceError, "A much worse thing happened!")
+   @TestCase(SyntaxError, "THE END IS NIGH")
+   public actualValueAndShouldMatchAndExpectedErrorShouldBeSetToErrorWasNotThrown(ExpectedErrorType: new (message: string) => Error, expectedErrorMessage: string) {
+      let error = new ErrorMatchError(undefined, true, ExpectedErrorType, expectedErrorMessage);
+
+      Expect(error.actualValue).toBe("error was not thrown.");
+   }
+
+   @TestCase(EvalError, "something went wrong", ReferenceError, "A much worse thing happened!")
+   @TestCase(ReferenceError, "A much worse thing happened!", SyntaxError, "THE END IS NIGH")
+   @TestCase(SyntaxError, "THE END IS NIGH", EvalError, "something went wrong")
+   public actualValueAndShouldMatchAndExpectedErrorShouldBeSetToWrongErrorWasThrown(ExpectedErrorType: new (message: string) => Error, expectedErrorMessage: string, ActualErrorType: new (message: string) => Error, actualErrorMessage: string) {
+      let error = new ErrorMatchError(new ActualErrorType(actualErrorMessage), true, ExpectedErrorType, expectedErrorMessage);
+
+      Expect(error.actualValue).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+   }
+
+   @TestCase(EvalError, "something went wrong")
+   @TestCase(ReferenceError, "A much worse thing happened!")
+   @TestCase(SyntaxError, "THE END IS NIGH")
+   public actualValueAndShouldNotMatchAndExpectedErrorShouldBeSetToWrongErrorWasThrown(ExpectedErrorType: new (message: string) => Error, expectedErrorMessage: string) {
+      let error = new ErrorMatchError(new ExpectedErrorType(expectedErrorMessage), false, ExpectedErrorType, expectedErrorMessage);
+
+      Expect(error.actualValue).toBe(`${(<any>ExpectedErrorType).name} error was thrown with message "${expectedErrorMessage}".`);
+   }
+
+   @TestCase(EvalError, "something went wrong")
+   @TestCase(ReferenceError, "A much worse thing happened!")
+   @TestCase(SyntaxError, "THE END IS NIGH")
+   public expectedValueAndShouldMatchShouldBeSetToErrorShouldBeThrown(ExpectedErrorType: new (message: string) => Error, expectedErrorMessage: string) {
+      let error = new ErrorMatchError(undefined, true, ExpectedErrorType, expectedErrorMessage);
+
+      Expect(error.expectedValue).toBe(`${(<any>ExpectedErrorType).name} error to be thrown with message "${expectedErrorMessage}".`);
+   }
+
+   @TestCase(EvalError, "something went wrong")
+   @TestCase(ReferenceError, "A much worse thing happened!")
+   @TestCase(SyntaxError, "THE END IS NIGH")
+   public expectedValueAndShouldNotMatchShouldBeSetToErrorShouldNotBeThrown(ExpectedErrorType: new (message: string) => Error, expectedErrorMessage: string) {
+      let error = new ErrorMatchError(new ExpectedErrorType(expectedErrorMessage), false, ExpectedErrorType, expectedErrorMessage);
+
+      Expect(error.expectedValue).toBe(`${(<any>ExpectedErrorType).name} error not to be thrown with message "${expectedErrorMessage}".`);
+   }
 }
