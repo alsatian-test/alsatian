@@ -69,16 +69,11 @@ export class TestOutputStream extends ReadableStream {
 
       this._writeOut(`not ok ${testId} ${description}\n`);
 
-      if (error instanceof MatchError) {
-         let yaml = this._getErrorYaml(error);
-
-         this._writeOut(yaml);
-      } else {
-         error.expectedValue = "the test to run";
-         error.actualValue= "the test threw an error";
-         this._writeOut(this._getErrorYaml(error));
+      if (error instanceof MatchError === false) {
+         error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"")
       }
 
+      this._writeOut(this._getErrorYaml(<MatchError>error));
    }
 
    private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
