@@ -1,31 +1,17 @@
 import { TestRunner } from "../../../core/running/test-runner";
 import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout, IgnoreTests } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { Promise } from "../../../promise/promise";
+import { TestOutput } from "../../../core/test-output";
+import { OutputStreamBuilder } from "../../builders/output-stream-builder";
 
-@IgnoreTests()
 export class PreTestTests {
 
    private _originalStdOut: any;
    private _originalProcessExit: any;
-
-   @Setup
-   private _spyProcess() {
-      this._originalProcessExit = process.exit;
-      this._originalStdOut = process.stdout.write;
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stdout, "write").andStub();
-   }
-
-   @Teardown
-   private _resetProcess() {
-      process.exit = this._originalProcessExit;
-      process.stdout.write = this._originalStdOut;
-   }
 
    @AsyncTest()
    public tapVersionHeaderOutput() {
@@ -218,11 +204,15 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
+         let outputStream = new OutputStreamBuilder().build();
+         SpyOn(outputStream, "push").andStub();
+
+         let output = new TestOutput(outputStream);
 
          let testRunner = new TestRunner();
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            Expect(outputStream.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
             resolve();
          })
          .catch((error: Error) => {

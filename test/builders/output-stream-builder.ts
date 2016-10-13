@@ -2,7 +2,8 @@ export class OutputStreamBuilder {
 
     public build(): any {
         return {
-            push: (data: any) => { }
+            push: (data: any) => { },
+            on: () => {}
         };
     }
 
