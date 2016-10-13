@@ -66,7 +66,6 @@ export class TestItem {
                }
             })
             .catch((error: Error) => {
-               console.log(error);
                clearTimeout(timeoutCheck);
                this._reportResult(resolve, error);
             });
