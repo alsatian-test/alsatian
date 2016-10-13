@@ -14,9 +14,8 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public outputsFixtureNameWithPassingTest(description: string) {
-      let writeCalls: Array<string> = [ ];
-
       let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{
          testFixtures: []
@@ -35,15 +34,14 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-
       return new Promise<void>((resolve, reject) => {
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(writeCalls[3]).toBe(`ok 1 ${test.description}\n`);
+            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+            Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
             resolve();
          })
          .catch((error: Error) => {
@@ -57,9 +55,8 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public outputsFixtureNameWithFailingTest(description: string) {
-      let writeCalls: Array<string> = [ ];
-
       let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{
          testFixtures: []
@@ -84,8 +81,8 @@ export class FixtureInfoTests {
 
          testRunner.run(testSet).then(() => {
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(writeCalls[3]).toBe(`not ok 1 ${test.description}\n`);
+            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+            Expect(output.push).toHaveBeenCalledWith(`not ok 1 ${test.description}\n`);
             resolve();
          })
          .catch((error: Error) => {

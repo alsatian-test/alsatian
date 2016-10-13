@@ -25,11 +25,12 @@ export class PreTestTests {
 
       return new Promise<void>((resolve, reject) => {
          let output = new TestOutputStream();
+         SpyOn(output, "push");
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
+            Expect(output.push).toHaveBeenCalledWith("TAP version 13\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -57,11 +58,12 @@ export class PreTestTests {
 
       return new Promise<void>((resolve, reject) => {
          let output = new TestOutputStream();
+         SpyOn(output, "push");
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -112,11 +114,12 @@ export class PreTestTests {
       };
 
       let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testRunner = new TestRunner(output);
 
       testRunner.run(testSet).then(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
+         Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
          resultPromise.resolve();
       });
 
