@@ -9,7 +9,7 @@ export class CliIntegrationTests {
    @AsyncTest()
    public proofOfConcept() {
 
-      const result = child.exec("alsatian ./test/integration-tests/node/tests/**/*.spec.js");
+      const result = child.exec("alsatian ./test/integration-tests/node/tests/**/*.spec.js  --tap");
 
       let consoleOutput = "";
 
@@ -20,7 +20,7 @@ export class CliIntegrationTests {
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g,""));
+            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
 
             resolve();
          });

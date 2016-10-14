@@ -1,5 +1,6 @@
 # alsatian
 [![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
+[![License](https://img.shields.io/github/license/alsatian-test/alsatian.svg)](https://www.github.com/alsatian-test/alsatian/blob/master/license)
 [![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
 [![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
 [![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
@@ -44,6 +45,14 @@ The timeout option changes the length of time that a test may run for in millise
 ```
 alsatian --timeout 5000
 alsatian -t 5000
+```
+
+#### TAP
+
+The default reporter is the super snazzy [tap-bark](http://github.com/alsatian-test/tap-bark). If you want raw TAP output (so that it can be piped into a reporter of your choice), you can use the `tap` argument.
+
+```
+alsatian --tap
 ```
 
 ## Using alsatian
