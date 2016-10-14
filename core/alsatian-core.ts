@@ -3,7 +3,7 @@ import {
    Expect,
    TestSet,
    TestFixture,
-   TestOutput
+   TestOutputStream
 } from "./_core";
 
 import {
@@ -66,7 +66,7 @@ export {
    TestOutcome,
    METADATA_KEYS,
    TestFixture,
-   TestOutput,
+   TestOutputStream,
    MatchError,
    TestFixtureResults,
    TestResults,

@@ -15,10 +15,16 @@ export class AlsatianCliOptions {
       return this._timeout;
    }
 
+   private _tap: boolean = false;
+   public get tap(): boolean {
+      return this._tap;
+   }
+
    public constructor(args: Array<string>) {
 
       args = this._extractFileGlobs(args);
       args = this._extractTimeout(args);
+      args = this._extractTap(args);
 
       if (args.length > 0) {
          throw new InvalidArgumentNamesError(args);
@@ -54,12 +60,25 @@ export class AlsatianCliOptions {
 
          const argumentIndex = this._getArgumentIndexFromArgumentList(args, "timeout", "t");
 
+         // filter out the timeout argument and its value
          return args.filter((value, index) => {
             return index !== argumentIndex && index !== argumentIndex + 1;
          });
       }
 
       return args;
+   }
+
+   private _extractTap(args: Array<string>): Array<string> {
+      const argumentIndex = this._getArgumentIndexFromArgumentList(args, "tap", "T");
+
+      // if we found the tap argument, we want to enable tap output
+      this._tap = (argumentIndex !== -1);
+
+      // filter out the tap argument and return the other args
+      return args.filter((value, index) => {
+        return index !== argumentIndex;
+      });
    }
 
    private _getArgumentIndexFromArgumentList(args: Array<string>, argumentName: string, argumentShorthand?: string): number {
