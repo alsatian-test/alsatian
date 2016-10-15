@@ -1,12 +1,12 @@
-import { TestRunner } from "../../../core/running/test-runner";
-import { TestSet } from "../../../core/test-set";
-import { TestOutputStream } from "../../../core/test-output-stream";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { MatchError } from "../../../core/errors/match-error";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../core/alsatian-core";
-import { Promise } from "../../../promise/promise";
+import { TestRunner } from "../../../../core/running/test-runner";
+import { TestSet } from "../../../../core/test-set";
+import { TestOutputStream } from "../../../../core/test-output-stream";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestBuilder } from "../../../builders/test-builder";
+import { TestCaseBuilder } from "../../../builders/test-case-builder";
+import { MatchError } from "../../../../core/errors/match-error";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
+import { Promise } from "../../../../promise/promise";
 
 export class FailingTestsTests {
 
