@@ -1,4 +1,4 @@
-import { TestCase, Test, Expect, FocusTests } from "../../../core/alsatian-core";
+import { TestCase, Test, Expect } from "../../../core/alsatian-core";
 import { TestPlan } from "../../../core/running/test-plan";
 import { TestSetBuilder } from "../../builders/test-set-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
