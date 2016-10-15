@@ -46,7 +46,7 @@ export class TestItem {
             this._reportResult(resolve);
          }
          catch (error) {
-         this._reportResult(resolve, error);
+            this._reportResult(resolve, error);
          }
       });
    }
