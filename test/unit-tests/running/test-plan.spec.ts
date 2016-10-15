@@ -1,4 +1,5 @@
 import { Test, Expect } from "../../../core/alsatian-core";
+import { TestPlan } from "core/running/test-plan";
 
 export class TestPlanTests {
 
