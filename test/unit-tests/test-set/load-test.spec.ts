@@ -5,6 +5,7 @@ import { Expect, Test, TestCase, IgnoreTest, SpyOn } from "../../../core/alsatia
 export class LoadTestTests {
 
    @Test()
+   @IgnoreTest()
    public noTestsAtLocationGivesNoTestFixtures() {
      let testLoader = new TestLoader(null);
      let testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
