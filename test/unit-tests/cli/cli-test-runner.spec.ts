@@ -139,43 +139,6 @@ export class CliTestRunnerTests {
       });
    }
 
-   @TestCase(TestOutcome.Error)
-   @TestCase(TestOutcome.Fail)
-   @AsyncTest()
-   public failingResultsOutcomeExitsWithError(outcome: TestOutcome) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-      let testRunnerResolve: (resolvedValue: any) => any;
-
-      let testRunnerSpy = SpyOn(testRunner, "run");
-
-      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
-         testRunnerResolve = resolve;
-      }));
-
-      testRunnerSpy.andStub();
-
-      return new Promise<void>((resolve, reject) => {
-
-         let cliTestRunner = new CliTestRunner(testRunner);
-
-         cliTestRunner.run(testSet);
-
-         testRunnerResolve({ outcome: outcome });
-
-         setTimeout(() => {
-            try {
-               Expect(process.exit).toHaveBeenCalledWith(1);
-               resolve();
-            }
-            catch (error) {
-               reject(error);
-            }
-         });
-      });
-   }
-
    @AsyncTest()
    public runThrowsErrorExitsWithError(outcome: TestOutcome) {
       let testSet = <TestSet>{};
@@ -222,43 +185,6 @@ export class CliTestRunnerTests {
          setTimeout(() => {
             try {
                Expect(process.stderr.write).toHaveBeenCalledWith(errorMessage + "\n");
-               resolve();
-            }
-            catch (error) {
-               reject(error);
-            }
-         });
-      });
-   }
-
-   @TestCase(TestOutcome.Skip)
-   @TestCase(TestOutcome.Pass)
-   @AsyncTest()
-   public passingResultsOutcomeExitsWithNoError(outcome: TestOutcome) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-      let testRunnerResolve: (resolvedValue: any) => any;
-
-      let testRunnerSpy = SpyOn(testRunner, "run");
-
-      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
-         testRunnerResolve = resolve;
-      }));
-
-      testRunnerSpy.andStub();
-
-      return new Promise<void>((resolve, reject) => {
-
-         let cliTestRunner = new CliTestRunner(testRunner);
-
-         cliTestRunner.run(testSet);
-
-         testRunnerResolve({ outcome: outcome });
-
-         setTimeout(() => {
-            try {
-               Expect(process.exit).toHaveBeenCalledWith(0);
                resolve();
             }
             catch (error) {

@@ -1,6 +1,6 @@
 import { ITestFixture, ITest } from "../_interfaces";
 import { Promise } from "../../promise/promise";
-import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutput, TestTimeoutError } from "../alsatian-core";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutputStream, TestTimeoutError } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
 import { TestSetRunInfo } from "./test-set-run-info";
@@ -8,14 +8,14 @@ import "reflect-metadata";
 
 export class TestRunner {
 
-   private _output: TestOutput;
+   private _outputStream: TestOutputStream;
 
-   constructor (output?: TestOutput) {
+   constructor (outputStream?: TestOutputStream) {
       // If we were given a TestOutput, use it, otherwise make one
-      if (output !== undefined) {
-         this._output = output;
+      if (outputStream !== undefined) {
+         this._outputStream = outputStream;
       } else {
-         this._output = new TestOutput(process.stdout);
+         this._outputStream = new TestOutputStream();
       }
    }
 
@@ -32,8 +32,8 @@ export class TestRunner {
 
       const testSetResults = new TestSetResults();
 
-      this._output.emitVersion();
-      this._output.emitPlan(testPlan.testItems.length);
+      this._outputStream.emitVersion();
+      this._outputStream.emitPlan(testPlan.testItems.length);
 
       return new Promise<TestSetResults>((resolve, reject) => {
 
@@ -59,7 +59,7 @@ export class TestRunner {
          const testItem = testSetRunInfo.testPlanItem;
 
          let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
-         this._output.emitResult(testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1, result);
+         this._outputStream.emitResult(testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1, result);
          this._scheduleNextTestPlanItem(testSetRunInfo, resolve);
       }
 
@@ -78,7 +78,7 @@ export class TestRunner {
             .testFixtureResults[testSetResults.testFixtureResults.length - 1];
 
             if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== nextTestPlanItem.testFixture) {
-               this._output.emitFixture(nextTestPlanItem.testFixture);
+               this._outputStream.emitFixture(nextTestPlanItem.testFixture);
                currentTestFixtureResults = testSetResults.addTestFixtureResult(nextTestPlanItem.testFixture);
             }
 
@@ -94,11 +94,12 @@ export class TestRunner {
                this._createResultAndRunNextTest(testSetRunInfo, resolve, testResults.error);
             })
             .catch((error: Error) => {
-               console.log(error);
+               this._createResultAndRunNextTest(testSetRunInfo, resolve, error);
             });
          }
          else {
             resolve(testSetRunInfo.testSetResults);
+            this._outputStream.end();
          }
       };
    }

@@ -3,6 +3,7 @@ import { TestSet } from "../../../core/test-set";
 import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
 
+/*
 export class AsyncTestTests {
 
    private _originalStdErr: any;
@@ -100,3 +101,4 @@ export class AsyncTestTests {
       //TODO: defaulted to 500ms
    }
 }
+*/
