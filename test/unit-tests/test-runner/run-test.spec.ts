@@ -1,3 +1,21 @@
-//TODO: testitem throws error is logged
+// single test item run success
 
-//TODO: testitem is run and results are output
+// timeout (normal)
+
+// timeout (diff)
+
+// error
+
+// two test item run success
+
+// first timeout (normal)
+
+// second timeout (normal)
+
+// first timeout (diff)
+
+// second timeout (diff)
+
+// first error
+
+// second error
