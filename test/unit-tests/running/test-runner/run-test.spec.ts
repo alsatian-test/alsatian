@@ -34,7 +34,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -53,7 +53,7 @@ export class RunTestTests {
          testFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 501));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -76,7 +76,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -94,7 +94,7 @@ export class RunTestTests {
          testFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 100));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -117,7 +117,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -135,9 +135,9 @@ export class RunTestTests {
          testFunction: () => {
             throw new Error("everything has blown up");
          }
-      }
+      };
 
-      Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ "setupFunction" ], fixtureObject)
+      Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ "setupFunction" ], fixtureObject);
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -160,7 +160,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -193,7 +193,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -221,7 +221,7 @@ export class RunTestTests {
          secondTestFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 10));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -246,7 +246,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -274,7 +274,7 @@ export class RunTestTests {
          secondTestFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 501));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -299,7 +299,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -326,7 +326,7 @@ export class RunTestTests {
          secondTestFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 10));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -351,7 +351,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }
@@ -378,7 +378,7 @@ export class RunTestTests {
          secondTestFunction: () => {
             return new Promise((resolve, reject) => setTimeout(() => resolve(), 100));
          }
-      }
+      };
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture(fixtureObject)
@@ -403,7 +403,7 @@ export class RunTestTests {
                resolve();
             })
             .catch(error => {
-               reject(error)
+               reject(error);
             });
       });
    }

@@ -22,7 +22,7 @@ export class TestPlanTests {
 
          const testFixtureBuilder = new TestFixtureBuilder();
 
-         for (var j = 0; j < testCount; j++) {
+         for (let j = 0; j < testCount; j++) {
             const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
             testFixtureBuilder.addTest(test);
          }
@@ -53,7 +53,7 @@ export class TestPlanTests {
 
          const testFixtureBuilder = new TestFixtureBuilder();
 
-         for (var j = 0; j < testCount; j++) {
+         for (let j = 0; j < testCount; j++) {
             const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
             testFixtureBuilder.addTest(test);
          }

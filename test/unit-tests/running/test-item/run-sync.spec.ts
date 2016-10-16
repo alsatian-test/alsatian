@@ -24,7 +24,7 @@ export class TestItemRunSyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -45,7 +45,7 @@ export class TestItemRunSyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -72,7 +72,7 @@ export class TestItemRunSyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -99,7 +99,7 @@ export class TestItemRunSyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 }

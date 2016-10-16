@@ -33,7 +33,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -56,7 +56,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -87,7 +87,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -118,7 +118,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -149,7 +149,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 
@@ -178,7 +178,7 @@ export class TestItemRunAsyncTests {
          })
          .catch(error => {
             reject(error);
-         })
+         });
       });
    }
 }
