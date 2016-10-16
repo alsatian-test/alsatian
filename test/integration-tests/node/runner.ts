@@ -1,7 +1,7 @@
 import * as Alsatian from "../../../core/alsatian-core";
 
 // create test set
-let testSet = Alsatian.createTestSet();
+let testSet = Alsatian.TestSet.create();
 testSet.addTestsFromFiles("./test/integration-tests/test-sets/expectations/**/*.spec.js");
 
 // run the test set
