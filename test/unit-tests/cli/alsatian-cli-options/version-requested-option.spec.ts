@@ -1,8 +1,7 @@
-import { Expect, Test, TestCase, FocusTests } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-argument-error";
 
-@FocusTests
 export class VersionRequestedTests {
 
    @Test()
