@@ -45,23 +45,6 @@ You can change how Alsatian runs your tests using the available options
 | --tap                     | -T     | Will make Alsatian output in TAP format (to be consumed by a TAP reporter)   |             
 | --timeout [number in ms]  | -t     | Sets the maximum time that a test can run for before failing (default 500ms) |
 
-#### Timeout
-
-The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
-
-```
-alsatian --timeout 5000
-alsatian -t 5000
-```
-
-#### TAP
-
-The default reporter is the super snazzy [tap-bark](http://github.com/alsatian-test/tap-bark). If you want raw TAP output (so that it can be piped into a reporter of your choice), you can use the `tap` argument.
-
-```
-alsatian --tap
-```
-
 ## Using alsatian
 
 Create your first spec file
