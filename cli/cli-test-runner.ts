@@ -25,6 +25,22 @@ export class CliTestRunner {
          return;
       }
 
+      // if help has been requested then output the current version and exit
+      if (userArguments.helpRequested) {
+         process.stdout.write("\n\n" +
+                              "alsatian version " + Package.version + "\n" +
+                              "=========================\n" +
+                              "CLI options\n" +
+                              "=========================\n" +
+                              "HELP:    --help / -h                      (outputs CLI information)\n" +
+                              "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
+                              "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
+                              "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                              "\n"
+                              );
+         return;
+      }
+
       // create test set from given file globs
       const testSet = TestSet.create();
       testSet.addTestsFromFiles(userArguments.fileGlobs);

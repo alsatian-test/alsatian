@@ -339,4 +339,138 @@ export class CliTestRunnerTests {
          });
       });
    }
+
+   @AsyncTest()
+   public helpRequestedOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--help" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith(
+                  "\n\n" +
+                  "alsatian version " + require("../../../package.json").version + "\n" +
+                  "=========================\n" +
+                  "CLI options\n" +
+                  "=========================\n" +
+                  "HELP:    --help / -h                      (outputs CLI information)\n" +
+                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "\n");
+
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedWithAliasOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-h" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith(
+                  "\n\n" +
+                  "alsatian version " + require("../../../package.json").version + "\n" +
+                  "=========================\n" +
+                  "CLI options\n" +
+                  "=========================\n" +
+                  "HELP:    --help / -h                      (outputs CLI information)\n" +
+                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "\n");
+
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedDoesntCallTestRunnerRun() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--help" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-h" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
 }
