@@ -38,6 +38,13 @@ alsatian ./test/**/*.spec.js ./special-test.js
 
 You can change how Alsatian runs your tests using the available options
 
+| Option                    | Alias  | Description                                                                  |
+| ------------------------- | ------ | ---------------------------------------------------------------------------- |
+| --help                    | -h     | Outputs info about how to use the CLI                                        |            
+| --version                 | -v     | Outputs the version of the CLI                                               |            
+| --tap                     | -T     | Will make Alsatian output in TAP format (to be consumed by a TAP reporter)   |             
+| --timeout [number in ms]  | -t     | Sets the maximum time that a test can run for before failing (default 500ms) |
+
 #### Timeout
 
 The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
