@@ -1,5 +1,4 @@
 import {
-   createTestSet,
    Expect,
    TestSet,
    TestFixture,
@@ -46,7 +45,6 @@ import {
 
 export {
    AsyncTest,
-   createTestSet,
    Expect,
    FocusTest,
    FocusTests,

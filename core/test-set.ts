@@ -1,44 +1,51 @@
-import { GlobHelper, TestLoader } from "./_core";
+import { GlobHelper, TestLoader, FileRequirer } from "./_core";
 import { ITestFixture } from "./_interfaces";
 
 const path = require("path");
 
 export class TestSet {
 
-  private _testFixtures: Array<ITestFixture> = [];
+   private _testFixtures: Array<ITestFixture> = [];
 
-  public get testFixtures(): Array<ITestFixture> {
-    return this._testFixtures;
-  }
+   public get testFixtures(): Array<ITestFixture> {
+      return this._testFixtures;
+   }
 
-  public constructor(private _testLoader: TestLoader, private _globHelper: GlobHelper) { }
+   public constructor(private _testLoader: TestLoader, private _globHelper: GlobHelper) { }
 
-  public addTestsFromFiles (testFileLocation: string): void
-  public addTestsFromFiles (testFileLocations: Array<string>): void
-  public addTestsFromFiles (testsFileLocations: string | Array<string>) {
+   public static create(): TestSet {
+      const fileRequirer = new FileRequirer();
+      const testLoader = new TestLoader(fileRequirer);
+      const globHelper = new GlobHelper();
+      return new TestSet(testLoader, globHelper);
+   }
 
-    if (typeof testsFileLocations === "string") {
-      testsFileLocations = [ <string>testsFileLocations ];
-    }
+   public addTestsFromFiles (testFileLocation: string): void
+   public addTestsFromFiles (testFileLocations: Array<string>): void
+   public addTestsFromFiles (testsFileLocations: string | Array<string>) {
 
-    this._loadTestFixtures(<Array<string>>testsFileLocations);
-  }
+      if (typeof testsFileLocations === "string") {
+         testsFileLocations = [ <string>testsFileLocations ];
+      }
 
-  private _loadTestFixtures(testFileLocations: Array<string>) {
-     testFileLocations.forEach(testFileLocation => {
+      this._loadTestFixtures(<Array<string>>testsFileLocations);
+   }
 
-        testFileLocation = path.join(process.cwd(), testFileLocation);
+   private _loadTestFixtures(testFileLocations: Array<string>) {
+      testFileLocations.forEach(testFileLocation => {
 
-        if (this._globHelper.isGlob(testFileLocation)) {
-          let physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
+         testFileLocation = path.join(process.cwd(), testFileLocation);
 
-          physicalTestFileLocations.forEach(physicalTestFileLocation => {
-             this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(physicalTestFileLocation));
-          });
-        }
-        else {
-           this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(testFileLocation));
-        }
-     });
-  }
+         if (this._globHelper.isGlob(testFileLocation)) {
+            let physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
+
+            physicalTestFileLocations.forEach(physicalTestFileLocation => {
+               this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(physicalTestFileLocation));
+            });
+         }
+         else {
+            this._testFixtures = this.testFixtures.concat(this._testLoader.loadTestFixture(testFileLocation));
+         }
+      });
+   }
 }

@@ -1,4 +1,6 @@
-import { TestRunner, TestSet, TestSetResults, TestOutcome } from "../core/alsatian-core";
+import { AlsatianCliOptions } from "./alsatian-cli-options";
+import { TestRunner, TestSet, TestSetResults, TestOutcome, TestOutputStream } from "../core/alsatian-core";
+const { TapBark } = require("tap-bark");
 
 export class CliTestRunner {
 
@@ -8,10 +10,32 @@ export class CliTestRunner {
       }
    }
 
-   public run(testSet: TestSet, timeout?: number) {
+   public static create(): CliTestRunner {
+      const outputStream = new TestOutputStream();
+      const testRunner = new TestRunner(outputStream);
+      return new CliTestRunner(testRunner);
+   }
+
+   public run(userArguments: AlsatianCliOptions) {
+
+      // create test set from given file globs
+      const testSet = TestSet.create();
+      testSet.addTestsFromFiles(userArguments.fileGlobs);
+
+      if (userArguments.tap) {
+         // if they want TAP output then just write to stdout directly
+         this._testRunner.outputStream.pipe(process.stdout);
+      }
+      else {
+         // otherwise create the tap bark reporter
+         const bark = TapBark.create();
+
+         // pipe the reporter into stdout
+         this._testRunner.outputStream.pipe(bark.getPipeable()).pipe(process.stdout);
+      }
 
       try {
-         let testRunPromise = this._testRunner.run(testSet, timeout);
+         const testRunPromise = this._testRunner.run(testSet, userArguments.timeout);
 
          testRunPromise.catch(this._handleTestSetRunError);
       }
