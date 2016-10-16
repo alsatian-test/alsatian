@@ -27,10 +27,10 @@ export class AlsatianCliOptions {
 
    public constructor(args: Array<string>) {
 
-      args = this._extractFileGlobs(args);
-      args = this._extractTimeout(args);
       args = this._extractTap(args);
       args = this._extractVersionRequested(args);
+      args = this._extractFileGlobs(args);
+      args = this._extractTimeout(args);
 
       if (args.length > 0) {
          throw new InvalidArgumentNamesError(args);

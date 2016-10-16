@@ -1,7 +1,8 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, FocusTests } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-argument-error";
 
+@FocusTests
 export class VersionRequestedTests {
 
    @Test()
@@ -13,7 +14,7 @@ export class VersionRequestedTests {
 
    @TestCase("--version")
    @TestCase("-v")
-   public tapTrueIfCalled(argument: string) {
+   public versionRequestedIfCalled(argument: string) {
       const options = new AlsatianCliOptions([ argument ]);
 
       Expect(options.versionRequested).toBe(true);
@@ -26,5 +27,13 @@ export class VersionRequestedTests {
       Expect(() => {
         new AlsatianCliOptions([ firstArgument, secondArgument ]);
       }).toThrowError(DuplicateCliArgumentError, "Duplicate \"version\" arguments were provided.");
+   }
+
+   @TestCase("--version", "/test/location.spec.js")
+   @TestCase("/another/set/of/**/*.spec.js", "-v")
+   public versionRequestedVeforeOrAfterGlobIsTrue(firstArgument: string, secondArgument: string) {
+      const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
+
+      Expect(options.versionRequested).toBe(true);
    }
 }
