@@ -67,7 +67,7 @@ export class CliTestRunner {
       }
    }
 
-   private _handleTestSetRunError(error: Error)  {
+   private _handleTestSetRunError(error: Error) {
       process.stderr.write(error.message + "\n");
       process.exit(1);
    }
