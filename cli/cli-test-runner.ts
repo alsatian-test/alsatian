@@ -1,6 +1,7 @@
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 import { TestRunner, TestSet, TestSetResults, TestOutcome, TestOutputStream } from "../core/alsatian-core";
 const { TapBark } = require("tap-bark");
+const Package = require("../package.json");
 
 export class CliTestRunner {
 
@@ -17,6 +18,12 @@ export class CliTestRunner {
    }
 
    public run(userArguments: AlsatianCliOptions) {
+
+      // if version has been requested then output the current version and exit
+      if (userArguments.versionRequested) {
+         process.stdout.write("alsatian version " + Package.version);
+         return;
+      }
 
       // create test set from given file globs
       const testSet = TestSet.create();

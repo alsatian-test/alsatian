@@ -197,4 +197,146 @@ export class CliTestRunnerTests {
          });
       });
    }
+
+   @AsyncTest()
+   public tapRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andStub();
+
+         const cliOptions = new AlsatianCliOptions([ "-T" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(process.stdout);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedWithAliasOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-v" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedDoesntCallTestRunnerRun() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
 }
