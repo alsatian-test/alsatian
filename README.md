@@ -11,11 +11,9 @@
 
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
-## In ALPHA
+## In BETA
 
-Currently alsatian is in alpha and I am very keen to hear feedback as to how you'd want to use alsatian, changes to the API, additional features etc. any ideas are absolutely welcome. Raise an issue and I will get back to you asap.
-
-I don't foresee the API changing dramatically as it is inspired by well used standards (JUnit/NUnit) but am completely open to new ideas as the goal is to make testing easy!
+Hooray, we're in BETA! So what does that mean? In preparation for an official release we're going through the process of migrating our own projects to test entirely using Alsatian, so that we can iron out any kinks we find. You can too if you wish! :) If you find any problems or have an suggestions then please log an issue and we'll address it promptly!
 
 ## Installing
 
