@@ -5,13 +5,29 @@ const path = require("path");
 
 export class TestSet {
 
+   private _testLoader: TestLoader;
+   private _globHelper: GlobHelper;
+
+
    private _testFixtures: Array<ITestFixture> = [];
 
    public get testFixtures(): Array<ITestFixture> {
       return this._testFixtures;
    }
 
-   public constructor(private _testLoader: TestLoader, private _globHelper: GlobHelper) { }
+   public constructor(testLoader: TestLoader, globHelper: GlobHelper) {
+
+       if (testLoader === null || testLoader === undefined) {
+           throw new TypeError("testLoader must not be null or undefined.");
+       }
+
+       if (globHelper === null || globHelper === undefined) {
+           throw new TypeError("globHelper must not be null or undefined.");
+       } 
+
+       this._testLoader = testLoader;
+       this._globHelper = globHelper;
+   }
 
    public static create(): TestSet {
       const fileRequirer = new FileRequirer();
