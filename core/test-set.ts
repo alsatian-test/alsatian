@@ -22,7 +22,7 @@ export class TestSet {
 
        if (globHelper === null || globHelper === undefined) {
            throw new TypeError("globHelper must not be null or undefined.");
-       } 
+       }
 
        this._testLoader = testLoader;
        this._globHelper = globHelper;
