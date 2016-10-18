@@ -4,10 +4,12 @@ import { SpyOnProperty } from "../../core/alsatian-core";
 
 export class TestSetBuilder {
 
-   private _testSet: TestSet = new TestSet(null, null);
+   private _testSet: TestSet = <any>{};
+
    private _testFixtures: Array<ITestFixture> = [];
 
    public constructor() {
+      Object.defineProperty(this._testSet, "testFixtures", { get: () => null, configurable: true });
       SpyOnProperty(this._testSet, "testFixtures").andReturnValue(this._testFixtures);
    }
 

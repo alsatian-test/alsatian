@@ -8,7 +8,6 @@ export class TestSet {
    private _testLoader: TestLoader;
    private _globHelper: GlobHelper;
 
-
    private _testFixtures: Array<ITestFixture> = [];
 
    public get testFixtures(): Array<ITestFixture> {
