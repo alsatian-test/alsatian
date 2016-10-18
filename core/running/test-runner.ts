@@ -9,6 +9,9 @@ import "reflect-metadata";
 export class TestRunner {
 
    private _outputStream: TestOutputStream;
+   public get outputStream() {
+      return this._outputStream;
+   }
 
    constructor (outputStream?: TestOutputStream) {
       // If we were given a TestOutput, use it, otherwise make one

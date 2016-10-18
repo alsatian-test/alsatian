@@ -20,11 +20,23 @@ export class AlsatianCliOptions {
       return this._tap;
    }
 
+   private _versionRequested: boolean = false;
+   public get versionRequested(): boolean {
+      return this._versionRequested;
+   }
+
+   private _helpRequested: boolean = false;
+   public get helpRequested(): boolean {
+      return this._helpRequested;
+   }
+
    public constructor(args: Array<string>) {
 
+      args = this._extractTap(args);
+      args = this._extractVersionRequested(args);
+      args = this._extractHelpRequested(args);
       args = this._extractFileGlobs(args);
       args = this._extractTimeout(args);
-      args = this._extractTap(args);
 
       if (args.length > 0) {
          throw new InvalidArgumentNamesError(args);
@@ -79,6 +91,36 @@ export class AlsatianCliOptions {
       return args.filter((value, index) => {
         return index !== argumentIndex;
       });
+   }
+
+   private _extractVersionRequested(args: Array<string>) {
+      let versionRequestedIndex = this._getArgumentIndexFromArgumentList(args, "version", "v");
+
+      if (versionRequestedIndex > -1) {
+
+         this._versionRequested = true;
+
+         return args.filter((value, index) => {
+            return index !== versionRequestedIndex;
+         });
+      }
+
+      return args;
+   }
+
+   private _extractHelpRequested(args: Array<string>) {
+      let helpRequestedIndex = this._getArgumentIndexFromArgumentList(args, "help", "h");
+
+      if (helpRequestedIndex > -1) {
+
+         this._helpRequested = true;
+
+         return args.filter((value, index) => {
+            return index !== helpRequestedIndex;
+         });
+      }
+
+      return args;
    }
 
    private _getArgumentIndexFromArgumentList(args: Array<string>, argumentName: string, argumentShorthand?: string): number {

@@ -28,4 +28,11 @@ export class TapOptionTests {
       }).toThrowError(DuplicateCliArgumentError, "Duplicate \"tap\" arguments were provided.");
    }
 
+   @TestCase("--tap", "/test/location.spec.js")
+   @TestCase("/another/set/of/**/*.spec.js", "-T")
+   public tapVeforeOrAfterGlobIsTrue(firstArgument: string, secondArgument: string) {
+      const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
+
+      Expect(options.tap).toBe(true);
+   }
 }

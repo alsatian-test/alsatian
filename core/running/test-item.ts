@@ -5,19 +5,39 @@ import { TestTimeoutError } from "../_errors";
 
 export class TestItem {
 
+   private _testCase: ITestCase;
    public get testCase() {
       return this._testCase;
    }
 
+   private _test: ITest;
    public get test() {
       return this._test;
    }
 
+   private _testFixture: ITestFixture;
    public get testFixture() {
       return this._testFixture;
    }
 
-   public constructor(private _testFixture: ITestFixture, private _test: ITest, private _testCase: ITestCase) {}
+   public constructor(testFixture: ITestFixture, test: ITest, testCase: ITestCase) {
+
+       if (testFixture === null || testFixture === undefined) {
+           throw new TypeError("testFixture must not be null or undefined.");
+       }
+
+       if (test === null || test === undefined) {
+           throw new TypeError("test must not be null or undefined.");
+       }
+
+       if (testCase === null || testCase === undefined) {
+           throw new TypeError("testCase must not be null or undefined.");
+       }
+
+       this._testFixture = testFixture;
+       this._test = test;
+       this._testCase = testCase;
+   }
 
    public run(timeout: number): Promise<any> {
 
@@ -46,7 +66,7 @@ export class TestItem {
             this._reportResult(resolve);
          }
          catch (error) {
-         this._reportResult(resolve, error);
+            this._reportResult(resolve, error);
          }
       });
    }

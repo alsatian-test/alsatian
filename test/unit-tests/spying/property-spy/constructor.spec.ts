@@ -42,24 +42,28 @@ export class PropertySpyConstructorTests {
    public typescriptGetterIsReplacedWithSpy() {
       const object = new Testing();
 
-      const originalGetter = () => {};
+      const originalGetter = () => "";
 
       Object.defineProperty(object.constructor.prototype, "property", { get: originalGetter, configurable: true });
 
       new PropertySpy(object, "property");
 
-      Expect(Object.getOwnPropertyDescriptor(object.constructor.prototype, "property").get).not.toBe(originalGetter);
+      Expect(Object.getOwnPropertyDescriptor(object, "property").get).toBeDefined();
+      Expect(Object.getOwnPropertyDescriptor(object, "property").get).not.toBeNull();
+      Expect(Object.getOwnPropertyDescriptor(object, "property").get).not.toBe(originalGetter);
    }
 
    @Test()
-   public typescriptSetterIsReplacedWithSpy() {
+   public typescriptSetterIsOverridenWithSpy() {
       const object = new Testing();
 
       const originalSetter = Object.getOwnPropertyDescriptor(object.constructor.prototype, "property").set;
 
       new PropertySpy(object, "property");
 
-      Expect(Object.getOwnPropertyDescriptor(object.constructor.prototype, "property").set).not.toBe(originalSetter);
+      Expect(Object.getOwnPropertyDescriptor(object, "property").set).toBeDefined();
+      Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBeNull();
+      Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBe(originalSetter);
    }
 
 

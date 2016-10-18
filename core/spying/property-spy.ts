@@ -44,6 +44,9 @@ export class PropertySpy<PropertyType> {
       this._getter = this._originialGetter;
       this._setter = this._originialSetter;
 
+      // set descriptor target back to original object so the prototype doesn't get modified
+      this._descriptorTarget = target;
+
       // reset the property definition
       Object.defineProperty(this._descriptorTarget, this._propertyName, {
          get: this._get.bind(this),
