@@ -25,7 +25,7 @@ export class CliTestRunner {
          return;
       }
 
-      // if help has been requested then output the current version and exit
+      // if help has been requested then output info about using the CLI and exit
       if (userArguments.helpRequested) {
          process.stdout.write("\n\n" +
                               "alsatian version " + Package.version + "\n" +
