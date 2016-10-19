@@ -15,6 +15,21 @@ TypeScript testing framework with test cases, compatible with istanbul and tap r
 
 Hooray, we're in BETA! So what does that mean? In preparation for an official release we're going through the process of migrating our own projects to test entirely using Alsatian, so that we can iron out any kinks we find. You can too if you wish! :) If you find any problems or have an suggestions then please log an issue and we'll address it promptly!
 
+## Why would I use Alsatian?
+The key question! Well Alsatian has a lot going for it here are just a few great things to note:
+
+* All the awesome features you love from existing frameworks
+* TestCase decorator allows you to write smaller, DRY and more readable tests
+* No globals!
+* TAP support so you can use your favourite TAP reporter
+* Great CI process, every pull request and push on every branch is scrutinised to ensure high quality
+* 100% coverage all statements, lines, branches are covered in Alsatian tests
+* Various services rate us very highly on lots of different factors, check out our badges
+* Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
+* Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
+* Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
+
+
 ## Installing
 
 Good news everybody, we're on NPM.
