@@ -29,6 +29,8 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
 * Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
+Also it's lightening fast, check it out!
+![Alsatian Test Run Video](/documentation/images/alsatian-test-run.jpg?raw=true)
 
 ## Installing
 
