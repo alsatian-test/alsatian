@@ -29,7 +29,7 @@ Alsatian has a CLI for easy use with your package.json or your favourite cli too
 ```
 alsatian [list of globs]
 
-alsatian ./test/**/*.spec.js ./special-test.js
+alsatian "./test/**/*.spec.js" "./special-test.js"
 ```
 
 ### CLI Options
@@ -62,7 +62,7 @@ export class ExampleTestFixture {
 Then check all is well
 
 ```
-> alsatian ./path/to/example.spec
+> alsatian "./path/to/example.spec.js"
 TAP version 13
 1..1
 ok 1 - exampleTest
