@@ -30,7 +30,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
-![Alsatian Test Run Video](/documentation/images/alsatian-test-run.jpg?raw=true)
+![Alsatian Test Run Video](/documentation/images/alsatian-test-run.gif?raw=true)
 
 ## Installing
 
