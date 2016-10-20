@@ -1,11 +1,8 @@
-import "../typings/index.d.ts";
-
 import {
-   createTestSet,
    Expect,
    TestSet,
    TestFixture,
-   TestOutput
+   TestOutputStream
 } from "./_core";
 
 import {
@@ -50,7 +47,6 @@ import {
 export {
    Any,
    AsyncTest,
-   createTestSet,
    Expect,
    FocusTest,
    FocusTests,
@@ -70,7 +66,7 @@ export {
    TestOutcome,
    METADATA_KEYS,
    TestFixture,
-   TestOutput,
+   TestOutputStream,
    MatchError,
    TestFixtureResults,
    TestResults,

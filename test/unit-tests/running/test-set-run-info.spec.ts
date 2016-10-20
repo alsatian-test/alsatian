@@ -4,14 +4,13 @@ import { Expect, Test, TestCase, IgnoreTest, SpyOn } from "../../../core/alsatia
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { TestSet } from "../../../core/test-set";
-import * as rewire from "rewire";
+import { TestSetBuilder } from "../../builders/test-set-builder";
 
 export class TestSetRunInfoTests {
 
    @TestCase(undefined)
    @TestCase(null)
-   @TestCase(new TestPlan(new TestSet(null, null)))
+   @TestCase(new TestPlan(new TestSetBuilder().build()))
    public correctTestPlanSet(testPlan: TestPlan) {
       const testSetRunInfo = new TestSetRunInfo(testPlan, new TestSetResults(), 1);
 
@@ -22,7 +21,9 @@ export class TestSetRunInfoTests {
    @TestCase(null)
    @TestCase(new TestSetResults())
    public correctTestSetResultsSet(testSetResults: TestSetResults) {
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(new TestSet(null, null)), testSetResults, 1);
+      const testSet = new TestSetBuilder().build();
+
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), testSetResults, 1);
 
       Expect(testSetRunInfo.testSetResults).toBe(testSetResults);
    }
@@ -31,7 +32,9 @@ export class TestSetRunInfoTests {
    @TestCase(1)
    @TestCase(42)
    public correctTimeoutSet(timeout: number) {
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(new TestSet(null, null)), new TestSetResults(), timeout);
+      const testSet = new TestSetBuilder().build();
+
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), timeout);
 
       Expect(testSetRunInfo.timeout).toBe(timeout);
    }
@@ -39,14 +42,18 @@ export class TestSetRunInfoTests {
    @TestCase(null)
    @TestCase(undefined)
    public settingNullOrUndefinedTestPlanItemThrowsError(testPlanItem: TestItem) {
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(new TestSet(null, null)), new TestSetResults(), 1);
+      const testSet = new TestSetBuilder().build();
+
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
 
       Expect(() => testSetRunInfo.testPlanItem = testPlanItem).toThrowError(TypeError, "testPlanItem must not be null or undefined.");
    }
 
    @Test()
    public settingTestPlanItemIsStored() {
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(new TestSet(null, null)), new TestSetResults(), 1);
+      const testSet = new TestSetBuilder().build();
+
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
 
       const testPlanItem = new TestItem(new TestFixtureBuilder().build(), new TestBuilder().build(), new TestCaseBuilder().build());
 

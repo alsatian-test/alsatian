@@ -1,4 +1,5 @@
 import { CliTestRunner } from "../../../cli/cli-test-runner";
+import { AlsatianCliOptions } from "../../../cli/alsatian-cli-options";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
@@ -37,15 +38,14 @@ export class CliTestRunnerTests {
 
    @AsyncTest()
    public noTestFixturesExitsWithError() {
-      let testSet = <TestSet>{};
 
       return new Promise<void>((resolve, reject) => {
 
-         (<any>testSet).testFixtures = [ ];
+         const cliTestRunner = new CliTestRunner(new TestRunner());
 
-         let cliTestRunner = new CliTestRunner(new TestRunner());
+         const cliOptions = new AlsatianCliOptions([]);
 
-         cliTestRunner.run(testSet);
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
@@ -61,15 +61,13 @@ export class CliTestRunnerTests {
 
    @AsyncTest()
    public noTestFixturesPrintsErrorMessageWithNewLine() {
-      let testSet = <TestSet>{};
-
       return new Promise<void>((resolve, reject) => {
 
-         (<any>testSet).testFixtures = [ ];
+         const cliTestRunner = new CliTestRunner(new TestRunner());
 
-         let cliTestRunner = new CliTestRunner(new TestRunner());
+         const cliOptions = new AlsatianCliOptions([]);
 
-         cliTestRunner.run(testSet);
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
@@ -85,18 +83,20 @@ export class CliTestRunnerTests {
 
    @AsyncTest()
    public onePassingTestFixturesExitsWithNoError() {
-      let testSet = <TestSet>{};
 
       return new Promise<void>((resolve, reject) => {
 
-         (<any>testSet).testFixtures = [
-            new TestFixtureBuilder()
-            .addTest(new TestBuilder().addTestCase(new TestCaseBuilder().build()).build())
-            .build() ];
+         const testRunner = new TestRunner();
 
-         let cliTestRunner = new CliTestRunner(new TestRunner());
+         const cliTestRunner = new CliTestRunner(testRunner);
 
-         cliTestRunner.run(testSet);
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andStub();
+
+         const cliOptions = new AlsatianCliOptions([]);
+
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
@@ -112,83 +112,19 @@ export class CliTestRunnerTests {
    }
 
    @AsyncTest()
-   public oneErroringTestFixturesExitsWithError() {
-      let testSet = <TestSet>{};
-
-      return new Promise<void>((resolve, reject) => {
-
-         (<any>testSet).testFixtures = [
-            new TestFixtureBuilder()
-            .withFixture({ "erroringTest": () => { throw new Error(); } })
-            .addTest(new TestBuilder().withKey("erroringTest").build())
-            .build() ];
-
-         let cliTestRunner = new CliTestRunner(new TestRunner());
-
-         cliTestRunner.run(testSet);
-
-         setTimeout(() => {
-            try {
-               Expect(process.exit).toHaveBeenCalledWith(1);
-               resolve();
-            }
-            catch (error) {
-               reject(error);
-            }
-         });
-      });
-   }
-
-   @TestCase(TestOutcome.Error)
-   @TestCase(TestOutcome.Fail)
-   @AsyncTest()
-   public failingResultsOutcomeExitsWithError(outcome: TestOutcome) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-      let testRunnerResolve: (resolvedValue: any) => any;
-
-      let testRunnerSpy = SpyOn(testRunner, "run");
-
-      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
-         testRunnerResolve = resolve;
-      }));
-
-      testRunnerSpy.andStub();
-
-      return new Promise<void>((resolve, reject) => {
-
-         let cliTestRunner = new CliTestRunner(testRunner);
-
-         cliTestRunner.run(testSet);
-
-         testRunnerResolve({ outcome: outcome });
-
-         setTimeout(() => {
-            try {
-               Expect(process.exit).toHaveBeenCalledWith(1);
-               resolve();
-            }
-            catch (error) {
-               reject(error);
-            }
-         });
-      });
-   }
-
-   @AsyncTest()
    public runThrowsErrorExitsWithError(outcome: TestOutcome) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-
-      SpyOn(testRunner, "run").andCall(() => { throw new Error(); });
 
       return new Promise<void>((resolve, reject) => {
+         const testRunner = new TestRunner();
 
-         let cliTestRunner = new CliTestRunner(testRunner);
+         const cliTestRunner = new CliTestRunner(testRunner);
 
-         cliTestRunner.run(testSet);
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andCall(() => { throw new Error(); });
+
+         const cliOptions = new AlsatianCliOptions([]);
+
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
@@ -207,17 +143,18 @@ export class CliTestRunnerTests {
    @TestCase("awfully terrible")
    @AsyncTest()
    public runThrowsErrorOutputsErrorMessage(errorMessage: string) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-
-      SpyOn(testRunner, "run").andCall(() => { throw new Error(errorMessage); });
 
       return new Promise<void>((resolve, reject) => {
+         const testRunner = new TestRunner();
 
-         let cliTestRunner = new CliTestRunner(testRunner);
+         const cliTestRunner = new CliTestRunner(testRunner);
 
-         cliTestRunner.run(testSet);
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andCall(() => { throw new Error(errorMessage); });
+
+         const cliOptions = new AlsatianCliOptions([]);
+
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
@@ -231,34 +168,303 @@ export class CliTestRunnerTests {
       });
    }
 
-   @TestCase(TestOutcome.Skip)
-   @TestCase(TestOutcome.Pass)
    @AsyncTest()
-   public passingResultsOutcomeExitsWithNoError(outcome: TestOutcome) {
-      let testSet = <TestSet>{};
-
-      let testRunner = new TestRunner();
-      let testRunnerResolve: (resolvedValue: any) => any;
-
-      let testRunnerSpy = SpyOn(testRunner, "run");
-
-      testRunnerSpy.andReturn(new Promise((resolve, reject) => {
-         testRunnerResolve = resolve;
-      }));
-
-      testRunnerSpy.andStub();
+   public tapRequestedPipesOutputDirectlyToProcessStdOut() {
 
       return new Promise<void>((resolve, reject) => {
 
-         let cliTestRunner = new CliTestRunner(testRunner);
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
 
-         cliTestRunner.run(testSet);
+         const cliTestRunner = new CliTestRunner(testRunner);
 
-         testRunnerResolve({ outcome: outcome });
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andStub();
+
+         const cliOptions = new AlsatianCliOptions([ "--tap" ]);
+
+         cliTestRunner.run(cliOptions);
 
          setTimeout(() => {
             try {
-               Expect(process.exit).toHaveBeenCalledWith(0);
+               Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(process.stdout);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public tapRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         const testRunnerRunSpy = SpyOn(testRunner, "run");
+         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andStub();
+
+         const cliOptions = new AlsatianCliOptions([ "-T" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(process.stdout);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedWithAliasOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-v" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedDoesntCallTestRunnerRun() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public versionRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--version" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--help" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith(
+                  "\n\n" +
+                  "alsatian version " + require("../../../package.json").version + "\n" +
+                  "=========================\n" +
+                  "CLI options\n" +
+                  "=========================\n" +
+                  "HELP:    --help / -h                      (outputs CLI information)\n" +
+                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "\n");
+
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedWithAliasOutputsCurrentVersionNumber() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-h" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(process.stdout.write).toHaveBeenCalledWith(
+                  "\n\n" +
+                  "alsatian version " + require("../../../package.json").version + "\n" +
+                  "=========================\n" +
+                  "CLI options\n" +
+                  "=========================\n" +
+                  "HELP:    --help / -h                      (outputs CLI information)\n" +
+                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "\n");
+
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedDoesntCallTestRunnerRun() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "--help" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
+               resolve();
+            }
+            catch (error) {
+               reject(error);
+            }
+         });
+      });
+   }
+
+   @AsyncTest()
+   public helpRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+
+      return new Promise<void>((resolve, reject) => {
+
+         const testRunner = new TestRunner();
+         SpyOn(testRunner.outputStream, "pipe");
+
+         const cliTestRunner = new CliTestRunner(testRunner);
+
+         SpyOn(testRunner, "run");
+
+         const cliOptions = new AlsatianCliOptions([ "-h" ]);
+
+         cliTestRunner.run(cliOptions);
+
+         setTimeout(() => {
+            try {
+               Expect(testRunner.run).not.toHaveBeenCalled();
                resolve();
             }
             catch (error) {

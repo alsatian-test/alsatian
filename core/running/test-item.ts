@@ -5,19 +5,39 @@ import { TestTimeoutError } from "../_errors";
 
 export class TestItem {
 
+   private _testCase: ITestCase;
    public get testCase() {
       return this._testCase;
    }
 
+   private _test: ITest;
    public get test() {
       return this._test;
    }
 
+   private _testFixture: ITestFixture;
    public get testFixture() {
       return this._testFixture;
    }
 
-   public constructor(private _testFixture: ITestFixture, private _test: ITest, private _testCase: ITestCase) {}
+   public constructor(testFixture: ITestFixture, test: ITest, testCase: ITestCase) {
+
+       if (testFixture === null || testFixture === undefined) {
+           throw new TypeError("testFixture must not be null or undefined.");
+       }
+
+       if (test === null || test === undefined) {
+           throw new TypeError("test must not be null or undefined.");
+       }
+
+       if (testCase === null || testCase === undefined) {
+           throw new TypeError("testCase must not be null or undefined.");
+       }
+
+       this._testFixture = testFixture;
+       this._test = test;
+       this._testCase = testCase;
+   }
 
    public run(timeout: number): Promise<any> {
 
@@ -46,7 +66,7 @@ export class TestItem {
             this._reportResult(resolve);
          }
          catch (error) {
-         this._reportResult(resolve, error);
+            this._reportResult(resolve, error);
          }
       });
    }
@@ -54,29 +74,33 @@ export class TestItem {
    private _runAsync(timeout: number) {
       return new Promise<any>((resolve, reject) => {
          let timeoutExpired = false;
-
-         let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
          let timeoutCheck: NodeJS.Timer = null;
 
-         testPromise.then(() => {
-            if (!timeoutExpired) {
+         try {
+            let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+
+            testPromise.then(() => {
+               if (!timeoutExpired) {
+                  clearTimeout(timeoutCheck);
+                  this._reportResult(resolve);
+               }
+            })
+            .catch((error: Error) => {
                clearTimeout(timeoutCheck);
-               this._reportResult(resolve);
-            }
-         })
-         .catch((error: Error) => {
-            console.log(error);
-            clearTimeout(timeoutCheck);
-            this._reportResult(resolve, error);
-         });
+               this._reportResult(resolve, error);
+            });
 
-         const testTimeout: number = this._test.timeout || timeout;
+            const testTimeout: number = this._test.timeout || timeout;
 
-         timeoutCheck = setTimeout(() => {
-            timeoutExpired = true;
-            let error = new TestTimeoutError(testTimeout);
+            timeoutCheck = setTimeout(() => {
+               timeoutExpired = true;
+               let error = new TestTimeoutError(testTimeout);
+               this._reportResult(resolve, error);
+            }, testTimeout);
+         }
+         catch (error) {
             this._reportResult(resolve, error);
-         }, testTimeout);
+         }
       });
    }
 

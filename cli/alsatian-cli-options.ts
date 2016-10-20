@@ -15,8 +15,26 @@ export class AlsatianCliOptions {
       return this._timeout;
    }
 
+   private _tap: boolean = false;
+   public get tap(): boolean {
+      return this._tap;
+   }
+
+   private _versionRequested: boolean = false;
+   public get versionRequested(): boolean {
+      return this._versionRequested;
+   }
+
+   private _helpRequested: boolean = false;
+   public get helpRequested(): boolean {
+      return this._helpRequested;
+   }
+
    public constructor(args: Array<string>) {
 
+      args = this._extractTap(args);
+      args = this._extractVersionRequested(args);
+      args = this._extractHelpRequested(args);
       args = this._extractFileGlobs(args);
       args = this._extractTimeout(args);
 
@@ -54,8 +72,51 @@ export class AlsatianCliOptions {
 
          const argumentIndex = this._getArgumentIndexFromArgumentList(args, "timeout", "t");
 
+         // filter out the timeout argument and its value
          return args.filter((value, index) => {
             return index !== argumentIndex && index !== argumentIndex + 1;
+         });
+      }
+
+      return args;
+   }
+
+   private _extractTap(args: Array<string>): Array<string> {
+      const argumentIndex = this._getArgumentIndexFromArgumentList(args, "tap", "T");
+
+      // if we found the tap argument, we want to enable tap output
+      this._tap = (argumentIndex !== -1);
+
+      // filter out the tap argument and return the other args
+      return args.filter((value, index) => {
+        return index !== argumentIndex;
+      });
+   }
+
+   private _extractVersionRequested(args: Array<string>) {
+      let versionRequestedIndex = this._getArgumentIndexFromArgumentList(args, "version", "v");
+
+      if (versionRequestedIndex > -1) {
+
+         this._versionRequested = true;
+
+         return args.filter((value, index) => {
+            return index !== versionRequestedIndex;
+         });
+      }
+
+      return args;
+   }
+
+   private _extractHelpRequested(args: Array<string>) {
+      let helpRequestedIndex = this._getArgumentIndexFromArgumentList(args, "help", "h");
+
+      if (helpRequestedIndex > -1) {
+
+         this._helpRequested = true;
+
+         return args.filter((value, index) => {
+            return index !== helpRequestedIndex;
          });
       }
 

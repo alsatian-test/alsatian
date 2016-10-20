@@ -1,5 +1,6 @@
 # alsatian
 [![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
+[![License](https://img.shields.io/github/license/alsatian-test/alsatian.svg)](https://www.github.com/alsatian-test/alsatian/blob/master/license)
 [![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
 [![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
 [![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
@@ -10,11 +11,9 @@
 
 TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
-## In ALPHA
+## In BETA
 
-Currently alsatian is in alpha and I am very keen to hear feedback as to how you'd want to use alsatian, changes to the API, additional features etc. any ideas are absolutely welcome. Raise an issue and I will get back to you asap.
-
-I don't foresee the API changing dramatically as it is inspired by well used standards (JUnit/NUnit) but am completely open to new ideas as the goal is to make testing easy!
+Hooray, we're in BETA! So what does that mean? In preparation for an official release we're going through the process of migrating our own projects to test entirely using Alsatian, so that we can iron out any kinks we find. You can too if you wish! :) If you find any problems or have an suggestions then please log an issue and we'll address it promptly!
 
 ## Installing
 
@@ -37,14 +36,12 @@ alsatian ./test/**/*.spec.js ./special-test.js
 
 You can change how Alsatian runs your tests using the available options
 
-#### Timeout
-
-The timeout option changes the length of time that a test may run for in milliseconds (the default is 500ms). The examples below will change this to 5000ms.
-
-```
-alsatian --timeout 5000
-alsatian -t 5000
-```
+| Option                    | Alias  | Description                                                                  |
+| ------------------------- | ------ | ---------------------------------------------------------------------------- |
+| --help                    | -h     | Outputs info about how to use the CLI                                        |            
+| --version                 | -v     | Outputs the version of the CLI                                               |            
+| --tap                     | -T     | Will make Alsatian output in TAP format (to be consumed by a TAP reporter)   |             
+| --timeout [number in ms]  | -t     | Sets the maximum time that a test can run for before failing (default 500ms) |
 
 ## Using alsatian
 
@@ -320,8 +317,24 @@ SpyOnProperty(test, "property");
 
 ```
 
-... then add a fake getter ...
+... then check it's been set ...
 
+```
+const propertySpy = SpyOnProperty(test, "property");
+
+// unlike function spies expect calls on property spies
+// only works using the returned spy from SpyOnProperty
+// and not the property itself
+Expect(propertySpy).toHaveBeenSet();
+```
+
+... or check it's been set to a specific value ...
+
+```
+Expect(propertySpy).toHaveBeenSetTo(42);
+```
+
+... add a fake getter ...
 
 ```
 SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
@@ -330,14 +343,12 @@ SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
 
 ... or setter ...
 
-
 ```
 SpyOnProperty(test, "property").andCallSetter((value: any) => { doSomethingWith(value); });
 
 ```
 
 ... return a set value ...
-
 
 ```
 SpyOnProperty(test, "property").andReturnValue(42);
@@ -346,11 +357,10 @@ SpyOnProperty(test, "property").andReturnValue(42);
 
 ... and restore it to how it was before
 
-
 ```
-const spy = SpyOnProperty(test, "property");
+const properySpy = SpyOnProperty(test, "property");
 
-spy.restore();
+properySp.restore();
 ```
 
 ### Async Tests

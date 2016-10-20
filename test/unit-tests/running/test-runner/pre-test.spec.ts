@@ -1,30 +1,16 @@
-import { TestRunner } from "../../../core/running/test-runner";
-import { TestSet } from "../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../core/alsatian-core";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Promise } from "../../../promise/promise";
+import { TestRunner } from "../../../../core/running/test-runner";
+import { TestSet } from "../../../../core/test-set";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../../core/alsatian-core";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestBuilder } from "../../../builders/test-builder";
+import { TestCaseBuilder } from "../../../builders/test-case-builder";
+import { Promise } from "../../../../promise/promise";
+import { TestOutputStream } from "../../../../core/test-output-stream";
 
 export class PreTestTests {
 
    private _originalStdOut: any;
    private _originalProcessExit: any;
-
-   @Setup
-   private _spyProcess() {
-      this._originalProcessExit = process.exit;
-      this._originalStdOut = process.stdout.write;
-
-      SpyOn(process, "exit").andStub();
-      SpyOn(process.stdout, "write").andStub();
-   }
-
-   @Teardown
-   private _resetProcess() {
-      process.exit = this._originalProcessExit;
-      process.stdout.write = this._originalStdOut;
-   }
 
    @AsyncTest()
    public tapVersionHeaderOutput() {
@@ -38,10 +24,13 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
-         let testRunner = new TestRunner();
+         let output = new TestOutputStream();
+         SpyOn(output, "push");
+
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("TAP version 13\n");
+            Expect(output.push).toHaveBeenCalledWith("TAP version 13\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -68,11 +57,13 @@ export class PreTestTests {
       }
 
       return new Promise<void>((resolve, reject) => {
+         let output = new TestOutputStream();
+         SpyOn(output, "push");
 
-         let testRunner = new TestRunner();
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -122,10 +113,13 @@ export class PreTestTests {
          }
       };
 
-      let testRunner = new TestRunner();
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
+
+      let testRunner = new TestRunner(output);
 
       testRunner.run(testSet).then(() => {
-         Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
+         Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
          resultPromise.resolve();
       });
 
@@ -183,11 +177,13 @@ export class PreTestTests {
       }
 
       return new Promise<void>((resolve, reject) => {
+         let output = new TestOutputStream();
+         SpyOn(output, "push");
 
-         let testRunner = new TestRunner();
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -217,11 +213,13 @@ export class PreTestTests {
       testSet.testFixtures.push(testFixtureBuilder.build());
 
       return new Promise<void>((resolve, reject) => {
+         let output = new TestOutputStream();
+         SpyOn(output, "push");
 
-         let testRunner = new TestRunner();
+         let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(process.stdout.write).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
+            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
             resolve();
          })
          .catch((error: Error) => {

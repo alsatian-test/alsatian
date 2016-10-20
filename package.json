@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0-beta.0",
   "description": "TypeScript testing framework with test cases",
   "author": "James Richford <=> (=)",
   "contributors": [
@@ -19,23 +19,22 @@
     "alsatian": "./cli/alsatian-cli.js"
   },
   "scripts": {
-    "build": "typings install && tsc",
-    "build-publish": "typings install && tsc --newLine \"LF\"",
+    "build": "tsc",
+    "build-publish": "tsc --newLine \"LF\"",
     "clean": "git clean -X -d -f",
     "prepublish": "npm run review && npm run build-publish && npm test",
     "postpublish": "node ./scripts/tag-release",
-    "review": "npm run review-code & npm run review-tests",
+    "review": "npm run review-code & npm run review-tests & npm run check-coverage",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "review-tests": "tslint \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "test": "npm run unit-tests",
-    "test-dot": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-dot",
-    "test-spec": "node ./cli/alsatian-cli.js ./test/**/*.spec.js | tap-spec",
-    "unit-tests": "istanbul cover ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" && npm run remap-coverage",
+    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
+    "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
+    "output-test-coverage": "nyc report",
     "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests",
-    "cli-integration-tests": "alsatian \"./test/integration-tests/*.spec.js\"",
-    "node-integration-tests": "tsc -p \"./test/integration-tests/node\" && node \"./test/integration-tests/node/runner\"",
-    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
-    "remap-coverage": "remap-istanbul -i coverage/coverage.json --output coverage/report --type html"
+    "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
+    "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
+    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -61,18 +60,18 @@
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
-    "codeclimate-test-reporter": "^0.3.3",
+    "codeclimate-test-reporter": "^0.4.0",
     "coveralls": "^2.11.9",
-    "istanbul": "^0.4.3",
     "node-inspector": "^0.12.8",
-    "remap-istanbul": "^0.6.4",
-    "rewire": "^2.5.1",
+    "nyc": "^8.3.1",
     "tslint": "^3.13.0",
-    "typescript": "^1.8.10",
-    "typings": "^1.3.0"
+    "typescript": "^2.0.3"
   },
   "dependencies": {
+    "@types/glob": "^5.0.30",
+    "@types/node": "^6.0.41",
     "glob": "^7.0.3",
-    "reflect-metadata": "^0.1.3"
+    "reflect-metadata": "^0.1.3",
+    "tap-bark": "^1.0.0-beta.6"
   }
 }

@@ -1,9 +1,8 @@
-import { Expect, TestCase, SpyOn, TestOutput, TestSet, AsyncTest, TestRunner, MatchError } from "../../../core/alsatian-core";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
-import { Promise } from "../../../promise/promise";
+import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunner, MatchError } from "../../../../core/alsatian-core";
+import { TestBuilder } from "../../../builders/test-builder";
+import { TestCaseBuilder } from "../../../builders/test-case-builder";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { Promise } from "../../../../promise/promise";
 
 export class FixtureInfoTests {
 
@@ -15,14 +14,8 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public outputsFixtureNameWithPassingTest(description: string) {
-      let writeCalls: Array<string> = [ ];
-
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andCall((s: string) => {
-         writeCalls.push(s);
-      });
-
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{
          testFixtures: []
@@ -41,15 +34,14 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-
       return new Promise<void>((resolve, reject) => {
 
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(writeCalls[3]).toBe(`ok 1 ${test.description}\n`);
+            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+            Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
             resolve();
          })
          .catch((error: Error) => {
@@ -63,14 +55,8 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public outputsFixtureNameWithFailingTest(description: string) {
-      let writeCalls: Array<string> = [ ];
-
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write").andCall((s: string) => {
-         writeCalls.push(s);
-      });
-
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{
          testFixtures: []
@@ -95,8 +81,8 @@ export class FixtureInfoTests {
 
          testRunner.run(testSet).then(() => {
             // it should output version, then plan, then fixture, then test
-            Expect(writeCalls[2]).toBe(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(writeCalls[3]).toBe(`not ok 1 ${test.description}\n`);
+            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+            Expect(output.push).toHaveBeenCalledWith(`not ok 1 ${test.description}\n`);
             resolve();
          })
          .catch((error: Error) => {
@@ -105,5 +91,4 @@ export class FixtureInfoTests {
 
       });
    }
-
 }

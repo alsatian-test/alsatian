@@ -1,13 +1,12 @@
-import { TestRunner } from "../../../core/running/test-runner";
-import { TestSet } from "../../../core/test-set";
-import { TestOutput } from "../../../core/test-output";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { MatchError } from "../../../core/errors/match-error";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, FocusTest, IgnoreTest, FocusTests } from "../../../core/alsatian-core";
-import { Promise } from "../../../promise/promise";
-import { OutputStreamBuilder } from "../../builders/output-stream-builder";
+import { TestRunner } from "../../../../core/running/test-runner";
+import { TestSet } from "../../../../core/test-set";
+import { TestOutputStream } from "../../../../core/test-output-stream";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestBuilder } from "../../../builders/test-builder";
+import { TestCaseBuilder } from "../../../builders/test-case-builder";
+import { MatchError } from "../../../../core/errors/match-error";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
+import { Promise } from "../../../../promise/promise";
 
 export class FailingTestsTests {
 
@@ -31,10 +30,8 @@ export class FailingTestsTests {
 
    @AsyncTest()
    public failingTestOutputsNotOk() {
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write");
-
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{};
 
@@ -52,7 +49,7 @@ export class FailingTestsTests {
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(outputStream.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
+            Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
             resolve();
          })
          .catch((error: Error) => {
@@ -63,10 +60,8 @@ export class FailingTestsTests {
 
    @AsyncTest()
    public testThrowsErrorOutputsNotOk() {
-      let outputStream = new OutputStreamBuilder().build();
-      SpyOn(outputStream, "write");
-
-      let output = new TestOutput(outputStream);
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
       let testSet = <TestSet>{};
 
@@ -85,7 +80,7 @@ export class FailingTestsTests {
          let testRunner = new TestRunner(output);
 
          testRunner.run(testSet).then(() => {
-            Expect(outputStream.write).toHaveBeenCalledWith("not ok 1 Test Function\n");
+            Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
             resolve();
          })
          .catch((error: Error) => {
