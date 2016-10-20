@@ -152,7 +152,7 @@ Expect(undefined).not.toBeDefined();
 
 #### toBeNull
 
-Is it something or not? actual !== null
+Is it something or not? actual === null
 
 ```
 Expect(null).toBeNull();
