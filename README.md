@@ -378,6 +378,28 @@ export class ExampleTestFixture {
 }
 ```
 
+Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute. You can change this if you need to though using the ```Timeout``` decorators
+
+
+```
+import { Expect, AsyncTest, Timeout } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @AsyncTest()
+  @Timeout(5000) // Alsatian will now wait 5 seconds before failing
+  public asyncTest() {
+
+    return new Promise((resolve, reject) => {
+      somethingThatTakesAlmostFiveSeconds((result: number) => {
+         Expect(result).toBe(1);
+         resolve();
+      });
+    });
+  }
+}
+``` 
+
 ### Ignoring Tests
 
 You can stop tests from being run by using the ```IgnoreTest``` annotation
