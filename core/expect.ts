@@ -287,7 +287,7 @@ export class Matcher {
             const expectedArgument = expectedArguments[index];
             return arg === expectedArgument ||
                    expectedArgument === Any ||
-                  (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg))
+                  (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg));
          }).length === expectedArguments.length; // and all call arguments match expected arguments
       }).length === 0 === this._shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, expectedArguments);
