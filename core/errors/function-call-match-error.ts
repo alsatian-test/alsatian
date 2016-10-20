@@ -17,7 +17,7 @@ export class FunctionCallMatchError extends MatchError {
                   return "Anything";
                }
                else if (arg instanceof TypeMatcher) {
-                  return "Any " + arg.type.name;
+                  return "Any " + (<any>arg.type).name;
                }
                else {
                   return JSON.stringify(arg);
