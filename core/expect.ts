@@ -14,7 +14,9 @@ import {
 
 import {
    FunctionSpy,
-   PropertySpy
+   PropertySpy,
+   Any,
+   TypeMatcher,
 } from "./_spying";
 
 /**
@@ -272,18 +274,23 @@ export class Matcher {
 
    /**
    * Checks that a spy has been called with the specified arguments
-   * @param args - a list of arguments that the spy should have been called with
+   * @param expectedArguments - a list of arguments that the spy should have been called with
    */
-   public toHaveBeenCalledWith(...args: Array<any>) {
+   public toHaveBeenCalledWith(...expectedArguments: Array<any>) {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
          throw new TypeError("toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
       }
 
       if (this._actualValue.calls.filter((call: any) => {
-         return call.args.filter((arg: any, index: number) => arg === args[index]).length === args.length && // all call arguments match expected arguments
-         call.args.length === args.length; // and the call has the same amount of arguments
+         return call.args.length === expectedArguments.length && // the call has the same amount of arguments
+         call.args.filter((arg: any, index: number) => {
+            const expectedArgument = expectedArguments[index];
+            return arg === expectedArgument ||
+                   expectedArgument === Any ||
+                  (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg));
+         }).length === expectedArguments.length; // and all call arguments match expected arguments
       }).length === 0 === this._shouldMatch) {
-         throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, args);
+         throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, expectedArguments);
       }
    }
 

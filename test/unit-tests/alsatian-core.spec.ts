@@ -68,4 +68,10 @@ export class AlsatianCoreTests {
       Expect(Alsatian.Teardown).toBeDefined();
       Expect(Alsatian.Teardown).not.toBeNull();
    }
+
+   @Test()
+   public anyShouldBeExposed() {
+      Expect(Alsatian.Any).toBeDefined();
+      Expect(Alsatian.Any).not.toBeNull();
+   }
 }

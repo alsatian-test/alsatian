@@ -19,6 +19,7 @@ import {
 } from "./_decorators";
 
 import {
+   Any,
    FunctionSpy,
    SpyOn,
    SpyOnProperty
@@ -44,6 +45,7 @@ import {
 } from "./_running";
 
 export {
+   Any,
    AsyncTest,
    Expect,
    FocusTest,
