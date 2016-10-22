@@ -29,7 +29,7 @@ Alsatian has a CLI for easy use with your package.json or your favourite cli too
 ```
 alsatian [list of globs]
 
-alsatian ./test/**/*.spec.js ./special-test.js
+alsatian "./test/**/*.spec.js" "./special-test.js"
 ```
 
 ### CLI Options
@@ -62,7 +62,7 @@ export class ExampleTestFixture {
 Then check all is well
 
 ```
-> alsatian ./path/to/example.spec
+> alsatian "./path/to/example.spec.js"
 TAP version 13
 1..1
 ok 1 - exampleTest
@@ -152,7 +152,7 @@ Expect(undefined).not.toBeDefined();
 
 #### toBeNull
 
-Is it something or not? actual !== null
+Is it something or not? actual === null
 
 ```
 Expect(null).toBeNull();
@@ -384,6 +384,28 @@ export class ExampleTestFixture {
   }
 }
 ```
+
+Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute. You can change this if you need to though using the ```Timeout``` decorators
+
+
+```
+import { Expect, AsyncTest, Timeout } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @AsyncTest()
+  @Timeout(5000) // Alsatian will now wait 5 seconds before failing
+  public asyncTest() {
+
+    return new Promise((resolve, reject) => {
+      somethingThatTakesAlmostFiveSeconds((result: number) => {
+         Expect(result).toBe(1);
+         resolve();
+      });
+    });
+  }
+}
+``` 
 
 ### Ignoring Tests
 
