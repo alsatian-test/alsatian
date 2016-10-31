@@ -16,4 +16,13 @@ export class FunctionSpyMatcherTests {
    public nullOrUndefinedSpyThrowsErrorIfShouldNotMatch(spy: FunctionSpy) {
       Expect(() => new FunctionSpyMatcher(spy, false)).toThrowError(TypeError, "spy must not be null or undefined.");
    }
+
+   //Less than
+   //Not Less than
+
+   //More than
+   //Not more than
+
+   //exactly
+   //not exactly
 }

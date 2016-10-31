@@ -8,4 +8,15 @@ export class FunctionSpyCallCountMatcherTests {
    public timesNotToBeDefined() {
       Expect(new FunctionSpyCallCountMatcher().times).not.toBeDefined();
    }
+
+   //Less than
+   //Not Less than
+
+   //More than
+   //Not more than
+
+   //exactly
+   //not exactly
+
+   //invalid enum value
 }
