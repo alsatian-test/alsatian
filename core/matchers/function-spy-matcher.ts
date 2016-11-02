@@ -1,5 +1,5 @@
 import { FunctionSpy } from "../_spying";
-import { FunctionSpyCallCountMatcher } from "./function-spy-call-count-matcher";
+import { FunctionSpyCallCountMatcher } from "./";
 
 export class FunctionSpyMatcher {
 
