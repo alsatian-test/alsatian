@@ -1579,4 +1579,28 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, 42)).not.toThrow();
    }
+
+   //TODO: exactly matches
+   //TODO: exactly doesn't match
+   //TODO: exactly doesn't match with wrong arguments
+
+   //TODO: not exactly matches
+   //TODO: not exactly matches with wrong arguments
+   //TODO: not exactly doesn't match
+
+   //TODO: greater than matches
+   //TODO: greater than doesn't match
+   //TODO: greater than doesn't match with wrong arguments
+
+   //TODO: not greater than matches
+   //TODO: greater than matches with wrong arguments
+   //TODO: not greater than doesn't match
+
+   //TODO: less than matches
+   //TODO: less than doesn't match
+   //TODO: less than doesn't match with wrong arguments
+
+   //TODO: not less than matches
+   //TODO: not less than matches with wrong arguments
+   //TODO: not less than doesn't match
 }
