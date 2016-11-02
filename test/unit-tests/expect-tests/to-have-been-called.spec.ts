@@ -1,6 +1,7 @@
 import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { Expect, Test, SpyOn, TestCase, FunctionSpy } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn, TestCase, FunctionSpy, FocusTests } from "../../../core/alsatian-core";
 
+@FocusTests
 export class ToHaveBeenCalledTests {
 
    @Test()
@@ -197,8 +198,52 @@ export class ToHaveBeenCalledTests {
       Expect(functionError.expectedValue).toBe("function not to be called.");
    }
 
-   //TODO: exactly matches
-   //TODO: exactly doesn't match
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public spyCalledCorrectAmountOfTimesDoesNotThrow(callCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < callCount; i++) {
+         some.function();
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalled().exactly(callCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 42)
+   @TestCase(42, 1)
+   public spyCalledCorrectAmountOfTimesThrowsCorrectError(expectedCallCount: number, actualCallCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      let functionError: FunctionCallCountMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times;
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+      Expect(functionError.message).toBe("Expected function to be called " + actualCallCount + " times.");
+      Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+      Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
+   }
 
    //TODO: not exactly matches
    //TODO: not exactly doesn't match
