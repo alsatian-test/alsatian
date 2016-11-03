@@ -17,7 +17,7 @@ export class MultipleExportedFixtureTests {
 
       const testFixtureConstructor = () => testFixtureInstance;
 
-      const testFixtureWrapper = {};
+      const testFixtureWrapper: { [key: string]: Function } = {};
       for (let i = 0; i < expectedTestFixtureCount; i++) {
          testFixtureWrapper["TestFixture" + i] = testFixtureConstructor;
       }
