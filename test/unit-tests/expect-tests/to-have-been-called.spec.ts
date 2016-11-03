@@ -1,4 +1,4 @@
-import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
+import { FunctionCallMatchError, FunctionCallCountMatchError } from "../../../core/_errors";
 import { Expect, Test, SpyOn, TestCase, FunctionSpy, FocusTests } from "../../../core/alsatian-core";
 
 @FocusTests
@@ -240,8 +240,8 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.message).toBe("Expected function to be called " + actualCallCount + " times.");
-      Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+      Expect(functionError.message).toBe("Expected function to be called " + expectedCallCount + " times.");
+      Expect(functionError.actualValue).toBe("function was called " + expectedCallCount + " times.");
       Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
    }
 

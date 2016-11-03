@@ -14,14 +14,14 @@ export class FunctionSpyMatcher {
    }
 
    public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {
-      return new FunctionSpyCallCountMatcher();
+      return new FunctionSpyCallCountMatcher(this._spy, expectedCallCount);
    }
 
    public moreThan(expectedCallLowerLimit: number): FunctionSpyCallCountMatcher {
-      return new FunctionSpyCallCountMatcher();
+      return new FunctionSpyCallCountMatcher(this._spy, expectedCallLowerLimit);
    }
 
    public lessThan(expectedCallUpperLimit: number): FunctionSpyCallCountMatcher {
-      return new FunctionSpyCallCountMatcher();
+      return new FunctionSpyCallCountMatcher(this._spy, expectedCallUpperLimit);
    }
 }
