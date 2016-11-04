@@ -6,10 +6,10 @@ export class FunctionSpyCallCountMatcher {
 
    public constructor(spy: FunctionSpy, expectedCallCount: number, countType: SpyCallCountType, shouldMatch: boolean) {
       if (countType === SpyCallCountType.Exactly && spy.calls.length !== expectedCallCount === shouldMatch) {
-         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount);
+         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount, countType);
       }
       else if (countType === SpyCallCountType.GreaterThan && spy.calls.length <= expectedCallCount) {
-         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount);
+         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount, countType);
       }
    }
 
