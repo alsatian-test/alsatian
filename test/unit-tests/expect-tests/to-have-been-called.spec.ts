@@ -423,12 +423,6 @@ export class ToHaveBeenCalledTests {
    //TODO: greater than matches
    //TODO: greater than doesn't match
 
-   //TODO: not greater than matches
-   //TODO: not greater than doesn't match
-
    //TODO: less than matches
    //TODO: less than doesn't match
-
-   //TODO: not less than matches
-   //TODO: not less than doesn't match
 }
