@@ -229,6 +229,32 @@ export class ToHaveBeenCalledTests {
          some.function();
       }
 
+      if (expectedCallCount === 1) {
+         Expect(
+            () => Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function to be called " + expectedCallCount + " time.");
+      }
+      else {
+         Expect(
+            () => Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function to be called " + expectedCallCount + " times.");
+      }
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 42)
+   @TestCase(42, 1)
+   public spyCalledCorrectAmountOfTimesThrowsCorrectErrorExpectedValue(expectedCallCount: number, actualCallCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < actualCallCount; i++) {
+         some.function();
+      }
+
       let functionError: FunctionCallCountMatchError;
 
       try {
@@ -240,9 +266,47 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.message).toBe("Expected function to be called " + expectedCallCount + " times.");
-      Expect(functionError.actualValue).toBe("function was called " + expectedCallCount + " times.");
-      Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
+
+      if (expectedCallCount === 1) {
+         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " time.");
+      }
+      else {
+         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
+      }
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 42)
+   @TestCase(42, 1)
+   public spyCalledCorrectAmountOfTimesThrowsCorrectErrorActualValue(expectedCallCount: number, actualCallCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      let functionError: FunctionCallCountMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times;
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+
+      if (actualCallCount === 1) {
+         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " time.");
+      }
+      else {
+         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+      }
    }
 
    //TODO: not exactly matches
