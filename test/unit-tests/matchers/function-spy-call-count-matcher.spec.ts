@@ -1,4 +1,4 @@
-import { Expect, Test, FocusTests } from "../../../core/alsatian-core";
+import { Expect, Test, FocusTests, FunctionSpy } from "../../../core/alsatian-core";
 import { FunctionSpyCallCountMatcher } from "../../../core/matchers/function-spy-call-count-matcher";
 
 @FocusTests
@@ -6,7 +6,7 @@ export class FunctionSpyCallCountMatcherTests {
 
    @Test()
    public timesNotToBeDefined() {
-      Expect(new FunctionSpyCallCountMatcher().times).not.toBeDefined();
+      Expect(new FunctionSpyCallCountMatcher(new FunctionSpy(), 0).times).not.toBeDefined();
    }
 
    //Less than matches
