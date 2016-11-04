@@ -5,8 +5,8 @@ import { SpyCallCountType } from "./";
 export class FunctionSpyCallCountMatcher {
 
    public constructor(spy: FunctionSpy, expectedCallCount: number, countType: SpyCallCountType, shouldMatch: boolean) {
-      if (spy.calls.length !== expectedCallCount) {
-         throw new FunctionCallCountMatchError(spy, true, expectedCallCount);
+      if (spy.calls.length !== expectedCallCount === shouldMatch) {
+         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount);
       }
    }
 

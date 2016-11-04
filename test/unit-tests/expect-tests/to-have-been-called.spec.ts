@@ -309,8 +309,116 @@ export class ToHaveBeenCalledTests {
       }
    }
 
-   //TODO: not exactly matches
-   //TODO: not exactly doesn't match
+   @TestCase(1, 2)
+   @TestCase(2, 42)
+   @TestCase(42, 1)
+   public spyNotCalledCorrectAmountOfTimesDoesNotThrow(expectedCallCount: number, actualCallCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalled().anythingBut(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectError(callCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < callCount; i++) {
+         some.function();
+      }
+
+      if (callCount === 1) {
+         Expect(
+            () => Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function not to be called " + callCount + " time.");
+      }
+      else {
+         Expect(
+            () => Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function not to be called " + callCount + " times.");
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorExpectedValue(callCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < callCount; i++) {
+         some.function();
+      }
+
+      let functionError: FunctionCallCountMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times;
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+
+      if (callCount === 1) {
+         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " time.");
+      }
+      else {
+         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " times.");
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorActualValue(callCount: number) {
+      let some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0 ; i < callCount; i++) {
+         some.function();
+      }
+
+      let functionError: FunctionCallCountMatchError;
+
+      try {
+         Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times;
+      }
+      catch (error) {
+         functionError = error;
+      }
+
+      Expect(functionError).toBeDefined();
+      Expect(functionError).not.toBeNull();
+
+      if (callCount === 1) {
+         Expect(functionError.actualValue).toBe("function was called " + callCount + " time.");
+      }
+      else {
+         Expect(functionError.actualValue).toBe("function was called " + callCount + " times.");
+      }
+   }
 
    //TODO: greater than matches
    //TODO: greater than doesn't match

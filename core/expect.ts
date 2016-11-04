@@ -275,7 +275,7 @@ export class Matcher {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch);
       }
 
-      return new FunctionSpyMatcher(this._actualValue, this._shouldMatch);
+      return new FunctionSpyMatcher(this._actualValue);
    }
 
    /**
@@ -299,7 +299,7 @@ export class Matcher {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, expectedArguments);
       }
 
-      return new FunctionSpyMatcher(this._actualValue, this._shouldMatch, expectedArguments);
+      return new FunctionSpyMatcher(this._actualValue, expectedArguments);
    }
 
    private _isFunctionSpyOrSpiedOnFunction(value: any) {
