@@ -469,11 +469,10 @@ export class ToHaveBeenCalledTests {
       }
    }
 
-   /*
-   @TestCase(1, 2)
-   @TestCase(2, 42)
-   @TestCase(42, 1)
-   public spyCalledCorrectAmountOfTimesThrowsCorrectErrorExpectedValue(expectedCallCount: number, actualCallCount: number) {
+   @TestCase(1, 1)
+   @TestCase(2, 1)
+   @TestCase(42, 13)
+   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(expectedCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
@@ -487,7 +486,7 @@ export class ToHaveBeenCalledTests {
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times;
+         Expect(some.function).toHaveBeenCalled().greaterThan(expectedCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -497,17 +496,17 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (expectedCallCount === 1) {
-         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " time.");
+         Expect(functionError.expectedValue).toBe("function to be called greater than " + expectedCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
+         Expect(functionError.expectedValue).toBe("function to be called greater than " + expectedCallCount + " times.");
       }
    }
 
-   @TestCase(1, 2)
-   @TestCase(2, 42)
-   @TestCase(42, 1)
-   public spyCalledCorrectAmountOfTimesThrowsCorrectErrorActualValue(expectedCallCount: number, actualCallCount: number) {
+   @TestCase(1, 1)
+   @TestCase(2, 1)
+   @TestCase(42, 13)
+   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(expectedCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
@@ -521,7 +520,7 @@ export class ToHaveBeenCalledTests {
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().exactly(expectedCallCount).times;
+         Expect(some.function).toHaveBeenCalled().greaterThan(expectedCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -538,6 +537,7 @@ export class ToHaveBeenCalledTests {
       }
    }
 
+   /*
    @TestCase(1, 2)
    @TestCase(2, 42)
    @TestCase(42, 1)
@@ -554,7 +554,6 @@ export class ToHaveBeenCalledTests {
 
       Expect(() => Expect(some.function).toHaveBeenCalled().anythingBut(expectedCallCount).times).not.toThrow();
    }
-
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
