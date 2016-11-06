@@ -11,12 +11,6 @@ export class FunctionSpyMatcherTests {
       Expect(() => new FunctionSpyMatcher(spy)).toThrowError(TypeError, "spy must not be null or undefined.");
    }
 
-   @TestCase(null)
-   @TestCase(undefined)
-   public nullOrUndefinedSpyThrowsErrorIfShouldNotMatch(spy: FunctionSpy) {
-      Expect(() => new FunctionSpyMatcher(spy)).toThrowError(TypeError, "spy must not be null or undefined.");
-   }
-
    //Less than matches
    //Not Less than matches
 
