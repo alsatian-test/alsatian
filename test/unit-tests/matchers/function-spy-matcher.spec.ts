@@ -64,10 +64,69 @@ export class FunctionSpyMatcherTests {
       const spyMatcher = new FunctionSpyMatcher(<any>some.function);
 
       if (expectedCallCount === 1) {
-         Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called 1 time.`);         
+         Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called 1 time.`);
       }
       else {
          Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(-2)
+   @TestCase(-42)
+   public negativeOrZeroAnythingButValueThrowsError(expectedCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      Expect(() => spyMatcher.anythingBut(expectedCallCount).times).toThrowError(TypeError, "unexpectedCallCount must be greater than 0.");
+   }
+
+   @TestCase(1, 42)
+   @TestCase(2, 1)
+   @TestCase(42, 2)
+   public anythingButMatchesDoesNotThrow(unexpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public anythingButDoesntMatchThrowsError(unexpectedCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < unexpectedCallCount; i++) {
+         some.function();
+      }
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      if (unexpectedCallCount === 1) {
+         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called 1 time.`);
+      }
+      else {
+         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called ${unexpectedCallCount} times.`);
       }
    }
 

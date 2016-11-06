@@ -22,8 +22,13 @@ export class FunctionSpyMatcher {
       return new FunctionSpyCallCountMatcher(this._spy, expectedCallCount, SpyCallCountType.Exactly, true);
    }
 
-   public anythingBut(expectedCallCount: number): FunctionSpyCallCountMatcher {
-      return new FunctionSpyCallCountMatcher(this._spy, expectedCallCount, SpyCallCountType.Exactly, false);
+   public anythingBut(unexpectedCallCount: number): FunctionSpyCallCountMatcher {
+
+      if (unexpectedCallCount < 1) {
+         throw new TypeError("unexpectedCallCount must be greater than 0.");
+      }
+
+      return new FunctionSpyCallCountMatcher(this._spy, unexpectedCallCount, SpyCallCountType.Exactly, false);
    }
 
    public greaterThan(expectedCallLowerLimit: number): FunctionSpyCallCountMatcher {
