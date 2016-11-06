@@ -1,9 +1,8 @@
-import { Expect, TestCase, FocusTests, SpyOn } from "../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn } from "../../../core/alsatian-core";
 import { FunctionSpyMatcher } from "../../../core/matchers";
 import { FunctionCallCountMatchError } from "../../../core/_errors";
 import { FunctionSpy } from "../../../core/_spying";
 
-@FocusTests
 export class FunctionSpyMatcherTests {
 
    @TestCase(null)
