@@ -14,6 +14,11 @@ export class FunctionSpyMatcher {
    }
 
    public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {
+
+      if (expectedCallCount < 1) {
+         throw new TypeError("expectedCallCount must be greater than 0.");
+      }
+
       return new FunctionSpyCallCountMatcher(this._spy, expectedCallCount, SpyCallCountType.Exactly, true);
    }
 
