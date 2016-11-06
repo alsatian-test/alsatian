@@ -247,22 +247,4 @@ export class FunctionSpyMatcherTests {
          Expect(() => spyMatcher.greaterThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called greater than ${maximumCallCount} times.`);
       }
    }
-
-   //Less than matches
-   //Not Less than matches
-
-   //Less than does not match
-   //Not Less than does not match
-
-   //More than matches
-   //Not more than matches
-
-   //More than does not match
-   //Not more than does not match
-
-   //exactly matches
-   //not exactly matches
-
-   //exactly does not match
-   //not exactly does not match
 }
