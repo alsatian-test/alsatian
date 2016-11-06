@@ -5,6 +5,6 @@ export class FunctionSpyCallCountMatcherTests {
 
    @Test()
    public timesNotToBeDefined() {
-      Expect(new FunctionSpyCallCountMatcher(new FunctionSpy(), 0).times).not.toBeDefined();
+      Expect(new FunctionSpyCallCountMatcher().times).not.toBeDefined();
    }
 }

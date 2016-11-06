@@ -1,5 +1,6 @@
 import { FunctionSpy } from "../_spying";
 import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
+import { FunctionCallCountMatchError } from "../_errors";
 
 export class FunctionSpyMatcher {
 
@@ -19,7 +20,11 @@ export class FunctionSpyMatcher {
          throw new TypeError("expectedCallCount must be greater than 0.");
       }
 
-      return new FunctionSpyCallCountMatcher(this._spy, expectedCallCount, SpyCallCountType.Exactly, true);
+      if (this._spy.calls.length !== expectedCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly);
+      }
+
+      return new FunctionSpyCallCountMatcher();
    }
 
    public anythingBut(unexpectedCallCount: number): FunctionSpyCallCountMatcher {
@@ -28,7 +33,11 @@ export class FunctionSpyMatcher {
          throw new TypeError("unexpectedCallCount must be greater than 0.");
       }
 
-      return new FunctionSpyCallCountMatcher(this._spy, unexpectedCallCount, SpyCallCountType.Exactly, false);
+      if (this._spy.calls.length === unexpectedCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly);
+      }
+
+      return new FunctionSpyCallCountMatcher();
    }
 
    public greaterThan(minimumCallCount: number): FunctionSpyCallCountMatcher {
@@ -37,7 +46,11 @@ export class FunctionSpyMatcher {
          throw new TypeError("minimumCallCount must be greater than 0.");
       }
 
-      return new FunctionSpyCallCountMatcher(this._spy, minimumCallCount, SpyCallCountType.GreaterThan, true);
+      if (this._spy.calls.length <= minimumCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan);
+      }
+
+      return new FunctionSpyCallCountMatcher();
    }
 
    public lessThan(maximumCallCount: number): FunctionSpyCallCountMatcher {
@@ -46,6 +59,10 @@ export class FunctionSpyMatcher {
          throw new TypeError("maximumCallCount must be greater than 0.");
       }
 
-      return new FunctionSpyCallCountMatcher(this._spy, maximumCallCount, SpyCallCountType.LessThan, true);
+      if (this._spy.calls.length >= maximumCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan);
+      }
+
+      return new FunctionSpyCallCountMatcher();
    }
 }
