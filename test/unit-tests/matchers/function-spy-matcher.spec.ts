@@ -130,6 +130,65 @@ export class FunctionSpyMatcherTests {
       }
    }
 
+   @TestCase(0)
+   @TestCase(-1)
+   @TestCase(-2)
+   @TestCase(-42)
+   public negativeOrZeroLessThanValueThrowsError(expectedCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      Expect(() => spyMatcher.lessThan(expectedCallCount).times).toThrowError(TypeError, "maximumCallCount must be greater than 0.");
+   }
+
+   @TestCase(1, 0)
+   @TestCase(2, 1)
+   @TestCase(42, 36)
+   public LessThanMatchesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      Expect(() => spyMatcher.lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 1)
+   @TestCase(2, 3)
+   @TestCase(42, 56)
+   public lessThanDoesntMatchThrowsError(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: () => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function();
+      }
+
+      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+
+      if (maximumCallCount === 1) {
+         Expect(() => spyMatcher.lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called less than 1 time.`);
+      }
+      else {
+         Expect(() => spyMatcher.lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called less than ${maximumCallCount} times.`);
+      }
+   }
+
    //Less than matches
    //Not Less than matches
 

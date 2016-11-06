@@ -35,7 +35,12 @@ export class FunctionSpyMatcher {
       return new FunctionSpyCallCountMatcher(this._spy, expectedCallLowerLimit, SpyCallCountType.GreaterThan, true);
    }
 
-   public lessThan(expectedCallUpperLimit: number): FunctionSpyCallCountMatcher {
-      return new FunctionSpyCallCountMatcher(this._spy, expectedCallUpperLimit, SpyCallCountType.LessThan, true);
+   public lessThan(maximumCallCount: number): FunctionSpyCallCountMatcher {
+
+      if (maximumCallCount < 1) {
+         throw new TypeError("maximumCallCount must be greater than 0.");
+      }
+
+      return new FunctionSpyCallCountMatcher(this._spy, maximumCallCount, SpyCallCountType.LessThan, true);
    }
 }
