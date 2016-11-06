@@ -11,6 +11,9 @@ export class FunctionSpyCallCountMatcher {
       else if (countType === SpyCallCountType.GreaterThan && spy.calls.length <= expectedCallCount) {
          throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount, countType);
       }
+      else if (countType === SpyCallCountType.LessThan && spy.calls.length >= expectedCallCount) {
+         throw new FunctionCallCountMatchError(spy, shouldMatch, expectedCallCount, countType);
+      }
    }
 
    public get times(): undefined {

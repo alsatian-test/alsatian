@@ -472,7 +472,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(1, 1)
    @TestCase(2, 1)
    @TestCase(42, 13)
-   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(expectedCallCount: number, actualCallCount: number) {
+   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(minimumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
@@ -486,7 +486,7 @@ export class ToHaveBeenCalledTests {
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().greaterThan(expectedCallCount).times;
+         Expect(some.function).toHaveBeenCalled().greaterThan(minimumCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -495,18 +495,18 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
 
-      if (expectedCallCount === 1) {
-         Expect(functionError.expectedValue).toBe("function to be called greater than " + expectedCallCount + " time.");
+      if (minimumCallCount === 1) {
+         Expect(functionError.expectedValue).toBe("function to be called greater than " + minimumCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function to be called greater than " + expectedCallCount + " times.");
+         Expect(functionError.expectedValue).toBe("function to be called greater than " + minimumCallCount + " times.");
       }
    }
 
    @TestCase(1, 1)
    @TestCase(2, 1)
    @TestCase(42, 13)
-   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(expectedCallCount: number, actualCallCount: number) {
+   public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(minimumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
@@ -520,7 +520,7 @@ export class ToHaveBeenCalledTests {
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().greaterThan(expectedCallCount).times;
+         Expect(some.function).toHaveBeenCalled().greaterThan(minimumCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -537,11 +537,9 @@ export class ToHaveBeenCalledTests {
       }
    }
 
-   /*
-   @TestCase(1, 2)
-   @TestCase(2, 42)
-   @TestCase(42, 1)
-   public spyNotCalledCorrectAmountOfTimesDoesNotThrow(expectedCallCount: number, actualCallCount: number) {
+   @TestCase(2, 1)
+   @TestCase(42, 13)
+   public spyNotCalledLessThanMaximumTimesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
@@ -552,52 +550,53 @@ export class ToHaveBeenCalledTests {
          some.function();
       }
 
-      Expect(() => Expect(some.function).toHaveBeenCalled().anythingBut(expectedCallCount).times).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalled().lessThan(maximumCallCount).times).not.toThrow();
    }
-   @TestCase(1)
-   @TestCase(2)
-   @TestCase(42)
-   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectError(callCount: number) {
+
+   @TestCase(1, 1)
+   @TestCase(2, 3)
+   @TestCase(42, 50)
+   public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectError(maximumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
 
       SpyOn(some, "function");
 
-      for (let i = 0 ; i < callCount; i++) {
+      for (let i = 0 ; i < actualCallCount; i++) {
          some.function();
       }
 
-      if (callCount === 1) {
+      if (maximumCallCount === 1) {
          Expect(
-            () => Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times
-         ).toThrowError(FunctionCallCountMatchError, "Expected function not to be called " + callCount + " time.");
+            () => Expect(some.function).toHaveBeenCalled().lessThan(maximumCallCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function to be called less than " + maximumCallCount + " time.");
       }
       else {
          Expect(
-            () => Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times
-         ).toThrowError(FunctionCallCountMatchError, "Expected function not to be called " + callCount + " times.");
+            () => Expect(some.function).toHaveBeenCalled().lessThan(maximumCallCount).times
+         ).toThrowError(FunctionCallCountMatchError, "Expected function to be called less than " + maximumCallCount + " times.");
       }
    }
 
-   @TestCase(1)
-   @TestCase(2)
-   @TestCase(42)
-   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorExpectedValue(callCount: number) {
+   @TestCase(1, 1)
+   @TestCase(2, 3)
+   @TestCase(42, 50)
+   public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorExpectedValue(maximumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
 
       SpyOn(some, "function");
 
-      for (let i = 0 ; i < callCount; i++) {
+      for (let i = 0 ; i < actualCallCount; i++) {
          some.function();
       }
 
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times;
+         Expect(some.function).toHaveBeenCalled().lessThan(maximumCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -606,32 +605,32 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
 
-      if (callCount === 1) {
-         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " time.");
+      if (maximumCallCount === 1) {
+         Expect(functionError.expectedValue).toBe("function to be called less than " + maximumCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " times.");
+         Expect(functionError.expectedValue).toBe("function to be called less than " + maximumCallCount + " times.");
       }
    }
 
-   @TestCase(1)
-   @TestCase(2)
-   @TestCase(42)
-   public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorActualValue(callCount: number) {
+   @TestCase(1, 1)
+   @TestCase(2, 3)
+   @TestCase(42, 50)
+   public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorActualValue(maximumCallCount: number, actualCallCount: number) {
       let some = {
          function: () => {}
       };
 
       SpyOn(some, "function");
 
-      for (let i = 0 ; i < callCount; i++) {
+      for (let i = 0 ; i < actualCallCount; i++) {
          some.function();
       }
 
       let functionError: FunctionCallCountMatchError;
 
       try {
-         Expect(some.function).toHaveBeenCalled().anythingBut(callCount).times;
+         Expect(some.function).toHaveBeenCalled().lessThan(maximumCallCount).times;
       }
       catch (error) {
          functionError = error;
@@ -640,11 +639,11 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
 
-      if (callCount === 1) {
-         Expect(functionError.actualValue).toBe("function was called " + callCount + " time.");
+      if (actualCallCount === 1) {
+         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " time.");
       }
       else {
-         Expect(functionError.actualValue).toBe("function was called " + callCount + " times.");
+         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
       }
-   }*/
+   }
 }
