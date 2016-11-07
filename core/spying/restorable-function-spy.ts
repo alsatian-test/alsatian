@@ -21,6 +21,9 @@ export class RestorableFunctionSpy extends FunctionSpy {
       // expose spy's calls on function
       target[functionName].calls = this.calls;
 
+      // expose spy's callsWithArguments on function
+      target[functionName].callsWithArguments = this.callsWithArguments;
+
       // expose spy's restore function
       target[functionName].restore = this.restore.bind(this);
    }

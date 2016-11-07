@@ -5,10 +5,15 @@ import { FunctionCallCountMatchError } from "../_errors";
 export class FunctionSpyMatcher {
 
    private _spy: FunctionSpy;
+   private _expectedArguments: Array<any> = null;
 
    public constructor(spy: FunctionSpy, expectedArguments?: Array<any>) {
       if (spy === null || spy === undefined) {
          throw new TypeError("spy must not be null or undefined.");
+      }
+
+      if (expectedArguments) {
+         this._expectedArguments = expectedArguments;
       }
 
       this._spy = spy;
@@ -20,7 +25,10 @@ export class FunctionSpyMatcher {
          throw new TypeError("expectedCallCount must be greater than 0.");
       }
 
-      if (this._spy.calls.length !== expectedCallCount) {
+      if (this._expectedArguments && this._spy.callsWithArguments(this._expectedArguments).length !== expectedCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly, this._expectedArguments);
+      }
+      else if (this._spy.calls.length !== expectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly);
       }
 
