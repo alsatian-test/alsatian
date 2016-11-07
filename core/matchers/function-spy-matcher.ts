@@ -25,7 +25,7 @@ export class FunctionSpyMatcher {
          throw new TypeError("expectedCallCount must be greater than 0.");
       }
 
-      if (this._expectedArguments && this._spy.callsWithArguments(this._expectedArguments).length !== expectedCallCount) {
+      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length !== expectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly, this._expectedArguments);
       }
       else if (this._spy.calls.length !== expectedCallCount) {

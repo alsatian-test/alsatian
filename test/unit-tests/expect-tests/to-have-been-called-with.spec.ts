@@ -1584,7 +1584,6 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
-   @FocusTest
    public calledExactlyCorrectNumberOfTimesWithCorrectArgumentsPasses(expectedCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
