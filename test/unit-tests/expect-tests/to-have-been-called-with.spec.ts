@@ -1668,7 +1668,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
 
       // called once but not correct amount of times
-         some.function("some", "thing");
+      some.function("some", "thing");
 
       for (let i = 0; i < expectedCallCount; i++) {
          some.function("thing", "some");
@@ -1686,6 +1686,107 @@ export class ToHaveBeenCalledWithTests {
    //TODO: not exactly doesn't match
    //TODO: not exactly matches with wrong arguments
    //TODO: not exactly doesn't match with right arguments in the wrong order
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledAnythingButCorrectNumberOfTimesWithExtraCallWithWrongArgumentsThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function not to be called with [42] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called with [42] ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledAnythingButCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function not to be called with [\"some\", \"thing\"] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called with ["some", "thing"] ${expectedCallCount} times.`);
+      }
+   }
 
    //TODO: greater than matches
    //TODO: greater than doesn't match
