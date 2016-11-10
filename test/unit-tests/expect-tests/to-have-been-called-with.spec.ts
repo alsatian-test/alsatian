@@ -1668,17 +1668,17 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
 
       // called once but not correct amount of times
-      some.function(42);
+         some.function("some", "thing");
 
       for (let i = 0; i < expectedCallCount; i++) {
          some.function("thing", "some");
       }
 
       if (expectedCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] 1 time.");
       }
       else {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] ${expectedCallCount} times.`);
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] ${expectedCallCount} times.`);
       }
    }
 
