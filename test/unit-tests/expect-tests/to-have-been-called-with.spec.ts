@@ -1584,7 +1584,6 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
-   @FocusTest
    public calledExactlyCorrectNumberOfTimesWithCorrectArgumentsPasses(expectedCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
@@ -1597,6 +1596,40 @@ export class ToHaveBeenCalledWithTests {
       }
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(42).exactly(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).exactly(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).exactly(expectedCallCount).times).not.toThrow();
    }
 
    @TestCase(2)
@@ -1623,10 +1656,31 @@ export class ToHaveBeenCalledWithTests {
          Expect(() => Expect(some.function).toHaveBeenCalledWith(42).exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] ${expectedCallCount} times.`);
       }
    }
-   //TODO: exactly matches
-   //TODO: exactly doesn't match
-   //TODO: exactly doesn't match with wrong arguments
-   //TODO: exactly doesn't match with right arguments in the wrong order
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithRightArgumentsInTheWrongOrderThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      // called once but not correct amount of times
+      some.function(42);
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function("thing", "some");
+      }
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] ${expectedCallCount} times.`);
+      }
+   }
 
    //TODO: not exactly matches
    //TODO: not exactly doesn't match
