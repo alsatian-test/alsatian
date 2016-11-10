@@ -1783,11 +1783,6 @@ export class ToHaveBeenCalledWithTests {
       }
    }
 
-   //TODO: greater than matches
-   //TODO: greater than doesn't match
-   //TODO: greater than doesn't match with wrong arguments
-   //TODO: greater than doesn't match with right arguments in the wrong order
-
    @TestCase(1, 2)
    @TestCase(2, 5)
    @TestCase(42, 100)
@@ -1889,8 +1884,94 @@ export class ToHaveBeenCalledWithTests {
       }
    }
 
-   //TODO: less than matches
-   //TODO: less than doesn't match
-   //TODO: less than doesn't match with wrong arguments
-   //TODO: less than doesn't match with right arguments in the wrong order
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(3)
+   @TestCase(4)
+   @TestCase(42)
+   public calledLessThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsPasses(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount - 2; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(3)
+   @TestCase(4)
+   @TestCase(42)
+   public calledLessThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderPasses(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount - 2; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).not.toThrow();
+   }
 }

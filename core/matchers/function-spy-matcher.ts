@@ -73,7 +73,10 @@ export class FunctionSpyMatcher {
          throw new TypeError("maximumCallCount must be greater than 0.");
       }
 
-      if (this._spy.calls.length >= maximumCallCount) {
+      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length >= maximumCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan, this._expectedArguments);
+      }
+      else if (this._spy.calls.length >= maximumCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan);
       }
 
