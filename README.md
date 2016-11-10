@@ -249,6 +249,21 @@ Expect(some.function).toHaveBeenCalledWith(this, "and that");
 Expect(some.function).toHaveBeenCalledWith(Any, Any(Number), Any(String));
 ```
 
+... or a specific number of times ...
+```
+Expect(some.function).toHaveBeenCalled().exactly(42).times;
+Expect(some.function).toHaveBeenCalledWith("something").anythingBut(10).times;
+Expect(some.function).toHaveBeenCalledWith(Any).lessThan(5).times;
+Expect(some.function).toHaveBeenCalledWith(Any(Number), Any(Array)).greaterThan(2).times;
+
+// Note that this functionality must not be used with the not operator
+// e.g. the following throws an error
+Expect(some.function).not.toHaveBeenCalled().lessThan(42).times;
+
+// this should be written
+Expect(some.function).toHaveBeenCalled().greaterThan(41).times;
+```
+
 ... you can stub it out ...
 
 ```
