@@ -1682,11 +1682,6 @@ export class ToHaveBeenCalledWithTests {
       }
    }
 
-   //TODO: not exactly matches
-   //TODO: not exactly doesn't match
-   //TODO: not exactly matches with wrong arguments
-   //TODO: not exactly doesn't match with right arguments in the wrong order
-
    @TestCase(1, 2)
    @TestCase(2, 1)
    @TestCase(42, 10)
@@ -1792,6 +1787,107 @@ export class ToHaveBeenCalledWithTests {
    //TODO: greater than doesn't match
    //TODO: greater than doesn't match with wrong arguments
    //TODO: greater than doesn't match with right arguments in the wrong order
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledGreaterThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsThrowsError(minimumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < minimumCallCount; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      if (minimumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] greater than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] greater than ${minimumCallCount} times.`);
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledGreaterThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(minimumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < minimumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      if (minimumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] greater than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] greater than ${minimumCallCount} times.`);
+      }
+   }
 
    //TODO: less than matches
    //TODO: less than doesn't match

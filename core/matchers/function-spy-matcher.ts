@@ -44,7 +44,7 @@ export class FunctionSpyMatcher {
       if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length === unexpectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly, this._expectedArguments);
       }
-      if (this._spy.calls.length === unexpectedCallCount) {
+      else if (this._spy.calls.length === unexpectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly);
       }
 
@@ -57,7 +57,10 @@ export class FunctionSpyMatcher {
          throw new TypeError("minimumCallCount must be greater than 0.");
       }
 
-      if (this._spy.calls.length <= minimumCallCount) {
+      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length <= minimumCallCount) {
+         throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan, this._expectedArguments);
+      }
+      else if (this._spy.calls.length <= minimumCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan);
       }
 
