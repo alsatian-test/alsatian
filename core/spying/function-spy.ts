@@ -14,7 +14,7 @@ export class FunctionSpy {
    }
 
    public callsWithArguments(... args: Array<any>): Array<SpyCall> {
-      return this.calls.filter(call => call.allArgumentsMatch(args));
+      return this.calls.filter(call => call.allArgumentsMatch.apply(call, args));
    }
 
    public call(...args: Array<any>) {
