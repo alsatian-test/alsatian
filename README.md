@@ -15,6 +15,23 @@ TypeScript testing framework with test cases, compatible with istanbul and tap r
 
 Hooray, we're in BETA! So what does that mean? In preparation for an official release we're going through the process of migrating our own projects to test entirely using Alsatian, so that we can iron out any kinks we find. You can too if you wish! :) If you find any problems or have an suggestions then please log an issue and we'll address it promptly!
 
+## Why would I use Alsatian?
+The key question! Well Alsatian has a lot going for it here are just a few great things to note:
+
+* All the awesome features you love from existing frameworks
+* TestCase decorator allows you to write smaller, DRY and more readable tests
+* No globals!
+* TAP support so you can use your favourite TAP reporter
+* Great CI process, every pull request and push on every branch is scrutinised to ensure high quality
+* 100% coverage all statements, lines, branches are covered in Alsatian tests
+* Various services rate us very highly on lots of different factors, check out our badges
+* Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
+* Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
+* Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
+
+Also it's lightning fast, watch it run all of it's unit tests in super quick time!
+![Alsatian Test Run Video](/documentation/images/alsatian-test-run.gif?raw=true)
+
 ## Installing
 
 Good news everybody, we're on NPM.
@@ -29,7 +46,7 @@ Alsatian has a CLI for easy use with your package.json or your favourite cli too
 ```
 alsatian [list of globs]
 
-alsatian ./test/**/*.spec.js ./special-test.js
+alsatian "./test/**/*.spec.js" "./special-test.js"
 ```
 
 ### CLI Options
@@ -62,7 +79,7 @@ export class ExampleTestFixture {
 Then check all is well
 
 ```
-> alsatian ./path/to/example.spec
+> alsatian "./path/to/example.spec.js"
 TAP version 13
 1..1
 ok 1 - exampleTest
@@ -152,7 +169,7 @@ Expect(undefined).not.toBeDefined();
 
 #### toBeNull
 
-Is it something or not? actual !== null
+Is it something or not? actual === null
 
 ```
 Expect(null).toBeNull();
@@ -399,6 +416,28 @@ export class ExampleTestFixture {
   }
 }
 ```
+
+Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute. You can change this if you need to though using the ```Timeout``` decorators
+
+
+```
+import { Expect, AsyncTest, Timeout } from "alsatian";
+
+export class ExampleTestFixture {
+
+  @AsyncTest()
+  @Timeout(5000) // Alsatian will now wait 5 seconds before failing
+  public asyncTest() {
+
+    return new Promise((resolve, reject) => {
+      somethingThatTakesAlmostFiveSeconds((result: number) => {
+         Expect(result).toBe(1);
+         resolve();
+      });
+    });
+  }
+}
+``` 
 
 ### Ignoring Tests
 
