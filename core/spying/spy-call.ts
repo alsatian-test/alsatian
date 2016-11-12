@@ -13,7 +13,7 @@ export class SpyCall {
       }
 
       if (expectedArguments.some((arg, index) => !this._argumentIsAsExpected(this._args[index], arg))) {
-         return false
+         return false;
       }
 
       return true;
