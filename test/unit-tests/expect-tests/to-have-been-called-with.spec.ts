@@ -1989,7 +1989,7 @@ export class ToHaveBeenCalledWithTests {
       }
 
       if (maximumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
       }
       else {
          Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
@@ -2014,7 +2014,7 @@ export class ToHaveBeenCalledWithTests {
       some.function("some", "thing");
 
       if (maximumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
       }
       else {
          Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
