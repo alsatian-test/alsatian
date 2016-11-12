@@ -242,7 +242,7 @@ export class FunctionCallCountMatchErrorTests {
 
       let error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, []);
 
-      Expect(error.actualValue).toBe("function was called with " +actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " +  actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
+      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " +  actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
    @TestCase([[]])

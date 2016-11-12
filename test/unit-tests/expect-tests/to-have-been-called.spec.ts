@@ -419,12 +419,6 @@ export class ToHaveBeenCalledTests {
       }
    }
 
-   //TODO: greater than matches
-   //TODO: greater than doesn't match
-
-   //TODO: less than matches
-   //TODO: less than doesn't match
-
    @TestCase(1, 2)
    @TestCase(2, 42)
    @TestCase(42, 50)
