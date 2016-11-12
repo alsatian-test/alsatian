@@ -1973,4 +1973,51 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).not.toThrow();
    }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledTheSameTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      if (maximumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledOneMoreTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments
+      some.function("some", "thing");
+
+      if (maximumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+      }
+   }
 }
