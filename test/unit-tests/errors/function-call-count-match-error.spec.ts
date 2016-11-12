@@ -160,7 +160,6 @@ export class FunctionCallCountMatchErrorTests {
       }
    }
 
-/*
    @TestCase([ "this" ])
    @TestCase([ "this", "that" ])
    @TestCase([ 1, 2, 3 ])
@@ -169,9 +168,9 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallCountMatchError(fakeFunction, true, args);
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.Exactly, args);
 
-      Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
+      Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "] 1 time.");
    }
 
    @TestCase([ "this" ])
@@ -182,11 +181,38 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: args });
 
-      let error = new FunctionCallCountMatchError(fakeFunction, false, args);
+      let error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, args);
 
-      Expect(error.message).toBe("Expected function not to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
+      Expect(error.message).toBe("Expected function not to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "] 1 time.");
    }
 
+   @TestCase([ "this" ])
+   @TestCase([ "this", "that" ])
+   @TestCase([ 1, 2, 3 ])
+   public shouldBeCalledGreaterThanWithArgsMessage(args: Array<any>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: [] });
+
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.GreaterThan, args);
+
+      Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "] greater than 1 time.");
+   }
+
+   @TestCase([ "this" ])
+   @TestCase([ "this", "that" ])
+   @TestCase([ 1, 2, 3 ])
+   public shouldBeCalledLessThanWithArgsMessage(args: Array<any>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      fakeFunction.calls.push({ args: args });
+
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.LessThan, args);
+
+      Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "] less than 1 time.");
+   }
+
+/*
    @TestCase([[]])
    @TestCase([[], []])
    @TestCase([[1], [2], [3]])
