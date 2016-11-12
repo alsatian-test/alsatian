@@ -29,7 +29,7 @@ export class SpyCallTests {
   @TestCase([ 1, 2, 3 ], [ 3, 2, 1])
   @TestCase([ "some", "thing" ], [ "thing", "some" ])
   public allArgumentsDoNotMatchIfIdenticalInputInWrongOrder(expectedArgs: Array<any>, actualArguments: Array<any>) {
-    const spyCall = new SpyCall(expectedArgs);
+    const spyCall = new SpyCall(actualArguments);
 
     Expect(spyCall.allArgumentsMatch.apply(spyCall, expectedArgs)).toBe(false);
   }
@@ -37,7 +37,7 @@ export class SpyCallTests {
   @TestCase([ 1, 2, 3 ], [ 1, 2 ])
   @TestCase([ "some", "thing" ], [ "thing" ])
   public allArgumentsDoNotMatchIfMissingArguments(expectedArgs: Array<any>, actualArguments: Array<any>) {
-    const spyCall = new SpyCall(expectedArgs);
+    const spyCall = new SpyCall(actualArguments);
 
     Expect(spyCall.allArgumentsMatch.apply(spyCall, expectedArgs)).toBe(false);
   }
@@ -45,7 +45,7 @@ export class SpyCallTests {
   @TestCase([ [ "an", "array" ] ], [ [ "an", "array" ] ])
   @TestCase([ { "an": "object "} ], [ { "an": "object "} ])
   public allArgumentsDoNotMatchIfArgumentsAreDifferentInstances(expectedArgs: Array<any>, actualArguments: Array<any>) {
-    const spyCall = new SpyCall(expectedArgs);
+    const spyCall = new SpyCall(actualArguments);
 
     Expect(spyCall.allArgumentsMatch.apply(spyCall, expectedArgs)).toBe(false);
   }

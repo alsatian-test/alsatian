@@ -8,7 +8,7 @@ export class SpyCall {
    }
 
    public allArgumentsMatch(... expectedArguments: Array<any>): boolean {
-      if (expectedArguments.length !== expectedArguments.length) {
+      if (expectedArguments.length !== this._args.length) {
          return false;
       }
 
