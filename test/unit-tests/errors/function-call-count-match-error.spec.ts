@@ -1,8 +1,7 @@
 import { FunctionCallCountMatchError } from "../../../core/errors/function-call-count-match-error";
-import { Expect, Test, TestCase, Any, FocusTests } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
 import { SpyCallCountType } from "../../../core/matchers";
 
-@FocusTests
 export class FunctionCallCountMatchErrorTests {
 
    @TestCase(1)
@@ -212,7 +211,6 @@ export class FunctionCallCountMatchErrorTests {
       Expect(error.message).toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "] less than 1 time.");
    }
 
-/*
    @TestCase([[]])
    @TestCase([[], []])
    @TestCase([[1], [2], [3]])
@@ -225,9 +223,9 @@ export class FunctionCallCountMatchErrorTests {
          fakeFunction.calls.push({ args: actualArguments });
       });
 
-      let error = new FunctionCallCountMatchError(fakeFunction, true, []);
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.Exactly, []);
 
-      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
    @TestCase([[]])
@@ -242,9 +240,43 @@ export class FunctionCallCountMatchErrorTests {
          fakeFunction.calls.push({ args: actualArguments });
       });
 
-      let error = new FunctionCallCountMatchError(fakeFunction, false, []);
+      let error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, []);
 
-      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+      Expect(error.actualValue).toBe("function was called with " +actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " +  actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
+   }
+
+   @TestCase([[]])
+   @TestCase([[], []])
+   @TestCase([[1], [2], [3]])
+   @TestCase([["something", "and", "another", "thing"]])
+   @TestCase([["this", "or"], ["that", "other", "thing"]])
+   public actualValueAndShouldMatchGreaterThanShouldBeSetToFunctionWasNotCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      actualArgumentsList.forEach(actualArguments => {
+         fakeFunction.calls.push({ args: actualArguments });
+      });
+
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.GreaterThan, []);
+
+      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
+   }
+
+   @TestCase([[]])
+   @TestCase([[], []])
+   @TestCase([[1], [2], [3]])
+   @TestCase([["something", "and", "another", "thing"]])
+   @TestCase([["this", "or"], ["that", "other", "thing"]])
+   public actualValueAndShouldMatchLessThanShouldBeSetToFunctionWasNotCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
+      let fakeFunction: any = { calls: [ ] };
+
+      actualArgumentsList.forEach(actualArguments => {
+         fakeFunction.calls.push({ args: actualArguments });
+      });
+
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.GreaterThan, []);
+
+      Expect(error.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
    @TestCase([])
@@ -254,9 +286,9 @@ export class FunctionCallCountMatchErrorTests {
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalledWithArguments(expectedArguments: Array<any>) {
       let fakeFunction: any = { calls: [ ] };
 
-      let error = new FunctionCallCountMatchError(fakeFunction, true, expectedArguments);
+      let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.Exactly, expectedArguments);
 
-      Expect(error.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
+      Expect(error.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + " 1 time.");
    }
 
    @TestCase([])
@@ -268,81 +300,153 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      let error = new FunctionCallCountMatchError(fakeFunction, false, expectedArguments);
+      let error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, expectedArguments);
 
-      Expect(error.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
+      Expect(error.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + " 1 time.");
    }
 
    @Test()
    public anyArgumentOutputAsAnythingInMessage() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Anything].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything] 1 time.");
    }
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInMessage() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Anything].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Anything] 1 time.");
    }
 
    @Test()
    public anyArgumentOutputAsAnythingInNotExpectedMessage() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything] 1 time.");
    }
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInNotExpectedMessage() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, Anything].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, Anything] 1 time.");
+   }
+
+   @Test()
+   public anyArgumentOutputAsAnythingInGreaterThanMessage() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.GreaterThan, [ Any ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything] greater than 1 time.");
+   }
+
+   @Test()
+   public twoAnyArgumentsBothOutputAsAnythingInGreaterThanMessage() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.GreaterThan, [ Any, Any ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Anything] greater than 1 time.");
+   }
+
+   @Test()
+   public anyArgumentOutputAsAnythingInLessThanMessage() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything] less than 1 time.");
+   }
+
+   @Test()
+   public twoAnyArgumentsBothOutputAsAnythingInLessThanMessage() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any, Any ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Anything] less than 1 time.");
    }
 
    @Test()
    public anyArgumentOutputAsAnythingInExpectedValue() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything] 1 time.");
    }
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInExpectedValue() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything] 1 time.");
    }
 
    @Test()
    public anyArgumentOutputAsAnythingInNotExpectedValue() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything] 1 time.");
    }
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInNotExpectedValue() {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Anything] 1 time.");
+   }
+
+   @Test()
+   public anyArgumentOutputAsAnythingInGreaterThanExpectedValue() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.GreaterThan, [ Any ]);
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything] greater than 1 time.");
+   }
+
+   @Test()
+   public twoAnyArgumentsBothOutputAsAnythingInGreaterThanExpectedValue() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.GreaterThan, [ Any, Any ]);
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything] greater than 1 time.");
+   }
+
+   @Test()
+   public anyArgumentOutputAsAnythingInLessThanExpectedValue() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any ]);
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything] less than 1 time.");
+   }
+
+   @Test()
+   public twoAnyArgumentsBothOutputAsAnythingInLessThanExpectedValue() {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any, Any ]);
+
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything] less than 1 time.");
    }
 
    @TestCase(Number)
@@ -352,9 +456,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeArgumentOutputAsAnyTypeInMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -364,9 +468,9 @@ export class FunctionCallCountMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInMessage(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(TypeOne), Any(TypeTwo) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true,  1, SpyCallCountType.Exactly, [ Any(TypeOne), Any(TypeTwo) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -376,9 +480,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false,  1, SpyCallCountType.Exactly, [ Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -388,9 +492,57 @@ export class FunctionCallCountMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTyoeInNotExpectedMessage(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(TypeOne), Any(TypeTwo) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false,  1, SpyCallCountType.Exactly, [ Any(TypeOne), Any(TypeTwo) ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] 1 time.");
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeArgumentOutputAsAnyTypeInGreaterThanMessage(Type: new (...args: Array<any>) => Object) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.GreaterThan, [ Any(Type) ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + "] greater than 1 time.");
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeArgumentsBothOutputAsAnyTypeInGreaterThanMessage(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true,  1, SpyCallCountType.GreaterThan, [ Any(TypeOne), Any(TypeTwo) ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] greater than 1 time.");
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeArgumentOutputAsAnyTypeInLessThanMessage(Type: new (...args: Array<any>) => Object) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any(Type) ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + "] less than 1 time.");
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeArgumentsBothOutputAsAnyTypeInLessThanMessage(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.LessThan, [ Any(TypeOne), Any(TypeTwo) ]);
+
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] less than 1 time.");
    }
 
    @TestCase(Number)
@@ -400,9 +552,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeArgumentOutputAsAnyTypeInExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name +  "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name +  "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -412,9 +564,9 @@ export class FunctionCallCountMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInExpectedValue(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(TypeOne), Any(TypeTwo) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(TypeOne), Any(TypeTwo) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -424,9 +576,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -436,9 +588,9 @@ export class FunctionCallCountMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedValue(TypeOne: new (...args: Array<any>) => Object, TypeTwo: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(TypeOne), Any(TypeTwo) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(TypeOne), Any(TypeTwo) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>TypeOne).name + ", Any " + (<any>TypeTwo).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -448,9 +600,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -460,9 +612,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTyoeInNotExpectedMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -472,9 +624,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Any " + (<any>Type).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -484,9 +636,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndAnyTypeArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Any " + (<any>Type).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -496,9 +648,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type), Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type), Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + ", Anything].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -508,9 +660,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTyoeInNotExpectedMessage(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type), Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(Type), Any ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + ", Anything].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -520,9 +672,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type), Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type), Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name + ", Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -532,9 +684,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue(Type: new (...args: Array<any>) => Object) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type), Any ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(Type), Any ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + ", Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -544,9 +696,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInMessage( exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ exactValue, Any]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ exactValue, Any]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [" + JSON.stringify(exactValue) + ", Anything].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [" + JSON.stringify(exactValue) + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -556,9 +708,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInMessageAnyTyoeInNotExpectedMessage(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ exactValue, Any]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ exactValue, Any]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [" + JSON.stringify(exactValue) + ", Anything].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [" + JSON.stringify(exactValue) + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -568,9 +720,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInExpectedValue(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ exactValue, Any]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ exactValue, Any]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [" + JSON.stringify(exactValue) + ", Anything].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [" + JSON.stringify(exactValue) + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -580,9 +732,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInNotExpectedValue(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ exactValue, Any]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ exactValue, Any]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Anything].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -592,9 +744,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInMessage(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, exactValue ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Anything, " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase("test")
@@ -604,9 +756,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndExaactArgumentsBothOutputAsAnythingAndExactInMessageAnyTyoeInNotExpectedMessage( exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, exactValue ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Anything, " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase("test")
@@ -616,9 +768,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInExpectedValue(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any, exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any, exactValue ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase("test")
@@ -628,9 +780,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInNotExpectedValue(exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any, exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any, exactValue ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Anything, " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -640,9 +792,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessage(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ exactValue, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ exactValue, Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -652,9 +804,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTyoeInNotExpectedMessage(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ exactValue, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ exactValue, Any(Type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -664,9 +816,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInExpectedValue(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ exactValue, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ exactValue, Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -676,9 +828,9 @@ export class FunctionCallCountMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ exactValue, Any(Type) ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ exactValue, Any(Type) ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "].");
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any>Type).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -688,9 +840,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInMessage(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type), exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type), exactValue ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -700,9 +852,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndExaactArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type), exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(Type), exactValue ]);
 
-      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.message).toBe("Expected function not to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -712,9 +864,9 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInExpectedValue(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, [ Any(Type), exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, true, 1, SpyCallCountType.Exactly, [ Any(Type), exactValue ]);
 
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "].");
+      Expect(functionCallError.expectedValue).toBe("function to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -724,8 +876,8 @@ export class FunctionCallCountMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue(Type: new (...args: Array<any>) => Object, exactValue: any) {
       let fakeSpy: any = { calls: [ ] };
 
-      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, [ Any(Type), exactValue ]);
+      const functionCallError = new FunctionCallCountMatchError(fakeSpy, false, 1, SpyCallCountType.Exactly, [ Any(Type), exactValue ]);
 
-      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "].");
-   }*/
+      Expect(functionCallError.expectedValue).toBe("function not to be called with [Any " + (<any>Type).name + ", " + JSON.stringify(exactValue) + "] 1 time.");
+   }
 }
