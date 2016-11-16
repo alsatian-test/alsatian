@@ -9,7 +9,7 @@ export class GulpIntegrationTests {
    @AsyncTest()
    public toBeExpectations() {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/to-be.spec.js --tap");
+      const result = child.exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
 
       let consoleOutput = "";
 
@@ -20,7 +20,12 @@ export class GulpIntegrationTests {
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
+             try {
             Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+             }
+             catch(error) {
+                 reject(error);
+             }
             resolve();
          });
       });

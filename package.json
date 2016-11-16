@@ -34,6 +34,7 @@
     "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests",
     "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
     "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
+    "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\""
   },
   "repository": {
