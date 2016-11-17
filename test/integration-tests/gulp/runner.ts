@@ -21,12 +21,12 @@ export class GulpIntegrationTests {
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
              try {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+                Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+                resolve();
              }
              catch(error) {
                  reject(error);
              }
-            resolve();
          });
       });
    }
