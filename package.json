@@ -61,6 +61,7 @@
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
+    "@types/gulp": "^3.8.32",
     "codeclimate-test-reporter": "^0.4.0",
     "coveralls": "^2.11.9",
     "gulp": "^3.9.1",

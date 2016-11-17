@@ -7,5 +7,5 @@ import { AlsatianCliOptions } from "./alsatian-cli-options";
 const userArguments = new AlsatianCliOptions(process.argv.slice(2));
 
 // run the test set
-let cliTestRunner = CliTestRunner.create();
+const cliTestRunner = CliTestRunner.create();
 cliTestRunner.run(userArguments);

@@ -21,7 +21,7 @@ export class GulpIntegrationTests {
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {         
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+            Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
             resolve();
          });
       });
