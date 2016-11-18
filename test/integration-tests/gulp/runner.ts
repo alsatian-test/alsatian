@@ -20,7 +20,7 @@ export class GulpIntegrationTests {
       let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt").toString();
 
       return new Promise((resolve, reject) => {
-         result.on("close", (code: number) => {         
+         result.on("close", (code: number) => {
             Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
             resolve();
          });
