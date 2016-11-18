@@ -19,6 +19,10 @@ import {
    TypeMatcher,
 } from "./_spying";
 
+import {
+   FunctionSpyMatcher
+} from "./matchers";
+
 /**
 * Allows checking of test outcomes
 * @param actualValue - the value or function under test
@@ -262,7 +266,7 @@ export class Matcher {
    /**
    * Checks that a spy has been called
    */
-   public toHaveBeenCalled() {
+   public toHaveBeenCalled(): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
          throw new TypeError("toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
       }
@@ -270,13 +274,15 @@ export class Matcher {
       if (this._actualValue.calls.length === 0 === this._shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch);
       }
+
+      return new FunctionSpyMatcher(this._actualValue);
    }
 
    /**
    * Checks that a spy has been called with the specified arguments
    * @param expectedArguments - a list of arguments that the spy should have been called with
    */
-   public toHaveBeenCalledWith(...expectedArguments: Array<any>) {
+   public toHaveBeenCalledWith(...expectedArguments: Array<any>): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
          throw new TypeError("toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
       }
@@ -292,6 +298,8 @@ export class Matcher {
       }).length === 0 === this._shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, expectedArguments);
       }
+
+      return new FunctionSpyMatcher(this._actualValue, expectedArguments);
    }
 
    private _isFunctionSpyOrSpiedOnFunction(value: any) {

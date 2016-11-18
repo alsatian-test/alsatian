@@ -1,4 +1,4 @@
-import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
+import { FunctionCallMatchError, FunctionCallCountMatchError } from "../../../core/_errors";
 import { Expect, Test, TestCase, SpyOn, Any } from "../../../core/alsatian-core";
 
 export class ToHaveBeenCalledWithTests {
@@ -1578,5 +1578,446 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument, 42);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, 42)).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithCorrectArgumentsPasses(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).exactly(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).exactly(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).exactly(expectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithWrongArgumentsThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      // called once but not correct amount of times
+      some.function(42);
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(43);
+      }
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledExactlyCorrectNumberOfTimesWithRightArgumentsInTheWrongOrderThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      // called once but not correct amount of times
+      some.function("some", "thing");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function("thing", "some");
+      }
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 1)
+   @TestCase(42, 10)
+   public calledAnythingButCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).anythingBut(notExpectedCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledAnythingButCorrectNumberOfTimesWithExtraCallWithWrongArgumentsThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function not to be called with [42] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called with [42] ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(2)
+   @TestCase(3)
+   @TestCase(42)
+   public calledAnythingButCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(expectedCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < expectedCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      if (expectedCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function not to be called with [\"some\", \"thing\"] 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").anythingBut(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called with ["some", "thing"] ${expectedCallCount} times.`);
+      }
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1, 2)
+   @TestCase(2, 5)
+   @TestCase(42, 100)
+   public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).greaterThan(minimumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledGreaterThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsThrowsError(minimumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < minimumCallCount; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      if (minimumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] greater than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] greater than ${minimumCallCount} times.`);
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledGreaterThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(minimumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < minimumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      if (minimumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] greater than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] greater than ${minimumCallCount} times.`);
+      }
+   }
+
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(2, 1)
+   @TestCase(5, 2)
+   @TestCase(100, 42)
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < actualCallCount; i++) {
+         some.function(42);
+      }
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(3)
+   @TestCase(4)
+   @TestCase(42)
+   public calledLessThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsPasses(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount - 2; i++) {
+         some.function(42);
+      }
+
+      // called an extra time with a different argument
+      some.function(43);
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42).lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(3)
+   @TestCase(4)
+   @TestCase(42)
+   public calledLessThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderPasses(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount - 2; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments in wrong order
+      some.function("thing", "some");
+
+      Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).not.toThrow();
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledTheSameTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      if (maximumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+      }
+   }
+
+   @TestCase(1)
+   @TestCase(2)
+   @TestCase(42)
+   public calledOneMoreTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
+      const some = {
+         function: (...args: Array<any>) => {}
+      };
+
+      SpyOn(some, "function");
+
+      for (let i = 0; i < maximumCallCount; i++) {
+         some.function("some", "thing");
+      }
+
+      // called an extra time with arguments
+      some.function("some", "thing");
+
+      if (maximumCallCount === 1) {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
+      }
+      else {
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+      }
    }
 }

@@ -13,6 +13,10 @@ export class FunctionSpy {
       return this._calls;
    }
 
+   public callsWithArguments(... args: Array<any>): Array<SpyCall> {
+      return this.calls.filter(call => call.allArgumentsMatch.apply(call, args));
+   }
+
    public call(...args: Array<any>) {
 
       this.calls.push(new SpyCall(args));
