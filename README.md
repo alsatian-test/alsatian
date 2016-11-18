@@ -41,6 +41,8 @@ npm install alsatian
 
 ## Running alsatian
 
+### CLI
+
 Alsatian has a CLI for easy use with your package.json or your favourite cli tool
 
 ```
@@ -49,7 +51,7 @@ alsatian [list of globs]
 alsatian "./test/**/*.spec.js" "./special-test.js"
 ```
 
-### CLI Options
+#### CLI Options
 
 You can change how Alsatian runs your tests using the available options
 
@@ -59,6 +61,74 @@ You can change how Alsatian runs your tests using the available options
 | --version                 | -v     | Outputs the version of the CLI                                               |            
 | --tap                     | -T     | Will make Alsatian output in TAP format (to be consumed by a TAP reporter)   |             
 | --timeout [number in ms]  | -t     | Sets the maximum time that a test can run for before failing (default 500ms) |
+
+### Node.js
+
+If you're more of a nodey person then you can use that too
+
+```
+import { TestSet, TestRunner } from "alsatian";
+import { TapBark } from "tap-bark";
+
+// create test set
+const testSet = TestSet.create();
+
+// add your tests
+testSet.addTestsFromFiles("./tests/you-want/to-add/**/*.spec.js");
+
+// create a test runner
+const testRunner = new TestRunner();
+
+// setup the output
+testRunner.outputStream
+          // this will use alsatian's default output if you remove this
+          // you'll get TAP or you can add your favourite TAP reporter in it's place
+          .pipe(TapBark.create().getPipeable()) 
+          // pipe to the console
+          .pipe(process.stdout);
+
+// run the test set
+testRunner.run(testSet)
+          // this will be called after all tests have been run
+          .then((results) => done())
+          // this will be called if there was a problem
+          .catch((error) => doSomethingWith(error));
+```
+
+### Gulp
+
+If instead you prefer to gulp it up you can write a task similar to how you'd work with Node.js
+
+```
+import * as Gulp from "gulp";
+import { TestSet, TestRunner } from "alsatian";
+import { TapBark } from "tap-bark";
+
+Gulp.task("test", (done: () => any) => {
+
+    // create test set
+    const testSet = TestSet.create();
+
+    // add your tests
+    testSet.addTestsFromFiles("./tests/you-want/to-add/**/*.spec.js");
+
+    // create a test runner
+    const testRunner = new TestRunner();
+
+    // setup the output
+    testRunner.outputStream
+              // this will use alsatian's default output if you remove this
+              // you'll get TAP or you can add your favourite TAP reporter in it's place
+              .pipe(TapBark.create().getPipeable()) 
+              // pipe to the console
+              .pipe(process.stdout);
+
+    // run the test set
+    testRunner.run(testSet)
+              // and tell gulp when we're done
+              .then(() => done());
+});
+```
 
 ## Using alsatian
 
