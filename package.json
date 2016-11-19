@@ -67,7 +67,7 @@
     "gulp": "^3.9.1",
     "node-inspector": "^0.12.8",
     "nyc": "^8.3.1",
-    "tslint": "^3.13.0",
+    "tslint": "^4.0.0",
     "typescript": "^2.0.3"
   },
   "dependencies": {
