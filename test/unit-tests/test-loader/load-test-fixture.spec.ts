@@ -1,6 +1,6 @@
 import { TestLoader } from "../../../core/test-loader";
 import { FileRequirer } from "../../../core/file-requirer";
-import { Expect, Test, TestCase, TestFixture, SpyOn, FocusTests, METADATA_KEYS } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, TestFixture, SpyOn, METADATA_KEYS } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
@@ -8,7 +8,6 @@ import { TestFixture as TestFixtureMetadata } from "../../../core/_core";
 import "reflect-metadata";
 
 @TestFixture("Load Tests")
-@FocusTests
 export class LoadTestTests {
 
    @Test()
