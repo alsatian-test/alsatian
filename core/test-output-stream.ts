@@ -69,10 +69,9 @@ export class TestOutputStream extends ReadableStream {
 
       this._writeOut(`not ok ${testId} ${description}\n`);
 
+      // if it's a match error then log it properly, otherwise log it as unhandled
       if (error instanceof MatchError) {
           this._writeMatchErrorOutput(<MatchError>error);
-
-          //error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"");
       } else {
           this._writeUnhandledErrorOutput(error);
       }
@@ -136,7 +135,7 @@ export class TestOutputStream extends ReadableStream {
 
        if (stack) {
            // encode the stack trace with base64 to prevent new lines from messing with the YAML
-           output = output + "     stack_base64: " + new Buffer(stack).toString('base64') + "\n";
+           output = output + "     stack_base64: " + new Buffer(stack).toString("base64") + "\n";
        }
 
        output = output + " ...\n";
