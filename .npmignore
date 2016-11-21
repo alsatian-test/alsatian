@@ -12,3 +12,8 @@ coverage
 
 #DevOps
 scripts
+
+# TypeScript
+*.js.map
+*.ts
+!*.d.ts
