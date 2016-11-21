@@ -1,29 +1,15 @@
 import "reflect-metadata";
-import { TESTS } from "./_metadata-keys";
+import { TEST_FIXTURE } from "./_metadata-keys";
+import { TestFixture as TestFixtureMetadata } from "../_core";
 
 export function TestFixture(description?: string) {
-  return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
+  
+  return (constructor: Function) => {
 /*
-    // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TESTS, target);
+    // create data about the test fixture
+    const testFixtureMetadata = new TestFixtureMetadata(description || (<any>constructor).name);
 
-    // if there are no tests registered yet then register it
-    if (!tests) {
-      tests = [ {
-         key: propertyKey
-      } ];
-    }
-    // otherwise add it to the register
-    else if (tests.filter(test => test.key === propertyKey).length === 0) {
-      tests.push( {
-         key: propertyKey
-      });
-    }
-
-    // set the description
-    tests.filter(test => test.key === propertyKey)[0].description = description;
-
-    // update the register
-    Reflect.defineMetadata(TESTS, tests, target);
-};*/
+    // attach meta data to the class
+    Reflect.defineMetadata(TEST_FIXTURE, testFixtureMetadata, constructor);*/
+  };
 }
