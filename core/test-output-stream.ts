@@ -69,11 +69,13 @@ export class TestOutputStream extends ReadableStream {
 
       this._writeOut(`not ok ${testId} ${description}\n`);
 
-      if (error instanceof MatchError === false) {
-         error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"");
-      }
+      if (error instanceof MatchError) {
+          this._writeMatchErrorOutput(<MatchError>error);
 
-      this._writeOut(this._getErrorYaml(<MatchError>error));
+          //error = new MatchError("the test threw an error", "the test to run", "Test threw " + (<any>error.constructor).name + " with message \"" + error.message + "\"");
+      } else {
+          this._writeUnhandledErrorOutput(error);
+      }
    }
 
    private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
@@ -106,12 +108,40 @@ export class TestOutputStream extends ReadableStream {
       return "undefined";
    }
 
-   private _getErrorYaml(error: MatchError): string {
-      return " ---\n" +
-      "   message: \"" + error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"\n" +
-      "   severity: fail\n" +
-      "   data:\n" +
-      "     got: " + JSON.stringify(error.actualValue) + "\n" +
-      "     expect: " + JSON.stringify(error.expectedValue) + "\n ...\n";
+   private _writeMatchErrorOutput(error: MatchError): void {
+
+       let sanitisedMessage = error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+       let sanitisedActual = JSON.stringify(error.actualValue);
+       let sanitisedExpected = JSON.stringify(error.expectedValue);
+
+       this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
+
    }
+
+   private _writeUnhandledErrorOutput(error: Error): void {
+
+       this._writeFailure("The test threw an unhandled error.", "an unhandled error", "no unhandled errors to be thrown", error.stack);
+
+   }
+
+   private _writeFailure(message: string, actual: string, expected: string, stack?: string): void {
+
+       let output =
+           " ---\n" +
+           "   message: \"" + message + "\"\n" +
+           "   severity: fail\n" +
+           "   data:\n" +
+           "     got: " + actual + "\n" +
+           "     expect: " + expected + "\n";
+
+       if (stack) {
+           // encode the stack trace with base64 to prevent new lines from messing with the YAML
+           output = output + "     stack: " + new Buffer(stack).toString('base64') + "\n";
+       }
+
+       output = output + " ...\n";
+
+       this._writeOut(output);
+   }
+
 }
