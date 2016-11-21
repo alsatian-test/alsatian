@@ -157,11 +157,12 @@ ok 1 - exampleTest
 
 ### Naming Tests
 
-By default, tests will be named the same as their functions and this will be what is output by alsatian. However, you can give the test a more meaningful name simply by supplying the ```Test``` annotation with whatever you desire.
+By default, tests will be named the same as their functions and fixtures will be named the same as their class. This will be what is output by alsatian. However, you can give the test or fixture more meaningful name simply by supplying the ```Test``` and ```TestFixture``` annotations with whatever you desire.
 
 ```
-import { Expect, Test } from "alsatian";
+import { Expect, Test, TestFixture } from "alsatian";
 
+@TestFixture("Awesome Test Fixture")
 export class ExampleTestFixture {
 
   @Test("Confirm 1 + 1 is 2")
@@ -175,9 +176,13 @@ Then check all is well
 
 ```
 > alsatian ./path/to/example.spec
-TAP version 13
-1..1
-ok 1 - Confirm 1 + 1 is 2
+Awesome Test Fixture
+Confirm 1 + 1 is 2
+|====================|
+
+Pass: 1/1
+Fail: 0/1
+Ignore: 0/1
 ```
 
 ### Test Cases
@@ -185,8 +190,9 @@ ok 1 - Confirm 1 + 1 is 2
 You can pass arguments to your tests simply by using the ```TestCase``` annotation
 
 ```
-import { Expect, TestCase } from "alsatian";
+import { Expect, TestCase, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @TestCase(1, 2)
@@ -470,8 +476,9 @@ properySp.restore();
 You can also have asynchronous tests using the ```AsyncTest``` annotation,
 
 ```
-import { Expect, AsyncTest } from "alsatian";
+import { Expect, AsyncTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @AsyncTest()
@@ -491,8 +498,9 @@ Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute.
 
 
 ```
-import { Expect, AsyncTest, Timeout } from "alsatian";
+import { Expect, AsyncTest, Timeout, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @AsyncTest()
@@ -514,8 +522,9 @@ export class ExampleTestFixture {
 You can stop tests from being run by using the ```IgnoreTest``` annotation
 
 ```
-import { Expect, Test, IgnoreTest } from "alsatian";
+import { Expect, Test, IgnoreTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -529,9 +538,10 @@ export class ExampleTestFixture {
 or you can stop all tests in a given fixture from running using the ```IgnoreTests``` annotation
 
 ```
-import { Expect, Test, IgnoreTests } from "alsatian";
+import { Expect, Test, IgnoreTests, TestFixture } from "alsatian";
 
 @IgnoreTests()
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -549,8 +559,9 @@ export class ExampleTestFixture {
 You can provide a reason to both of these, which will put it into the TAP output.
 
 ```
-import { Expect, Test, IgnoreTest } from "alsatian";
+import { Expect, Test, IgnoreTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -566,8 +577,9 @@ export class ExampleTestFixture {
 You can run a single test or select tests using the ```FocusTest``` annotation
 
 ```
-import { Expect, Test, FocusTest } from "alsatian";
+import { Expect, Test, FocusTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -586,9 +598,10 @@ export class ExampleTestFixture {
 or you can run only tests in this fixture using the ```FocusTests``` annotation
 
 ```
-import { Expect, Test, FocusTests } from "alsatian";
+import { Expect, Test, FocusTests, TestFixture } from "alsatian";
 
 @FocusTests
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -608,8 +621,9 @@ export class ExampleTestFixture {
 You can get a function to be run before every function in the fixture using the ```Setup``` decorators
 
 ```
-import { Expect, Test, Setup } from "alsatian";
+import { Expect, Test, Setup, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Setup
@@ -629,8 +643,9 @@ export class ExampleTestFixture {
 You can also run functions after every test has completed using the ```Teardown``` decorators
 
 ```
-import { Expect, Test, Teardown } from "alsatian";
+import { Expect, Test, Teardown, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Teardown
