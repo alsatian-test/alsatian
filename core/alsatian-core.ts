@@ -1,7 +1,6 @@
 import {
    Expect,
    TestSet,
-   TestFixture,
    TestOutputStream
 } from "./_core";
 
@@ -13,6 +12,7 @@ import {
    IgnoreTests,
    Setup,
    Teardown,
+   TestFixture,
    Test,
    TestCase,
    Timeout
