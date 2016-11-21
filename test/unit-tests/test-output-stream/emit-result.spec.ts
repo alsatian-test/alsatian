@@ -15,7 +15,7 @@ const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => 
         "   data:\n" +
         "     got: an unhandled error\n" +
         "     expect: no unhandled errors to be thrown\n" +
-        "     stack: " + new Buffer(stack).toString('base64') + "\n" +
+        "     stack_base64: " + new Buffer(stack).toString('base64') + "\n" +
         " ...\n"
     );
 };
@@ -235,7 +235,6 @@ export class EmitResultTests {
       Expect(() => testOutput.emitResult(1, testCaseResult)).toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
    }
 
-   @FocusTest
    @TestCase("line 1\nline3\nline 7")
    @TestCase("function foo in a.ts\nfunction bar in z.ts\nfunction x in entry.ts")
    public shouldEmitCorrectUnhandledErrorStack(stack: string) {

@@ -136,7 +136,7 @@ export class TestOutputStream extends ReadableStream {
 
        if (stack) {
            // encode the stack trace with base64 to prevent new lines from messing with the YAML
-           output = output + "     stack: " + new Buffer(stack).toString('base64') + "\n";
+           output = output + "     stack_base64: " + new Buffer(stack).toString('base64') + "\n";
        }
 
        output = output + " ...\n";
