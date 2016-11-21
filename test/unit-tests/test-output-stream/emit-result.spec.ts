@@ -7,6 +7,19 @@ const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
     return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
 };
 
+const _getUnhandledErrorMessage: (errorName: string, stack: string, message: string) => string = (errorName: string, stack: string, message: string) => {
+    let stackOutput = stack.split('\n').map(l => "# ERROR:     " + l).join('');
+
+    let output = ("# ERROR: An error of type " + errorName + " was thrown.\n" +
+    "# ERROR: Message: '" + message + "'\n" +
+    "# ERROR: Stack trace:\n" +
+    stack);
+
+    return output;
+};
+
+class FakeError extends Error { }
+
 export class EmitResultTests {
 
    @TestCase(1)
@@ -220,5 +233,64 @@ export class EmitResultTests {
       const testOutput = new TestOutputStream();
 
       Expect(() => testOutput.emitResult(1, testCaseResult)).toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
+   }
+
+   @Test()
+   public shouldEmitCorrectUnhandledErrorName() {
+       let testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       let test: ITest = new TestBuilder().build();
+
+       let error = new FakeError("empty message")
+       error.stack = "empty stack";
+
+       let testCaseResult = new TestCaseResult(test, [], error);
+
+       let expected = _getUnhandledErrorMessage("FakeError", "empty stack", "empty message");
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase("the test broke")
+   @TestCase("you really did something wrong Mr Developer!")
+   public shouldEmitCorrectUnhandledErrorMessage(message: string) {
+       let testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       let test: ITest = new TestBuilder().build();
+
+       let error = new Error(message);
+       error.stack = "empty stack";
+
+       let testCaseResult = new TestCaseResult(test, [], error);
+
+       let expected = _getUnhandledErrorMessage("Error", "empty stack", message);
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase("line 1\nline3\nline 7")
+   @TestCase("function foo in a.ts\nfunction bar in z.ts\nfunction x in entry.ts")
+   public shouldEmitCorrectUnhandledErrorStack(stack: string) {
+       let testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       let test: ITest = new TestBuilder().build();
+
+       let error = new Error("empty message");
+       error.stack = stack;
+
+       let testCaseResult = new TestCaseResult(test, [], error);
+
+       let expected = _getUnhandledErrorMessage("Error", stack, "empty message");
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
    }
 }
