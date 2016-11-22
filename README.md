@@ -1,5 +1,8 @@
-# alsatian
-
+<p id="banner" align="center">
+    <img src="/documentation/images/alsatian-mascot.png?raw=true" alt="Alsatian Mascot" />
+    <img src="/documentation/images/alsatian-logo.png?raw=true" alt="Alsatian Logo"  />
+    <p>Awesomeley easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
+</p>
 <p id="badges" align="center">
     <a href="https://www.npmjs.com/package/alsatian">
         <img src="https://img.shields.io/npm/v/alsatian.svg" alt="NPM Version" />
@@ -29,8 +32,6 @@
         <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
     </a>
 </p>
-
-TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
 
 ## In BETA
 
