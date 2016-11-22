@@ -66,7 +66,7 @@ You can change how Alsatian runs your tests using the available options
 
 If you're more of a nodey person then you can use that too
 
-```
+```typescript
 import { TestSet, TestRunner } from "alsatian";
 import { TapBark } from "tap-bark";
 
@@ -99,7 +99,7 @@ testRunner.run(testSet)
 
 If instead you prefer to gulp it up you can write a task similar to how you'd work with Node.js
 
-```
+```typescript
 import * as Gulp from "gulp";
 import { TestSet, TestRunner } from "alsatian";
 import { TapBark } from "tap-bark";
@@ -134,7 +134,7 @@ Gulp.task("test", (done: () => any) => {
 
 Create your first spec file
 
-```
+```typescript
 import { Expect, Test } from "alsatian";
 
 export class ExampleTestFixture {
@@ -159,7 +159,7 @@ ok 1 - exampleTest
 
 By default, tests will be named the same as their functions and this will be what is output by alsatian. However, you can give the test a more meaningful name simply by supplying the ```Test``` annotation with whatever you desire.
 
-```
+```typescript
 import { Expect, Test } from "alsatian";
 
 export class ExampleTestFixture {
@@ -184,7 +184,7 @@ ok 1 - Confirm 1 + 1 is 2
 
 You can pass arguments to your tests simply by using the ```TestCase``` annotation
 
-```
+```typescript
 import { Expect, TestCase } from "alsatian";
 
 export class ExampleTestFixture {
@@ -205,7 +205,7 @@ Now you've set up some tests, it's time to check your code is working. Let's sta
 
 To be or not to be, that is the question! Simply put this checks whether actual === expected
 
-```
+```typescript
 Expect(1 + 1).toBe(2);
 Expect(1 + 1).not.toBe(3);
 ```
@@ -214,7 +214,7 @@ Expect(1 + 1).not.toBe(3);
 
 Next we can check if it's pretty much the same actual == expected
 
-```
+```typescript
 Expect("1").toEqual(1);
 Expect(1 + 1).not.toEqual("3");
 ```
@@ -223,7 +223,7 @@ Expect(1 + 1).not.toEqual("3");
 
 Now a cheeky little regular expression if you don't mind
 
-```
+```typescript
 Expect("something").toMatch(/some/);
 Expect("another thing").not.toMatch(/something/);
 ```
@@ -232,7 +232,7 @@ Expect("another thing").not.toMatch(/something/);
 
 Is it there or not? actual !== undefined
 
-```
+```typescript
 Expect("something").toBeDefined();
 Expect(undefined).not.toBeDefined();
 ```
@@ -241,7 +241,7 @@ Expect(undefined).not.toBeDefined();
 
 Is it something or not? actual === null
 
-```
+```typescript
 Expect(null).toBeNull();
 Expect("something").not.toBeNull();
 ```
@@ -250,7 +250,7 @@ Expect("something").not.toBeNull();
 
 Is it trueish? actual == trueish
 
-```
+```typescript
 Expect(1).toBeTruthy();
 Expect(0).not.toBeTruthy();
 ```
@@ -259,7 +259,7 @@ Expect(0).not.toBeTruthy();
 
 Does the string contain another string or an array contain an item?
 
-```
+```typescript
 Expect("something").toContain("thing");
 Expect([1, 2, 3]).toContain(2);
 Expect("another thing").not.toContain("something");
@@ -270,7 +270,7 @@ Expect([1, 2, 3]).not.toContain(4);
 
 Which one's larger (hopefully the actual)
 
-```
+```typescript
 Expect(2).toBeGreaterThan(1);
 Expect(1).not.toBeGreaterThan(2);
 ```
@@ -279,7 +279,7 @@ Expect(1).not.toBeGreaterThan(2);
 
 For when you don't want things to get out of control, check it's not too big
 
-```
+```typescript
 Expect(1).toBeLessThan(2);
 Expect(2).not.toBeLessThan(1);
 ```
@@ -288,7 +288,7 @@ Expect(2).not.toBeLessThan(1);
 
 Check whether a function throws an error
 
-```
+```typescript
 Expect(() => throw new Error()).toThrow();
 Expect(() => {}).not.toThrow();
 ```
@@ -297,7 +297,7 @@ Expect(() => {}).not.toThrow();
 
 Check whether a function throws a specific error with a given message
 
-```
+```typescript
 Expect(() => throw new TypeError("things went wrong")).toThrowError(TypeError, "things went wrong");
 Expect(() => throw new Error("some error we don't care about")).not.toThrow(TypeError, "super nasty error");
 ```
@@ -306,7 +306,7 @@ Expect(() => throw new Error("some error we don't care about")).not.toThrow(Type
 
 When we want to check functions are called, this is simple first we need to turn it into a spy...
 
-```
+```typescript
 import { SpyOn } from "alsatian";
 
 let some = {
@@ -319,25 +319,26 @@ SpyOn(some, "function");
 
 ... then check it's been called ...
 
-```
+```typescript
 Expect(some.function).toHaveBeenCalled();
 ```
 
 ... or check it's been called with certain arguments ...
 
-```
+```typescript
 Expect(some.function).toHaveBeenCalledWith(this, "and that");
 ```
 
 ... or any arguments ...
 
-```
+```typescript
 // you can use the Any function to signify an argument can be anything or any specific type
 Expect(some.function).toHaveBeenCalledWith(Any, Any(Number), Any(String));
 ```
 
 ... or a specific number of times ...
-```
+
+```typescript
 Expect(some.function).toHaveBeenCalled().exactly(42).times;
 Expect(some.function).toHaveBeenCalledWith("something").anythingBut(10).times;
 Expect(some.function).toHaveBeenCalledWith(Any).lessThan(5).times;
@@ -353,25 +354,25 @@ Expect(some.function).toHaveBeenCalled().greaterThan(41).times;
 
 ... you can stub it out ...
 
-```
+```typescript
 SpyOn(some, "function").andStub();
 ```
 
 ... you can make it call something else ...
 
-```
+```typescript
 SpyOn(some, "function").andCall(() => console.log("I are called"));
 ```
 
 ... or make it return whatever you desire ...
 
-```
+```typescript
 SpyOn(some, "function").andReturn(42);
 ```
 
 ... and even return it to how it started
 
-```
+```typescript
 SpyOn(some, "function");
 
 some.function.restore();
@@ -387,7 +388,7 @@ spy.restore();
 
 You may want to just create a fake spy property this is easy to do and has all the same functionality as a Spy created through ```SpyOn```
 
-```
+```typescript
 import { FunctionSpy } from "alsatian";
 
 const spy = new FunctionSpy();
@@ -397,7 +398,7 @@ const spy = new FunctionSpy();
 
 Similarly to spying on functions you can also spy on properties as below ...
 
-```
+```typescript
 import { SpyOnProperty } from "alsatian";
 
 class Test {
@@ -421,7 +422,7 @@ SpyOnProperty(test, "property");
 
 ... then check it's been set ...
 
-```
+```typescript
 const propertySpy = SpyOnProperty(test, "property");
 
 // unlike function spies expect calls on property spies
@@ -432,44 +433,41 @@ Expect(propertySpy).toHaveBeenSet();
 
 ... or check it's been set to a specific value ...
 
-```
+```typescript
 Expect(propertySpy).toHaveBeenSetTo(42);
 ```
 
 ... add a fake getter ...
 
-```
+```typescript
 SpyOnProperty(test, "property").andCallGetter(() => { return "something"; });
-
 ```
 
 ... or setter ...
 
-```
+```typescript
 SpyOnProperty(test, "property").andCallSetter((value: any) => { doSomethingWith(value); });
-
 ```
 
 ... return a set value ...
 
-```
+```typescript
 SpyOnProperty(test, "property").andReturnValue(42);
-
 ```
 
 ... and restore it to how it was before
 
-```
+```typescript
 const properySpy = SpyOnProperty(test, "property");
 
-properySp.restore();
+properySpy.restore();
 ```
 
 ### Async Tests
 
 You can also have asynchronous tests using the ```AsyncTest``` annotation,
 
-```
+```typescript
 import { Expect, AsyncTest } from "alsatian";
 
 export class ExampleTestFixture {
@@ -490,7 +488,7 @@ export class ExampleTestFixture {
 Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute. You can change this if you need to though using the ```Timeout``` decorators
 
 
-```
+```typescript
 import { Expect, AsyncTest, Timeout } from "alsatian";
 
 export class ExampleTestFixture {
@@ -513,7 +511,7 @@ export class ExampleTestFixture {
 
 You can stop tests from being run by using the ```IgnoreTest``` annotation
 
-```
+```typescript
 import { Expect, Test, IgnoreTest } from "alsatian";
 
 export class ExampleTestFixture {
@@ -528,7 +526,7 @@ export class ExampleTestFixture {
 
 or you can stop all tests in a given fixture from running using the ```IgnoreTests``` annotation
 
-```
+```typescript
 import { Expect, Test, IgnoreTests } from "alsatian";
 
 @IgnoreTests()
@@ -548,7 +546,7 @@ export class ExampleTestFixture {
 
 You can provide a reason to both of these, which will put it into the TAP output.
 
-```
+```typescript
 import { Expect, Test, IgnoreTest } from "alsatian";
 
 export class ExampleTestFixture {
@@ -565,7 +563,7 @@ export class ExampleTestFixture {
 
 You can run a single test or select tests using the ```FocusTest``` annotation
 
-```
+```typescript
 import { Expect, Test, FocusTest } from "alsatian";
 
 export class ExampleTestFixture {
@@ -585,7 +583,7 @@ export class ExampleTestFixture {
 
 or you can run only tests in this fixture using the ```FocusTests``` annotation
 
-```
+```typescript
 import { Expect, Test, FocusTests } from "alsatian";
 
 @FocusTests
@@ -607,7 +605,7 @@ export class ExampleTestFixture {
 
 You can get a function to be run before every function in the fixture using the ```Setup``` decorators
 
-```
+```typescript
 import { Expect, Test, Setup } from "alsatian";
 
 export class ExampleTestFixture {
@@ -628,7 +626,7 @@ export class ExampleTestFixture {
 
 You can also run functions after every test has completed using the ```Teardown``` decorators
 
-```
+```typescript
 import { Expect, Test, Teardown } from "alsatian";
 
 export class ExampleTestFixture {
