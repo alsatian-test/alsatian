@@ -1,6 +1,5 @@
 <p id="banner" align="center">
-    <img src="/documentation/images/alsatian-mascot.png?raw=true" alt="Alsatian Mascot" width="256px" />
-    <img src="/documentation/images/alsatian-logo.png?raw=true" alt="Alsatian Logo" width="600px" />
+    <img src="/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
     <p id="tag-line" align="center">Awesomeley easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
 </p>
 <p id="badges" align="center">
