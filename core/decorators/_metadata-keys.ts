@@ -1,3 +1,4 @@
+const TEST_FIXTURE = "alsatian:test-fixture";
 const TESTS = "alsatian:tests";
 const FOCUS = "alsatian:focus";
 const IGNORE = "alsatian:ignore";
@@ -8,6 +9,7 @@ const TEST_CASES = "alsatian:testcases";
 const TIMEOUT = "alsatian:timeout";
 
 export {
+    TEST_FIXTURE,
     TESTS,
     FOCUS,
     IGNORE,

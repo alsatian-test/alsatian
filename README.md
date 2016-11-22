@@ -1,15 +1,36 @@
-# alsatian
-[![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
-[![License](https://img.shields.io/github/license/alsatian-test/alsatian.svg)](https://www.github.com/alsatian-test/alsatian/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
-[![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
-[![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
-[![Issue Count](https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
-[![bitHound Code](https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg)](https://www.bithound.io/github/alsatian-test/alsatian)
-[![bitHound Dependencies](https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg)](https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm)
-[![Known Vulnerabilities](https://snyk.io/test/github/alsatian-test/alsatian/badge.svg)](https://snyk.io/test/github/alsatian-test/alsatian)
-
-TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
+<p id="banner" align="center">
+    <img src="/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
+    <p id="tag-line" align="center">Awesomely easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
+</p>
+<p id="badges" align="center">
+    <a href="https://www.npmjs.com/package/alsatian">
+        <img src="https://img.shields.io/npm/v/alsatian.svg" alt="NPM Version" />
+    </a>
+    <a href="https://www.github.com/alsatian-test/alsatian/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/alsatian-test/alsatian.svg" alt="License" />
+    </a>
+    <a href="https://travis-ci.org/alsatian-test/alsatian">
+        <img src="https://travis-ci.org/alsatian-test/alsatian.svg?branch=master" alt="Build Status" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian">
+        <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg" alt="Code Climate" />
+    </a>
+    <a href="https://coveralls.io/github/alsatian-test/alsatian?branch=master">
+        <img src="https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master" alt="Coverage Status" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian">
+        <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg" alt="Code Climate Issue Count" />
+    </a>
+    <a href="https://www.bithound.io/github/alsatian-test/alsatian">
+        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg" alt="bitHound Code Rating" />
+    </a>
+    <a href="https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm">
+        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg" alt="bitHound Dependencies Rating" />
+    </a>
+    <a href="https://snyk.io/test/github/alsatian-test/alsatian">
+        <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
+    </a>
+</p>
 
 ## In BETA
 
@@ -27,7 +48,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Various services rate us very highly on lots of different factors, check out our badges
 * Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
 * Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
-* Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
+* Active support if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
 ![Alsatian Test Run Video](/documentation/images/alsatian-test-run.gif?raw=true)
@@ -157,11 +178,12 @@ ok 1 - exampleTest
 
 ### Naming Tests
 
-By default, tests will be named the same as their functions and this will be what is output by alsatian. However, you can give the test a more meaningful name simply by supplying the ```Test``` annotation with whatever you desire.
+By default, tests will be named the same as their functions and fixtures will be named the same as their class. This will be what is output by alsatian. However, you can give the test or fixture more meaningful name simply by supplying the ```Test``` and ```TestFixture``` annotations with whatever you desire.
 
 ```typescript
-import { Expect, Test } from "alsatian";
+import { Expect, Test, TestFixture } from "alsatian";
 
+@TestFixture("Awesome Test Fixture")
 export class ExampleTestFixture {
 
   @Test("Confirm 1 + 1 is 2")
@@ -175,9 +197,13 @@ Then check all is well
 
 ```
 > alsatian ./path/to/example.spec
-TAP version 13
-1..1
-ok 1 - Confirm 1 + 1 is 2
+Awesome Test Fixture
+Confirm 1 + 1 is 2
+|====================|
+
+Pass: 1/1
+Fail: 0/1
+Ignore: 0/1
 ```
 
 ### Test Cases
@@ -185,8 +211,9 @@ ok 1 - Confirm 1 + 1 is 2
 You can pass arguments to your tests simply by using the ```TestCase``` annotation
 
 ```typescript
-import { Expect, TestCase } from "alsatian";
+import { Expect, TestCase, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @TestCase(1, 2)
@@ -468,8 +495,9 @@ properySpy.restore();
 You can also have asynchronous tests using the ```AsyncTest``` annotation,
 
 ```typescript
-import { Expect, AsyncTest } from "alsatian";
+import { Expect, AsyncTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @AsyncTest()
@@ -489,8 +517,9 @@ Alsatian will fail an ```AsyncTest``` if it takes longer than 500 ms to execute.
 
 
 ```typescript
-import { Expect, AsyncTest, Timeout } from "alsatian";
+import { Expect, AsyncTest, Timeout, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @AsyncTest()
@@ -512,8 +541,9 @@ export class ExampleTestFixture {
 You can stop tests from being run by using the ```IgnoreTest``` annotation
 
 ```typescript
-import { Expect, Test, IgnoreTest } from "alsatian";
+import { Expect, Test, IgnoreTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -527,9 +557,10 @@ export class ExampleTestFixture {
 or you can stop all tests in a given fixture from running using the ```IgnoreTests``` annotation
 
 ```typescript
-import { Expect, Test, IgnoreTests } from "alsatian";
+import { Expect, Test, IgnoreTests, TestFixture } from "alsatian";
 
 @IgnoreTests()
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -547,8 +578,9 @@ export class ExampleTestFixture {
 You can provide a reason to both of these, which will put it into the TAP output.
 
 ```typescript
-import { Expect, Test, IgnoreTest } from "alsatian";
+import { Expect, Test, IgnoreTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -564,8 +596,9 @@ export class ExampleTestFixture {
 You can run a single test or select tests using the ```FocusTest``` annotation
 
 ```typescript
-import { Expect, Test, FocusTest } from "alsatian";
+import { Expect, Test, FocusTest, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -584,9 +617,10 @@ export class ExampleTestFixture {
 or you can run only tests in this fixture using the ```FocusTests``` annotation
 
 ```typescript
-import { Expect, Test, FocusTests } from "alsatian";
+import { Expect, Test, FocusTests, TestFixture } from "alsatian";
 
 @FocusTests
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Test()
@@ -606,8 +640,9 @@ export class ExampleTestFixture {
 You can get a function to be run before every function in the fixture using the ```Setup``` decorators
 
 ```typescript
-import { Expect, Test, Setup } from "alsatian";
+import { Expect, Test, Setup, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Setup
@@ -627,8 +662,9 @@ export class ExampleTestFixture {
 You can also run functions after every test has completed using the ```Teardown``` decorators
 
 ```typescript
-import { Expect, Test, Teardown } from "alsatian";
+import { Expect, Test, Teardown, TestFixture } from "alsatian";
 
+@TestFixture("Example Test Fixture")
 export class ExampleTestFixture {
 
   @Teardown

@@ -1,6 +1,6 @@
 import { ITestFixture, ITest, ITestCase } from "./_interfaces";
-import { FileRequirer } from "./_core";
-import { TestFixture, METADATA_KEYS } from "./alsatian-core";
+import { FileRequirer, TestFixture } from "./_core";
+import { METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
 
@@ -33,8 +33,13 @@ export class TestLoader {
       return testFixtures;
    }
 
-   private _loadTestFixture(testFixtureConstructor: any, name: string): ITestFixture {
-      let testFixture = new TestFixture(name);
+   private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture {
+      // get test fixture metadata or create new metadata 
+      // to support not requiring the TestFixture decorator. 
+      // This functionality will be removed in 2.0.0 where 
+      // TestFixture decorator will become mandatory
+      const testFixture = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor)
+                       || new TestFixture(defaultFixtureDescription);
 
       testFixture.ignored = false;
 

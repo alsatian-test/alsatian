@@ -1,11 +1,13 @@
 import { TestLoader } from "../../../core/test-loader";
 import { FileRequirer } from "../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, FocusTests, METADATA_KEYS } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, TestFixture, SpyOn, METADATA_KEYS } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { TestFixture as TestFixtureMetadata } from "../../../core/_core";
 import "reflect-metadata";
 
+@TestFixture("Load Tests")
 export class LoadTestTests {
 
    @Test()
@@ -178,6 +180,56 @@ export class LoadTestTests {
        let testLoader = new TestLoader(fileRequirer);
 
        Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+   }
+
+   @TestCase("something")
+   @TestCase("wow, this is super!")
+   @TestCase("Mega Hyper AWESOME test...")
+   public descriptionShouldBeSetWhenMetadataOnDefault(testFixtureDescription: string) {
+       let fileRequirer = new FileRequirer();
+
+       let testFixtureInstance = {};
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+       let testFixtureSet = function testFixture() {
+           return testFixtureInstance;
+       };
+
+       const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
+       Reflect.defineMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureMetadata, testFixtureSet);
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe(testFixtureDescription);
+   }
+
+   @TestCase("something")
+   @TestCase("wow, this is super!")
+   @TestCase("Mega Hyper AWESOME test...")
+   public descriptionShouldBeSetWhenMetadataOnExportedMember(testFixtureDescription: string) {
+       let fileRequirer = new FileRequirer();
+
+       let testFixtureInstance = {};
+       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+       let testFixtureSet = {
+          testFixture: () => testFixtureInstance
+       };
+
+       const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
+       Reflect.defineMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureMetadata, testFixtureSet.testFixture);
+
+       let spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andReturn(testFixtureSet);
+
+       let testLoader = new TestLoader(fileRequirer);
+
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe(testFixtureDescription);
    }
 
    public shouldIgnoreTestsIfFixtureIgnored() {
