@@ -3,7 +3,7 @@ import { TEST_FIXTURE } from "./_metadata-keys";
 import { TestFixture as TestFixtureMetadata } from "../_core";
 
 export function TestFixture(description?: string) {
-  
+
   return (constructor: Function) => {
 
     // create data about the test fixture
