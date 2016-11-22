@@ -1,7 +1,7 @@
 <p id="banner" align="center">
     <img src="/documentation/images/alsatian-mascot.png?raw=true" alt="Alsatian Mascot" />
     <img src="/documentation/images/alsatian-logo.png?raw=true" alt="Alsatian Logo"  />
-    <p>Awesomeley easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
+    <p id="tag-line" align="center">Awesomeley easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
 </p>
 <p id="badges" align="center">
     <a href="https://www.npmjs.com/package/alsatian">
