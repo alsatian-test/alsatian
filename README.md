@@ -27,7 +27,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Various services rate us very highly on lots of different factors, check out our badges
 * Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
 * Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
-* Active suppport if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
+* Active support if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
 ![Alsatian Test Run Video](/documentation/images/alsatian-test-run.gif?raw=true)
