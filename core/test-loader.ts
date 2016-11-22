@@ -38,7 +38,7 @@ export class TestLoader {
       // to support not requiring the TestFixture decorator. 
       // This functionality will be removed in 2.0.0 where 
       // TestFixture decorator will become mandatory
-      const testFixture = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor) 
+      const testFixture = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor)
                        || new TestFixture(defaultFixtureDescription);
 
       testFixture.ignored = false;
