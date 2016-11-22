@@ -15,7 +15,8 @@ const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => 
         "   data:\n" +
         "     got: an unhandled error\n" +
         "     expect: no unhandled errors to be thrown\n" +
-        "     stack_base64: " + new Buffer(stack).toString("base64") + "\n" +
+        "     stack: |\n" +
+        stack.split("\n").map(l => "       " + l).join("\n") + "\n" +
         " ...\n"
     );
 };

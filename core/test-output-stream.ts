@@ -134,8 +134,9 @@ export class TestOutputStream extends ReadableStream {
            "     expect: " + expected + "\n";
 
        if (stack) {
-           // encode the stack trace with base64 to prevent new lines from messing with the YAML
-           output = output + "     stack_base64: " + new Buffer(stack).toString("base64") + "\n";
+           output = output + "     stack: |\n";
+
+           output = output + stack.split("\n").map(l => "       " + l).join("\n") + "\n";
        }
 
        output = output + " ...\n";
