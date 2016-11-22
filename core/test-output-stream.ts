@@ -71,7 +71,7 @@ export class TestOutputStream extends ReadableStream {
 
       // if it's a match error then log it properly, otherwise log it as unhandled
       if (error instanceof MatchError) {
-          this._writeMatchErrorOutput(<MatchError>error);
+          this._writeMatchErrorOutput(error);
       } else {
           this._writeUnhandledErrorOutput(error);
       }
