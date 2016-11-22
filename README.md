@@ -1,15 +1,36 @@
-# alsatian
-[![NPM Version](https://img.shields.io/npm/v/alsatian.svg)](https://www.npmjs.com/package/alsatian)
-[![License](https://img.shields.io/github/license/alsatian-test/alsatian.svg)](https://www.github.com/alsatian-test/alsatian/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/alsatian-test/alsatian.svg?branch=master)](https://travis-ci.org/alsatian-test/alsatian)
-[![Code Climate](https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
-[![Coverage Status](https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master)](https://coveralls.io/github/alsatian-test/alsatian?branch=master)
-[![Issue Count](https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg)](https://codeclimate.com/github/alsatian-test/alsatian)
-[![bitHound Code](https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg)](https://www.bithound.io/github/alsatian-test/alsatian)
-[![bitHound Dependencies](https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg)](https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm)
-[![Known Vulnerabilities](https://snyk.io/test/github/alsatian-test/alsatian/badge.svg)](https://snyk.io/test/github/alsatian-test/alsatian)
-
-TypeScript testing framework with test cases, compatible with istanbul and tap reporters.
+<p id="banner" align="center">
+    <img src="/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
+    <p id="tag-line" align="center">Awesomely easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
+</p>
+<p id="badges" align="center">
+    <a href="https://www.npmjs.com/package/alsatian">
+        <img src="https://img.shields.io/npm/v/alsatian.svg" alt="NPM Version" />
+    </a>
+    <a href="https://www.github.com/alsatian-test/alsatian/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/alsatian-test/alsatian.svg" alt="License" />
+    </a>
+    <a href="https://travis-ci.org/alsatian-test/alsatian">
+        <img src="https://travis-ci.org/alsatian-test/alsatian.svg?branch=master" alt="Build Status" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian">
+        <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg" alt="Code Climate" />
+    </a>
+    <a href="https://coveralls.io/github/alsatian-test/alsatian?branch=master">
+        <img src="https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master" alt="Coverage Status" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian">
+        <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg" alt="Code Climate Issue Count" />
+    </a>
+    <a href="https://www.bithound.io/github/alsatian-test/alsatian">
+        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg" alt="bitHound Code Rating" />
+    </a>
+    <a href="https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm">
+        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg" alt="bitHound Dependencies Rating" />
+    </a>
+    <a href="https://snyk.io/test/github/alsatian-test/alsatian">
+        <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
+    </a>
+</p>
 
 ## In BETA
 
