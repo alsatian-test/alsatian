@@ -7,6 +7,20 @@ const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
     return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
 };
 
+const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => {
+    return (
+        " ---\n" +
+        "   message: \"The test threw an unhandled error.\"\n" +
+        "   severity: fail\n" +
+        "   data:\n" +
+        "     got: an unhandled error\n" +
+        "     expect: no unhandled errors to be thrown\n" +
+        "     stack: |\n" +
+        stack.split("\n").map(l => "       " + l).join("\n") + "\n" +
+        " ...\n"
+    );
+};
+
 export class EmitResultTests {
 
    @TestCase(1)
@@ -220,5 +234,25 @@ export class EmitResultTests {
       const testOutput = new TestOutputStream();
 
       Expect(() => testOutput.emitResult(1, testCaseResult)).toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
+   }
+
+   @TestCase("line 1\nline3\nline 7")
+   @TestCase("function foo in a.ts\nfunction bar in z.ts\nfunction x in entry.ts")
+   public shouldEmitCorrectUnhandledErrorStack(stack: string) {
+       let testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       let test: ITest = new TestBuilder().build();
+
+       let error = new Error("empty message");
+       error.stack = stack;
+
+       let testCaseResult = new TestCaseResult(test, [], error);
+
+       let expected = _getUnhandledErrorMessage(stack);
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
    }
 }
