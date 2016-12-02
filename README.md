@@ -389,8 +389,8 @@ SpyOn(some, "function").andStub();
 
 ```typescript
 SpyOn(some, "function").andCall(() => {
-  console.log("I are called");
-  return "whatever you like";
+  console.log("I are called");  // make it do whatever you like
+  return "whatever you like";   // and also return stuff too!
 });
 ```
 
