@@ -388,7 +388,10 @@ SpyOn(some, "function").andStub();
 ... you can make it call something else ...
 
 ```typescript
-SpyOn(some, "function").andCall(() => console.log("I are called"));
+SpyOn(some, "function").andCall(() => {
+  console.log("I are called");  // make it do whatever you like
+  return "whatever you like";   // and also return stuff too!
+});
 ```
 
 ... or make it return whatever you desire ...
