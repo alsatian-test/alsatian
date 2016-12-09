@@ -1,6 +1,6 @@
-import { AlsatianError } from "../../core/_errors";
+import ExtendoError from "extendo-error";
 
-export class MissingArgumentValueError extends AlsatianError {
+export class MissingArgumentValueError extends ExtendoError {
    public constructor(argumentName: string) {
       super();
 

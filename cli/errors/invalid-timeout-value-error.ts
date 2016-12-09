@@ -1,6 +1,6 @@
-import { AlsatianError } from "../../core/_errors";
+import ExtendoError from "extendo-error";
 
-export class InvalidTimeoutValueError extends AlsatianError {
+export class InvalidTimeoutValueError extends ExtendoError {
    public constructor(timeoutValue: string) {
       super();
 

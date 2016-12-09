@@ -1,6 +1,6 @@
-import { AlsatianError } from "../_errors";
+import ExtendoError from "extendo-error";
 
-export class MatchError extends AlsatianError {
+export class MatchError extends ExtendoError {
 
   private _actualValue: any;
   public get actualValue(): any {
