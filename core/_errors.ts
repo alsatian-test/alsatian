@@ -1,3 +1,4 @@
+import { AlsatianError } from "./errors/alsatian-error";
 import { MatchError} from "./errors/match-error";
 import { ExactMatchError } from "./errors/exact-match-error";
 import { EqualMatchError } from "./errors/equal-match-error";
@@ -13,6 +14,7 @@ import { TestTimeoutError } from "./errors/test-timeout-error";
 import { PropertySetMatchError } from "./errors/property-set-match-error";
 
 export {
+    AlsatianError,
     MatchError,
     ExactMatchError,
     EqualMatchError,

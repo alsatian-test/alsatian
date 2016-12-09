@@ -1,7 +1,7 @@
-export class DuplicateCliArgumentError extends Error {
-   public constructor(argumentName: string) {
-      super();
+import { AlsatianError } from "../../core/_errors";
 
-      this.message = `Duplicate "${argumentName}" arguments were provided.`;
+export class DuplicateCliArgumentError extends AlsatianError {
+   public constructor(argumentName: string) {
+      super(`Duplicate "${argumentName}" arguments were provided.`);
    }
 }

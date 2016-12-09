@@ -1,4 +1,6 @@
-export class MissingArgumentValueError extends Error {
+import { AlsatianError } from "../../core/_errors";
+
+export class MissingArgumentValueError extends AlsatianError {
    public constructor(argumentName: string) {
       super();
 
