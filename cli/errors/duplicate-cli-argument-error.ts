@@ -1,7 +1,7 @@
-export class DuplicateCliArgumentError extends Error {
-   public constructor(argumentName: string) {
-      super();
+import ExtendoError from "extendo-error";
 
-      this.message = `Duplicate "${argumentName}" arguments were provided.`;
+export class DuplicateCliArgumentError extends ExtendoError {
+   public constructor(argumentName: string) {
+      super(`Duplicate "${argumentName}" arguments were provided.`);
    }
 }

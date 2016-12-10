@@ -1,4 +1,6 @@
-export class MissingArgumentValueError extends Error {
+import ExtendoError from "extendo-error";
+
+export class MissingArgumentValueError extends ExtendoError {
    public constructor(argumentName: string) {
       super();
 

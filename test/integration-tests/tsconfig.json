@@ -18,8 +18,6 @@
     "filesGlob": [
         "./**/*.ts"
     ],
-    "files": [
-    ],
     "atom": {
         "rewriteTsconfig": false
     }

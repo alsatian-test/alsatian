@@ -15,6 +15,16 @@
             "sourceMaps": true
         },
         {
+            "name": "Debug Unit Tests",
+            "type": "node2",
+            "request": "launch",
+            "program": "${workspaceRoot}\\cli\\alsatian-cli.js",
+            "cwd": "${workspaceRoot}",
+            "args": ["./test/unit-tests/**/*.spec.js"],
+            "outFiles": [],
+            "sourceMaps": true
+        },
+        {
             "name": "Launch Program",
             "type": "node2",
             "request": "launch",

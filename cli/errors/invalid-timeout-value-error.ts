@@ -1,5 +1,6 @@
+import ExtendoError from "extendo-error";
 
-export class InvalidTimeoutValueError extends Error {
+export class InvalidTimeoutValueError extends ExtendoError {
    public constructor(timeoutValue: string) {
       super();
 
