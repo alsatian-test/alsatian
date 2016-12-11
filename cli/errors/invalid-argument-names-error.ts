@@ -1,4 +1,6 @@
-export class InvalidArgumentNamesError extends Error {
+import ExtendoError from "extendo-error";
+
+export class InvalidArgumentNamesError extends ExtendoError {
 
    public constructor(argumentNames:  Array<string>) {
       super();

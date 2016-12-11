@@ -1,4 +1,6 @@
-export class MatchError extends Error {
+import ExtendoError from "extendo-error";
+
+export class MatchError extends ExtendoError {
 
   private _actualValue: any;
   public get actualValue(): any {
@@ -10,15 +12,9 @@ export class MatchError extends Error {
     return this._expectedValue;
   }
 
-  protected _message: string;
-  public get message(): string {
-    return this._message;
-  }
-
   public constructor(actualValue: any, expectedValue: any, message: string) {
     super(message);
 
-    this._message = message;
     this._actualValue = actualValue;
     this._expectedValue = expectedValue;
   }
