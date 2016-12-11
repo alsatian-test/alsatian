@@ -78,6 +78,6 @@
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
     "reflect-metadata": "^0.1.3",
-    "tap-bark": "1.0.0-rc.0"
+    "tap-bark": "1.0.0-rc.1"
   }
 }
