@@ -37,7 +37,14 @@ export function Expect(actualValue: any) {
 export class Matcher {
 
    private _actualValue: any;
-   protected shouldMatch: boolean = true;
+   protected get actualValue(): any {
+       return this._actualValue;
+   }
+
+   private _shouldMatch: boolean = true;
+   protected get shouldMatch(): boolean {
+       return this._shouldMatch;
+   }
 
    public constructor(actualValue: any) {
       this._actualValue = actualValue;
@@ -47,7 +54,7 @@ export class Matcher {
    * Any subsequent matcher function will be looking for the opposite criteria
    */
    public get not(): Matcher {
-      this.shouldMatch = !this.shouldMatch;
+      this._shouldMatch = !this.shouldMatch;
       return this;
    }
 

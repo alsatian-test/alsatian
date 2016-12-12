@@ -2,6 +2,7 @@ import { Matcher, Expect, Test } from "../../../core/alsatian-core";
 
 class MatcherExtension extends Matcher {
     isSomething() {
+        this.actualValue === "something";
     }
 }
 
