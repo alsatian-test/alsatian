@@ -1,4 +1,4 @@
-import { Expect } from "./expect";
+import { Expect, Matcher } from "./expect";
 import { TestSet } from "./test-set";
 import { TestLoader } from "./test-loader";
 import { FileRequirer } from "./file-requirer";
@@ -8,6 +8,7 @@ import { TestOutputStream } from "./test-output-stream";
 
 export {
     Expect,
+    Matcher,
     TestSet,
     TestLoader,
     FileRequirer,

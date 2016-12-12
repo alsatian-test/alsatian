@@ -37,7 +37,7 @@ export function Expect(actualValue: any) {
 export class Matcher {
 
    private _actualValue: any;
-   private _shouldMatch: boolean = true;
+   protected shouldMatch: boolean = true;
 
    public constructor(actualValue: any) {
       this._actualValue = actualValue;
@@ -47,7 +47,7 @@ export class Matcher {
    * Any subsequent matcher function will be looking for the opposite criteria
    */
    public get not(): Matcher {
-      this._shouldMatch = !this._shouldMatch;
+      this.shouldMatch = !this.shouldMatch;
       return this;
    }
 
@@ -56,8 +56,8 @@ export class Matcher {
    * @param expectedValue - the value that will be used to match
    */
    public toBe(expectedValue: any) {
-      if (expectedValue !== this._actualValue === this._shouldMatch) {
-         throw new ExactMatchError(this._actualValue, expectedValue, this._shouldMatch);
+      if (expectedValue !== this._actualValue === this.shouldMatch) {
+         throw new ExactMatchError(this._actualValue, expectedValue, this.shouldMatch);
       }
    }
 
@@ -67,10 +67,10 @@ export class Matcher {
    */
    public toEqual(expectedValue: any) {
       // exclude the double equals in this case from review as this is what we want to do
-      if (expectedValue != this._actualValue === this._shouldMatch) { // tslint:disable-line:triple-equals
+      if (expectedValue != this._actualValue === this.shouldMatch) { // tslint:disable-line:triple-equals
 
-         if (typeof expectedValue !== "object" || this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this._shouldMatch) {
-            throw new EqualMatchError(this._actualValue, expectedValue, this._shouldMatch);
+         if (typeof expectedValue !== "object" || this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this.shouldMatch) {
+            throw new EqualMatchError(this._actualValue, expectedValue, this.shouldMatch);
          }
       }
    }
@@ -123,8 +123,8 @@ export class Matcher {
          throw new TypeError("toMatch must only be used to match on strings.");
       }
 
-      if (!regex.test(this._actualValue) === this._shouldMatch) {
-         throw new RegexMatchError(this._actualValue, regex, this._shouldMatch);
+      if (!regex.test(this._actualValue) === this.shouldMatch) {
+         throw new RegexMatchError(this._actualValue, regex, this.shouldMatch);
       }
    }
 
@@ -132,8 +132,8 @@ export class Matcher {
    * Checks that a value is not undefined
    */
    public toBeDefined() {
-      if (this._actualValue === undefined === this._shouldMatch) {
-         throw new ExactMatchError(this._actualValue, undefined, !this._shouldMatch);
+      if (this._actualValue === undefined === this.shouldMatch) {
+         throw new ExactMatchError(this._actualValue, undefined, !this.shouldMatch);
       }
    }
 
@@ -141,8 +141,8 @@ export class Matcher {
    * Checks that a value is null
    */
    public toBeNull() {
-      if (this._actualValue !== null === this._shouldMatch) {
-         throw new ExactMatchError(this._actualValue, null, this._shouldMatch);
+      if (this._actualValue !== null === this.shouldMatch) {
+         throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
       }
    }
 
@@ -150,8 +150,8 @@ export class Matcher {
    * Checks that a value is equivalent to boolean true
    */
    public toBeTruthy() {
-      if ((this._actualValue && !this._shouldMatch) || (!this._actualValue && this._shouldMatch)) {
-         throw new TruthyMatchError(this._actualValue, this._shouldMatch);
+      if ((this._actualValue && !this.shouldMatch) || (!this._actualValue && this.shouldMatch)) {
+         throw new TruthyMatchError(this._actualValue, this.shouldMatch);
       }
    }
 
@@ -169,8 +169,8 @@ export class Matcher {
          throw new TypeError("toContain cannot check whether a string contains a non string value.");
       }
 
-      if (this._actualValue.indexOf(expectedContent) === -1 === this._shouldMatch) {
-         throw new ContentsMatchError(this._actualValue, expectedContent, this._shouldMatch);
+      if (this._actualValue.indexOf(expectedContent) === -1 === this.shouldMatch) {
+         throw new ContentsMatchError(this._actualValue, expectedContent, this.shouldMatch);
       }
    }
 
@@ -187,8 +187,8 @@ export class Matcher {
          throw new TypeError("toBeLessThan can only check numbers.");
       }
 
-      if (this._actualValue < upperLimit !== this._shouldMatch) {
-         throw new LessThanMatchError(this._actualValue, upperLimit, this._shouldMatch);
+      if (this._actualValue < upperLimit !== this.shouldMatch) {
+         throw new LessThanMatchError(this._actualValue, upperLimit, this.shouldMatch);
       }
    }
 
@@ -205,8 +205,8 @@ export class Matcher {
          throw new TypeError("toBeGreaterThan can only check numbers.");
       }
 
-      if (this._actualValue > lowerLimit !== this._shouldMatch) {
-         throw new GreaterThanMatchError(this._actualValue, lowerLimit, this._shouldMatch);
+      if (this._actualValue > lowerLimit !== this.shouldMatch) {
+         throw new GreaterThanMatchError(this._actualValue, lowerLimit, this.shouldMatch);
       }
    }
 
@@ -228,8 +228,8 @@ export class Matcher {
          errorThrown = error;
       }
 
-      if (errorThrown === undefined === this._shouldMatch) {
-         throw new ErrorMatchError(errorThrown, this._shouldMatch);
+      if (errorThrown === undefined === this.shouldMatch) {
+         throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
    }
 
@@ -258,8 +258,8 @@ export class Matcher {
          }
       }
 
-      if (threwRightError !== this._shouldMatch) {
-         throw new ErrorMatchError(actualError, this._shouldMatch, (<any>errorType), errorMessage);
+      if (threwRightError !== this.shouldMatch) {
+         throw new ErrorMatchError(actualError, this.shouldMatch, (<any>errorType), errorMessage);
       }
    }
 
@@ -271,8 +271,8 @@ export class Matcher {
          throw new TypeError("toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
       }
 
-      if (this._actualValue.calls.length === 0 === this._shouldMatch) {
-         throw new FunctionCallMatchError(this._actualValue, this._shouldMatch);
+      if (this._actualValue.calls.length === 0 === this.shouldMatch) {
+         throw new FunctionCallMatchError(this._actualValue, this.shouldMatch);
       }
 
       return new FunctionSpyMatcher(this._actualValue);
@@ -295,8 +295,8 @@ export class Matcher {
                    expectedArgument === Any ||
                   (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg));
          }).length === expectedArguments.length; // and all call arguments match expected arguments
-      }).length === 0 === this._shouldMatch) {
-         throw new FunctionCallMatchError(this._actualValue, this._shouldMatch, expectedArguments);
+      }).length === 0 === this.shouldMatch) {
+         throw new FunctionCallMatchError(this._actualValue, this.shouldMatch, expectedArguments);
       }
 
       return new FunctionSpyMatcher(this._actualValue, expectedArguments);
@@ -314,8 +314,8 @@ export class Matcher {
          throw new TypeError("toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
       }
 
-      if (this._actualValue.setCalls.length === 0 === this._shouldMatch) {
-         throw new PropertySetMatchError(this._actualValue, this._shouldMatch);
+      if (this._actualValue.setCalls.length === 0 === this.shouldMatch) {
+         throw new PropertySetMatchError(this._actualValue, this.shouldMatch);
       }
    }
 
@@ -328,8 +328,8 @@ export class Matcher {
          throw new TypeError("toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
       }
 
-      if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this._shouldMatch) {
-         throw new PropertySetMatchError(this._actualValue, this._shouldMatch, value);
+      if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this.shouldMatch) {
+         throw new PropertySetMatchError(this._actualValue, this.shouldMatch, value);
       }
    }
 }
