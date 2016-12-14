@@ -31,7 +31,7 @@ import {
    TestFixtureResults,
    TestResults,
    TestCaseResult
-} from "./_results";
+} from "./results";
 
 import {
    MatchError,

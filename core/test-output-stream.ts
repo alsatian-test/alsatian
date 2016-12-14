@@ -1,6 +1,6 @@
 import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
-import { TestCaseResult, TestOutcome } from "./_results";
+import { TestCaseResult, TestOutcome } from "./results";
 import { Readable as ReadableStream } from "stream";
 
 export class TestOutputStream extends ReadableStream {
