@@ -23,7 +23,7 @@ import {
    FunctionSpy,
    SpyOn,
    SpyOnProperty
-} from "./_spying";
+} from "./spying";
 
 import {
    TestSetResults,

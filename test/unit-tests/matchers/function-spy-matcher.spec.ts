@@ -1,7 +1,7 @@
 import { Expect, TestCase, SpyOn } from "../../../core/alsatian-core";
 import { FunctionSpyMatcher } from "../../../core/matchers";
 import { FunctionCallCountMatchError } from "../../../core/errors";
-import { FunctionSpy } from "../../../core/_spying";
+import { FunctionSpy } from "../../../core/spying";
 
 export class FunctionSpyMatcherTests {
 

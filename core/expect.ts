@@ -17,7 +17,7 @@ import {
    PropertySpy,
    Any,
    TypeMatcher,
-} from "./_spying";
+} from "./spying";
 
 import {
    FunctionSpyMatcher

@@ -1,4 +1,4 @@
-import { FunctionSpy } from "../_spying";
+import { FunctionSpy } from "../spying";
 import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
 import { FunctionCallCountMatchError } from "../errors";
 
