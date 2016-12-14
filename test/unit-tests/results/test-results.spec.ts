@@ -2,7 +2,7 @@ import { TestResults } from "../../../core/results/test-results";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
-import { MatchError, ExactMatchError, EqualMatchError } from "../../../core/_errors";
+import { MatchError, ExactMatchError, EqualMatchError } from "../../../core/errors";
 
 export class TestResultsTests {
 

@@ -1,6 +1,6 @@
 import { FunctionSpy } from "../_spying";
 import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
-import { FunctionCallCountMatchError } from "../_errors";
+import { FunctionCallCountMatchError } from "../errors";
 
 export class FunctionSpyMatcher {
 

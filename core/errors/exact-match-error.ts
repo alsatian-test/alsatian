@@ -1,4 +1,4 @@
-import { MatchError } from "../_errors";
+import { MatchError } from "../errors";
 
 export class ExactMatchError extends MatchError {
 

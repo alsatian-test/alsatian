@@ -36,7 +36,7 @@ import {
 import {
    MatchError,
    TestTimeoutError
-} from "./_errors";
+} from "./errors";
 
 import * as METADATA_KEYS from "./decorators/_metadata-keys";
 

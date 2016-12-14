@@ -1,7 +1,7 @@
 import { ITestFixture, ITest, ITestCase } from "../_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
 import { Promise } from "../../promise/promise";
-import { TestTimeoutError } from "../_errors";
+import { TestTimeoutError } from "../errors";
 
 export class TestItem {
 

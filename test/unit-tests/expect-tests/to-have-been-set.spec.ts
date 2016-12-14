@@ -1,4 +1,4 @@
-import { PropertySetMatchError } from "../../../core/_errors";
+import { PropertySetMatchError } from "../../../core/errors";
 import { Expect, Test, SpyOnProperty, TestCase } from "../../../core/alsatian-core";
 
 export class ToHaveBeenSetTests {

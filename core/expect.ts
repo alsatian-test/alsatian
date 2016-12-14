@@ -10,7 +10,7 @@ import {
    ErrorMatchError,
    FunctionCallMatchError,
    PropertySetMatchError
-} from "./_errors";
+} from "./errors";
 
 import {
    FunctionSpy,
