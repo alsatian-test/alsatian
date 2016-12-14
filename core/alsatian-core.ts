@@ -2,7 +2,7 @@ import {
    Expect,
    TestSet,
    TestOutputStream
-} from "./_core";
+} from "./";
 
 import {
    AsyncTest,

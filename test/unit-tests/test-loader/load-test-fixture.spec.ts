@@ -4,7 +4,7 @@ import { Expect, Test, TestCase, TestFixture, SpyOn, METADATA_KEYS } from "../..
 import { TestBuilder } from "../../builders/test-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { TestFixture as TestFixtureMetadata } from "../../../core/_core";
+import { TestFixture as TestFixtureMetadata } from "../../../core/";
 import "reflect-metadata";
 
 @TestFixture("Load Tests")
