@@ -16,7 +16,7 @@ import {
    Test,
    TestCase,
    Timeout
-} from "./_decorators";
+} from "./decorators";
 
 import {
    Any,
