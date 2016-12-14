@@ -42,7 +42,7 @@ import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
 import {
    TestRunner
-} from "./_running";
+} from "./running";
 
 export {
    Any,

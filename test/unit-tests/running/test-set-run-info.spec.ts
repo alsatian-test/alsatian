@@ -1,4 +1,4 @@
-import { TestSetRunInfo, TestPlan, TestItem } from "../../../core/_running";
+import { TestSetRunInfo, TestPlan, TestItem } from "../../../core/running";
 import { TestSetResults } from "../../../core/results";
 import { Expect, Test, TestCase, IgnoreTest, SpyOn } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
