@@ -32,10 +32,6 @@
     </a>
 </p>
 
-## In BETA
-
-Hooray, we're in BETA! So what does that mean? In preparation for an official release we're going through the process of migrating our own projects to test entirely using Alsatian, so that we can iron out any kinks we find. You can too if you wish! :) If you find any problems or have an suggestions then please log an issue and we'll address it promptly!
-
 ## Why would I use Alsatian?
 The key question! Well Alsatian has a lot going for it here are just a few great things to note:
 
