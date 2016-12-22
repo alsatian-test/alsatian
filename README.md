@@ -690,7 +690,7 @@ Extending the Expect call in Alsatian is super simple as it's OO and extensible 
 class MatcherExtension extends Matcher {
     isSomething() {
         if (this.actualValue !== "something") {
-          throw new MatchError("not something", "something", "should have been something");
+          throw new MatchError("should have been something", "something", "not something");
         }
     }
 }
@@ -724,10 +724,23 @@ Throwing this error will tell Alsatian that the test found something wrong (you 
 
 ```typescript
 throw new MatchError(
-  "nothing",                                                     // what the value actually was
+  "expected nothing to be something, but it wasn't.",            // an explanation of the issue
   "something",                                                   // what the value was expected to be
-  `expected nothing to be something, but it wasn't.`             // an explanation of the issue
+  "nothing"                                                      // what the value actually was
 );
+```
+
+You may also set each value independently if you extend them (as the setters are protected)
+
+```typescript
+export class ExtendedMatchError {
+  public constructor() {
+    super();
+    this.message = "expected nothing to be something, but it wasn't.";
+    this._expected = "something";
+    this._actual = "nothing";
+  }
+}
 ```
 
 #### Example assertion function
@@ -743,18 +756,18 @@ public toBeHexCode() {
 
       // output for Alsatian that it should have been a hex code
       if (this.shouldMatch) {
-        throw new MatchError(
-          "not a hex code",                                              
-          "a hex code",                                                  
-          `expected {this.actualValue} to be a hex code but it wasn't.` 
+        throw new MatchError(                                             
+          `expected {this.actualValue} to be a hex code but it wasn't.`,                                                    
+          "a hex code",     
+          "not a hex code"
         );
       }
       // output for Alsatian that it should not have been a hex code
       else {
-        throw new MatchError(
-          "a hex code",                                                      
-          "not a hex code",                                               
-          `expected {this.actualValue} to not be a hex code but it wasn't.`
+        throw new MatchError(                                            
+          `expected {this.actualValue} to not be a hex code but it wasn't.`,                                           
+          "not a hex code", 
+          "a hex code"        
         );
       }
     }
