@@ -28,7 +28,7 @@ export class ContentsMatchErrorTests {
    @TestCase("something")
    @TestCase("something")
    public actualValueContainsTheContainer(container: any) {
-      Expect(new ContentsMatchError(container, "", true).actualValue).toBe(container);
+      Expect(new ContentsMatchError(container, "", true).actual).toBe(container);
    }
 
    @TestCase(1)
@@ -36,6 +36,6 @@ export class ContentsMatchErrorTests {
    @TestCase("something")
    @TestCase("thing")
    public expectedValueContainsTheExpectedContent(expectedContent: any) {
-      Expect(new ContentsMatchError("", expectedContent, true).expectedValue).toBe(expectedContent);
+      Expect(new ContentsMatchError("", expectedContent, true).expected).toBe(expectedContent);
    }
 }

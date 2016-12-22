@@ -125,7 +125,7 @@ export class ToHaveBeenSetTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.actualValue).toBe("property was not set.");
+      Expect(propertyError.actual).toBe("property was not set.");
    }
 
    @Test()
@@ -149,7 +149,7 @@ export class ToHaveBeenSetTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.actualValue).toBe("property was set.");
+      Expect(propertyError.actual).toBe("property was set.");
    }
 
    @Test()
@@ -171,7 +171,7 @@ export class ToHaveBeenSetTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expectedValue).toBe("property to be set.");
+      Expect(propertyError.expected).toBe("property to be set.");
    }
 
    @Test()
@@ -196,6 +196,6 @@ export class ToHaveBeenSetTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expectedValue).toBe("property not to be set.");
+      Expect(propertyError.expected).toBe("property not to be set.");
    }
 }

@@ -24,20 +24,20 @@ export class LessThanMatchErrorTests {
    @TestCase(-1)
    @TestCase(42)
    public shouldSetActualValueToGivenValue(actualValue: number) {
-      Expect(new LessThanMatchError(actualValue, -42, true).actualValue).toBe(actualValue);
+      Expect(new LessThanMatchError(actualValue, -42, true).actual).toBe(actualValue);
    }
 
    @TestCase(0)
    @TestCase(-1)
    @TestCase(42)
    public shouldSetExpectedValueToLessThanUpperLimit(upperLimit: number) {
-      Expect(new LessThanMatchError(512, upperLimit, true).expectedValue).toBe("a number less than " + upperLimit);
+      Expect(new LessThanMatchError(512, upperLimit, true).expected).toBe("a number less than " + upperLimit);
    }
 
    @TestCase(0)
    @TestCase(-1)
    @TestCase(42)
    public shouldSetExpectedValueToNotLessThanUpperLimit(upperLimit: number) {
-      Expect(new LessThanMatchError(512, upperLimit, false).expectedValue).toBe("a number not less than " + upperLimit);
+      Expect(new LessThanMatchError(512, upperLimit, false).expected).toBe("a number not less than " + upperLimit);
    }
 }

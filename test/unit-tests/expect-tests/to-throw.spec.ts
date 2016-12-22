@@ -89,7 +89,7 @@ export class ToThrowTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe("error was not thrown.");
+      Expect(errorMatchError.actual).toBe("error was not thrown.");
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -108,7 +108,7 @@ export class ToThrowTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+      Expect(errorMatchError.actual).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @Test()
@@ -125,7 +125,7 @@ export class ToThrowTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.expectedValue).toBe("error to be thrown.");
+      Expect(errorMatchError.expected).toBe("error to be thrown.");
    }
 
    @Test()
@@ -142,6 +142,6 @@ export class ToThrowTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.expectedValue).toBe("error not to be thrown.");
+      Expect(errorMatchError.expected).toBe("error not to be thrown.");
    }
 }

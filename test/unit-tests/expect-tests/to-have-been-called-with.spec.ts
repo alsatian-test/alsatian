@@ -300,7 +300,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+      Expect(functionError.actual).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
    }
 
    @TestCase([[]])
@@ -332,7 +332,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.actualValue).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+      Expect(functionError.actual).toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
    }
 
    @TestCase([])
@@ -359,7 +359,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
+      Expect(functionError.expected).toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @TestCase([])
@@ -388,7 +388,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
+      Expect(functionError.expected).toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
    }
 
    @TestCase(undefined)
@@ -515,7 +515,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything].");
+      Expect(functionCallError.expected).toBe("function to be called with [Anything].");
    }
 
    @TestCase()
@@ -542,7 +542,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Anything, Anything].");
+      Expect(functionCallError.expected).toBe("function to be called with [Anything, Anything].");
    }
 
    @TestCase(0)
@@ -656,7 +656,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Number].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any Number].");
    }
 
    @TestCase("")
@@ -770,7 +770,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any String].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any String].");
    }
 
    @TestCase(true)
@@ -884,7 +884,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Boolean].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any Boolean].");
    }
 
    @TestCase(new Number(0))
@@ -998,7 +998,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Object].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any Object].");
    }
 
    @TestCase([])
@@ -1112,7 +1112,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Array].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any Array].");
    }
 
    @TestCase(new Error())
@@ -1226,7 +1226,7 @@ export class ToHaveBeenCalledWithTests {
 
       Expect(functionCallError).toBeDefined();
       Expect(functionCallError).not.toBeNull();
-      Expect(functionCallError.expectedValue).toBe("function to be called with [Any Error].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any Error].");
    }
 
    @TestCase(0, Number)

@@ -71,7 +71,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, true);
 
-      Expect(error.actualValue).toBe("property was not set.");
+      Expect(error.actual).toBe("property was not set.");
    }
 
    @Test()
@@ -82,7 +82,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, false);
 
-      Expect(error.actualValue).toBe("property was set.");
+      Expect(error.actual).toBe("property was set.");
    }
 
    @Test()
@@ -93,7 +93,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, true);
 
-      Expect(error.expectedValue).toBe("property to be set.");
+      Expect(error.expected).toBe("property to be set.");
    }
 
    @Test()
@@ -104,7 +104,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, false);
 
-      Expect(error.expectedValue).toBe("property not to be set.");
+      Expect(error.expected).toBe("property not to be set.");
    }
 
    @TestCase([null])
@@ -121,7 +121,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, true, 42);
 
-      Expect(error.actualValue).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
+      Expect(error.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
 
    @TestCase([null])
@@ -138,7 +138,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, false, 42);
 
-      Expect(error.actualValue).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
+      Expect(error.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
 
    @TestCase(undefined)
@@ -157,7 +157,7 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, true, value);
 
-      Expect(error.expectedValue).toBe("property to be set to " + JSON.stringify(value) + ".");
+      Expect(error.expected).toBe("property to be set to " + JSON.stringify(value) + ".");
    }
 
    @TestCase(undefined)
@@ -176,6 +176,6 @@ export class PropertySetMatchErrorTests {
 
       let error = new PropertySetMatchError(fakePropertySpy, false, value);
 
-      Expect(error.expectedValue).toBe("property not to be set to " + JSON.stringify(value) + ".");
+      Expect(error.expected).toBe("property not to be set to " + JSON.stringify(value) + ".");
    }
 }

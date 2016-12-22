@@ -60,7 +60,7 @@ export class ToContainTests {
 
       Expect(contentsError).toBeDefined();
       Expect(contentsError).not.toBeNull();
-      Expect(contentsError.actualValue).toBe(container);
+      Expect(contentsError.actual).toBe(container);
    }
 
    @TestCase([ 1 ], 1)
@@ -80,7 +80,7 @@ export class ToContainTests {
 
       Expect(contentsError).toBeDefined();
       Expect(contentsError).not.toBeNull();
-      Expect(contentsError.actualValue).toBe(container);
+      Expect(contentsError.actual).toBe(container);
    }
 
    @TestCase([], 1)
@@ -100,7 +100,7 @@ export class ToContainTests {
 
       Expect(contentsError).toBeDefined();
       Expect(contentsError).not.toBeNull();
-      Expect(contentsError.expectedValue).toBe(expectedContent);
+      Expect(contentsError.expected).toBe(expectedContent);
    }
 
    @TestCase([ 1 ], 1)
@@ -120,7 +120,7 @@ export class ToContainTests {
 
       Expect(contentsError).toBeDefined();
       Expect(contentsError).not.toBeNull();
-      Expect(contentsError.expectedValue).toBe(expectedContent);
+      Expect(contentsError.expected).toBe(expectedContent);
    }
 
    @TestCase(undefined)
