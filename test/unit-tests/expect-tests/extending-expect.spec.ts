@@ -8,7 +8,7 @@ class ExtendedExpect extends Matcher {
 
 @TestFixture("extending expect")
 export class ExtendingExpectTests {
-    
+
     @TestCase(undefined)
     @TestCase(null)
     @TestCase(0)
