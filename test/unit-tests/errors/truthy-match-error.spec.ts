@@ -37,20 +37,20 @@ export class TruthyMatchErrorTests {
    public actualValueSet(actualValue: any) {
       const error = new TruthyMatchError(actualValue, false);
 
-      Expect(error.actualValue).toBe(actualValue);
+      Expect(error.actual).toBe(actualValue);
    }
 
    @Test()
    public expectedValueSetToTruthyIfShouldMatch() {
       const error = new TruthyMatchError(null, true);
 
-      Expect(error.expectedValue).toBe("truthy");
+      Expect(error.expected).toBe("truthy");
    }
 
    @Test()
    public expectedValueSetToFalsyIfShouldNotMatch() {
       const error = new TruthyMatchError("something", false);
 
-      Expect(error.expectedValue).toBe("falsy");
+      Expect(error.expected).toBe("falsy");
    }
 }

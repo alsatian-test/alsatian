@@ -78,7 +78,7 @@ export class ToBeGreaterThanTests {
 
       Expect(greaterThanError).toBeDefined();
       Expect(greaterThanError).not.toBeNull();
-      Expect(greaterThanError.actualValue).toBe(actualValue);
+      Expect(greaterThanError.actual).toBe(actualValue);
    }
 
    @TestCase(0)
@@ -96,7 +96,7 @@ export class ToBeGreaterThanTests {
 
       Expect(greaterThanError).toBeDefined();
       Expect(greaterThanError).not.toBeNull();
-      Expect(greaterThanError.actualValue).toBe(actualValue);
+      Expect(greaterThanError.actual).toBe(actualValue);
    }
 
    @TestCase(0)
@@ -114,7 +114,7 @@ export class ToBeGreaterThanTests {
 
       Expect(greaterThanError).toBeDefined();
       Expect(greaterThanError).not.toBeNull();
-      Expect(greaterThanError.expectedValue).toBe("a number greater than " + lowerLimit);
+      Expect(greaterThanError.expected).toBe("a number greater than " + lowerLimit);
    }
 
    @TestCase(0)
@@ -132,7 +132,7 @@ export class ToBeGreaterThanTests {
 
       Expect(greaterThanError).toBeDefined();
       Expect(greaterThanError).not.toBeNull();
-      Expect(greaterThanError.expectedValue).toBe("a number not greater than " + lowerLimit);
+      Expect(greaterThanError.expected).toBe("a number not greater than " + lowerLimit);
    }
 
    @TestCase(undefined)

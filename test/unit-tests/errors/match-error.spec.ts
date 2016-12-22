@@ -6,7 +6,7 @@ export class MatchErrorTests {
    @TestCase("something else")
    @TestCase("another thing")
    public shouldStoreMessage(expectedMessage: string) {
-      let error = new MatchError(null, null, expectedMessage);
+      let error = new MatchError(expectedMessage, null, null);
 
       Expect(error.message).toBe(expectedMessage);
    }
@@ -20,9 +20,9 @@ export class MatchErrorTests {
    @TestCase("")
    @TestCase("something")
    public shouldStoreExpectedValue(expectedValue: any) {
-      let error = new MatchError(null, expectedValue, "");
+      let error = new MatchError("", expectedValue, null);
 
-      Expect(error.expectedValue).toBe(expectedValue);
+      Expect(error.expected).toBe(expectedValue);
    }
 
    @TestCase(undefined)
@@ -34,8 +34,8 @@ export class MatchErrorTests {
    @TestCase("")
    @TestCase("something")
    public shouldStoreActualValue(actualValue: any) {
-      let error = new MatchError(actualValue, null, "");
+      let error = new MatchError("", null, actualValue);
 
-      Expect(error.actualValue).toBe(actualValue);
+      Expect(error.actual).toBe(actualValue);
    }
  }

@@ -6,9 +6,9 @@ export class FunctionCallCountMatchError extends MatchError {
 
   public constructor(actualValue: FunctionSpy, shouldMatch: boolean, expectedCallCount: number, countType: SpyCallCountType, args?: Array<any>) {
 
-    super(FunctionCallCountMatchError._buildActualValue(actualValue, args),
+    super(FunctionCallCountMatchError._bulidMessage(shouldMatch, expectedCallCount, countType, args),
           FunctionCallCountMatchError._buildExpectedValue(shouldMatch, expectedCallCount, countType, args),
-          FunctionCallCountMatchError._bulidMessage(shouldMatch, expectedCallCount, countType, args));
+          FunctionCallCountMatchError._buildActualValue(actualValue, args));
   }
 
   private static _bulidMessage(shouldMatch: boolean, expectedCallCount: number, countType: SpyCallCountType, args?: Array<any>) {

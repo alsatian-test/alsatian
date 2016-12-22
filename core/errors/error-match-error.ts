@@ -3,11 +3,12 @@ import { MatchError } from "../errors";
 export class ErrorMatchError extends MatchError {
 
    public constructor(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {
-      super(`${actualError ? (<any>actualError.constructor).name + " " : ""}error was ${!actualError ? "not " : ""}thrown${actualError ? " with message \"" + actualError.message + "\"" : ""}.`,
-            `${expectedErrorType ? (<any>expectedErrorType).name + " " : ""}error ${!shouldMatch ? "not " : ""}to be thrown${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`,
-            "");
+      super();
 
       this._setErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
+
+      this._actual = `${actualError ? (<any>actualError.constructor).name + " " : ""}error was ${!actualError ? "not " : ""}thrown${actualError ? " with message \"" + actualError.message + "\"" : ""}.`;
+      this._expected = `${expectedErrorType ? (<any>expectedErrorType).name + " " : ""}error ${!shouldMatch ? "not " : ""}to be thrown${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
 
    private _setErrorMessage(actualError: Error, shouldMatch: boolean, expectedErrorType?: new (...args: Array<any>) => Error, expectedErrorMessage?: string) {

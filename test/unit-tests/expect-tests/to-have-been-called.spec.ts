@@ -124,7 +124,7 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.actualValue).toBe("function was not called.");
+      Expect(functionError.actual).toBe("function was not called.");
    }
 
    @Test()
@@ -148,7 +148,7 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.actualValue).toBe("function was called.");
+      Expect(functionError.actual).toBe("function was called.");
    }
 
    @Test()
@@ -170,7 +170,7 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function to be called.");
+      Expect(functionError.expected).toBe("function to be called.");
    }
 
    @Test()
@@ -194,7 +194,7 @@ export class ToHaveBeenCalledTests {
 
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
-      Expect(functionError.expectedValue).toBe("function not to be called.");
+      Expect(functionError.expected).toBe("function not to be called.");
    }
 
    @TestCase(1)
@@ -267,10 +267,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (expectedCallCount === 1) {
-         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " time.");
+         Expect(functionError.expected).toBe("function to be called " + expectedCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function to be called " + expectedCallCount + " times.");
+         Expect(functionError.expected).toBe("function to be called " + expectedCallCount + " times.");
       }
    }
 
@@ -301,10 +301,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (actualCallCount === 1) {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " time.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " time.");
       }
       else {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " times.");
       }
    }
 
@@ -378,10 +378,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (callCount === 1) {
-         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " time.");
+         Expect(functionError.expected).toBe("function not to be called " + callCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function not to be called " + callCount + " times.");
+         Expect(functionError.expected).toBe("function not to be called " + callCount + " times.");
       }
    }
 
@@ -412,10 +412,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (callCount === 1) {
-         Expect(functionError.actualValue).toBe("function was called " + callCount + " time.");
+         Expect(functionError.actual).toBe("function was called " + callCount + " time.");
       }
       else {
-         Expect(functionError.actualValue).toBe("function was called " + callCount + " times.");
+         Expect(functionError.actual).toBe("function was called " + callCount + " times.");
       }
    }
 
@@ -489,10 +489,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (minimumCallCount === 1) {
-         Expect(functionError.expectedValue).toBe("function to be called greater than " + minimumCallCount + " time.");
+         Expect(functionError.expected).toBe("function to be called greater than " + minimumCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function to be called greater than " + minimumCallCount + " times.");
+         Expect(functionError.expected).toBe("function to be called greater than " + minimumCallCount + " times.");
       }
    }
 
@@ -523,10 +523,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (actualCallCount === 1) {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " time.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " time.");
       }
       else {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " times.");
       }
    }
 
@@ -599,10 +599,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (maximumCallCount === 1) {
-         Expect(functionError.expectedValue).toBe("function to be called less than " + maximumCallCount + " time.");
+         Expect(functionError.expected).toBe("function to be called less than " + maximumCallCount + " time.");
       }
       else {
-         Expect(functionError.expectedValue).toBe("function to be called less than " + maximumCallCount + " times.");
+         Expect(functionError.expected).toBe("function to be called less than " + maximumCallCount + " times.");
       }
    }
 
@@ -633,10 +633,10 @@ export class ToHaveBeenCalledTests {
       Expect(functionError).not.toBeNull();
 
       if (actualCallCount === 1) {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " time.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " time.");
       }
       else {
-         Expect(functionError.actualValue).toBe("function was called " + actualCallCount + " times.");
+         Expect(functionError.actual).toBe("function was called " + actualCallCount + " times.");
       }
    }
 }

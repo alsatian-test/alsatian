@@ -2,20 +2,20 @@ import ExtendoError from "extendo-error";
 
 export class MatchError extends ExtendoError {
 
-  private _actualValue: any;
-  public get actualValue(): any {
-    return this._actualValue;
+  protected _actual: any;
+  public get actual(): any {
+    return this._actual;
   }
 
-  private _expectedValue: any;
-  public get expectedValue(): any {
-    return this._expectedValue;
+  protected _expected: any;
+  public get expected(): any {
+    return this._expected;
   }
 
-  public constructor(actualValue: any, expectedValue: any, message: string) {
+  public constructor(message?: string, expectedValue?: any, actualValue?: any) {
     super(message);
 
-    this._actualValue = actualValue;
-    this._expectedValue = expectedValue;
+    this._actual = actualValue;
+    this._expected = expectedValue;
   }
 }

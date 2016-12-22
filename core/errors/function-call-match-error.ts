@@ -5,9 +5,10 @@ export class FunctionCallMatchError extends MatchError {
 
   public constructor(actualValue: FunctionSpy, shouldMatch: boolean, args?: Array<any>) {
 
-    super(`function was ${shouldMatch && !(args && actualValue.calls.length) ? "not " : ""}called${args && actualValue.calls.length ? " with " + actualValue.calls.map(call => JSON.stringify(call.args)).join(", ") : ""}.`,
-          `function ${!shouldMatch ? "not " : ""}to be called${args ? " with " + FunctionCallMatchError._stringifyArguments(args) : ""}.`,
-          `Expected function ${!shouldMatch ? "not " : ""}to be called${args ? " with " + FunctionCallMatchError._stringifyArguments(args) : ""}.`);
+    super(`Expected function ${!shouldMatch ? "not " : ""}to be called${args ? " with " + FunctionCallMatchError._stringifyArguments(args) : ""}.`);
+
+    this._actual = `function was ${shouldMatch && !(args && actualValue.calls.length) ? "not " : ""}called${args && actualValue.calls.length ? " with " + actualValue.calls.map(call => JSON.stringify(call.args)).join(", ") : ""}.`;
+    this._expected = `function ${!shouldMatch ? "not " : ""}to be called${args ? " with " + FunctionCallMatchError._stringifyArguments(args) : ""}.`;
   }
 
   private static _stringifyArguments(args: Array<any>): string {

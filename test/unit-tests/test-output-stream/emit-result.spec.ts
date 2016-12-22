@@ -4,7 +4,7 @@ import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
-    return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actualValue)}\n     expect: ${JSON.stringify(error.expectedValue)}\n ...\n`;
+    return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actual)}\n     expect: ${JSON.stringify(error.expected)}\n ...\n`;
 };
 
 const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => {
@@ -105,7 +105,7 @@ export class EmitResultTests {
       let test: ITest = new TestBuilder().build();
 
       // match error causes a "fail"
-      let testCaseResult = new TestCaseResult(test, [], new MatchError(1, 2, "message"));
+      let testCaseResult = new TestCaseResult(test, [], new MatchError("message", 1, 2));
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -174,7 +174,7 @@ export class EmitResultTests {
 
       let test: ITest = new TestBuilder().build();
 
-      let error = new MatchError(1, 2, message);
+      let error = new MatchError(message, 1, 2);
 
       let testCaseResult = new TestCaseResult(test, [], error);
 

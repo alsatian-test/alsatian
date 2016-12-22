@@ -1,5 +1,6 @@
 import {
    Expect,
+   Matcher,
    TestSet,
    TestOutputStream
 } from "./";
@@ -52,6 +53,7 @@ export {
    FocusTests,
    IgnoreTest,
    IgnoreTests,
+   Matcher,
    Setup,
    FunctionSpy,
    SpyOn,

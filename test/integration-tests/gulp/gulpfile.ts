@@ -6,7 +6,7 @@ Gulp.task("test-expectations", (done: () => any) => {
 
     // create test set
     const testSet = TestSet.create();
-    testSet.addTestsFromFiles("./test/integration-tests/test-sets/expectations/**/*.spec.js");
+    testSet.addTestsFromFiles("./test/integration-tests/test-sets/expectations/**/*.expect.js");
 
     const testRunner = new TestRunner();
 
