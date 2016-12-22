@@ -138,7 +138,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe("error was not thrown.");
+      Expect(errorMatchError.actual).toBe("error was not thrown.");
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -157,7 +157,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe("error was not thrown.");
+      Expect(errorMatchError.actual).toBe("error was not thrown.");
    }
 
    @TestCase(EvalError, "something went wrong", ReferenceError, "A much worse thing happened!")
@@ -175,7 +175,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+      Expect(errorMatchError.actual).toBe(`${(<any>ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -193,7 +193,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actualValue).toBe(`${(<any>ExpectedErrorType).name} error was thrown with message "${expectedErrorMessage}".`);
+      Expect(errorMatchError.actual).toBe(`${(<any>ExpectedErrorType).name} error was thrown with message "${expectedErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -211,7 +211,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.expectedValue).toBe(`${(<any>ExpectedErrorType).name} error to be thrown with message "${expectedErrorMessage}".`);
+      Expect(errorMatchError.expected).toBe(`${(<any>ExpectedErrorType).name} error to be thrown with message "${expectedErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -229,6 +229,6 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.expectedValue).toBe(`${(<any>ExpectedErrorType).name} error not to be thrown with message "${expectedErrorMessage}".`);
+      Expect(errorMatchError.expected).toBe(`${(<any>ExpectedErrorType).name} error not to be thrown with message "${expectedErrorMessage}".`);
    }
 }

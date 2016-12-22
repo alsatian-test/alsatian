@@ -218,7 +218,7 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.actualValue).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
+      Expect(propertyError.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
 
    @TestCase([null])
@@ -248,7 +248,7 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.actualValue).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
+      Expect(propertyError.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
 
    @TestCase(undefined)
@@ -280,7 +280,7 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expectedValue).toBe("property to be set to " + JSON.stringify(value) + ".");
+      Expect(propertyError.expected).toBe("property to be set to " + JSON.stringify(value) + ".");
    }
 
    @TestCase(undefined)
@@ -314,6 +314,6 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expectedValue).toBe("property not to be set to " + JSON.stringify(value) + ".");
+      Expect(propertyError.expected).toBe("property not to be set to " + JSON.stringify(value) + ".");
    }
 }

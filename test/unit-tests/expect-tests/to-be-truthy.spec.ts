@@ -58,7 +58,7 @@ export class ToBeTruthyTests {
 
       Expect(truthyError).toBeDefined();
       Expect(truthyError).not.toBeNull();
-      Expect(truthyError.actualValue).toBe(actualValue);
+      Expect(truthyError.actual).toBe(actualValue);
    }
 
    @TestCase(-1)
@@ -79,7 +79,7 @@ export class ToBeTruthyTests {
 
       Expect(truthyError).toBeDefined();
       Expect(truthyError).not.toBeNull();
-      Expect(truthyError.actualValue).toBe(actualValue);
+      Expect(truthyError.actual).toBe(actualValue);
    }
 
    @TestCase(0)
@@ -97,7 +97,7 @@ export class ToBeTruthyTests {
 
       Expect(truthyError).toBeDefined();
       Expect(truthyError).not.toBeNull();
-      Expect(truthyError.expectedValue).toBe("truthy");
+      Expect(truthyError.expected).toBe("truthy");
    }
 
    @TestCase(-1)
@@ -118,6 +118,6 @@ export class ToBeTruthyTests {
 
       Expect(truthyError).toBeDefined();
       Expect(truthyError).not.toBeNull();
-      Expect(truthyError.expectedValue).toBe("falsy");
+      Expect(truthyError.expected).toBe("falsy");
    }
  }

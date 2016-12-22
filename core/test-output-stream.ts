@@ -110,8 +110,8 @@ export class TestOutputStream extends ReadableStream {
    private _writeMatchErrorOutput(error: MatchError): void {
 
        let sanitisedMessage = error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-       let sanitisedActual = JSON.stringify(error.actualValue);
-       let sanitisedExpected = JSON.stringify(error.expectedValue);
+       let sanitisedActual = JSON.stringify(error.actual);
+       let sanitisedExpected = JSON.stringify(error.expected);
 
        this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
 
