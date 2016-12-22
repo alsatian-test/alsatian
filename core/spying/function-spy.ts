@@ -1,4 +1,4 @@
-import { SpyCall } from "../_spying";
+import { SpyCall } from "../spying";
 
 export class FunctionSpy {
 

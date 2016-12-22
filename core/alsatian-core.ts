@@ -3,7 +3,7 @@ import {
    Matcher,
    TestSet,
    TestOutputStream
-} from "./_core";
+} from "./";
 
 import {
    AsyncTest,
@@ -17,14 +17,14 @@ import {
    Test,
    TestCase,
    Timeout
-} from "./_decorators";
+} from "./decorators";
 
 import {
    Any,
    FunctionSpy,
    SpyOn,
    SpyOnProperty
-} from "./_spying";
+} from "./spying";
 
 import {
    TestSetResults,
@@ -32,18 +32,18 @@ import {
    TestFixtureResults,
    TestResults,
    TestCaseResult
-} from "./_results";
+} from "./results";
 
 import {
    MatchError,
    TestTimeoutError
-} from "./_errors";
+} from "./errors";
 
 import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
 import {
    TestRunner
-} from "./_running";
+} from "./running";
 
 export {
    Any,
