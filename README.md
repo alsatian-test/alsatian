@@ -733,7 +733,7 @@ throw new MatchError(
 #### Example assertion function
 
 ```typescript
-public isHexCode() {
+public toBeHexCode() {
     // check whether the value provided in Expect() is a hex code or not
     const isHexCode = /^#[A-F|0-9]{6}$/i.test(this.actualValue);
     
@@ -759,4 +759,23 @@ public isHexCode() {
       }
     }
 }
+```
+
+#### usage
+
+Now you're ready to use your extended ```Expect```. This is super easy...
+
+```typescript
+import { ExtendedExpect as Expect } from "./your/extended-expect/location";
+import { TestFixture, Test } from "alsatian";
+
+@TestFixture("color tests")
+export default class ColorTestFixture {
+
+  @Test("check hexcodes")
+  public checkHexcodes {
+    Expect("#00000").toBeHexCode();
+  }
+}
+
 ```
