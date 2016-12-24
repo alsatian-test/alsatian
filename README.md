@@ -58,7 +58,7 @@ npm install alsatian
 
 ## Use with JavaScript
 
-If you're using JavaScript, no worries you can still use Alsatian with Babel. Currently there is no official support for decorators (see https://github.com/babel/babel/issues/2645) but you can use a plugin!
+If you're using JavaScript, no worries you can still use Alsatian with Babel. Currently there is no official support for decorators (see [babel issue](https://github.com/babel/babel#2645)) but you can use a plugin!
 
 Add `transform-decorators-legacy` plugin
 
