@@ -10,14 +10,14 @@ import {
    ErrorMatchError,
    FunctionCallMatchError,
    PropertySetMatchError
-} from "./_errors";
+} from "./errors";
 
 import {
    FunctionSpy,
    PropertySpy,
    Any,
    TypeMatcher,
-} from "./_spying";
+} from "./spying";
 
 import {
    FunctionSpyMatcher

@@ -1,4 +1,4 @@
-import { PropertySpy } from "../../../../core/_spying";
+import { PropertySpy } from "../../../../core/spying";
 import { Test, Expect, FunctionSpy, SpyOn, TestCase } from "../../../../core/alsatian-core";
 
 export class AndCallSetterTests {

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { TestFixture as TestFixtureDecorator } from "../../../core/decorators/test-fixture-decorator";
 import { Expect, Test, TestFixture, TestCase, METADATA_KEYS, SpyOnProperty } from "../../../core/alsatian-core";
-import { TestFixture as TestFixtureMetadata } from "../../../core/_core";
+import { TestFixture as TestFixtureMetadata } from "../../../core/";
 
 @TestFixture("Test Fixture Decorator Tests")
 export class TestFixtureDecoratorTests {

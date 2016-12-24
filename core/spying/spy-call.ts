@@ -1,4 +1,4 @@
-import { Any, TypeMatcher } from "../_spying";
+import { Any, TypeMatcher } from "../spying";
 
 export class SpyCall {
 
