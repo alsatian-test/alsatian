@@ -1,6 +1,6 @@
 <p id="banner" align="center">
     <img src="/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
-    <p id="tag-line" align="center">Awesomely easy and useful TypeScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
+    <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with istanbul and tap reporters.</p>
 </p>
 <p id="badges" align="center">
     <a href="https://www.npmjs.com/package/alsatian">
@@ -43,7 +43,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * 100% coverage all statements, lines, branches are covered in Alsatian tests
 * Various services rate us very highly on lots of different factors, check out our badges
 * Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
-* Being written in TypeScript it fits perfectly into your TypeScript project (we're currently checking out supporting JavaScript too :) )
+* Being written in TypeScript it fits perfectly into your TypeScript but still compatible with JavaScript too!
 * Active support if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
@@ -55,6 +55,27 @@ Good news everybody, we're on NPM.
 ```
 npm install alsatian
 ```
+
+## Use with JavaScript
+
+If you're using JavaScript, no worries you can still use Alsatian with Babel. Currently there is no official support for decorators (see https://github.com/babel/babel/issues/2645) but you can use a plugin!
+
+Add `transform-decorators-legacy` plugin
+
+```
+npm install babel-plugin-transform-decorators-legacy --save-dev
+```
+
+Then update your `.babelrc`
+
+```{
+  ...
+  "plugins": ["transform-decorators-legacy"]
+  ...
+}
+```
+
+You should now be able to use Alsatian decorators as in all the examples below, Hooray!
 
 ## Running alsatian
 
