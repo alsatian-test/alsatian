@@ -37,7 +37,8 @@
     "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
     "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
     "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",
-    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\""
+    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
+    "build-es6-tests": "babel test/integration-tests/javascript/babel/expectations -d test/integration-tests/javascript/babel/expectations"
   },
   "repository": {
     "type": "git",
