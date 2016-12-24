@@ -68,7 +68,8 @@ npm install babel-plugin-transform-decorators-legacy --save-dev
 
 Then update your `.babelrc`
 
-```{
+```
+{
   ...
   "plugins": ["transform-decorators-legacy"]
   ...
