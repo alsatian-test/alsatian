@@ -4,15 +4,15 @@
 // see:  https://github.com/alsatian-test/alsatian/issues/251
 // also: https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#literal-types-are-inferred-by-default-for-const-variables-and-readonly-properties
 
-const TEST_FIXTURE: string = "alsatian:test-fixture";
-const TESTS: string = "alsatian:tests";
-const FOCUS: string = "alsatian:focus";
-const IGNORE: string = "alsatian:ignore";
-const IGNORE_REASON: string = "alsatian:ignore-reason";
-const SETUP: string = "alsatian:setup";
-const TEARDOWN: string = "alsatian:teardown";
-const TEST_CASES: string = "alsatian:testcases";
-const TIMEOUT: string = "alsatian:timeout";
+const TEST_FIXTURE: "alsatian:test-fixture" = "alsatian:test-fixture";
+const TESTS: "alsatian:tests" = "alsatian:tests";
+const FOCUS: "alsatian:focus" = "alsatian:focus";
+const IGNORE: "alsatian:ignore" = "alsatian:ignore";
+const IGNORE_REASON: "alsatian:ignore-reason" = "alsatian:ignore-reason";
+const SETUP: "alsatian:setup" = "alsatian:setup";
+const TEARDOWN: "alsatian:teardown" = "alsatian:teardown";
+const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
+const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";
 
 export {
     TEST_FIXTURE,
