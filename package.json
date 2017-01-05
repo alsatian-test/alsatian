@@ -68,7 +68,6 @@
     "coveralls": "^2.11.9",
     "gulp": "^3.9.1",
     "in-publish": "^2.0.0",
-    "node-inspector": "^0.12.8",
     "nyc": "^10.0.0",
     "tslint": "^4.0.0",
     "typescript": "^2.0.3"
