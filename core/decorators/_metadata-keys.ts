@@ -1,3 +1,9 @@
+// currently typing these values to string as literal causes
+// backwards compatibility issues consider replacing when support
+// for TypeScript < 2.1 is dropped
+// see:  https://github.com/alsatian-test/alsatian/issues/251
+// also: https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes#literal-types-are-inferred-by-default-for-const-variables-and-readonly-properties
+
 const TEST_FIXTURE: string = "alsatian:test-fixture";
 const TESTS: string = "alsatian:tests";
 const FOCUS: string = "alsatian:focus";
