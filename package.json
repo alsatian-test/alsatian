@@ -33,7 +33,7 @@
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests && npm run gulp-integration-tests && npm run other-integration-tests",
-    "other-integration-tests": "alsatian \"./test/integration-tests/**/*.spec.js\"",
+    "other-integration-tests": "alsatian \"./test/integration-tests/javascript/**/*.spec.js\" \"./test/integration-tests/extending-expect/**/*.spec.js\"",
     "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
     "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
     "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",

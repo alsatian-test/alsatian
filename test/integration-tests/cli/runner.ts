@@ -9,7 +9,7 @@ export class CliIntegrationTests {
    @AsyncTest()
    public toBeExpectations() {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/to-be.expect.js --tap");
+      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/to-be.spec.js --tap");
 
       let consoleOutput = "";
 
