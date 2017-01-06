@@ -3,7 +3,7 @@ import { AlsatianCliOptions } from "../../../cli/alsatian-cli-options";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet, TestOutcome, TestRunner } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet, TestOutcome, TestRunner, FocusTest } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
 
 export class CliTestRunnerTests {
@@ -21,6 +21,19 @@ export class CliTestRunnerTests {
       SpyOn(process, "exit").andStub();
       SpyOn(process.stderr, "write").andStub();
       SpyOn(process.stdout, "write").andStub();
+   }
+
+   private async _asyncFunction(): Promise<number> {
+       return new Promise<number>((resolve, reject) => {
+           resolve(4);
+       });
+   }
+
+   @AsyncTest()
+   @FocusTest
+   private async asyncTest() {
+       const result = await this._asyncFunction();
+       Expect(result).toBe(5);
    }
 
    @Teardown
