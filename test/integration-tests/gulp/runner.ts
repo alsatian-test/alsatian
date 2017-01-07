@@ -7,7 +7,7 @@ import * as FileSystem from "fs";
 export class GulpIntegrationTests {
 
    @AsyncTest()
-   @Timeout(2000)
+   @Timeout(3000)
    public toBeExpectations() {
 
       const result = child.exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
