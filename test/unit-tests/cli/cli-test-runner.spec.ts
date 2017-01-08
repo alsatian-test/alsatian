@@ -76,7 +76,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -106,7 +106,7 @@ export class CliTestRunnerTests {
                console.log((process.exit as any).calls);
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -133,7 +133,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -163,7 +163,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -193,7 +193,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -223,7 +223,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -251,7 +251,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -279,7 +279,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -307,7 +307,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -335,7 +335,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -374,7 +374,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -413,7 +413,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -441,7 +441,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 
@@ -469,7 +469,7 @@ export class CliTestRunnerTests {
             catch (error) {
                reject(error);
             }
-         });
+         }, 0);
       });
    }
 }
