@@ -1,0 +1,12 @@
+TAP version 13
+1..2
+# FIXTURE asynchronous tests
+ok 1 simple passing asynchronous test
+ok 2 simple failing asynchronous test
+ ---
+   message: "Expected 5 to be 4."
+   severity: fail
+   data:
+     got: 5
+     expect: 4
+ ...
