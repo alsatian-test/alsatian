@@ -1,16 +1,15 @@
 import * as child from "child_process";
 import * as path from "path";
-import { Promise } from "../../../promise/promise";
-import { Expect, AsyncTest, Timeout } from "../../../core/alsatian-core";
+import { Promise } from "../../../../promise/promise";
+import { Expect, AsyncTest } from "../../../../core/alsatian-core";
 import * as FileSystem from "fs";
 
-export class GulpIntegrationTests {
+export class BabelIntegrationTests {
 
    @AsyncTest()
-   @Timeout(3000)
    public toBeExpectations() {
 
-      const result = child.exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+      const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap");
 
       let consoleOutput = "";
 
@@ -21,28 +20,27 @@ export class GulpIntegrationTests {
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
-            Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
+            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
             resolve();
          });
       });
    }
 
    @AsyncTest()
-   @Timeout(2000)
-   public asyncTests() {
+   public asyncTest() {
 
-      const result = child.exec("gulp test-syntax --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+      const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/test-syntax/async-test.js --tap");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/async-test.txt").toString();
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/async-test.txt").toString();
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
-            Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
+            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
             resolve();
          });
       });

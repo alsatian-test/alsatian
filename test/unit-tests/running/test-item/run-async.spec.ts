@@ -4,7 +4,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { Promise } from "../../../../promise/promise";
-import { MatchError } from "../../../../core/_errors";
+import { MatchError } from "../../../../core/errors";
 
 export class TestItemRunAsyncTests {
 

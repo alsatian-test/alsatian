@@ -1,7 +1,7 @@
 {
   "name": "alsatian",
-  "version": "1.0.0-beta.4",
-  "description": "TypeScript testing framework with test cases",
+  "version": "1.0.0",
+  "description": "TypeScript and JavaScript testing framework for beautiful and readable tests",
   "author": "James Richford <=> (=)",
   "contributors": [
     {
@@ -32,12 +32,14 @@
     "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
-    "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests && npm run gulp-integration-tests && npm run other-integration-tests",
-    "other-integration-tests": "alsatian \"./test/integration-tests/javascript/**/*.spec.js\" \"./test/integration-tests/extending-expect/**/*.spec.js\"",
+    "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests && npm run gulp-integration-tests&& npm run babel-integration-tests && npm run expect-extension-integration-tests",
+    "expect-extension-integration-tests": "alsatian \"./test/integration-tests/extending-expect/**/*.spec.js\"",
     "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
     "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
     "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",
-    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\""
+    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
+    "build-es6-tests": "babel test/integration-tests/javascript/test-sets -d test/integration-tests/javascript/test-sets",
+    "babel-integration-tests": "npm run build-es6-tests && alsatian \"./test/integration-tests/javascript/babel/babel-compatibility.spec\""
   },
   "repository": {
     "type": "git",
@@ -48,13 +50,23 @@
     "framework",
     "test framework",
     "TypeScript",
+    "JavaScript",
+    "babel",
+    "alsatian",
+    "decorators",
+    "annotations",
+    "readable",
+    "simple",
+    "powerful",
     "node",
     "test case",
     "case",
     "unit test",
     "tap",
+    "tsunit",
     "junit",
     "nunit",
+    "xunit",
     "tdd"
   ],
   "license": "MIT",
@@ -64,11 +76,13 @@
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
     "@types/gulp": "^3.8.32",
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.18.0",
     "codeclimate-test-reporter": "^0.4.0",
     "coveralls": "^2.11.9",
     "gulp": "^3.9.1",
     "in-publish": "^2.0.0",
-    "node-inspector": "^0.12.8",
     "nyc": "^10.0.0",
     "tslint": "^4.0.0",
     "typescript": "^2.0.3"
@@ -79,6 +93,6 @@
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
     "reflect-metadata": "^0.1.3",
-    "tap-bark": "1.0.0-rc.1"
+    "tap-bark": "1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import { Expect, Test, TestCase, FocusTests, FocusTest } from "../../../../core/alsatian-core";
-import { PropertySpy } from "../../../../core/_spying";
+import { PropertySpy } from "../../../../core/spying";
 
 class Testing {
    set property(value: number) {

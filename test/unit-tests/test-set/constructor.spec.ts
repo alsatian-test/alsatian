@@ -1,5 +1,5 @@
 import { TestCase, Expect } from "../../../core/alsatian-core";
-import { TestLoader, GlobHelper } from "../../../core/_core";
+import { TestLoader, GlobHelper } from "../../../core/";
 import { TestSet } from "../../../core/test-set";
 
 export class TestSetConstructorTests {

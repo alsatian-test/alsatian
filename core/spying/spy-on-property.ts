@@ -1,4 +1,4 @@
-import { PropertySpy } from "../_spying";
+import { PropertySpy } from "../spying";
 
 export function SpyOnProperty<PropertyType>(target: any, propertyName: string): PropertySpy<PropertyType> {
 

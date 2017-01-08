@@ -1,5 +1,5 @@
 import { ITestFixture, ITest, ITestCase } from "./_interfaces";
-import { FileRequirer, TestFixture } from "./_core";
+import { FileRequirer, TestFixture } from "./";
 import { METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
