@@ -26,4 +26,25 @@ export class GulpIntegrationTests {
          });
       });
    }
+
+   @AsyncTest()
+   @Timeout(2000)
+   public asyncTests() {
+
+      const result = child.exec("gulp test-syntax --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+
+      let consoleOutput = "";
+
+      result.stdout.on("data", (data) => consoleOutput += data);
+      result.stderr.on("data", (data) => consoleOutput += data);
+
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/async-test.txt").toString();
+
+      return new Promise((resolve, reject) => {
+         result.on("close", (code: number) => {
+            Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
+            resolve();
+         });
+      });
+   }
 }
