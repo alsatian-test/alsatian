@@ -21,7 +21,8 @@
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "",
+    "clean": "npm run clean-git && npm run clean-compiled",
+    "clean-compiled": "rimraf **/*.js **/*.js.map **/*.d.ts",
     "clean-git": "git clean -X -d -f",
     "prepublish": "in-publish && npm test && npm run build-publish || not-in-publish",
     "postpublish": "node ./scripts/tag-release",
