@@ -21,7 +21,8 @@
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "git clean -X -d -f",
+    "clean": "",
+    "clean-git": "git clean -X -d -f",
     "prepublish": "in-publish && npm test && npm run build-publish || not-in-publish",
     "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
