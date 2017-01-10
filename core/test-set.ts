@@ -1,4 +1,4 @@
-import { GlobHelper, TestLoader, FileRequirer } from "./";
+import { FileRequirer, GlobHelper, TestLoader } from "./";
 import { ITestFixture } from "./_interfaces";
 
 const path = require("path");
