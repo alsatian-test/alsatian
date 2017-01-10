@@ -11,6 +11,7 @@
      * Any rules specified here will override those from the base config we are extending.
      */
      "array-type": [true, "generic"],
+     "arrow-parens": false,
      "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
   },
   "jsRules": {
