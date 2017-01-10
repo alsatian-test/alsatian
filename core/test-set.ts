@@ -1,7 +1,6 @@
 import { FileRequirer, GlobHelper, TestLoader } from "./";
 import { ITestFixture } from "./_interfaces";
-
-const path = require("path");
+import * as path from "path";
 
 export class TestSet {
 
