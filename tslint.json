@@ -12,6 +12,7 @@
      */
      "array-type": [true, "generic"],
      "arrow-parens": false,
+     "trailing-comma": false,
      "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
   },
   "jsRules": {
