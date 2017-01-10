@@ -10,7 +10,6 @@ export class PropertySpy<PropertyType> {
    private _setter: (value: PropertyType) => void;
    private _returnValue: boolean;
    private _propertyName: string;
-
    private _getCalls: Array<SpyCall> = [];
 
    private _setCalls: Array<SpyCall> = [];
@@ -54,6 +53,31 @@ export class PropertySpy<PropertyType> {
       });
    }
 
+   public andReturnValue(value: PropertyType): PropertySpy<PropertyType> {
+      this._value = value;
+      this._returnValue = true;
+      return this;
+   }
+
+   public andCallGetter(getter: () => PropertyType): PropertySpy<PropertyType> {
+      this._getter = getter;
+      this._returnValue = false;
+      return this;
+   }
+
+   public andCallSetter(setter: (value: PropertyType) => void): PropertySpy<PropertyType> {
+      this._setter = setter;
+      this._returnValue = false;
+      return this;
+   }
+
+   public restore() {
+      Object.defineProperty(this._descriptorTarget, this._propertyName, {
+         get: this._originialGetter,
+         set: this._originialSetter
+      });
+   }
+
    private _get() {
       // log that the property was requested
       this._getCalls.push(new SpyCall([]));
@@ -78,30 +102,5 @@ export class PropertySpy<PropertyType> {
       if (!this._returnValue) {
          this._value = value;
       }
-   }
-
-   public andReturnValue(value: PropertyType): PropertySpy<PropertyType> {
-      this._value = value;
-      this._returnValue = true;
-      return this;
-   }
-
-   public andCallGetter(getter: () => PropertyType): PropertySpy<PropertyType> {
-      this._getter = getter;
-      this._returnValue = false;
-      return this;
-   }
-
-   public andCallSetter(setter: (value: PropertyType) => void): PropertySpy<PropertyType> {
-      this._setter = setter;
-      this._returnValue = false;
-      return this;
-   }
-
-   public restore() {
-      Object.defineProperty(this._descriptorTarget, this._propertyName, {
-         get: this._originialGetter,
-         set: this._originialSetter
-      });
    }
 }
