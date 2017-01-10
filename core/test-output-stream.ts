@@ -5,14 +5,10 @@ import { TestCaseResult, TestOutcome } from "./results";
 
 export class TestOutputStream extends ReadableStream {
 
-   public _read() { }
+   public _read() { } // tslint:disable-line:no-empty
 
    public end() {
       this.push(null);
-   }
-
-   private _writeOut(message: string): void {
-      this.push(message);
    }
 
    public emitVersion(): void {
@@ -43,6 +39,10 @@ export class TestOutputStream extends ReadableStream {
       } else {
          throw new TypeError(`Invalid test outcome: ${outcome}`);
       }
+   }
+
+   private _writeOut(message: string): void {
+      this.push(message);
    }
 
    private _emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
@@ -81,7 +81,9 @@ export class TestOutputStream extends ReadableStream {
       let testDescription = test.description;
 
       if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-         testDescription += ` [ ${testCaseArguments.map(argument => this._getArgumentDescription(argument)).join(", ")} ]`;
+         testDescription += ` [ ${testCaseArguments.map(argument => 
+             this._getArgumentDescription(argument)
+         ).join(", ")} ]`;
       }
 
       return testDescription;
@@ -119,7 +121,10 @@ export class TestOutputStream extends ReadableStream {
 
    private _writeUnhandledErrorOutput(error: Error): void {
 
-       this._writeFailure("The test threw an unhandled error.", "an unhandled error", "no unhandled errors to be thrown", error.stack);
+       this._writeFailure("The test threw an unhandled error.",
+                          "an unhandled error",
+                          "no unhandled errors to be thrown",
+                          error.stack);
 
    }
 
