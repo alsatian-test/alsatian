@@ -40,10 +40,10 @@ export class TestSet {
    public addTestsFromFiles (testsFileLocations: string | Array<string>) {
 
       if (typeof testsFileLocations === "string") {
-         testsFileLocations = [ <string>testsFileLocations ];
+         testsFileLocations = [ <string> testsFileLocations ];
       }
 
-      this._loadTestFixtures(<Array<string>>testsFileLocations);
+      this._loadTestFixtures(<Array<string>> testsFileLocations);
    }
 
    private _loadTestFixtures(testFileLocations: Array<string>) {
