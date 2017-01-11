@@ -1,22 +1,22 @@
 import {
-   MatchError,
-   ExactMatchError,
-   EqualMatchError,
-   RegexMatchError,
-   TruthyMatchError,
    ContentsMatchError,
-   LessThanMatchError,
-   GreaterThanMatchError,
+   EqualMatchError,
    ErrorMatchError,
+   ExactMatchError,
    FunctionCallMatchError,
-   PropertySetMatchError
+   GreaterThanMatchError,
+   LessThanMatchError,
+   MatchError,
+   PropertySetMatchError,
+   RegexMatchError,
+   TruthyMatchError
 } from "./errors";
 
 import {
+   Any,
    FunctionSpy,
    PropertySpy,
-   Any,
-   TypeMatcher,
+   TypeMatcher
 } from "./spying";
 
 import {
@@ -99,8 +99,7 @@ export class Matcher {
       }
 
       // check all the properties of each object
-      for (let i = 0; i < objectAKeys.length; i++) {
-         let objectAKey = objectAKeys[i];
+      for (const objectAKey of objectAKeys) {
 
          // if the property values are not the same
          if (objectA[objectAKey] !== objectB[objectAKey]) {
@@ -266,7 +265,7 @@ export class Matcher {
       }
 
       if (threwRightError !== this.shouldMatch) {
-         throw new ErrorMatchError(actualError, this.shouldMatch, (<any>errorType), errorMessage);
+         throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
       }
    }
 

@@ -1,6 +1,6 @@
+import { FunctionCallCountMatchError } from "../errors";
 import { FunctionSpy } from "../spying";
 import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
-import { FunctionCallCountMatchError } from "../errors";
 
 export class FunctionSpyMatcher {
 
@@ -25,8 +25,15 @@ export class FunctionSpyMatcher {
          throw new TypeError("expectedCallCount must be greater than 0.");
       }
 
-      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length !== expectedCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly, this._expectedArguments);
+      if (this._expectedArguments
+       && this._getArgumentsMatching(this._expectedArguments).length !== expectedCallCount) {
+         throw new FunctionCallCountMatchError(
+             this._spy,
+             true,
+             expectedCallCount,
+             SpyCallCountType.Exactly,
+             this._expectedArguments
+         );
       }
       else if (this._spy.calls.length !== expectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly);
@@ -41,8 +48,15 @@ export class FunctionSpyMatcher {
          throw new TypeError("unexpectedCallCount must be greater than 0.");
       }
 
-      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length === unexpectedCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly, this._expectedArguments);
+      if (this._expectedArguments
+       && this._getArgumentsMatching(this._expectedArguments).length === unexpectedCallCount) {
+         throw new FunctionCallCountMatchError(
+             this._spy,
+             false,
+             unexpectedCallCount,
+             SpyCallCountType.Exactly,
+             this._expectedArguments
+         );
       }
       else if (this._spy.calls.length === unexpectedCallCount) {
          throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly);
@@ -57,8 +71,15 @@ export class FunctionSpyMatcher {
          throw new TypeError("minimumCallCount must be greater than 0.");
       }
 
-      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length <= minimumCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan, this._expectedArguments);
+      if (this._expectedArguments
+       && this._getArgumentsMatching(this._expectedArguments).length <= minimumCallCount) {
+         throw new FunctionCallCountMatchError(
+             this._spy,
+             true,
+             minimumCallCount,
+             SpyCallCountType.GreaterThan,
+             this._expectedArguments
+         );
       }
       else if (this._spy.calls.length <= minimumCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan);
@@ -73,13 +94,24 @@ export class FunctionSpyMatcher {
          throw new TypeError("maximumCallCount must be greater than 0.");
       }
 
-      if (this._expectedArguments && this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length >= maximumCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan, this._expectedArguments);
+      if (this._expectedArguments
+      && this._getArgumentsMatching(this._expectedArguments).length >= maximumCallCount) {
+         throw new FunctionCallCountMatchError(
+             this._spy,
+             true,
+             maximumCallCount,
+             SpyCallCountType.LessThan,
+             this._expectedArguments
+         );
       }
       else if (this._spy.calls.length >= maximumCallCount) {
          throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan);
       }
 
       return new FunctionSpyCallCountMatcher();
+   }
+
+   private _getArgumentsMatching(expectedArguments: Array<any>) {
+       return this._spy.callsWithArguments.apply(this._spy, expectedArguments);
    }
 }
