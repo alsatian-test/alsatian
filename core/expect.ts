@@ -76,7 +76,8 @@ export class Matcher {
       // exclude the double equals in this case from review as this is what we want to do
       if (expectedValue != this._actualValue === this.shouldMatch) { // tslint:disable-line:triple-equals
 
-         if (typeof expectedValue !== "object" || this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this.shouldMatch) {
+         if (typeof expectedValue !== "object" ||
+             this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this.shouldMatch) {
             throw new EqualMatchError(this._actualValue, expectedValue, this.shouldMatch);
          }
       }
@@ -240,7 +241,9 @@ export class Matcher {
     */
    public toHaveBeenCalled(): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
-         throw new TypeError("toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
+         throw new TypeError(
+             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function."
+         );
       }
 
       if (this._actualValue.calls.length === 0 === this.shouldMatch) {
@@ -256,7 +259,9 @@ export class Matcher {
     */
    public toHaveBeenCalledWith(...expectedArguments: Array<any>): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
-         throw new TypeError("toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
+         throw new TypeError(
+             "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
+         );
       }
 
       if (this._actualValue.calls.filter((call: any) => {
@@ -328,7 +333,8 @@ export class Matcher {
          if (objectA[objectAKey] !== objectB[objectAKey]) {
 
             // and it's not an object or the objects are not equal
-            if (typeof(objectA[objectAKey]) !== "object" || this._checkObjectsAreDeepEqual(objectA[objectAKey], objectB[objectAKey]) === false) {
+            if (typeof(objectA[objectAKey]) !== "object" ||
+                this._checkObjectsAreDeepEqual(objectA[objectAKey], objectB[objectAKey]) === false) {
                // then not deep equal
                return false;
             }
