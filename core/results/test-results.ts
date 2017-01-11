@@ -1,5 +1,5 @@
-import { TestCaseResult } from "./test-case-result";
 import { ITest } from "../_interfaces/test.i";
+import { TestCaseResult } from "./test-case-result";
 import { TestOutcome } from "./test-outcome";
 
 export class TestResults {
