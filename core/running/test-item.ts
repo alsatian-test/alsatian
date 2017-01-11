@@ -40,75 +40,37 @@ export class TestItem {
        this._testCase = testCase;
    }
 
-   public run(timeout: number): Promise<any> {
+   public async run(timeout: number): Promise<void> {
 
       if (this._test.ignored) {
-         return new Promise((resolve, reject) => {
-            resolve({ test: this._test });
-         });
+         return;
       }
       else {
-
          this._setup();
-
-         if (this._test.isAsync) {
-            return this._runAsync(timeout);
-         }
-         else {
-            return this._runSync();
-         }
+         await this._newRun(this._test.timeout || timeout);
+         this._teardown();
       }
    }
 
-   private _runSync(): Promise<any> {
-      return new Promise<any>((resolve, reject) => {
-         try {
-            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-            this._reportResult(resolve);
-         }
-         catch (error) {
-            this._reportResult(resolve, error);
-         }
-      });
-   }
+    private async _newRun(timeout: number) {
+        return new Promise<any>((resolve, reject) => {
+            const start = Date.now();
 
-   private _runAsync(timeout: number) {
-      return new Promise<any>((resolve, reject) => {
-         let timeoutExpired = false;
-         let timeoutCheck: NodeJS.Timer = null;
+            setTimeout(() => {         
+                reject(new TestTimeoutError(timeout));
+            }, timeout);
 
-         try {
-            let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-
-            testPromise.then(() => {
-               if (!timeoutExpired) {
-                  clearTimeout(timeoutCheck);
-                  this._reportResult(resolve);
-               }
-            })
-            .catch((error: Error) => {
-               clearTimeout(timeoutCheck);
-               this._reportResult(resolve, error);
-            });
-
-            const testTimeout: number = this._test.timeout || timeout;
-
-            timeoutCheck = setTimeout(() => {
-               timeoutExpired = true;
-               let error = new TestTimeoutError(testTimeout);
-               this._reportResult(resolve, error);
-            }, testTimeout);
-         }
-         catch (error) {
-            this._reportResult(resolve, error);
-         }
-      });
-   }
-
-   private _reportResult(resolve: (resolvedValue: any) => any, error?: Error) {
-      this._teardown();
-      resolve({ test: this._test, error: error });
-   }
+            if (this._test.isAsync) {
+                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments)
+                .then(resolve)
+                .catch(reject);
+            }
+            else {
+                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+                resolve();
+            }
+        });
+    }
 
    private async _setup() {
       const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);

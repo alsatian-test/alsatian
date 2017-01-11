@@ -4,7 +4,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { Promise } from "../../../../promise/promise";
+//import { Promise } from "../../../../promise/promise";
 import "reflect-metadata";
 
 export class RunTestTests {
@@ -41,7 +41,7 @@ export class RunTestTests {
 
    @AsyncTest()
    @Timeout(600)
-   public singleTestTakes501msFails() {
+   public async singleTestTakes501msFails() {
 
       const test = new TestBuilder()
                         .withTestCaseCount(1)
@@ -69,16 +69,8 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
    @AsyncTest()

@@ -1,6 +1,6 @@
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestSet } from "../../../../core/test-set";
-import { Expect, Test, TestCase, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOn, Setup, Teardown, FocusTest } from "../../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 
@@ -32,7 +32,7 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
-      Expect(() => testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
+      Expect(async () => await testRunner.run(testSet)).toThrowError(Error, "no tests to run.");
    }
 
    @TestCase(1)

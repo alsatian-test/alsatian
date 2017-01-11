@@ -1,5 +1,5 @@
 import { ITestFixture, ITest } from "../_interfaces";
-import { Promise } from "../../promise/promise";
+//import { Promise } from "../../promise/promise";
 import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutputStream, TestTimeoutError } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
@@ -22,7 +22,7 @@ export class TestRunner {
       }
    }
 
-   public run(testSet: TestSet, timeout?: number) {
+   public async run(testSet: TestSet, timeout?: number) {
 
       const testPlan = new TestPlan(testSet);
       if (testPlan.testItems.length === 0) {
@@ -66,7 +66,7 @@ export class TestRunner {
          this._scheduleNextTestPlanItem(testSetRunInfo, resolve);
       }
 
-      private _scheduleNextTestPlanItem(testSetRunInfo: TestSetRunInfo,  resolve: (testSetResults: TestSetResults) => any) {
+      private async _scheduleNextTestPlanItem(testSetRunInfo: TestSetRunInfo,  resolve: (testSetResults: TestSetResults) => any) {
 
          const nextTestPlanIndex = testSetRunInfo.testPlan.testItems.indexOf(testSetRunInfo.testPlanItem) + 1;
          const nextTestPlanItem = testSetRunInfo.testPlan.testItems[nextTestPlanIndex];
@@ -92,13 +92,13 @@ export class TestRunner {
                currentTestResults = currentTestFixtureResults.addTestResult(nextTestPlanItem.test);
             }
 
-            nextTestPlanItem.run(testSetRunInfo.timeout)
-            .then((testResults: { test: ITest, error: Error }) => {
-               this._createResultAndRunNextTest(testSetRunInfo, resolve, testResults.error);
-            })
-            .catch((error: Error) => {
+            try {
+               await nextTestPlanItem.run(testSetRunInfo.timeout);
+               this._createResultAndRunNextTest(testSetRunInfo, resolve);
+            }
+            catch (error) {
                this._createResultAndRunNextTest(testSetRunInfo, resolve, error);
-            });
+            }
          }
          else {
             resolve(testSetRunInfo.testSetResults);
