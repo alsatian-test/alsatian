@@ -11,7 +11,7 @@ export class Promise<T> {
          catch (error) {
             this._rejectCallback(error);
          }
-      });
+      }, 0);
    }
 
    private _resolve(resolvedValue?: T) {

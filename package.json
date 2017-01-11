@@ -21,8 +21,10 @@
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "git clean -X -d -f",
-    "prepublish": "in-publish && npm test && npm run build-publish || not-in-publish",
+    "clean": "npm run clean-git && npm run clean-compiled",
+    "clean-compiled": "rimraf **/*.js **/*.js.map **/*.d.ts",
+    "clean-git": "git clean -X -d -f",
+    "prepublish": "in-publish && npm run clean && npm install && npm test && npm run build-publish || not-in-publish",
     "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./cli/**/*.ts\" \"./core/**/*.ts\" --exclude \"./**/*.d.ts\"",
@@ -32,13 +34,13 @@
     "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
-    "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests && npm run gulp-integration-tests&& npm run babel-integration-tests && npm run other-integration-tests",
-    "other-integration-tests": "alsatian \"./test/integration-tests/**/*.spec.js\"",
+    "integration-tests": "npm link && npm run cli-integration-tests && npm run node-integration-tests && npm run gulp-integration-tests&& npm run babel-integration-tests && npm run expect-extension-integration-tests",
+    "expect-extension-integration-tests": "alsatian \"./test/integration-tests/extending-expect/**/*.spec.js\"",
     "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
     "node-integration-tests": "tsc -p \"./test/integration-tests\" && node \"./test/integration-tests/node/runner\"",
     "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
-    "build-es6-tests": "babel test/integration-tests/javascript/babel/expectations -d test/integration-tests/javascript/babel/expectations",
+    "build-es6-tests": "babel test/integration-tests/javascript/test-sets -d test/integration-tests/javascript/test-sets",
     "babel-integration-tests": "npm run build-es6-tests && alsatian \"./test/integration-tests/javascript/babel/babel-compatibility.spec\""
   },
   "repository": {
@@ -84,6 +86,7 @@
     "gulp": "^3.9.1",
     "in-publish": "^2.0.0",
     "nyc": "^10.0.0",
+    "rimraf": "^2.5.4",
     "tslint": "^4.0.0",
     "typescript": "^2.0.3"
   },
