@@ -1,6 +1,6 @@
+import { ITest } from "../_interfaces";
 import { TestSet } from "../test-set";
 import { TestItem } from "./test-item";
-import { ITest } from "../_interfaces";
 
 export class TestPlan {
 
@@ -11,14 +11,18 @@ export class TestPlan {
 
   public constructor(testSet: TestSet) {
 
-     if (testSet.testFixtures.length === 0) {
-        return;
-     }
+    if (testSet.testFixtures.length === 0) {
+       return;
+    }
 
     let testFixtures = testSet.testFixtures;
 
     // are there any tests or test fixtures focussed
-    const focussedTestsOrTestFixtures = testFixtures.filter(testFixture => testFixture.focussed || testFixture.tests.some(test => test.focussed)).length > 0;
+    const focussedTestsOrTestFixtures = testFixtures
+              .filter(testFixture =>
+                         testFixture.focussed
+                      || testFixture.tests.some(test => test.focussed)
+                     ).length > 0;
 
     testFixtures.forEach(testFixture => {
 
