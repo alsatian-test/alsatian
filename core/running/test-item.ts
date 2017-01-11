@@ -1,6 +1,6 @@
-import { ITestFixture, ITest, ITestCase } from "../_interfaces";
-import { METADATA_KEYS } from "../alsatian-core";
 import { Promise } from "../../promise/promise";
+import { ITest, ITestCase, ITestFixture } from "../_interfaces";
+import { METADATA_KEYS } from "../alsatian-core";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
@@ -77,7 +77,9 @@ export class TestItem {
          let timeoutCheck: NodeJS.Timer = null;
 
          try {
-            let testPromise: any = this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+            let testPromise: any = this._testFixture
+                                       .fixture[this._test.key]
+                                       .apply(this._testFixture.fixture, this._testCase.arguments);
 
             testPromise.then(() => {
                if (!timeoutExpired) {
@@ -106,7 +108,10 @@ export class TestItem {
 
    private _reportResult(resolve: (resolvedValue: any) => any, error?: Error) {
       this._teardown();
-      resolve({ test: this._test, error: error });
+      resolve({ 
+          test: this._test,
+          error: error
+      });
    }
 
    private _setup() {
