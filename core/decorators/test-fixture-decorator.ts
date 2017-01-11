@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { TEST_FIXTURE } from "./_metadata-keys";
 import { TestFixture as TestFixtureMetadata } from "../";
+import { TEST_FIXTURE } from "./_metadata-keys";
 
 export function TestFixture(description?: string) {
 

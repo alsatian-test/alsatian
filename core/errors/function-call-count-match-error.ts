@@ -1,6 +1,6 @@
 import { MatchError } from "../errors";
-import { FunctionSpy, Any, TypeMatcher } from "../spying";
 import { SpyCallCountType } from "../matchers";
+import { Any, FunctionSpy, TypeMatcher } from "../spying";
 
 export class FunctionCallCountMatchError extends MatchError {
 

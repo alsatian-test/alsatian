@@ -1,6 +1,6 @@
+import { DuplicateCliArgumentError } from "./errors/duplicate-cli-argument-error";
 import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error";
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
-import { DuplicateCliArgumentError } from "./errors/duplicate-cli-argument-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 
 export class AlsatianCliOptions {

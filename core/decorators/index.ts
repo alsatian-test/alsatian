@@ -5,9 +5,9 @@ import { IgnoreTest } from "./ignore-test-decorator";
 import { IgnoreTests } from "./ignore-tests-decorator";
 import { Setup } from "./setup-decorator";
 import { Teardown } from "./teardown-decorator";
-import { TestFixture } from "./test-fixture-decorator";
-import { Test } from "./test-decorator";
 import { TestCase } from "./test-case-decorator";
+import { Test } from "./test-decorator";
+import { TestFixture } from "./test-fixture-decorator";
 import { Timeout } from "./timeout-decorator";
 
 export {
