@@ -1,6 +1,7 @@
 import { ITestFixture, ITest, ITestCase } from "../_interfaces";
+import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
-import { Promise } from "../../promise/promise";
+//import { Promise } from "../../promise/promise";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
@@ -109,13 +110,18 @@ export class TestItem {
       resolve({ test: this._test, error: error });
    }
 
-   private _setup() {
-      let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);
+   private async _setup() {
+      const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);
 
       if (setupFunctions) {
-         setupFunctions.forEach(setupFunction => {
-            this._testFixture.fixture[setupFunction].call(this._testFixture.fixture);
-         });
+         for (const setupFunction of setupFunctions) {
+             if (setupFunction.isAsync) {
+                await this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture);
+             }
+             else {
+                this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture)
+             }
+         }
       }
    }
 
