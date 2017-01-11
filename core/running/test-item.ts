@@ -108,9 +108,9 @@ export class TestItem {
 
    private _reportResult(resolve: (resolvedValue: any) => any, error?: Error) {
       this._teardown();
-      resolve({ 
-          test: this._test,
-          error: error
+      resolve({
+          error: error,
+          test: this._test
       });
    }
 
