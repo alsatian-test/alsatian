@@ -1,7 +1,6 @@
 import { ITestFixture, ITest, ITestCase } from "../_interfaces";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
-//import { Promise } from "../../promise/promise";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
@@ -40,19 +39,19 @@ export class TestItem {
        this._testCase = testCase;
    }
 
-   public async run(timeout: number): Promise<void> {
+   public async run(timeout: number) {
 
       if (this._test.ignored) {
          return;
       }
       else {
          this._setup();
-         await this._newRun(this._test.timeout || timeout);
+         await this._runTest(this._test.timeout || timeout);
          this._teardown();
       }
    }
 
-    private async _newRun(timeout: number) {
+    private async _runTest(timeout: number) {
         return new Promise<any>((resolve, reject) => {
             const start = Date.now();
 

@@ -1,6 +1,5 @@
 import { ITestFixture, ITest } from "../_interfaces";
-//import { Promise } from "../../promise/promise";
-import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestSet, TestOutputStream, TestTimeoutError } from "../alsatian-core";
+import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream, TestTimeoutError } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
 import { TestSetRunInfo } from "./test-set-run-info";
@@ -37,72 +36,50 @@ export class TestRunner {
 
       this._outputStream.emitVersion();
       this._outputStream.emitPlan(testPlan.testItems.length);
-
-      return new Promise<TestSetResults>((resolve, reject) => {
-
-         const testSetRunInfo = new TestSetRunInfo(
+      
+      const testSetRunInfo = new TestSetRunInfo(
             testPlan,
             testSetResults,
             timeout);
 
-            this._scheduleNextTestPlanItem(testSetRunInfo, resolve);
-         });
-      }
+       await this._runTests(testSetRunInfo, testSetResults);
+    }
 
-      private _createResultAndRunNextTest(testSetRunInfo: TestSetRunInfo, resolve: (testSetResults: TestSetResults) => any, error?: Error) {
+    private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
 
-         const testSetResults = testSetRunInfo.testSetResults;
+        let currentTestFixtureResults: TestFixtureResults;
+        let currentTestResults: TestResults;
 
-         const currentTestFixtureResults = testSetResults
-         .testFixtureResults[testSetResults.testFixtureResults.length - 1];
+        for (const testItem of testSetRunInfo.testPlan.testItems) {
+            
+            const testItemIndex = testSetRunInfo.testPlan.testItems.indexOf(testItem);
+            const previousTestItem = testSetRunInfo.testPlan.testItems[testItemIndex - 1];
 
-         const currentTestResults = currentTestFixtureResults
-         .testResults[currentTestFixtureResults.testResults.length - 1];
-
-         const testItem = testSetRunInfo.testPlanItem;
-
-         let result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
-         this._outputStream.emitResult(testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1, result);
-         this._scheduleNextTestPlanItem(testSetRunInfo, resolve);
-      }
-
-      private async _scheduleNextTestPlanItem(testSetRunInfo: TestSetRunInfo,  resolve: (testSetResults: TestSetResults) => any) {
-
-         const nextTestPlanIndex = testSetRunInfo.testPlan.testItems.indexOf(testSetRunInfo.testPlanItem) + 1;
-         const nextTestPlanItem = testSetRunInfo.testPlan.testItems[nextTestPlanIndex];
-
-         if (nextTestPlanItem) {
-
-            testSetRunInfo.testPlanItem = nextTestPlanItem;
-
-            const testSetResults = testSetRunInfo.testSetResults;
-
-            let currentTestFixtureResults = testSetResults
-            .testFixtureResults[testSetResults.testFixtureResults.length - 1];
-
-            if (!currentTestFixtureResults || currentTestFixtureResults.fixture !== nextTestPlanItem.testFixture) {
-               this._outputStream.emitFixture(nextTestPlanItem.testFixture);
-               currentTestFixtureResults = testSetResults.addTestFixtureResult(nextTestPlanItem.testFixture);
+            // if new fixture
+            if (!previousTestItem || previousTestItem.testFixture !== testItem.testFixture) {
+                this._outputStream.emitFixture(testItem.testFixture);
+                currentTestFixtureResults = results.addTestFixtureResult(testItem.testFixture);
             }
 
-            let currentTestResults = currentTestFixtureResults
-            .testResults[currentTestFixtureResults.testResults.length - 1];
-
-            if (!currentTestResults || currentTestResults.test !== nextTestPlanItem.test) {
-               currentTestResults = currentTestFixtureResults.addTestResult(nextTestPlanItem.test);
+            // if new test
+            if (!previousTestItem || previousTestItem.test !== testItem.test) {
+                currentTestResults = currentTestFixtureResults.addTestResult(testItem.test);
             }
+
+            let result: TestCaseResult;
 
             try {
-               await nextTestPlanItem.run(testSetRunInfo.timeout);
-               this._createResultAndRunNextTest(testSetRunInfo, resolve);
+                await testItem.run(testSetRunInfo.timeout);
+                result = currentTestResults.addTestCaseResult(testItem.testCase.arguments);
             }
             catch (error) {
-               this._createResultAndRunNextTest(testSetRunInfo, resolve, error);
+                result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
             }
-         }
-         else {
-            resolve(testSetRunInfo.testSetResults);
-            this._outputStream.end();
-         }
-      };
-   }
+
+            this._outputStream.emitResult(testItemIndex + 1, result);
+
+        }
+        
+        this._outputStream.end();
+    }
+}
