@@ -1,15 +1,8 @@
 import { TapBark } from "tap-bark";
 import { TestOutcome, TestOutputStream, TestRunner, TestSet, TestSetResults } from "../core/alsatian-core";
 import { AlsatianCliOptions } from "./alsatian-cli-options";
-const Package = require("../package.json");
 
 export class CliTestRunner {
-
-   public constructor(private _testRunner: TestRunner) {
-      if (!_testRunner) {
-         throw new TypeError("_testRunner must not be null or undefined.");
-      }
-   }
 
    public static create(): CliTestRunner {
       const outputStream = new TestOutputStream();
@@ -17,25 +10,37 @@ export class CliTestRunner {
       return new CliTestRunner(testRunner);
    }
 
+   public constructor(private _testRunner: TestRunner) {
+      if (!_testRunner) {
+         throw new TypeError("_testRunner must not be null or undefined.");
+      }
+   }
+
    public run(userArguments: AlsatianCliOptions) {
+
+      const packageJson = require("../package.json");
 
       // if version has been requested then output the current version and exit
       if (userArguments.versionRequested) {
-         process.stdout.write("alsatian version " + Package.version);
+         process.stdout.write("alsatian version " + packageJson.version);
          return;
       }
 
       // if help has been requested then output info about using the CLI and exit
       if (userArguments.helpRequested) {
          process.stdout.write("\n\n" +
-                              "alsatian version " + Package.version + "\n" +
+                              "alsatian version " + packageJson.version + "\n" +
                               "=========================\n" +
                               "CLI options\n" +
                               "=========================\n" +
-                              "HELP:    --help / -h                      (outputs CLI information)\n" +
-                              "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
-                              "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
-                              "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                              "HELP:    --help / -h                      " +
+                              "(outputs CLI information)\n" +
+                              "VERSION: --version / -v                   " +
+                              "(outputs the version of the CLI)\n" +
+                              "TAP:     --tap / -T                       " +
+                              "(runs alsatian with TAP output)\n" +
+                              "TIMEOUT: --timeout [number] / -t [number] " +
+                              "(sets the timeout period for tests in milliseconds - default 500)\n" +
                               "\n"
                               );
          return;

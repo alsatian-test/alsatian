@@ -62,7 +62,7 @@ export class AlsatianCliOptions {
 
       if (timeoutValue !== null) {
 
-         const timeout = parseInt(timeoutValue);
+         const timeout = parseInt(timeoutValue, 10);
 
          if (isNaN(timeout) || timeout < 1 || timeout.toString() !== timeoutValue) {
             throw new InvalidTimeoutValueError(timeoutValue);
@@ -123,9 +123,12 @@ export class AlsatianCliOptions {
       return args;
    }
 
-   private _getArgumentIndexFromArgumentList(args: Array<string>, argumentName: string, argumentShorthand?: string): number {
+   private _getArgumentIndexFromArgumentList(args: Array<string>,
+                                             argumentName: string,
+                                             argumentShorthand?: string): number {
 
-      const matchingArguments = args.filter((value, index) => value === "--" + argumentName || value === "-" + argumentShorthand);
+      const matchingArguments = args.filter((value, index) => value === "--" + argumentName
+                                                           || value === "-" + argumentShorthand);
 
       if (matchingArguments.length === 0) {
          return -1;
@@ -137,7 +140,9 @@ export class AlsatianCliOptions {
       return args.indexOf(matchingArguments[0]);
    }
 
-   private _getArgumentValueFromArgumentList(args: Array<string>, argumentName: string, argumentShorthand?: string): string {
+   private _getArgumentValueFromArgumentList(args: Array<string>,
+                                             argumentName: string,
+                                             argumentShorthand?: string): string {
       const argumentIndex = this._getArgumentIndexFromArgumentList(args, argumentName, argumentShorthand);
 
       if (argumentIndex === -1) {
@@ -146,7 +151,7 @@ export class AlsatianCliOptions {
 
       const valueArgument = args[argumentIndex + 1];
 
-      if (valueArgument && (valueArgument[0] !== "-" || !isNaN(parseInt(valueArgument)))) {
+      if (valueArgument && (valueArgument[0] !== "-" || !isNaN(parseInt(valueArgument, 10)))) {
          return valueArgument;
       }
       else {
