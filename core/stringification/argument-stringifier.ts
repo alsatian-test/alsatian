@@ -2,19 +2,28 @@ import { Any, TypeMatcher } from "../spying";
 
 export class ArgumentStringifier {
 
-    public stringifyArguments(args: Array<any>): string {
-        return `[${args.map(this.stringifyArgument).join(", ")}]`;
-    }
-
-    public stringifyArgument(arg: any): string {
-        if (arg === Any) {
-            return "Anything";
-        }
-        else if (arg instanceof TypeMatcher) {
-            return "Any " + (arg.type as any).name;
+    public stringify(argument: any) {
+        if (argument instanceof Array) {
+            return this._stringifyArray(argument);
         }
         else {
-            return JSON.stringify(arg);
+            return this._stringify(argument);
+        }
+    }
+
+    private _stringifyArray(array: Array<any>): string {
+        return `[${array.map(this._stringify).join(", ")}]`;
+    }
+
+    private _stringify(argument: any): string {
+        if (argument === Any) {
+            return "Anything";
+        }
+        else if (argument instanceof TypeMatcher) {
+            return "Any " + (argument.type as any).name;
+        }
+        else {
+            return JSON.stringify(argument);
         }
     }
 }
