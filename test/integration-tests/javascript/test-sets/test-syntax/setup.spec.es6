@@ -14,7 +14,7 @@ export class SetupTests {
    }
 
    @AsyncSetup
-   async _asyncSetup() {
+   _asyncSetup() {
        return new Promise((resolve, reject) => {
            this._asyncSetupComplete = true;
            resolve();

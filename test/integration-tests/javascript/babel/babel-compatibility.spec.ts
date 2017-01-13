@@ -1,11 +1,12 @@
 import * as child from "child_process";
 import * as path from "path";
-import { Expect, AsyncTest } from "../../../../core/alsatian-core";
+import { Expect, AsyncTest, Timeout } from "../../../../core/alsatian-core";
 import * as FileSystem from "fs";
 
 export class BabelIntegrationTests {
 
    @AsyncTest()
+   @Timeout(1000)
    public toBeExpectations() {
 
       const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap");
@@ -26,6 +27,7 @@ export class BabelIntegrationTests {
    }
 
    @AsyncTest()
+   @Timeout(1000)
    public asyncTest() {
 
       const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js --tap");
