@@ -11,7 +11,7 @@ export class ArgumentStringifier {
             return "Anything";
         }
         else if (arg instanceof TypeMatcher) {
-            return "Any " + (<any> arg.type).name;
+            return "Any " + (arg.type as any).name;
         }
         else {
             return JSON.stringify(arg);
