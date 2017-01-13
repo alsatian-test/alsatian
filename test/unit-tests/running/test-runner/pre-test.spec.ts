@@ -4,17 +4,15 @@ import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout, IgnoreTes
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { Promise } from "../../../../promise/promise";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 
-@IgnoreTests()
 export class PreTestTests {
 
    private _originalStdOut: any;
    private _originalProcessExit: any;
 
    @AsyncTest()
-   public tapVersionHeaderOutput() {
+   public async tapVersionHeaderOutput() {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -24,27 +22,19 @@ export class PreTestTests {
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
-         let output = new TestOutputStream();
-         SpyOn(output, "push");
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("TAP version 13\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("TAP version 13\n");
    }
 
    @TestCase(1)
    @TestCase(2)
    @TestCase(5)
    @AsyncTest()
-   public multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
+   public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -57,20 +47,12 @@ export class PreTestTests {
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      return new Promise<void>((resolve, reject) => {
-         let output = new TestOutputStream();
-         SpyOn(output, "push");
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
    }
 
    @TestCase(1, 1)
@@ -83,7 +65,7 @@ export class PreTestTests {
    @TestCase(5, 2)
    @TestCase(5, 5)
    @AsyncTest()
-   public multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
+   public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -119,12 +101,9 @@ export class PreTestTests {
 
       let testRunner = new TestRunner(output);
 
-      testRunner.run(testSet).then(() => {
-         Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
-         resultPromise.resolve();
-      });
-
-      return resultPromise;
+      await testRunner.run(testSet);
+      
+      Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
    }
 
    @TestCase(1, 1, 1)
@@ -155,7 +134,7 @@ export class PreTestTests {
    @TestCase(5, 2, 5)
    @Timeout(1000)
    @AsyncTest()
-   public multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
+   public async multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -177,27 +156,19 @@ export class PreTestTests {
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      return new Promise<void>((resolve, reject) => {
-         let output = new TestOutputStream();
-         SpyOn(output, "push");
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
    }
 
    @TestCase(1)
    @TestCase(2)
    @TestCase(5)
    @AsyncTest()
-   public testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
+   public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
       (<any>testSet).testFixtures = [];
@@ -213,19 +184,11 @@ export class PreTestTests {
       let testFixtureBuilder = new TestFixtureBuilder();
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
-         let output = new TestOutputStream();
-         SpyOn(output, "push");
+      let output = new TestOutputStream();
+      SpyOn(output, "push");
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
    }
 }

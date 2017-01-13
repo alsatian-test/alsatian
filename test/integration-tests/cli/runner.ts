@@ -1,6 +1,5 @@
 import * as child from "child_process";
 import * as path from "path";
-import { Promise } from "../../../promise/promise";
 import { Expect, AsyncTest, TestCase, Timeout } from "../../../core/alsatian-core";
 import * as FileSystem from "fs";
 
@@ -20,7 +19,7 @@ export class CliIntegrationTests {
 
       let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/" + expectationTestName + ".txt").toString();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
             Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
             resolve();
@@ -44,7 +43,7 @@ export class CliIntegrationTests {
 
       let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/" + syntaxTestName + ".txt").toString();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
             Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
             resolve();
