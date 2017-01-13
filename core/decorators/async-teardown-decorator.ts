@@ -4,17 +4,17 @@ import { TEARDOWN } from "./_metadata-keys";
 
 export function AsyncTeardown(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<() => any>) {
 
-    let setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(TEARDOWN, target);
+    let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(TEARDOWN, target);
 
-    if (!setupFunctions) {
-      setupFunctions = [];
+    if (!teardownFunctions) {
+      teardownFunctions = [];
     }
 
-    setupFunctions.push({
+    teardownFunctions.push({
         isAsync: true,
         propertyKey: propertyKey
     });
 
     // mark as setup test method
-    Reflect.defineMetadata(TEARDOWN, setupFunctions, target);
+    Reflect.defineMetadata(TEARDOWN, teardownFunctions, target);
 };

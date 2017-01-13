@@ -1,0 +1,5 @@
+TAP version 13
+1..2
+# FIXTURE setup tests
+ok 1 simple setup
+ok 2 simple async setup

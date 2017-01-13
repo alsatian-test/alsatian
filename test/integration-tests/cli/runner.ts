@@ -1,22 +1,24 @@
 import * as child from "child_process";
 import * as path from "path";
 import { Promise } from "../../../promise/promise";
-import { Expect, AsyncTest } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, Timeout } from "../../../core/alsatian-core";
 import * as FileSystem from "fs";
 
 export class CliIntegrationTests {
-
+   
+   @TestCase("to-be")
    @AsyncTest()
-   public toBeExpectations() {
+   @Timeout(1000)
+   public toBeExpectations(expectationTestName: string) {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/to-be.spec.js --tap");
+      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/" + expectationTestName + ".spec.js --tap");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt").toString();
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/" + expectationTestName + ".txt").toString();
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {
@@ -25,18 +27,22 @@ export class CliIntegrationTests {
          });
       });
    }
-
+   
+   @TestCase("async-test")
+   @TestCase("setup")
+   @TestCase("teardown")
    @AsyncTest()
-   public asyncTests() {
+   @Timeout(1000)
+   public syntaxTests(syntaxTestName: string) {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/test-syntax/async-test.spec.js --tap");
+      const result = child.exec("alsatian ./test/integration-tests/test-sets/test-syntax/" + syntaxTestName + ".spec.js --tap");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/async-test.txt").toString();
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/" + syntaxTestName + ".txt").toString();
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {

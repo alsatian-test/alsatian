@@ -77,7 +77,6 @@ export class TestRunner {
             }
 
             this._outputStream.emitResult(testItemIndex + 1, result);
-
         }
         
         this._outputStream.end();

@@ -1,0 +1,5 @@
+TAP version 13
+1..2
+# FIXTURE teardown tests
+ok 1 teardown not called before first test
+ok 2 teardown has been called after first test and before second

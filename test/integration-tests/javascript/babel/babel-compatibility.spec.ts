@@ -29,14 +29,14 @@ export class BabelIntegrationTests {
    @AsyncTest()
    public asyncTest() {
 
-      const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/test-syntax/async-test.spec.js --tap");
+      const result = child.exec("alsatian ./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js --tap");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/async-test.txt").toString();
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt").toString();
 
       return new Promise((resolve, reject) => {
          result.on("close", (code: number) => {

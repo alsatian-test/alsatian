@@ -45,9 +45,9 @@ export class TestItem {
          return;
       }
       else {
-         this._setup();
+         await this._setup();
          await this._runTest(this._test.timeout || timeout);
-         this._teardown();
+         await this._teardown();
       }
    }
 
@@ -86,13 +86,18 @@ export class TestItem {
       }
    }
 
-   private _teardown() {
-      let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
+   private async _teardown() {
+      let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
 
       if (teardownFunctions) {
-         teardownFunctions.forEach(teardownFunction => {
-            this._testFixture.fixture[teardownFunction].call(this._testFixture.fixture);
-         });
+         for (const teardownFunction of teardownFunctions) {
+             if (teardownFunction.isAsync) {
+                await this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture);
+             }
+             else {
+                this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture)
+             }
+         }
       }
    }
 }
