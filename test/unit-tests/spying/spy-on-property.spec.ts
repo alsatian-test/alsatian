@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase, SpyOnProperty } from "../../../core/alsatian-core";
+import { Expect, SpyOnProperty, Test, TestCase } from "../../../core/alsatian-core";
 
 class Testing {
    get test() {
@@ -43,7 +43,7 @@ export class SpyOnPropertyTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public propertyStillReturnsOriginalValue(originalValue: any) {

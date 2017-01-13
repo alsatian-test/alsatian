@@ -1,5 +1,5 @@
-import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
 
 export class ToBeGreaterThanTests {
 
@@ -146,7 +146,7 @@ export class ToBeGreaterThanTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingNonNumberGreaterThanSomethingShouldThrow(value: number) {

@@ -1,5 +1,5 @@
-import { EqualMatchError } from "../../../core/errors/equal-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { EqualMatchError } from "../../../core/errors/equal-match-error";
 
 export class ToEqualTests {
 
@@ -75,11 +75,11 @@ export class ToEqualTests {
    }
 
    @TestCase({})
-   @TestCase({ "with": "something" })
-   @TestCase({ "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42})
+   @TestCase({ with: "something" })
+   @TestCase({ with: { something: "more" }, complex: "!", foSho: true, answer: 42})
    @TestCase([])
    @TestCase([ 1, 2, 3 ])
-   @TestCase([ { "with": "something" }, { "and": "something", "else": "!"} ])
+   @TestCase([ { with: "something" }, { and: "something", else: "!"} ])
    public identicalComplexTypesDontThrow(value: any) {
       let expect = Expect(value);
 
@@ -87,21 +87,21 @@ export class ToEqualTests {
    }
 
    @TestCase({}, {})
-   @TestCase({ "with": "something" }, { "with": "something" })
-   @TestCase({ "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42},
-             { "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42})
+   @TestCase({ with: "something" }, { with: "something" })
+   @TestCase({ with: { something: "more" }, complex: "!", foSho: true, answer: 42},
+             { with: { something: "more" }, complex: "!", foSho: true, answer: 42})
    @TestCase([], [])
    @TestCase([ 1, 2, 3 ], [ 1, 2, 3 ])
-   @TestCase([ { "with": "something" }, { "and": "something", "else": "!"} ],
-             [ { "with": "something" }, { "and": "something", "else": "!"} ])
+   @TestCase([ { with: "something" }, { and: "something", else: "!"} ],
+             [ { with: "something" }, { and: "something", else: "!"} ])
    public matchingComplexTypesNotThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).not.toThrow();
    }
 
-   @TestCase({}, { "with": "something" })
-   @TestCase({ "with": "something" }, { })
+   @TestCase({}, { with: "something" })
+   @TestCase({ with: "something" }, { })
    @TestCase([], [ 1, 2, 3 ])
    @TestCase([ 1, 2, 3 ], [])
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
@@ -112,9 +112,9 @@ export class ToEqualTests {
 
    @TestCase({}, [])
    @TestCase([], {})
-   @TestCase({ "with": "something" }, [ 1, 2, 3 ])
-   @TestCase([ 1, 2, 3 ], { "with": "something" })
-   @TestCase([ ], { "with": "something" })
+   @TestCase({ with: "something" }, [ 1, 2, 3 ])
+   @TestCase([ 1, 2, 3 ], { with: "something" })
+   @TestCase([ ], { with: "something" })
    @TestCase([ 1, 2, 3 ], { })
    public differentComplexTypesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
@@ -122,16 +122,16 @@ export class ToEqualTests {
       Expect(() => expect.toEqual(expected)).toThrow();
    }
 
-   @TestCase({ "with": { "something": "deep" } }, [ 1, 2, 3 ])
-   @TestCase([ {"this": "that" } ], { "with": "something" })
+   @TestCase({ with: { something: "deep" } }, [ 1, 2, 3 ])
+   @TestCase([ {this: "that" } ], { with: "something" })
    public differentDeepComplexTypesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }
 
-   @TestCase({ "with": { "something": "deep" } }, { "with": { "something": "different" } })
-   @TestCase([ {"this": "that" } ], [ {"this": "and that" }])
+   @TestCase({ with: { something: "deep" } }, { with: { something: "different" } })
+   @TestCase([ {this: "that" } ], [ {this: "and that" }])
    public differentDeepComplexToThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 

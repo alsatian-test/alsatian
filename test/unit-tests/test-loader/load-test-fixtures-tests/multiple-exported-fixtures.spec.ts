@@ -1,7 +1,7 @@
-import { TestLoader } from "../../../../core/test-loader";
-import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import { FileRequirer } from "../../../../core/file-requirer";
+import { TestLoader } from "../../../../core/test-loader";
 
 export class MultipleExportedFixtureTests {
 

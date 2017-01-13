@@ -1,5 +1,5 @@
-import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { ErrorMatchError } from "../../../core/errors/error-match-error";
 
 export class ToThrowErrorTests {
 
@@ -102,7 +102,7 @@ export class ToThrowErrorTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionThrowsErrorShouldThrow(actualValue: any) {
@@ -117,7 +117,7 @@ export class ToThrowErrorTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionDoesNotThrowErrorShouldThrow(actualValue: any) {

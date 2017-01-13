@@ -1,5 +1,5 @@
-import { RegexMatchError } from "../../../core/errors/regex-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { RegexMatchError } from "../../../core/errors/regex-match-error";
 
 export class ToMatchTests {
 
@@ -41,7 +41,7 @@ export class ToMatchTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringMatchesRegexShouldThrow(actualValue: any) {
@@ -54,7 +54,7 @@ export class ToMatchTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringDoesNotMatchRegexShouldThrow(actualValue: any) {

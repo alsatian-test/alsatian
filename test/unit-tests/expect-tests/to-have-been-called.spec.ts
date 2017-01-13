@@ -1,5 +1,5 @@
-import { FunctionCallMatchError, FunctionCallCountMatchError } from "../../../core/errors";
-import { Expect, Test, SpyOn, TestCase, FunctionSpy } from "../../../core/alsatian-core";
+import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
+import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 
 export class ToHaveBeenCalledTests {
 
@@ -81,7 +81,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -96,7 +96,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})

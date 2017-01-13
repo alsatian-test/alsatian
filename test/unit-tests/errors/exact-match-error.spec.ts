@@ -1,5 +1,5 @@
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { ExactMatchError } from "../../../core/errors/exact-match-error";
 
 export class ExactMatchErrorTests {
 

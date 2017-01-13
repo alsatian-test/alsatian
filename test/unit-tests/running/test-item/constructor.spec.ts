@@ -1,9 +1,9 @@
+import { ITest, ITestCase, ITestFixture } from "../../../../core/_interfaces";
+import { Expect, TestCase } from "../../../../core/alsatian-core";
 import { TestItem } from "../../../../core/running/test-item";
-import { ITestFixture, ITest, ITestCase } from "../../../../core/_interfaces";
-import { TestCase, Expect } from "../../../../core/alsatian-core";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 
 export class TestItemConstructorTests {
 

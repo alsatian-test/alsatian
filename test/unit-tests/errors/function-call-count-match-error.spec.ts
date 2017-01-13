@@ -1,5 +1,5 @@
+import { Any, Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError } from "../../../core/errors/function-call-count-match-error";
-import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
 import { SpyCallCountType } from "../../../core/matchers";
 
 export class FunctionCallCountMatchErrorTests {

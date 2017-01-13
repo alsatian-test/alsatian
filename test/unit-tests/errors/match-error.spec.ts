@@ -1,4 +1,4 @@
-import { Expect, TestCase, MatchError } from "../../../core/alsatian-core";
+import { Expect, MatchError, TestCase } from "../../../core/alsatian-core";
 
 export class MatchErrorTests {
 

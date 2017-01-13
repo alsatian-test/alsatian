@@ -1,6 +1,6 @@
-import { Expect, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { InvalidArgumentNamesError } from "../../../../cli/errors/invalid-argument-names-error";
+import { Expect, TestCase } from "../../../../core/alsatian-core";
 
 export class UnknownArgumentsTests {
 

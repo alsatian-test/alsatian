@@ -1,6 +1,6 @@
-import { TestSet } from "../../core/test-set";
 import { ITestFixture } from "../../core/_interfaces/test-fixture.i";
 import { SpyOnProperty } from "../../core/alsatian-core";
+import { TestSet } from "../../core/test-set";
 
 export class TestSetBuilder {
 

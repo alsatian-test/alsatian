@@ -1,6 +1,6 @@
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
 import { AsyncTest as AsyncTestDecorator } from "../../../core/decorators/async-test-decorator";
-import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class AsyncTestDecoratorTests {
 

@@ -1,6 +1,6 @@
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
 import { Teardown } from "../../../core/decorators/teardown-decorator";
-import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class TeardownDecoratorTests {
 

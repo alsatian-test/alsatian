@@ -1,7 +1,7 @@
-import { ITest } from "../../core/_interfaces/test.i";
 import { ITestFixture } from "../../core/_interfaces/test-fixture.i";
-import { TestBuilder } from "./test-builder";
+import { ITest } from "../../core/_interfaces/test.i";
 import { TestFixture } from "../../core/test-fixture";
+import { TestBuilder } from "./test-builder";
 
 export class TestFixtureBuilder {
 

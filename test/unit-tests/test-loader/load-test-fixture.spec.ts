@@ -1,11 +1,11 @@
-import { TestLoader } from "../../../core/test-loader";
-import { FileRequirer } from "../../../core/file-requirer";
-import { Expect, Test, TestCase, TestFixture, SpyOn, METADATA_KEYS } from "../../../core/alsatian-core";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { TestFixture as TestFixtureMetadata } from "../../../core/";
 import "reflect-metadata";
+import { TestFixture as TestFixtureMetadata } from "../../../core/";
+import { Expect, METADATA_KEYS, SpyOn, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import { FileRequirer } from "../../../core/file-requirer";
+import { TestLoader } from "../../../core/test-loader";
+import { TestBuilder } from "../../builders/test-builder";
+import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 @TestFixture("Load Tests")
 export class LoadTestTests {

@@ -1,8 +1,8 @@
-import { TestCase, Test, Expect } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { TestPlan } from "../../../core/running/test-plan";
-import { TestSetBuilder } from "../../builders/test-set-builder";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestBuilder } from "../../builders/test-builder";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../builders/test-set-builder";
 
 export class TestPlanTests {
 

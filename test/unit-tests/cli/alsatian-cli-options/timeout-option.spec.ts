@@ -1,8 +1,8 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
-import { InvalidTimeoutValueError } from "../../../../cli/errors/invalid-timeout-value-error";
 import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-argument-error";
+import { InvalidTimeoutValueError } from "../../../../cli/errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "../../../../cli/errors/missing-argument-value-error";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 
 export class TimeoutOptionTests {
 

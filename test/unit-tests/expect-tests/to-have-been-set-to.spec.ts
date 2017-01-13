@@ -1,5 +1,5 @@
+import { Expect, FocusTests, SpyOnProperty, Test, TestCase } from "../../../core/alsatian-core";
 import { PropertySetMatchError } from "../../../core/errors";
-import { Expect, Test, TestCase, SpyOnProperty, FocusTests } from "../../../core/alsatian-core";
 
 export class ToHaveBeenSetToTests {
 
@@ -46,7 +46,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(-4.2)
    @TestCase("")
    @TestCase("value")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public propertySetToCorrectValuePasses(value: any) {
       const some = {
@@ -61,14 +61,14 @@ export class ToHaveBeenSetToTests {
    }
 
    @TestCase(undefined, [ "an", "array" ])
-   @TestCase(null, { "an": "object" })
+   @TestCase(null, { an: "object" })
    @TestCase(0, "value")
    @TestCase(42, "")
    @TestCase(4.2, -4.2)
    @TestCase(-4.2, 4.2)
    @TestCase("", 0)
    @TestCase("value", null)
-   @TestCase({ "an": "object" }, undefined)
+   @TestCase({ an: "object" }, undefined)
    @TestCase([ "an", "array" ], "something completely different")
    public functionCalledWithSimilarArgumentsFailsWithCorrectError(expectedValue: any, actualValue: any) {
       const some = {
@@ -114,7 +114,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(-4.2)
    @TestCase("")
    @TestCase("value")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public propertySetWhenShouldNotBeSetThrowsCorrectError(value: any) {
       const some = {
@@ -166,7 +166,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -181,7 +181,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -257,7 +257,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -289,7 +289,7 @@ export class ToHaveBeenSetToTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})

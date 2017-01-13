@@ -1,5 +1,5 @@
+import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
-import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class CallTests {
 
@@ -7,7 +7,7 @@ export class CallTests {
    @TestCase([ 1 ])
    @TestCase([ 1, 2 ])
    @TestCase([ "one", 2 ])
-   @TestCase([ { "some": "thing" }, [] ])
+   @TestCase([ { some: "thing" }, [] ])
    public argumentsRecorded(args: Array<any>) {
       let object = {
          originalFunction: () => {}

@@ -1,5 +1,5 @@
+import { Any, Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
-import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
 
 export class FunctionCallMatchErrorTests {
 

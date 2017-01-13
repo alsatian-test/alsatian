@@ -1,5 +1,5 @@
-import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
 
 export class ToBeLessThanTests {
 
@@ -158,7 +158,7 @@ export class ToBeLessThanTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingNonNumberLessThanSomethingShouldThrow(value: number) {

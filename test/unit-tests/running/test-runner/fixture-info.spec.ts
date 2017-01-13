@@ -1,8 +1,8 @@
-import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunner, MatchError } from "../../../../core/alsatian-core";
+import { AsyncTest, Expect, MatchError, SpyOn, TestCase, TestOutputStream, TestRunner, TestSet } from "../../../../core/alsatian-core";
+import { Promise } from "../../../../promise/promise";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
-import { Promise } from "../../../../promise/promise";
 
 export class FixtureInfoTests {
 

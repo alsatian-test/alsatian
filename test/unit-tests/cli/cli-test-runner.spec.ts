@@ -1,10 +1,10 @@
-import { CliTestRunner } from "../../../cli/cli-test-runner";
 import { AlsatianCliOptions } from "../../../cli/alsatian-cli-options";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { CliTestRunner } from "../../../cli/cli-test-runner";
+import { AsyncTest, Expect, Setup, SpyOn, Teardown, TestCase, TestOutcome, TestRunner, TestSet } from "../../../core/alsatian-core";
+import { Promise } from "../../../promise/promise";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestSet, TestOutcome, TestRunner } from "../../../core/alsatian-core";
-import { Promise } from "../../../promise/promise";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class CliTestRunnerTests {
 

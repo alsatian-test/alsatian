@@ -1,8 +1,8 @@
 import * as child from "child_process";
-import * as path from "path";
-import { Promise } from "../../../../promise/promise";
-import { Expect, AsyncTest } from "../../../../core/alsatian-core";
 import * as FileSystem from "fs";
+import * as path from "path";
+import { AsyncTest, Expect } from "../../../../core/alsatian-core";
+import { Promise } from "../../../../promise/promise";
 
 export class BabelIntegrationTests {
 

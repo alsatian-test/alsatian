@@ -1,5 +1,5 @@
+import { Expect, SpyOnProperty, Test, TestCase } from "../../../core/alsatian-core";
 import { PropertySetMatchError } from "../../../core/errors";
-import { Expect, Test, SpyOnProperty, TestCase } from "../../../core/alsatian-core";
 
 export class ToHaveBeenSetTests {
 
@@ -82,7 +82,7 @@ export class ToHaveBeenSetTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -97,7 +97,7 @@ export class ToHaveBeenSetTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})

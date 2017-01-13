@@ -1,9 +1,9 @@
-import { TestSetRunInfo, TestPlan, TestItem } from "../../../core/running";
+import { Expect, IgnoreTest, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { TestSetResults } from "../../../core/results";
-import { Expect, Test, TestCase, IgnoreTest, SpyOn } from "../../../core/alsatian-core";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+import { TestItem, TestPlan, TestSetRunInfo } from "../../../core/running";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../builders/test-set-builder";
 
 export class TestSetRunInfoTests {

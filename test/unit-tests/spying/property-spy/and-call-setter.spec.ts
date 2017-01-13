@@ -1,5 +1,5 @@
+import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
-import { Test, Expect, FunctionSpy, SpyOn, TestCase } from "../../../../core/alsatian-core";
 
 export class AndCallSetterTests {
 
@@ -59,7 +59,7 @@ export class AndCallSetterTests {
    @TestCase(undefined)
    @TestCase(42)
    @TestCase("something")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public newValueIsSet(value: any) {
 
@@ -79,10 +79,10 @@ export class AndCallSetterTests {
    }
 
    @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { "an": "object" })
+   @TestCase(undefined, { an: "object" })
    @TestCase(42, "something")
    @TestCase("something", 42)
-   @TestCase({ "an": "object" }, undefined)
+   @TestCase({ an: "object" }, undefined)
    @TestCase([ "an", "array" ], null)
    public andCallSetterValueIsReturnedWhenReturnValueIsCalledPreviously(setterValue: any, andReturnValue: any) {
 
@@ -102,10 +102,10 @@ export class AndCallSetterTests {
    }
 
    @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { "an": "object" })
+   @TestCase(undefined, { an: "object" })
    @TestCase(42, "something")
    @TestCase("something", 42)
-   @TestCase({ "an": "object" }, undefined)
+   @TestCase({ an: "object" }, undefined)
    @TestCase([ "an", "array" ], null)
    public andReturnValueValueIsReturnedWhenReturnValueIsCalledAfter(setterValue: any, andReturnValue: any) {
 

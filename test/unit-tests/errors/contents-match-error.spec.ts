@@ -1,5 +1,5 @@
-import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 
 export class ContentsMatchErrorTests {
 

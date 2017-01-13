@@ -1,5 +1,5 @@
-import { TruthyMatchError } from "../../../core/errors/truthy-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { TruthyMatchError } from "../../../core/errors/truthy-match-error";
 
 export class ToBeTruthyTests {
 

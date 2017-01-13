@@ -1,5 +1,5 @@
-import { SpyCall } from "../../../core/spying/spy-call";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { SpyCall } from "../../../core/spying/spy-call";
 
 export class SpyCallTests {
 
@@ -7,7 +7,7 @@ export class SpyCallTests {
   @TestCase([ 1 ])
   @TestCase([ 1, 2 ])
   @TestCase([ "one", 2 ])
-  @TestCase([ { "some": "thing" }, [] ])
+  @TestCase([ { some: "thing" }, [] ])
   public spyCallArgsAreSameAsInput(args: Array<any>) {
     const spyCall = new SpyCall(args);
 
@@ -19,7 +19,7 @@ export class SpyCallTests {
   @TestCase([ 1, 2, 3 ])
   @TestCase([ "some", "thing" ])
   @TestCase([ [ "an", "array" ] ])
-  @TestCase([ { "an": "object "} ])
+  @TestCase([ { an: "object "} ])
   public allArgumentsMatchIfIdenticalInput(expectedArgs: Array<any>) {
     const spyCall = new SpyCall(expectedArgs);
 
@@ -43,7 +43,7 @@ export class SpyCallTests {
   }
 
   @TestCase([ [ "an", "array" ] ], [ [ "an", "array" ] ])
-  @TestCase([ { "an": "object "} ], [ { "an": "object "} ])
+  @TestCase([ { an: "object "} ], [ { an: "object "} ])
   public allArgumentsDoNotMatchIfArgumentsAreDifferentInstances(expectedArgs: Array<any>, actualArguments: Array<any>) {
     const spyCall = new SpyCall(actualArguments);
 

@@ -1,11 +1,11 @@
+import { AsyncTest, Expect, Setup, SpyOn, Teardown, TestCase, Timeout } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
+import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestSet } from "../../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, Timeout } from "../../../../core/alsatian-core";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { Promise } from "../../../../promise/promise";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { Promise } from "../../../../promise/promise";
-import { TestOutputStream } from "../../../../core/test-output-stream";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 
 export class PreTestTests {
 

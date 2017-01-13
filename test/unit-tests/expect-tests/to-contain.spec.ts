@@ -1,5 +1,5 @@
-import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 
 export class ToContainTests {
 
@@ -129,7 +129,7 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    public checkingNonStringOrArraysContainShouldThrow(container: any) {
       Expect(() => Expect(container).toContain("something")).toThrowError(TypeError, "toContain must only be used to check whether strings or arrays contain given contents.");
    }
@@ -140,7 +140,7 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
       Expect(() => Expect(container).not.toContain("something")).toThrowError(TypeError, "toContain must only be used to check whether strings or arrays contain given contents.");
    }
@@ -151,7 +151,7 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array"])
    public checkingStringContainsNonStringShouldThrow(expectedContent: any) {
@@ -164,7 +164,7 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingStringDoesNotContainsNonStringShouldThrow(expectedContent: any) {

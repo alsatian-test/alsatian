@@ -1,4 +1,4 @@
-import { Expect, Test, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
+import { Expect, SpyOn, Test, TestOutputStream } from "../../../core/alsatian-core";
 
 export class EmitVersionTests {
 

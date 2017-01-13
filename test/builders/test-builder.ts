@@ -1,5 +1,5 @@
-import { ITest } from "../../core/_interfaces/test.i";
 import { ITestCase } from "../../core/_interfaces/test-case.i";
+import { ITest } from "../../core/_interfaces/test.i";
 import { TestCaseBuilder } from "./test-case-builder";
 
 export class TestBuilder {

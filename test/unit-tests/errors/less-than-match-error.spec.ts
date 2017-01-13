@@ -1,5 +1,5 @@
-import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
 
 export class LessThanMatchErrorTests {
 

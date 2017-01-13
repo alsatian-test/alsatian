@@ -1,4 +1,4 @@
-import { Matcher, Expect, Test } from "../../../core/alsatian-core";
+import { Expect, Matcher, Test } from "../../../core/alsatian-core";
 
 class MatcherExtension extends Matcher {
     isSomething() {

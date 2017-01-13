@@ -1,5 +1,5 @@
+import { AsyncTest, Expect, SpyOn, TestCase } from "../../../core/alsatian-core";
 import { Promise } from "../../../promise/promise";
-import { Expect, AsyncTest, TestCase, SpyOn } from "../../../core/alsatian-core";
 
 export class PromiseTests {
 
@@ -8,7 +8,7 @@ export class PromiseTests {
    @TestCase(42)
    @TestCase(null)
    @TestCase(undefined)
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public resolveCallsThenWithGivenError(resolvedValue: any) {
       return new Promise((resolve, reject) => {

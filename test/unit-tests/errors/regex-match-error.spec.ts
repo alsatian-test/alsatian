@@ -1,5 +1,5 @@
-import { RegexMatchError } from "../../../core/errors/regex-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { RegexMatchError } from "../../../core/errors/regex-match-error";
 
 export class EqualMatchErrorTests {
 

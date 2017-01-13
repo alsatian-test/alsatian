@@ -1,5 +1,5 @@
+import { Expect, FocusTest, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
-import { Expect, Test, TestCase, SpyOn, FocusTest } from "../../../../core/alsatian-core";
 
 export class AndCallThroughTests {
 

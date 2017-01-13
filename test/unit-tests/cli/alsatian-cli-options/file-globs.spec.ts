@@ -1,5 +1,5 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 
 export class FileGlobsTests {
 

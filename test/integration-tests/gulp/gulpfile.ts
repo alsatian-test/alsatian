@@ -1,6 +1,6 @@
 import * as Gulp from "gulp";
-import { TestSet, TestRunner } from "../../../core/alsatian-core";
 import { TapBark } from "tap-bark";
+import { TestRunner, TestSet } from "../../../core/alsatian-core";
 
 Gulp.task("test-expectations", (done: () => any) => {
 
