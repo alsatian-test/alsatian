@@ -28,15 +28,17 @@ export class NotestsErrorTests {
    public async emptyTestFixturesThrowsError() {
       let testSet = <TestSet>{};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       let testRunner = new TestRunner();
 
+      let error: Error;
+
       try {
-         await testRunner.run(testSet);
+        await testRunner.run(testSet);
       }
-      catch(e) {
-         var error = e;
+      catch (e) {
+        error = e;
       }
 
       Expect(error).toBeDefined();
@@ -52,7 +54,7 @@ export class NotestsErrorTests {
    public async testFixtureWithEmptyTestsOutputsNoTestError(testCount: number) {
       let testSet = <TestSet>{};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       let testFixtureBuilder = new TestFixtureBuilder();
 
@@ -64,11 +66,13 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
+      let error: Error;
+
       try {
-         await testRunner.run(testSet);
+        await testRunner.run(testSet);
       }
-      catch(e) {
-         var error = e;
+      catch (e) {
+        error = e;
       }
 
       Expect(error).toBeDefined();
@@ -84,7 +88,7 @@ export class NotestsErrorTests {
    public async multipleTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
       let testSet = <TestSet>{};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
         testSet.testFixtures.push(new TestFixtureBuilder().build());
@@ -92,11 +96,13 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
+      let error: Error;
+
       try {
-         await testRunner.run(testSet);
+        await testRunner.run(testSet);
       }
-      catch(e) {
-         var error = e;
+      catch (e) {
+        error = e;
       }
 
       Expect(error).toBeDefined();
@@ -118,7 +124,7 @@ export class NotestsErrorTests {
    public async multipleTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number, testCount: number) {
       let testSet = <TestSet>{};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
         let testFixtureBuilder = new TestFixtureBuilder();
@@ -132,11 +138,13 @@ export class NotestsErrorTests {
 
       let testRunner = new TestRunner();
 
+      let error: Error;
+
       try {
-         await testRunner.run(testSet);
+        await testRunner.run(testSet);
       }
-      catch(e) {
-         var error = e;
+      catch (e) {
+        error = e;
       }
 
       Expect(error).toBeDefined();

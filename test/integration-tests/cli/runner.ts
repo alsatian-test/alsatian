@@ -3,7 +3,7 @@ import { Expect, AsyncTest, TestCase, Timeout } from "../../../core/alsatian-cor
 import * as FileSystem from "fs";
 
 export class CliIntegrationTests {
-   
+
    @TestCase("to-be")
    @AsyncTest()
    @Timeout(1000)
@@ -25,7 +25,7 @@ export class CliIntegrationTests {
          });
       });
    }
-   
+
    @TestCase("async-test")
    @TestCase("setup")
    @TestCase("teardown")

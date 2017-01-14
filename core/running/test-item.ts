@@ -55,7 +55,7 @@ export class TestItem {
         return new Promise<any>((resolve, reject) => {
             const start = Date.now();
 
-            setTimeout(() => {         
+            setTimeout(() => {
                 reject(new TestTimeoutError(timeout));
             }, timeout);
 

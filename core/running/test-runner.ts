@@ -35,7 +35,7 @@ export class TestRunner {
 
       this._outputStream.emitVersion();
       this._outputStream.emitPlan(testPlan.testItems.length);
-      
+
       const testSetRunInfo = new TestSetRunInfo(
             testPlan,
             testSetResults,
@@ -50,7 +50,7 @@ export class TestRunner {
         let currentTestResults: TestResults;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
-            
+
             const testItemIndex = testSetRunInfo.testPlan.testItems.indexOf(testItem);
             const previousTestItem = testSetRunInfo.testPlan.testItems[testItemIndex - 1];
 
@@ -77,7 +77,7 @@ export class TestRunner {
 
             this._outputStream.emitResult(testItemIndex + 1, result);
         }
-        
+
         this._outputStream.end();
     }
 }

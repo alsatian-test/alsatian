@@ -12,12 +12,14 @@ export class TestItemRunSyncTests {
       const testFixture = new TestFixtureBuilder().addTest(test).build();
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
+      let error: Error;
+
       try {
         await testItem.run(500);
       }
       catch (e) {
-        var error = e;
+        error = e;
       }
 
       Expect(error).toBe(undefined);
@@ -30,12 +32,14 @@ export class TestItemRunSyncTests {
       const testFixture = new TestFixtureBuilder().addTest(test).build();
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
+      let error: Error;
+
       try {
         await testItem.run(500);
       }
       catch (e) {
-        var error = e;
+        error = e;
       }
 
       Expect(error).toBe(undefined);
@@ -54,12 +58,14 @@ export class TestItemRunSyncTests {
                                  .build();
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
+      let error: Error;
+
       try {
         await testItem.run(500);
       }
       catch (e) {
-        var error = e;
+        error = e;
       }
 
       Expect(error).toBe(expectedError);
@@ -78,12 +84,14 @@ export class TestItemRunSyncTests {
                                  .build();
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
+      let error: Error;
+
       try {
         await testItem.run(500);
       }
       catch (e) {
-        var error = e;
+        error = e;
       }
 
       Expect(error).toBe(expectedError);

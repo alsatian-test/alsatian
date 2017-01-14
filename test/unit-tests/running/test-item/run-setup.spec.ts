@@ -19,11 +19,11 @@ export class TestItemRunSetupTests {
                                     testFunction: testFunction
                                  })
                                  .addTest(test)
-                                 .build();   
-                                
+                                 .build();
+
       const setupFunctions = [];
       const setupFunctionInfo = [];
-      
+
       for (let i = 0; i < setupFunctionCount; i++) {
           const setupFunction = new FunctionSpy();
           setupFunctions.push(setupFunction);
@@ -35,7 +35,7 @@ export class TestItemRunSetupTests {
       Reflect.defineMetadata(METADATA_KEYS.SETUP, setupFunctionInfo, testFixture.fixture);
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
       await testItem.run(500);
 
       setupFunctions.forEach(setupFunction => {
@@ -57,12 +57,12 @@ export class TestItemRunSetupTests {
                                     testFunction: testFunction
                                  })
                                  .addTest(test)
-                                 .build();   
-                                
+                                 .build();
+
       const setupFunctions = [];
       const setupFunctionInfo = [];
       const setupFunctionsCalled: Array<boolean> = [];
-      
+
       for (let i = 0; i < setupFunctionCount; i++) {
           const setupFunction = () => new Promise<void>((resolve, reject) => {
                                           setTimeout(() => { setupFunctionsCalled[i] = true; resolve(); }, 10);
@@ -78,7 +78,7 @@ export class TestItemRunSetupTests {
       Reflect.defineMetadata(METADATA_KEYS.SETUP, setupFunctionInfo, testFixture.fixture);
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
       await testItem.run(500);
 
       setupFunctionsCalled.forEach(setupFunctionCalled => {

@@ -19,11 +19,11 @@ export class TestItemRunTeardownTests {
                                     testFunction: testFunction
                                  })
                                  .addTest(test)
-                                 .build();   
-                                
+                                 .build();
+
       const teardownFunctions = [];
       const teardownFunctionInfo = [];
-      
+
       for (let i = 0; i < teardownFunctionCount; i++) {
           const teardownFunction = new FunctionSpy();
           teardownFunctions.push(teardownFunction);
@@ -35,7 +35,7 @@ export class TestItemRunTeardownTests {
       Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, teardownFunctionInfo, testFixture.fixture);
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
       await testItem.run(500);
 
       teardownFunctions.forEach(teardownFunction => {
@@ -57,12 +57,12 @@ export class TestItemRunTeardownTests {
                                     testFunction: testFunction
                                  })
                                  .addTest(test)
-                                 .build();   
-                                
+                                 .build();
+
       const teardownFunctions = [];
       const teardownFunctionInfo = [];
       const teardownFunctionsCalled: Array<boolean> = [];
-      
+
       for (let i = 0; i < teardownFunctionCount; i++) {
           const teardownFunction = () => new Promise<void>((resolve, reject) => {
                                           setTimeout(() => { teardownFunctionsCalled[i] = true; resolve(); }, 10);
@@ -78,7 +78,7 @@ export class TestItemRunTeardownTests {
       Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, teardownFunctionInfo, testFixture.fixture);
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
-      
+
       await testItem.run(500);
 
       teardownFunctionsCalled.forEach(teardownFunctionCalled => {

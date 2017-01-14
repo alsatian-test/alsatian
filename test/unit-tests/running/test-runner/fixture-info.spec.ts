@@ -32,7 +32,7 @@ export class FixtureInfoTests {
       .build();
 
       testSet.testFixtures.push(testFixture);
-      
+
       let testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
@@ -62,7 +62,7 @@ export class FixtureInfoTests {
       .build();
 
       testSet.testFixtures.push(testFixture);
-      
+
       let testRunner = new TestRunner(output);
       await testRunner.run(testSet);
 

@@ -102,7 +102,7 @@ export class PreTestTests {
       let testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
-      
+
       Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount) + "\n");
    }
 
