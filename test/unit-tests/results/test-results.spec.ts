@@ -121,7 +121,7 @@ export class TestResultsTests {
     @TestCase("awesome fixture")
     @TestCase("super sweet fixture")
     public testInConstructorIsAccessible(description: string) {
-      
+
         const test = new TestBuilder().withDescription(description).build();
 
         const testResults = new TestResults(test);
