@@ -1,7 +1,6 @@
-import { ITestFixture, ITest } from "../_interfaces";
-import { MatchError, TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream, TestTimeoutError } from "../alsatian-core";
+
+import { TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
-import { TestItem } from "./test-item";
 import { TestSetRunInfo } from "./test-set-run-info";
 import "reflect-metadata";
 

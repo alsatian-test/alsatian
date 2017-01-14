@@ -1,5 +1,4 @@
 import * as child from "child_process";
-import * as path from "path";
 import { Expect, AsyncTest, Timeout } from "../../../../core/alsatian-core";
 import * as FileSystem from "fs";
 

@@ -1,4 +1,4 @@
-import { Expect, Test, FunctionSpy } from "../../../core/alsatian-core";
+import { Expect, Test } from "../../../core/alsatian-core";
 import { FunctionSpyCallCountMatcher } from "../../../core/matchers/function-spy-call-count-matcher";
 
 export class FunctionSpyCallCountMatcherTests {

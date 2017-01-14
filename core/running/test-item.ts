@@ -80,7 +80,7 @@ export class TestItem {
                 await this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture);
              }
              else {
-                this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture)
+                this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture);
              }
          }
       }
@@ -95,7 +95,7 @@ export class TestItem {
                 await this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture);
              }
              else {
-                this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture)
+                this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture);
              }
          }
       }

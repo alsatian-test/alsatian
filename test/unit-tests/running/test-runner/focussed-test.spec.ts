@@ -4,8 +4,7 @@ import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { MatchError } from "../../../../core/errors/match-error";
-import { Expect, AsyncTest, Test, SpyOn } from "../../../../core/alsatian-core";
+import { Expect, AsyncTest } from "../../../../core/alsatian-core";
 
 export class FocussedTestTests {
 

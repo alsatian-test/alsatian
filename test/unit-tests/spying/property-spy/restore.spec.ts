@@ -1,5 +1,5 @@
 import { PropertySpy } from "../../../../core/spying";
-import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
+import { Expect, Test } from "../../../../core/alsatian-core";
 
 export class RestoreTests {
 

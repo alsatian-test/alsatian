@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, TestCase } from "../../../core/alsatian-core";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestFixture } from "../../../core/";
 

@@ -1,5 +1,5 @@
 import { AlsatianCliOptions } from "./alsatian-cli-options";
-import { TestRunner, TestSet, TestSetResults, TestOutcome, TestOutputStream } from "../core/alsatian-core";
+import { TestRunner, TestSet, TestOutputStream } from "../core/alsatian-core";
 import { TapBark } from "tap-bark";
 const Package = require("../package.json");
 

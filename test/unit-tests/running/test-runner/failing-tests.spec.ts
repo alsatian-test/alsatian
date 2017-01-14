@@ -5,7 +5,7 @@ import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { MatchError } from "../../../../core/errors/match-error";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
+import { Expect, AsyncTest, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
 
 export class FailingTestsTests {
 

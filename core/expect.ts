@@ -1,5 +1,4 @@
 import {
-   MatchError,
    ExactMatchError,
    EqualMatchError,
    RegexMatchError,

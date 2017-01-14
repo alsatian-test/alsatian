@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Timeout as TimeoutDecorator } from "../../../core/decorators/timeout-decorator";
-import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
+import { Expect, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class TimeoutDecoratorTests {
 

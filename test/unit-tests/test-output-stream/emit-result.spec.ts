@@ -1,4 +1,4 @@
-import { Expect, TestCase, Test, SpyOn, FocusTest, TestOutputStream, TestCaseResult, TestOutcome} from "../../../core/alsatian-core";
+import { Expect, TestCase, Test, SpyOn, TestOutputStream, TestCaseResult} from "../../../core/alsatian-core";
 import { MatchError, EqualMatchError } from "../../../core/errors";
 import { ITest } from "../../../core/_interfaces";
 import { TestBuilder } from "../../builders/test-builder";
