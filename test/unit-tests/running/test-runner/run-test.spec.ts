@@ -93,7 +93,7 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      await testRunner.run(testSet);
+      await testRunner.run(testSet, 50);
       Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
@@ -286,7 +286,7 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      await testRunner.run(testSet);
+      await testRunner.run(testSet, 50);
       Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
       Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
    }
@@ -330,7 +330,7 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      await testRunner.run(testSet);
+      await testRunner.run(testSet, 50);
       Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
       Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
    }

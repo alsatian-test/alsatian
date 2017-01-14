@@ -167,7 +167,7 @@ export class TestItemRunAsyncTests {
       let error: Error;
 
       try {
-        await testItem.run(500);
+        await testItem.run(timeout);
       }
       catch (e) {
         error = e;
