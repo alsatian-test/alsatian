@@ -2,10 +2,11 @@
 import { TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
+import { ITestCompleteEvent, IOnTestCompleteCBFunction } from "../_interfaces";
 import "reflect-metadata";
 
 export class TestRunner {
-
+   private _onTestCompleteCB: IOnTestCompleteCBFunction;
    private _outputStream: TestOutputStream;
    public get outputStream() {
       return this._outputStream;
@@ -44,10 +45,19 @@ export class TestRunner {
        await this._runTests(testSetRunInfo, testSetResults);
     }
 
-    private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
+    /**
+     * Defined the call back function to be called when the test is completed
+     */
+    public onTestComplete( testCompleteCB: IOnTestCompleteCBFunction) {
+        this._onTestCompleteCB = testCompleteCB;
+    }
 
+    private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
         let currentTestFixtureResults: TestFixtureResults;
         let currentTestResults: TestResults;
+        let errorOccurredRunningTest: Error;
+        let totalNumberOfTest = testSetRunInfo.testPlan.testItems.length;
+        let currentTestIndex = 0;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
 
@@ -70,9 +80,25 @@ export class TestRunner {
             try {
                 await testItem.run(testSetRunInfo.timeout);
                 result = currentTestResults.addTestCaseResult(testItem.testCase.arguments);
+                errorOccurredRunningTest = null;
+                currentTestIndex += 1;
             }
             catch (error) {
                 result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
+                errorOccurredRunningTest = error;
+            }
+
+            // emit onComplete event out of Alsatian if call back has been defined
+            if ( this._onTestCompleteCB ) {
+                this._onTestCompleteCB( {
+                    currentTestIndex: currentTestIndex,
+                    totalNumberOfTest: totalNumberOfTest,
+                    test: testItem.test,
+                    testFixture: testItem.testFixture,
+                    outcome: result.outcome,
+                    testCase: testItem.testCase,
+                    error: errorOccurredRunningTest
+                } );
             }
 
             this._outputStream.emitResult(testItemIndex + 1, result);

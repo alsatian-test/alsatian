@@ -4,6 +4,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestOutputStream } from "../../../../core/test-output-stream";
+import { ITestCompleteEvent } from "../../../../core/_interfaces";
 import "reflect-metadata";
 
 export class RunTestTests {
@@ -29,6 +30,79 @@ export class RunTestTests {
       await testRunner.run(testSet);
       Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
    }
+
+    @AsyncTest()
+    public singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
+        let testCompletedValue: ITestCompleteEvent = null;
+        const test = new TestBuilder().withTestCaseCount(1).build();
+
+        const testFixture = new TestFixtureBuilder()
+            .addTest(test)
+            .build();
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+
+        const testRunner = new TestRunner(outputStream);
+
+        let spyContainer = {
+            onCompleteCB: (testCompleted: ITestCompleteEvent) => {
+                testCompletedValue = testCompleted;
+            }
+        };
+
+        testRunner.onTestComplete(spyContainer.onCompleteCB);
+
+        return new Promise((resolve, reject) => {
+            testRunner.run(testSet)
+                .then(result => {
+                    Expect(testCompletedValue).not.toBeNull();
+                    Expect(testCompletedValue.currentTestIndex).toEqual(1);
+                    resolve();
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    @AsyncTest()
+    public singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
+        let testCompletedValue: ITestCompleteEvent = null;
+        const test = new TestBuilder().withTestCaseCount(1).build();
+
+        const testFixture = new TestFixtureBuilder()
+            .addTest(test)
+            .build();
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+
+        const testRunner = new TestRunner(outputStream);
+
+        let spyContainer = {
+            onCompleteCB: (testCompleted: ITestCompleteEvent) => {
+                testCompletedValue = testCompleted;
+            }
+        };
+
+        return new Promise((resolve, reject) => {
+            testRunner.run(testSet)
+                .then(result => {
+                    Expect(testCompletedValue).toBeNull();
+                    resolve();
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
 
    @AsyncTest()
    @Timeout(600)
