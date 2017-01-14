@@ -5,8 +5,7 @@ import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { MatchError } from "../../../../core/errors/match-error";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
-import { Promise } from "../../../../promise/promise";
+import { Expect, AsyncTest, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
 
 export class FailingTestsTests {
 
@@ -29,7 +28,7 @@ export class FailingTestsTests {
    }
 
    @AsyncTest()
-   public failingTestOutputsNotOk() {
+   public async failingTestOutputsNotOk() {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
@@ -44,22 +43,14 @@ export class FailingTestsTests {
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
    @AsyncTest()
-   public testThrowsErrorOutputsNotOk() {
+   public async testThrowsErrorOutputsNotOk() {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
@@ -75,17 +66,9 @@ export class FailingTestsTests {
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 }

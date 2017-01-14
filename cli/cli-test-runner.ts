@@ -1,5 +1,5 @@
 import { AlsatianCliOptions } from "./alsatian-cli-options";
-import { TestRunner, TestSet, TestSetResults, TestOutcome, TestOutputStream } from "../core/alsatian-core";
+import { TestRunner, TestSet, TestOutputStream } from "../core/alsatian-core";
 import { TapBark } from "tap-bark";
 const Package = require("../package.json");
 
@@ -17,7 +17,7 @@ export class CliTestRunner {
       return new CliTestRunner(testRunner);
    }
 
-   public run(userArguments: AlsatianCliOptions) {
+   public async run(userArguments: AlsatianCliOptions) {
 
       // if version has been requested then output the current version and exit
       if (userArguments.versionRequested) {
@@ -58,9 +58,7 @@ export class CliTestRunner {
       }
 
       try {
-         const testRunPromise = this._testRunner.run(testSet, userArguments.timeout);
-
-         testRunPromise.catch(this._handleTestSetRunError);
+         await this._testRunner.run(testSet, userArguments.timeout);
       }
       catch (error) {
          this._handleTestSetRunError(error);

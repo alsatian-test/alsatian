@@ -1,5 +1,5 @@
 import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, TestCase } from "../../../core/alsatian-core";
 
 export class ToBeGreaterThanTests {
 

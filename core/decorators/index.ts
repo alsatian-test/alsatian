@@ -1,3 +1,5 @@
+import { AsyncSetup } from "./async-setup-decorator";
+import { AsyncTeardown } from "./async-teardown-decorator";
 import { AsyncTest } from "./async-test-decorator";
 import { FocusTest } from "./focus-test-decorator";
 import { FocusTests } from "./focus-tests-decorator";
@@ -11,6 +13,8 @@ import { TestCase } from "./test-case-decorator";
 import { Timeout } from "./timeout-decorator";
 
 export {
+    AsyncSetup,
+    AsyncTeardown,
     AsyncTest,
     FocusTest,
     FocusTests,

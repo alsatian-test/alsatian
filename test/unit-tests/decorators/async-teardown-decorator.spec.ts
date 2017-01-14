@@ -1,17 +1,17 @@
 import "reflect-metadata";
-import { Teardown } from "../../../core/decorators/teardown-decorator";
+import { AsyncTeardown } from "../../../core/decorators/async-teardown-decorator";
 import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
-export class TeardownDecoratorTests {
+export class AsyncTeardownDecoratorTests {
 
    @Test()
    public teardownFunctionAddedAsMetaData() {
 
-      let testFixture = {};
+      const testFixture = {};
 
-      Teardown(testFixture, "test", null);
+      AsyncTeardown(testFixture, "test", null);
 
-      let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+      const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
       Expect(teardownFunctions).toBeDefined();
       Expect(teardownFunctions).not.toBeNull();
@@ -20,13 +20,13 @@ export class TeardownDecoratorTests {
     @TestCase("key")
     @TestCase("another key")
     @TestCase("something-different")
-    public teardownFunctionMetaDataAdded(key: string) {
+    public teardownFunctionKeyMetaDataAdded(key: string) {
 
-       let testFixture = {};
+       const testFixture = {};
 
-       Teardown(testFixture, key, null);
+       AsyncTeardown(testFixture, key, null);
 
-       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+       const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
        Expect(teardownFunctions[0].propertyKey).toBe(key);
     }
@@ -38,11 +38,11 @@ export class TeardownDecoratorTests {
 
        const testFixture = {};
 
-       Teardown(testFixture, key, null);
+       AsyncTeardown(testFixture, key, null);
 
        const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
-       Expect(teardownFunctions[0].isAsync).toBe(false);
+       Expect(teardownFunctions[0].isAsync).toBe(true);
     }
 
     @TestCase(1)
@@ -50,13 +50,13 @@ export class TeardownDecoratorTests {
     @TestCase(42)
     public correctTestCountAdded(teardownFunctionCount: number) {
 
-       let testFixture = {};
+       const testFixture = {};
 
        for (let i = 0; i < teardownFunctionCount; i ++) {
-         Teardown(testFixture, "key " + i, null);
+         AsyncTeardown(testFixture, "key " + i, null);
        }
 
-       let teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+       const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
 
        Expect(teardownFunctions.length).toBe(teardownFunctionCount);
     }

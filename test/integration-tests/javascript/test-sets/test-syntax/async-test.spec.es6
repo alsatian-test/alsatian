@@ -3,7 +3,7 @@ import { Expect, TestFixture, AsyncTest } from "../../../../../core/alsatian-cor
 @TestFixture("asynchronous tests")
 export class AsyncTests {
 
-  _asyncFunction() {
+   _asyncFunction() {
        return new Promise((resolve, reject) => {
            resolve(4);
        });

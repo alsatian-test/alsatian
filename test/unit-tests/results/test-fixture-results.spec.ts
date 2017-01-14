@@ -141,4 +141,32 @@ export class TestFixtureResultsTests {
 
         Expect(testFixtureResults.outcome).toBe(TestOutcome.Pass);
     }
+
+    @TestCase("fixture")
+    @TestCase("awesome fixture")
+    @TestCase("super sweet fixture")
+    public testFixtureInConstructorIsAccessible(description: string) {
+
+        const testFixture = new TestFixtureBuilder().withDescription(description).build();
+
+        const testFixtureResults = new TestFixtureResults(testFixture);
+
+        Expect(testFixtureResults.fixture).toBe(testFixture);
+    }
+
+    @TestCase(1)
+    @TestCase(2)
+    @TestCase(42)
+    public correctNumberOfTestsAdded(testCount: number) {
+
+        const testFixture = new TestFixtureBuilder().build();
+
+        const testFixtureResults = new TestFixtureResults(testFixture);
+
+        for (let i = 0; i < testCount; i++) {
+          testFixtureResults.addTestResult(new TestBuilder().build());
+        }
+
+        Expect(testFixtureResults.testResults.length).toBe(testCount);
+    }
 }

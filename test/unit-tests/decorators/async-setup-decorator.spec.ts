@@ -1,15 +1,15 @@
 import "reflect-metadata";
-import { Setup } from "../../../core/decorators/setup-decorator";
+import { AsyncSetup } from "../../../core/decorators/async-setup-decorator";
 import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
-export class SetupDecoratorTests {
+export class AsyncSetupDecoratorTests {
 
    @Test()
    public setupFunctionAddedAsMetaData() {
 
       const testFixture = {};
 
-      Setup(testFixture, "test", null);
+      AsyncSetup(testFixture, "test", null);
 
       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
@@ -24,7 +24,7 @@ export class SetupDecoratorTests {
 
        const testFixture = {};
 
-       Setup(testFixture, key, null);
+       AsyncSetup(testFixture, key, null);
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
@@ -38,11 +38,11 @@ export class SetupDecoratorTests {
 
        const testFixture = {};
 
-       Setup(testFixture, key, null);
+       AsyncSetup(testFixture, key, null);
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
-       Expect(setupFunctions[0].isAsync).toBe(false);
+       Expect(setupFunctions[0].isAsync).toBe(true);
     }
 
     @TestCase(1)
@@ -53,7 +53,7 @@ export class SetupDecoratorTests {
        const testFixture = {};
 
        for (let i = 0; i < setupFunctionCount; i ++) {
-         Setup(testFixture, "key " + i, null);
+         AsyncSetup(testFixture, "key " + i, null);
        }
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);

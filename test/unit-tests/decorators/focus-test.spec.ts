@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { FocusTest as FocusTestDecorator } from "../../../core/decorators/focus-test-decorator";
-import { Expect, Test, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
+import { Expect, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class FocusTestDecoratorTests {
 

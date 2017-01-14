@@ -1,15 +1,13 @@
-import { AsyncTest, Timeout, Expect, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
+import { AsyncTest, TestCase, Expect } from "../../../../core/alsatian-core";
 import { TestItem } from "../../../../core/running/test-item";
-import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
-import { Promise } from "../../../../promise/promise";
 import { MatchError } from "../../../../core/errors";
 
 export class TestItemRunAsyncTests {
 
    @AsyncTest()
-   public successfulAsyncTest() {
+   public async successfulAsyncTest() {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.isAsync = true;
 
@@ -24,21 +22,20 @@ export class TestItemRunAsyncTests {
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(500)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBe(undefined);
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(500);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBe(undefined);
    }
 
    @AsyncTest()
-   public ignoreAsyncTest() {
+   public async ignoreAsyncTest() {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.ignored = true;
       test.isAsync = true;
@@ -47,30 +44,29 @@ export class TestItemRunAsyncTests {
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(500)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBe(undefined);
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(500);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBe(undefined);
    }
 
    @AsyncTest()
-   public failAsyncTest() {
+   public async failAsyncTest() {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.isAsync = true;
 
-      const error = new MatchError("something", "nothing", "expected something to be nothing.");
+      const expectedError = new MatchError("something", "nothing", "expected something to be nothing.");
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
                                     testFunction: () => new Promise((resolve, reject) => {
-                                       reject(error);
+                                       reject(expectedError);
                                     })
                                  })
                                  .addTest(test)
@@ -78,30 +74,29 @@ export class TestItemRunAsyncTests {
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(500)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBe(error);
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(500);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBe(expectedError);
    }
 
    @AsyncTest()
-   public errorAsyncTest() {
+   public async errorAsyncTest() {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.isAsync = true;
 
-      const error = new Error("something awful happened.");
+      const expectedError = new Error("something awful happened.");
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
                                     testFunction: () => new Promise((resolve, reject) => {
-                                       reject(error);
+                                       reject(expectedError);
                                     })
                                  })
                                  .addTest(test)
@@ -109,30 +104,29 @@ export class TestItemRunAsyncTests {
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(500)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBe(error);
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(500);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBe(expectedError);
    }
 
    @AsyncTest()
-   public testErrorAsyncTest() {
+   public async testErrorAsyncTest() {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.isAsync = true;
 
-      const error = new Error("something awful happened.");
+      const expectedError = new Error("something awful happened.");
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
                                     testFunction: () => {
-                                       throw error;
+                                       throw expectedError;
                                     }
                                  })
                                  .addTest(test)
@@ -140,45 +134,46 @@ export class TestItemRunAsyncTests {
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(500)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBe(error);
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(500);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBe(expectedError);
    }
 
+   @TestCase(1)
+   @TestCase(42)
+   @TestCase(99)
    @AsyncTest()
-   public timeoutAsyncTest() {
+   public async timeoutAsyncTest(timeout: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
       test.isAsync = true;
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
                                     testFunction: () => new Promise((resolve, reject) => {
-                                       setTimeout(resolve, 100);
+                                       setTimeout(resolve, timeout + 100);
                                     })
                                  }).addTest(test)
                                  .build();
 
       const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-      return new Promise((resolve, reject) => {
-         testItem.run(50)
-         .then(result => {
-            Expect(result.test).toBe(test);
-            Expect(result.error).toBeDefined();
-            Expect(result.error.message).toBe("The test exceeded the given timeout of 50ms.");
-            resolve();
-         })
-         .catch(error => {
-            reject(error);
-         });
-      });
+      let error: Error;
+
+      try {
+        await testItem.run(timeout);
+      }
+      catch (e) {
+        error = e;
+      }
+
+      Expect(error).toBeDefined();
+      Expect(error.message).toBe("The test exceeded the given timeout of " + timeout + "ms.");
    }
 }

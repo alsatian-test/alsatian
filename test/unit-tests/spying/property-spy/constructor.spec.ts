@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase, FocusTests, FocusTest } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
 
 class Testing {

@@ -2,7 +2,6 @@ import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunn
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
-import { Promise } from "../../../../promise/promise";
 
 export class FixtureInfoTests {
 
@@ -13,7 +12,7 @@ export class FixtureInfoTests {
    @AsyncTest()
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
-   public outputsFixtureNameWithPassingTest(description: string) {
+   public async outputsFixtureNameWithPassingTest(description: string) {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
@@ -34,27 +33,16 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-      return new Promise<void>((resolve, reject) => {
-
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            // it should output version, then plan, then fixture, then test
-            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-
-      });
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
+      Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+      Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
    }
 
    @AsyncTest()
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
-   public outputsFixtureNameWithFailingTest(description: string) {
+   public async outputsFixtureNameWithFailingTest(description: string) {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
@@ -75,20 +63,11 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
+      await testRunner.run(testSet);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            // it should output version, then plan, then fixture, then test
-            Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
-            Expect(output.push).toHaveBeenCalledWith(`not ok 1 ${test.description}\n`);
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-
-      });
+      testSet.testFixtures.push(testFixture);
+      Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
+      Expect(output.push).toHaveBeenCalledWith(`not ok 1 ${test.description}\n`);
    }
 }

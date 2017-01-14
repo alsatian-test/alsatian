@@ -1,5 +1,5 @@
 import { PropertySetMatchError } from "../../../core/errors";
-import { Expect, Test, TestCase, SpyOnProperty, FocusTests } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, SpyOnProperty } from "../../../core/alsatian-core";
 
 export class ToHaveBeenSetToTests {
 

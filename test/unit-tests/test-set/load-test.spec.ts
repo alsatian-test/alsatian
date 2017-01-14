@@ -1,6 +1,6 @@
 import { TestSet } from "../../../core/test-set";
 import { TestLoader, GlobHelper } from "../../../core/";
-import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn } from "../../../core/alsatian-core";
 
 export class LoadTestTests {
 

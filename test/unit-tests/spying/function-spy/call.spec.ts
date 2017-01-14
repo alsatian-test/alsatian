@@ -1,5 +1,5 @@
 import { FunctionSpy } from "../../../../core/spying/function-spy";
-import { Expect, Test, TestCase, SpyOn } from "../../../../core/alsatian-core";
+import { Expect, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class CallTests {
 

@@ -1,7 +1,5 @@
 import * as child from "child_process";
-import * as path from "path";
-import { Promise } from "../../../promise/promise";
-import { Expect, AsyncTest, Timeout } from "../../../core/alsatian-core";
+import { Expect, AsyncTest, TestCase, Timeout } from "../../../core/alsatian-core";
 import * as FileSystem from "fs";
 
 export class GulpIntegrationTests {
@@ -19,7 +17,7 @@ export class GulpIntegrationTests {
 
       let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt").toString();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
             Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
             resolve();
@@ -27,9 +25,12 @@ export class GulpIntegrationTests {
       });
    }
 
+   @TestCase("async-test")
+   @TestCase("setup")
+   @TestCase("teardown")
    @AsyncTest()
-   @Timeout(2000)
-   public asyncTests() {
+   @Timeout(3000)
+   public syntaxTests(syntaxTestName: string) {
 
       const result = child.exec("gulp test-syntax --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
 
@@ -38,9 +39,9 @@ export class GulpIntegrationTests {
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/async-test.txt").toString();
+      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt").toString();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
             Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
             resolve();

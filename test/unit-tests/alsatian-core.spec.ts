@@ -1,5 +1,5 @@
 import * as Alsatian from "../../core/alsatian-core";
-import { Expect, Test, TestCase } from "../../core/alsatian-core";
+import { Expect, Test } from "../../core/alsatian-core";
 
 export class AlsatianCoreTests {
 

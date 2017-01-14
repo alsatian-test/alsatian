@@ -1,5 +1,5 @@
 import { FunctionCallMatchError, FunctionCallCountMatchError } from "../../../core/errors";
-import { Expect, Test, SpyOn, TestCase, FunctionSpy } from "../../../core/alsatian-core";
+import { Expect, Test, SpyOn, TestCase } from "../../../core/alsatian-core";
 
 export class ToHaveBeenCalledTests {
 
