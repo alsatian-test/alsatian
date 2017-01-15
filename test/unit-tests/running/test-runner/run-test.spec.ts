@@ -32,7 +32,7 @@ export class RunTestTests {
    }
 
     @AsyncTest()
-    public singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
+    public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
         let testCompletedValue: ITestCompleteEvent = null;
         const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -56,21 +56,14 @@ export class RunTestTests {
 
         testRunner.onTestComplete(spyContainer.onCompleteCB);
 
-        return new Promise((resolve, reject) => {
-            testRunner.run(testSet)
-                .then(result => {
-                    Expect(testCompletedValue).not.toBeNull();
-                    // Expect(testCompletedValue.currentTestIndex).toEqual(1);
-                    resolve();
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
+        // return new Promise((resolve, reject) => {
+        await testRunner.run(testSet);
+        Expect(testCompletedValue).not.toBeNull();
+        Expect(testCompletedValue.testId).toEqual(1);
     }
 
     @AsyncTest()
-    public singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
+    public async singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
         let testCompletedValue: ITestCompleteEvent = null;
         const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -92,16 +85,8 @@ export class RunTestTests {
             }
         };
 
-        return new Promise((resolve, reject) => {
-            testRunner.run(testSet)
-                .then(result => {
-                    Expect(testCompletedValue).toBeNull();
-                    resolve();
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
+        await testRunner.run(testSet);
+        Expect(testCompletedValue).toBeNull();
     }
 
    @AsyncTest()
