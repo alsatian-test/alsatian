@@ -85,6 +85,9 @@ export class RunTestTests {
             }
         };
 
+        // same as before test, but no CB registered
+        // testRunner.onTestComplete(spyContainer.onCompleteCB);
+
         await testRunner.run(testSet);
         Expect(testCompletedValue).toBeNull();
     }
