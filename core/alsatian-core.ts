@@ -6,6 +6,8 @@ import {
 } from "./";
 
 import {
+   AsyncSetup,
+   AsyncTeardown,
    AsyncTest,
    FocusTest,
    FocusTests,
@@ -47,6 +49,8 @@ import {
 
 export {
    Any,
+   AsyncSetup,
+   AsyncTeardown,
    AsyncTest,
    Expect,
    FocusTest,

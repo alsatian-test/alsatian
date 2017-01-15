@@ -153,4 +153,23 @@ export class TestSetResultsTests {
 
         Expect(testSetResults.outcome).toBe(TestOutcome.Pass);
     }
+
+    @TestCase(1)
+    @TestCase(2)
+    @TestCase(42)
+    public correctNumberOfTestFixtureResultsAdded(testFixtureCount: number) {
+
+        const testSetResults = new TestSetResults();
+
+        for (let i = 0; i < testFixtureCount; i++) {
+          const testFixture = new TestFixtureBuilder().build();
+          const test = new TestBuilder().build();
+
+          testSetResults.addTestFixtureResult(testFixture)
+                   .addTestResult(test)
+                   .addTestCaseResult([]);
+        }
+
+        Expect(testSetResults.testFixtureResults.length).toBe(testFixtureCount);
+    }
 }

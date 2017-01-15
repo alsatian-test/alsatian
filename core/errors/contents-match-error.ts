@@ -1,4 +1,4 @@
-import { MatchError } from "../errors";
+import { MatchError } from "./match-error";
 import { ArgumentStringifier } from "../stringification";
 
 export class ContentsMatchError extends MatchError {

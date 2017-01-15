@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { AsyncTest, Expect, METADATA_KEYS, SpyOn, Timeout } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { Promise } from "../../../../promise/promise";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
@@ -10,7 +9,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 export class RunTestTests {
 
    @AsyncTest()
-   public singlePassingTestRunsSuccessfully() {
+   public async singlePassingTestRunsSuccessfully() {
 
       const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -27,21 +26,13 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
    }
 
    @AsyncTest()
    @Timeout(600)
-   public singleTestTakes501msFails() {
+   public async singleTestTakes501msFails() {
 
       const test = new TestBuilder()
                         .withTestCaseCount(1)
@@ -69,20 +60,12 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
    @AsyncTest()
-   public singleTestTakes100msWith50msTimeoutFails() {
+   public async singleTestTakes100msWith50msTimeoutFails() {
 
       const test = new TestBuilder()
                         .withTestCaseCount(1)
@@ -110,20 +93,12 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet, 50)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet, 50);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
    @AsyncTest()
-   public singleTestThrowsErrorFails() {
+   public async singleTestThrowsErrorFails() {
 
       const test = new TestBuilder()
                         .withTestCaseCount(1)
@@ -153,20 +128,12 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
    }
 
    @AsyncTest()
-   public twoPassingTestsRunsSuccessfully() {
+   public async twoPassingTestsRunsSuccessfully() {
 
       const firstTest = new TestBuilder().withTestCaseCount(1).build();
       const secondTest = new TestBuilder().withTestCaseCount(1).build();
@@ -185,22 +152,14 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
    }
 
    @AsyncTest()
    @Timeout(1000)
-   public twoTestsFirstTakes501msFails() {
+   public async twoTestsFirstTakes501msFails() {
 
       const firstTest = new TestBuilder()
                         .withTestCaseCount(1)
@@ -238,22 +197,14 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
    }
 
    @AsyncTest()
    @Timeout(1000)
-   public twoTestsSecondTakes501msFails() {
+   public async twoTestsSecondTakes501msFails() {
 
       const firstTest = new TestBuilder()
                         .withTestCaseCount(1)
@@ -291,21 +242,13 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet);
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
    }
 
    @AsyncTest()
-   public twoTestsFirstTakes100msWith50msTimeoutFails() {
+   public async twoTestsFirstTakes100msWith50msTimeoutFails() {
 
       const firstTest = new TestBuilder()
                         .withTestCaseCount(1)
@@ -343,21 +286,13 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet, 50)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet, 50);
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
    }
 
    @AsyncTest()
-   public twoTestsSecondTakes100msWith50msTimeoutFails() {
+   public async twoTestsSecondTakes100msWith50msTimeoutFails() {
 
       const firstTest = new TestBuilder()
                         .withTestCaseCount(1)
@@ -395,16 +330,8 @@ export class RunTestTests {
 
       const testRunner = new TestRunner(outputStream);
 
-      return new Promise((resolve, reject) => {
-         testRunner.run(testSet, 50)
-            .then(result => {
-               Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-               Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
-               resolve();
-            })
-            .catch(error => {
-               reject(error);
-            });
-      });
+      await testRunner.run(testSet, 50);
+      Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
+      Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
    }
 }

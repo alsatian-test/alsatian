@@ -41,7 +41,13 @@ export class ToBeNullTests {
    public nullShouldThrowCorrectErrorWithCorrectMessageForNonNullValues(value: any) {
       let expect = Expect(value);
 
-      let expectedErrorMessage = "Expected " + JSON.stringify(value) + " to be null.";
+      let stringifiedArgument = JSON.stringify(value);
+
+      if (stringifiedArgument) {
+          stringifiedArgument = stringifiedArgument.replace(",", ", ");
+      }
+
+      let expectedErrorMessage = "Expected " + stringifiedArgument + " to be null.";
 
       Expect(() => expect.toBeNull()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
    }

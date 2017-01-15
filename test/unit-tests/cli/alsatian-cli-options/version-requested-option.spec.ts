@@ -30,7 +30,7 @@ export class VersionRequestedTests {
 
    @TestCase("--version", "/test/location.spec.js")
    @TestCase("/another/set/of/**/*.spec.js", "-v")
-   public versionRequestedVeforeOrAfterGlobIsTrue(firstArgument: string, secondArgument: string) {
+   public versionRequestedBeforeOrAfterGlobIsTrue(firstArgument: string, secondArgument: string) {
       const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
 
       Expect(options.versionRequested).toBe(true);

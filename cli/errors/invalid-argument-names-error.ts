@@ -6,7 +6,7 @@ export class InvalidArgumentNamesError extends ExtendoError {
       super();
 
       if (argumentNames.length === 1) {
-         this.message = `unrecognised argument "${this._extractArgumentName(argumentNames[0])}".`;
+         this.message = `unrecognised argument ${this._extractArgumentName(argumentNames[0])}.`;
       }
       else {
          this.message = `unrecognised arguments ${argumentNames.map(this._extractArgumentName).join(" and ")}.`;

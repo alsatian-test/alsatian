@@ -107,7 +107,7 @@ export class ToEqualTests {
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual) + " to be equal to " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual).replace(/,/g, ", ") + " to be equal to " + JSON.stringify(expected).replace(/,/g, ", ") + ".");
    }
 
    @TestCase({}, [])

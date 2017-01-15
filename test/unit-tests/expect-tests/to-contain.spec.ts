@@ -10,7 +10,7 @@ export class ToContainTests {
    public shouldContainAndDoesNotThrows(actualValue: any, expectedContent: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue) + " to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(() => expect.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue).replace(",", ", ") + " to contain " + JSON.stringify(expectedContent) + ".");
    }
 
    @TestCase([ 1 ], 1)
@@ -40,7 +40,7 @@ export class ToContainTests {
    public shouldNotContainAndDoesThrows(actualValue: any, expectedContent: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.not.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue) + " not to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(() => expect.not.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue).replace(",", ", ") + " not to contain " + JSON.stringify(expectedContent) + ".");
    }
 
    @TestCase([], 1)

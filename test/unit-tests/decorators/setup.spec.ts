@@ -7,11 +7,11 @@ export class SetupDecoratorTests {
    @Test()
    public setupFunctionAddedAsMetaData() {
 
-      let testFixture = {};
+      const testFixture = {};
 
       Setup(testFixture, "test", null);
 
-      let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+      const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
       Expect(setupFunctions).toBeDefined();
       Expect(setupFunctions).not.toBeNull();
@@ -20,15 +20,29 @@ export class SetupDecoratorTests {
     @TestCase("key")
     @TestCase("another key")
     @TestCase("something-different")
-    public setupFunctionMetaDataAdded(key: string) {
+    public setupFunctionKeyMetaDataAdded(key: string) {
 
-       let testFixture = {};
+       const testFixture = {};
 
        Setup(testFixture, key, null);
 
-       let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
-       Expect(setupFunctions[0]).toBe(key);
+       Expect(setupFunctions[0].propertyKey).toBe(key);
+    }
+
+    @TestCase("key")
+    @TestCase("another key")
+    @TestCase("something-different")
+    public setupFunctionIsAsyncMetaDataAdded(key: string) {
+
+       const testFixture = {};
+
+       Setup(testFixture, key, null);
+
+       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+
+       Expect(setupFunctions[0].isAsync).toBe(false);
     }
 
     @TestCase(1)
@@ -36,13 +50,13 @@ export class SetupDecoratorTests {
     @TestCase(42)
     public correctTestCountAdded(setupFunctionCount: number) {
 
-       let testFixture = {};
+       const testFixture = {};
 
        for (let i = 0; i < setupFunctionCount; i ++) {
          Setup(testFixture, "key " + i, null);
        }
 
-       let setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
        Expect(setupFunctions.length).toBe(setupFunctionCount);
     }

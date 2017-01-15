@@ -10,7 +10,7 @@ export class ContentsMatchErrorTests {
    public shouldMatchMessage(container: any, expectedContent: any) {
       let error = new ContentsMatchError(container, expectedContent, true);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(container) + " to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(error.message).toBe("Expected " + JSON.stringify(container).replace(",", ", ") + " to contain " + JSON.stringify(expectedContent) + ".");
    }
 
    @TestCase([ 1 ], 1)
@@ -20,7 +20,7 @@ export class ContentsMatchErrorTests {
    public shouldNotMatchMessage(container: any, expectedContent: any) {
       let error = new ContentsMatchError(container, expectedContent, false);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(container) + " not to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(error.message).toBe("Expected " + JSON.stringify(container).replace(",", ", ") + " not to contain " + JSON.stringify(expectedContent) + ".");
    }
 
    @TestCase([ 1 ])

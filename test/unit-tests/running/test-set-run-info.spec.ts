@@ -1,4 +1,4 @@
-import { Expect, IgnoreTest, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { TestSetResults } from "../../../core/results";
 import { TestItem, TestPlan, TestSetRunInfo } from "../../../core/running";
 import { TestBuilder } from "../../builders/test-builder";

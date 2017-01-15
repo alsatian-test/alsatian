@@ -1,4 +1,4 @@
-import { MatchError } from "../errors";
+import { MatchError } from "./match-error";
 import { ArgumentStringifier } from "../stringification";
 
 export class ExactMatchError extends MatchError {
@@ -8,7 +8,7 @@ export class ExactMatchError extends MatchError {
   public constructor(actualValue: any, expectedValue: any, shouldMatch: boolean) {
     super();
 
-    this.message = `Expected ${JSON.stringify(actualValue)} ${!shouldMatch ? "not " : ""}` +
+    this.message = `Expected ${this._argumentStringifier.stringify(actualValue)} ${!shouldMatch ? "not " : ""}` +
                    `to be ${this._argumentStringifier.stringify(expectedValue)}.`;
 
     this._expected = expectedValue;

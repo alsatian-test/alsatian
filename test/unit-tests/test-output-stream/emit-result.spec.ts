@@ -1,6 +1,6 @@
+import { Expect, TestCase, Test, SpyOn, TestOutputStream, TestCaseResult} from "../../../core/alsatian-core";
+import { MatchError, EqualMatchError } from "../../../core/errors";
 import { ITest } from "../../../core/_interfaces";
-import { Expect, FocusTest, SpyOn, Test, TestCase, TestCaseResult, TestOutcome, TestOutputStream} from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {

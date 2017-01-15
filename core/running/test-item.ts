@@ -1,6 +1,6 @@
-import { Promise } from "../../promise/promise";
 import { ITest, ITestCase, ITestFixture } from "../_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
+import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
@@ -39,98 +39,64 @@ export class TestItem {
        this._testCase = testCase;
    }
 
-   public run(timeout: number): Promise<any> {
+   public async run(timeout: number) {
 
       if (this._test.ignored) {
-         return new Promise((resolve, reject) => {
-            resolve({ test: this._test });
-         });
+         return;
       }
       else {
-
-         this._setup();
-
-         if (this._test.isAsync) {
-            return this._runAsync(timeout);
-         }
-         else {
-            return this._runSync();
-         }
+         await this._setup();
+         await this._runTest(this._test.timeout || timeout);
+         await this._teardown();
       }
    }
 
-   private _runSync(): Promise<any> {
-      return new Promise<any>((resolve, reject) => {
-         try {
-            this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
-            this._reportResult(resolve);
-         }
-         catch (error) {
-            this._reportResult(resolve, error);
-         }
-      });
-   }
+   private async _runTest(timeout: number) {
+        return new Promise<any>((resolve, reject) => {
 
-   private _runAsync(timeout: number) {
-      return new Promise<any>((resolve, reject) => {
-         let timeoutExpired = false;
-         let timeoutCheck: NodeJS.Timer = null;
+            setTimeout(() => {
+                reject(new TestTimeoutError(timeout));
+            }, timeout);
 
-         try {
-            let testPromise: any = this._testFixture
-                                       .fixture[this._test.key]
-                                       .apply(this._testFixture.fixture, this._testCase.arguments);
+            if (this._test.isAsync) {
+                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments)
+                .then(resolve)
+                .catch(reject);
+            }
+            else {
+                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+                resolve();
+            }
+        });
+    }
 
-            testPromise.then(() => {
-               if (!timeoutExpired) {
-                  clearTimeout(timeoutCheck);
-                  this._reportResult(resolve);
-               }
-            })
-            .catch((error: Error) => {
-               clearTimeout(timeoutCheck);
-               this._reportResult(resolve, error);
-            });
-
-            const testTimeout: number = this._test.timeout || timeout;
-
-            timeoutCheck = setTimeout(() => {
-               timeoutExpired = true;
-               let error = new TestTimeoutError(testTimeout);
-               this._reportResult(resolve, error);
-            }, testTimeout);
-         }
-         catch (error) {
-            this._reportResult(resolve, error);
-         }
-      });
-   }
-
-   private _reportResult(resolve: (resolvedValue: any) => any, error?: Error) {
-      this._teardown();
-      resolve({
-          error: error,
-          test: this._test
-      });
-   }
-
-   private _setup() {
-      let setupFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);
+   private async _setup() {
+      const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);
 
       if (setupFunctions) {
-         setupFunctions.forEach(setupFunction => {
-            this._testFixture.fixture[setupFunction].call(this._testFixture.fixture);
-         });
+         for (const setupFunction of setupFunctions) {
+             if (setupFunction.isAsync) {
+                await this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture);
+             }
+             else {
+                this._testFixture.fixture[setupFunction.propertyKey].call(this._testFixture.fixture);
+             }
+         }
       }
    }
 
-   private _teardown() {
-      let teardownFunctions: Array<string> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
+   private async _teardown() {
+      let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
 
       if (teardownFunctions) {
-         teardownFunctions.forEach(teardownFunction => {
-            this._testFixture.fixture[teardownFunction].call(this._testFixture.fixture);
-         });
+         for (const teardownFunction of teardownFunctions) {
+             if (teardownFunction.isAsync) {
+                await this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture);
+             }
+             else {
+                this._testFixture.fixture[teardownFunction.propertyKey].call(this._testFixture.fixture);
+             }
+         }
       }
    }
 }

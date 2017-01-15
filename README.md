@@ -522,6 +522,22 @@ import { Expect, AsyncTest, TestFixture } from "alsatian";
 export class ExampleTestFixture {
 
   @AsyncTest()
+  public async asyncTest() {
+    const result = await somethingToHappen();
+    Expect(result).toBe(1);
+  }
+}
+```
+
+If you can't use the async/await syntax then fear not you can use a promise!
+
+```typescript
+import { Expect, AsyncTest, TestFixture } from "alsatian";
+
+@TestFixture("Example Test Fixture")
+export class ExampleTestFixture {
+
+  @AsyncTest()
   public asyncTest() {
 
     return new Promise((resolve, reject) => {
@@ -545,14 +561,9 @@ export class ExampleTestFixture {
 
   @AsyncTest()
   @Timeout(5000) // Alsatian will now wait 5 seconds before failing
-  public asyncTest() {
-
-    return new Promise((resolve, reject) => {
-      somethingThatTakesAlmostFiveSeconds((result: number) => {
-         Expect(result).toBe(1);
-         resolve();
-      });
-    });
+  public async asyncTest() {
+    const result = await somethingThatTakesAlmostFiveSeconds();
+    Expect(result).toBe(1);
   }
 }
 ``` 

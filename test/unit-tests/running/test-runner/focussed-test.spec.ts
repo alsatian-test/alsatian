@@ -3,7 +3,6 @@ import { MatchError } from "../../../../core/errors/match-error";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestSet } from "../../../../core/test-set";
-import { Promise } from "../../../../promise/promise";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
@@ -11,7 +10,7 @@ import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 export class FocussedTestTests {
 
    @AsyncTest()
-   public twoUnfocussedTestsBothRun() {
+   public async twoUnfocussedTestsBothRun() {
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -41,24 +40,15 @@ export class FocussedTestTests {
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(testOneExecuted).toBe(true);
-            Expect(testTwoExecuted).toBe(true);
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-
-      });
+      await testRunner.run(testSet);
+      Expect(testOneExecuted).toBe(true);
+      Expect(testTwoExecuted).toBe(true);
    }
 
    @AsyncTest()
-   public firstTestFocussedSecondUnfocussedFirstIsRun() {
+   public async firstTestFocussedSecondUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -89,24 +79,15 @@ export class FocussedTestTests {
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(testOneExecuted).toBe(true);
-            Expect(testTwoExecuted).toBe(false);
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-
-      });
+      await testRunner.run(testSet);
+      Expect(testOneExecuted).toBe(true);
+      Expect(testTwoExecuted).toBe(false);
    }
 
    @AsyncTest()
-   public secondTestFocussedFirstUnfocussedFirstIsRun() {
+   public async secondTestFocussedFirstUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
       let testSet = <TestSet>{};
@@ -137,18 +118,10 @@ export class FocussedTestTests {
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      return new Promise<void>((resolve, reject) => {
+      let testRunner = new TestRunner(output);
 
-         let testRunner = new TestRunner(output);
-
-         testRunner.run(testSet).then(() => {
-            Expect(testOneExecuted).toBe(false);
-            Expect(testTwoExecuted).toBe(true);
-            resolve();
-         })
-         .catch((error: Error) => {
-            reject(error);
-         });
-      });
+      await testRunner.run(testSet);
+      Expect(testOneExecuted).toBe(false);
+      Expect(testTwoExecuted).toBe(true);
    }
 }

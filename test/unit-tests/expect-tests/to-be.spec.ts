@@ -101,7 +101,7 @@ export class ToBeTests {
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual).replace(/,/g, ", ") + " to be " + JSON.stringify(expected).replace(/,/g, ", ") + ".");
    }
 
    @TestCase({}, [])
