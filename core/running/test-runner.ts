@@ -56,8 +56,6 @@ export class TestRunner {
         let currentTestFixtureResults: TestFixtureResults;
         let currentTestResults: TestResults;
         let errorOccurredRunningTest: Error;
-        let totalNumberOfTest = testSetRunInfo.testPlan.testItems.length;
-        let currentTestIndex = 0;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
 
@@ -81,7 +79,6 @@ export class TestRunner {
                 await testItem.run(testSetRunInfo.timeout);
                 result = currentTestResults.addTestCaseResult(testItem.testCase.arguments);
                 errorOccurredRunningTest = null;
-                currentTestIndex += 1;
             }
             catch (error) {
                 result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
@@ -91,8 +88,7 @@ export class TestRunner {
             // emit onComplete event out of Alsatian if call back has been defined
             if ( this._onTestCompleteCB ) {
                 this._onTestCompleteCB( {
-                    currentTestIndex: currentTestIndex,
-                    totalNumberOfTest: totalNumberOfTest,
+                    testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1,
                     test: testItem.test,
                     testFixture: testItem.testFixture,
                     outcome: result.outcome,
