@@ -2,9 +2,7 @@ import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
 
 class Testing {
-   set property(value: number) {
-
-   }
+   set property(value: number) { } // tslint:disable-line:no-empty
    get property() {
       return 42;
    }
@@ -16,11 +14,11 @@ export class PropertySpyConstructorTests {
    public getterIsReplacedWithSpy() {
       const object = { };
 
-      const originalGetter = () => {};
+      const originalGetter = () => undefined;
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 
-      new PropertySpy(object, "property");
+      const propertySpy = new PropertySpy(object, "property");
 
       Expect(Object.getOwnPropertyDescriptor(object, "property").get).not.toBe(originalGetter);
    }
@@ -29,11 +27,11 @@ export class PropertySpyConstructorTests {
    public setterIsReplacedWithSpy() {
       const object = { };
 
-      const originalSetter = () => {};
+      const originalSetter = () => undefined;
 
       Object.defineProperty(object, "property", { set: originalSetter, configurable: true });
 
-      new PropertySpy(object, "property");
+      const propertySpy = new PropertySpy(object, "property");
 
       Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBe(originalSetter);
    }
@@ -46,7 +44,7 @@ export class PropertySpyConstructorTests {
 
       Object.defineProperty(object.constructor.prototype, "property", { get: originalGetter, configurable: true });
 
-      new PropertySpy(object, "property");
+      const propertySpy = new PropertySpy(object, "property");
 
       Expect(Object.getOwnPropertyDescriptor(object, "property").get).toBeDefined();
       Expect(Object.getOwnPropertyDescriptor(object, "property").get).not.toBeNull();
@@ -59,13 +57,12 @@ export class PropertySpyConstructorTests {
 
       const originalSetter = Object.getOwnPropertyDescriptor(object.constructor.prototype, "property").set;
 
-      new PropertySpy(object, "property");
+      const propertySpy = new PropertySpy(object, "property");
 
       Expect(Object.getOwnPropertyDescriptor(object, "property").set).toBeDefined();
       Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBeNull();
       Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBe(originalSetter);
    }
-
 
    @TestCase(undefined)
    @TestCase(null)
@@ -85,7 +82,7 @@ export class PropertySpyConstructorTests {
 
       Object.defineProperty(object, "property", { get: () => originalValue, configurable: true });
 
-      new PropertySpy(object, "property");
+      const propertySpy = new PropertySpy(object, "property");
 
       Expect(object.property).toBe(originalValue);
    }
@@ -94,7 +91,7 @@ export class PropertySpyConstructorTests {
    public spyShouldBeReturned() {
       let object = { };
 
-      Object.defineProperty(object, "property", { get: () => {}, configurable: true });
+      Object.defineProperty(object, "property", { get: () => undefined, configurable: true });
 
       let spy = new PropertySpy(object, "property");
 
@@ -117,7 +114,7 @@ export class PropertySpyConstructorTests {
    public spyingOnPropertyShouldNotThrowError(propertyName: string) {
       let object: { [propertyName: string]: any } = { };
 
-      Object.defineProperty(object, propertyName, { get: () => {}, configurable: true });
+      Object.defineProperty(object, propertyName, { get: () => undefined, configurable: true });
 
       Expect(() => new PropertySpy(object, propertyName)).not.toThrow();
    }

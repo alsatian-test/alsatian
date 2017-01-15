@@ -12,7 +12,7 @@ export class SpyOnPropertyTests {
    public getterIsReplacedWithSpy() {
       const object = { };
 
-      const originalGetter = () => {};
+      const originalGetter = () => undefined;
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 
@@ -25,7 +25,7 @@ export class SpyOnPropertyTests {
    public setterIsReplacedWithSpy() {
       const object = { };
 
-      const originalSetter = () => {};
+      const originalSetter = () => undefined;
 
       Object.defineProperty(object, "property", { set: originalSetter, configurable: true });
 
@@ -33,7 +33,6 @@ export class SpyOnPropertyTests {
 
       Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBe(originalSetter);
    }
-
 
    @TestCase(undefined)
    @TestCase(null)
@@ -62,7 +61,7 @@ export class SpyOnPropertyTests {
    public spyShouldBeReturned() {
       let object = { };
 
-      Object.defineProperty(object, "property", { get: () => {}, configurable: true });
+      Object.defineProperty(object, "property", { get: () => undefined, configurable: true });
 
       let spy = SpyOnProperty(object, "property");
 
@@ -85,7 +84,7 @@ export class SpyOnPropertyTests {
    public spyingOnPropertyShouldNotThrowError(propertyName: string) {
       let object: { [propertyName: string]: any } = { };
 
-      Object.defineProperty(object, propertyName, { get: () => {}, configurable: true });
+      Object.defineProperty(object, propertyName, { get: () => undefined, configurable: true });
 
       Expect(() => SpyOnProperty(object, propertyName)).not.toThrow();
    }

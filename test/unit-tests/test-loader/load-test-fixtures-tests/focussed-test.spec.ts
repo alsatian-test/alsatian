@@ -1,7 +1,7 @@
-import { TestLoader } from "../../../../core/test-loader";
-import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, SpyOn, Test } from "../../../../core/alsatian-core";
+import { FileRequirer } from "../../../../core/file-requirer";
+import { TestLoader } from "../../../../core/test-loader";
 
 export class FocussedTestTests {
 
@@ -11,7 +11,7 @@ export class FocussedTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {
-       unfocussedTest: () => {}
+       unfocussedTest: () => undefined
      };
      let unfocussedTest = {
        key: "unfocussedTest"
@@ -35,7 +35,7 @@ export class FocussedTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        focussedTest: () => {}
+        focussedTest: () => undefined
       };
       let unfocussedTest = {
         key: "focussedTest"

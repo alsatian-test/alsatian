@@ -12,21 +12,21 @@ export class ToThrowTests {
 
    @Test()
    public functionDoesNotThrowErrorFails() {
-      let nonThrowFunction = () => {};
+      let nonThrowFunction = () => undefined;
 
       Expect(() => Expect(nonThrowFunction).toThrow()).toThrow();
    }
 
    @Test()
    public functionDoesNotThrowErrorFailsWithCorrectError() {
-      let nonThrowFunction = () => {};
+      let nonThrowFunction = () => undefined;
 
       Expect(() => Expect(nonThrowFunction).toThrow()).toThrowError(ErrorMatchError, "Expected an error to be thrown but no errors were thown.");
    }
 
    @Test()
    public functionDoesNotThrowErrorPassesWhenShouldNotThrow() {
-      let nonThrowFunction = () => {};
+      let nonThrowFunction = () => undefined;
 
       Expect(() => Expect(nonThrowFunction).not.toThrow()).not.toThrow();
    }
@@ -81,7 +81,7 @@ export class ToThrowTests {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => {}).toThrow();
+         Expect(() => undefined).toThrow();
       }
       catch (error) {
          errorMatchError = error;
@@ -117,7 +117,7 @@ export class ToThrowTests {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => {}).toThrow();
+         Expect(() => undefined).toThrow();
       }
       catch (error) {
          errorMatchError = error;

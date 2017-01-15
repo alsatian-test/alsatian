@@ -12,6 +12,7 @@
      */
      "array-type": [true, "generic"],
      "arrow-parens": false,
+     "max-classes-per-file": false, // allow private classes
      "one-line": [ true, "check-open-brace", "check-whitespace"],
      "trailing-comma": false,
      "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]

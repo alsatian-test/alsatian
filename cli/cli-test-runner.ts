@@ -1,6 +1,6 @@
-import { AlsatianCliOptions } from "./alsatian-cli-options";
-import { TestRunner, TestSet, TestOutputStream } from "../core/alsatian-core";
 import { TapBark } from "tap-bark";
+import { AlsatianCliOptions } from "./alsatian-cli-options";
+import { TestOutputStream, TestRunner, TestSet } from "../core/alsatian-core";
 
 export class CliTestRunner {
 

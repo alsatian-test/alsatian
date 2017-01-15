@@ -12,7 +12,7 @@ export class TestItemRunTeardownTests {
    public async successfulSyncTeardown(teardownFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => {};
+      const testFunction = () => undefined;
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
@@ -50,7 +50,7 @@ export class TestItemRunTeardownTests {
    public async successfulAsyncTeardown(teardownFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => {};
+      const testFunction = () => undefined;
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({

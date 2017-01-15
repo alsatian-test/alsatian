@@ -5,7 +5,7 @@ export class SpyOnTests {
    @Test()
    public functionIsReplacedWithSpy() {
       let object = {
-         function: () => {}
+         function: () => undefined
       };
 
       let originalFunction = object.function;
@@ -18,10 +18,10 @@ export class SpyOnTests {
    @Test()
    public functionStillWorks() {
       let object = {
-         functionCalled: false,
          function: () => {
             object.functionCalled = true;
-         }
+         },
+         functionCalled: false
       };
 
       let originalFunction = object.function;
@@ -35,21 +35,21 @@ export class SpyOnTests {
    @Test()
    public callsPropertyIsSetOnFunction() {
       let object = {
-         function: () => {}
+         function: () => undefined
       };
 
       let originalFunction = object.function;
 
       SpyOn(object, "function");
 
-      Expect((<any>object.function).calls).toBeDefined();
-      Expect((<any>object.function).calls).not.toBeNull();
+      Expect((<any> object.function).calls).toBeDefined();
+      Expect((<any> object.function).calls).not.toBeNull();
    }
 
    @Test()
    public spyShouldBeReturned() {
       let object = {
-         function: () => {}
+         function: () => undefined
       };
 
       let originalFunction = object.function;

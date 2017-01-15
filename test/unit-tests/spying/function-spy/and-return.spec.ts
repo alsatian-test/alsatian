@@ -13,7 +13,7 @@ export class ReturnTests {
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
       let object = {
-         originalFunction: () => {}
+         originalFunction: () => undefined
       };
 
       SpyOn(object, "originalFunction");

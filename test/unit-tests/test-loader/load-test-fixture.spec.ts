@@ -36,12 +36,12 @@ export class LoadTestTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+     let testFixtureInstance = {};
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      let testFixtureSet = {
+     let testFixtureSet = {
          testFixture: () => testFixtureInstance
-      };
+     };
 
      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
 
@@ -60,12 +60,12 @@ export class LoadTestTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+     let testFixtureInstance = {};
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      let testFixtureSet = {
+     let testFixtureSet = {
          testFixture: () => testFixtureInstance
-      };
+     };
 
      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
      Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
@@ -105,12 +105,12 @@ export class LoadTestTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+     let testFixtureInstance = {};
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      let testFixtureSet = {
+     let testFixtureSet = {
          testFixture: () => testFixtureInstance
-      };
+     };
 
      Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureSet.testFixture);
 
@@ -128,11 +128,11 @@ export class LoadTestTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
+     let testFixtureInstance = {};
 
-      let testFixtureSet = {
+     let testFixtureSet = {
          testFixture: () => testFixtureInstance
-      };
+     };
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();
@@ -169,9 +169,7 @@ export class LoadTestTests {
        let testFixtureInstance = {};
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-       let testFixtureSet = function testFixture() {
-           return testFixtureInstance;
-       };
+       let testFixtureSet = () => testFixtureInstance;
 
        let spy = SpyOn(fileRequirer, "require");
        spy.andStub();
@@ -191,9 +189,7 @@ export class LoadTestTests {
        let testFixtureInstance = {};
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-       let testFixtureSet = function testFixture() {
-           return testFixtureInstance;
-       };
+       let testFixtureSet = () => testFixtureInstance;
 
        const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
        Reflect.defineMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureMetadata, testFixtureSet);
@@ -240,12 +236,12 @@ export class LoadTestTests {
         .addTestCase(new TestCaseBuilder().build())
         .build();
 
-        let testTwo = new TestBuilder()
+       let testTwo = new TestBuilder()
          .withKey("testTwo")
          .addTestCase(new TestCaseBuilder().build())
          .build();
 
-        let fixture = new TestFixtureBuilder()
+       let fixture = new TestFixtureBuilder()
             .addTest(testOne)
             .addTest(testTwo)
             .build();
@@ -253,6 +249,7 @@ export class LoadTestTests {
        let testFixtureSet = {
            testFixture: () => fixture
        };
+
        Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureSet.testFixture);
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
 
@@ -278,12 +275,12 @@ export class LoadTestTests {
         .addTestCase(new TestCaseBuilder().build())
         .build();
 
-        let testTwo = new TestBuilder()
+       let testTwo = new TestBuilder()
          .withKey("testTwo")
          .addTestCase(new TestCaseBuilder().build())
          .build();
 
-        let fixture = new TestFixtureBuilder()
+       let fixture = new TestFixtureBuilder()
             .addTest(testOne)
             .addTest(testTwo)
             .build();
@@ -291,6 +288,7 @@ export class LoadTestTests {
        let testFixtureSet = {
            testFixture: () => fixture
        };
+
        Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureSet.testFixture);
        Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);

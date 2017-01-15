@@ -85,7 +85,7 @@ export class ToHaveBeenSetTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => {})
+   @TestCase(() => undefined)
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasBeenSetShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
@@ -100,7 +100,7 @@ export class ToHaveBeenSetTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => {})
+   @TestCase(() => undefined)
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasNotBeenSetShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");

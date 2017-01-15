@@ -13,8 +13,8 @@ export class FocussedTestTests {
    public async twoUnfocussedTestsBothRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
@@ -51,8 +51,8 @@ export class FocussedTestTests {
    public async firstTestFocussedSecondUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
@@ -90,8 +90,8 @@ export class FocussedTestTests {
    public async secondTestFocussedFirstUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;

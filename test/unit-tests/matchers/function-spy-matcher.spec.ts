@@ -17,12 +17,12 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroExactlyValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(TypeError, "expectedCallCount must be greater than 0.");
    }
@@ -32,7 +32,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42)
    public exactlyMatchesDoesNotThrow(callCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -41,7 +41,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.exactly(callCount).times).not.toThrow();
    }
@@ -51,7 +51,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 2)
    public exactlyDoesntMatchThrowsError(expectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -60,7 +60,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (expectedCallCount === 1) {
          Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called 1 time.`);
@@ -76,12 +76,12 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroAnythingButValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.anythingBut(expectedCallCount).times).toThrowError(TypeError, "unexpectedCallCount must be greater than 0.");
    }
@@ -91,7 +91,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 2)
    public anythingButMatchesDoesNotThrow(unexpectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -100,7 +100,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).not.toThrow();
    }
@@ -110,7 +110,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42)
    public anythingButDoesntMatchThrowsError(unexpectedCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -119,7 +119,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (unexpectedCallCount === 1) {
          Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called 1 time.`);
@@ -135,12 +135,12 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroLessThanValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.lessThan(expectedCallCount).times).toThrowError(TypeError, "maximumCallCount must be greater than 0.");
    }
@@ -150,7 +150,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 36)
    public lessThanMatchesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -159,7 +159,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.lessThan(maximumCallCount).times).not.toThrow();
    }
@@ -169,7 +169,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 56)
    public lessThanDoesntMatchThrowsError(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -178,7 +178,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (maximumCallCount === 1) {
          Expect(() => spyMatcher.lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called less than 1 time.`);
@@ -194,12 +194,12 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroGreaterThanValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.greaterThan(expectedCallCount).times).toThrowError(TypeError, "minimumCallCount must be greater than 0.");
    }
@@ -209,7 +209,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 56)
    public greaterThanMatchesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -218,7 +218,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.greaterThan(maximumCallCount).times).not.toThrow();
    }
@@ -228,7 +228,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 36)
    public greaterThanDoesntMatchThrowsError(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => {}
+         function: () => undefined
       };
 
       SpyOn(some, "function");
@@ -237,7 +237,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (maximumCallCount === 1) {
          Expect(() => spyMatcher.greaterThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called greater than 1 time.`);

@@ -6,7 +6,7 @@ export class AndCallTests {
    @Test()
    public originalFunctionNotCalledIfSpyFaked() {
       let object = {
-         originalFunction: () => {}
+         originalFunction: () => undefined
       };
 
       SpyOn(object, "originalFunction");
@@ -15,7 +15,7 @@ export class AndCallTests {
 
       let spy = new RestorableFunctionSpy(object, "originalFunction");
 
-      spy.andCall(() => {});
+      spy.andCall(() => undefined);
 
       spy.call([]);
 
@@ -30,7 +30,7 @@ export class AndCallTests {
    @TestCase([ "an", "array" ])
    public spyShoulReturnCorrectValue(returnValue: any) {
       let someObject = {
-         func: () => { }
+         func: () => undefined
       };
 
       SpyOn(someObject, "func").andCall(() => {
@@ -43,7 +43,7 @@ export class AndCallTests {
    @Test()
    public originalFunctionNotCalledIfSpyNotFaked() {
       let object = {
-         originalFunction: () => {}
+         originalFunction: () => undefined
       };
 
       SpyOn(object, "originalFunction");
@@ -57,11 +57,11 @@ export class AndCallTests {
       Expect(originalFunction).toHaveBeenCalled();
    }
 
-   @TestCase(() => {})
+   @TestCase(() => undefined)
    @TestCase(() => 1 + 1)
    public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
       let object = {
-         originalFunction: () => {}
+         originalFunction: () => undefined
       };
 
       let fake = {

@@ -7,7 +7,7 @@ export class PropertySpyTests {
    public spyIsReturned() {
       const object: any = { };
 
-      const originalGetter = () => {};
+      const originalGetter = () => undefined;
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 
@@ -32,7 +32,7 @@ export class PropertySpyTests {
    public getterReturnsGivenValue(value: any) {
       const object: any = { };
 
-      const originalGetter = () => {};
+      const originalGetter = () => undefined;
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 

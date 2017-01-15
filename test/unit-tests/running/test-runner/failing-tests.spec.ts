@@ -32,9 +32,9 @@ export class FailingTestsTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({ failingTest: () => { throw new MatchError("nothing", "something", "expected nothing to be something."); }});
       let testBuilder = new TestBuilder();
@@ -54,9 +54,9 @@ export class FailingTestsTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({ failingTest: () => { throw new Error("something went wrong."); }});
       let testBuilder = new TestBuilder();

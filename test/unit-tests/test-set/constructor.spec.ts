@@ -9,7 +9,8 @@ export class TestSetConstructorTests {
     public nullOrUndefinedTestLoaderThrowsError(testLoader: TestLoader) {
         const globHelper = new GlobHelper();
 
-        Expect(() => new TestSet(testLoader, globHelper)).toThrowError(TypeError, "testLoader must not be null or undefined.");
+        Expect(() => new TestSet(testLoader, globHelper))
+            .toThrowError(TypeError, "testLoader must not be null or undefined.");
     }
 
     @TestCase(null)
@@ -17,6 +18,7 @@ export class TestSetConstructorTests {
     public nullOrUndefinedGlobHelperThrowsError(globHelper: GlobHelper) {
         const testLoader = new TestLoader(null);
 
-        Expect(() => new TestSet(testLoader, globHelper)).toThrowError(TypeError, "globHelper must not be null or undefined.");
+        Expect(() => new TestSet(testLoader, globHelper))
+            .toThrowError(TypeError, "globHelper must not be null or undefined.");
     }
 }

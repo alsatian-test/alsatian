@@ -11,7 +11,7 @@ export class TestTimeoutTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {
-       noTimeoutTest: () => {}
+       noTimeoutTest: (): undefined => undefined
      };
      let noTimeoutTest = {
        key: "noTimeoutTest"
@@ -37,7 +37,7 @@ export class TestTimeoutTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        timeoutTest: () => {}
+        timeoutTest: (): undefined => undefined
       };
       let timeoutTest = {
         key: "timeoutTest"

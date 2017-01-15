@@ -6,7 +6,7 @@ export class RestoreTests {
   @Test()
   public targetsFunctionIsNoLongerASpyWhenCalledFromSpy() {
     let object = {
-      originalFunction: () => {}
+      originalFunction: () => undefined
     };
 
     let originalFunction = object.originalFunction;
@@ -23,7 +23,7 @@ export class RestoreTests {
     @Test()
     public targetsFunctionIsNoLongerASpyWhenCalledFromFunction() {
       let object = {
-        originalFunction: () => {}
+        originalFunction: () => undefined
       };
 
       let originalFunction = object.originalFunction;
@@ -40,7 +40,7 @@ export class RestoreTests {
   @Test()
   public targetsOriginalFunctionIsCalledAfterRestoreIsCalled() {
     let object: any = { };
-    object.originalFunction = () => {};
+    object.originalFunction = () => undefined;
     let originalSpy = SpyOn(object, "originalFunction");
 
     let secondSpy = SpyOn(object, "originalFunction");

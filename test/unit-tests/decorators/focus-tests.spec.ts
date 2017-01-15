@@ -7,7 +7,7 @@ export class FocusTestsDecoratorTests {
     @Test()
     public focusTestKeyMetaDataAdded(key: string) {
 
-       let TestFixture = () => {};
+       let TestFixture = () => undefined;
 
        FocusTestsDecorator(TestFixture);
 

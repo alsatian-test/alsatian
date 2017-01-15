@@ -21,11 +21,11 @@ export class AndCallTests {
       Expect(someObject.func()).toBe(returnValue);
    }
 
-   @TestCase(() => {})
+   @TestCase(() => undefined)
    @TestCase(() => 1 + 1)
    public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
       let object = {
-         originalFunction: () => {}
+         originalFunction: () => undefined
       };
 
       let fake = {

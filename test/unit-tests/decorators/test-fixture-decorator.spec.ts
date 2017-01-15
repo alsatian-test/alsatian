@@ -10,7 +10,7 @@ export class TestFixtureDecoratorTests {
     public metaDataIsSet() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = () => undefined;
 
         testFixtureDecorator(testFixtureConstructor);
 
@@ -24,7 +24,7 @@ export class TestFixtureDecoratorTests {
     public metaDataIsTestFixture() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = () => undefined;
 
         testFixtureDecorator(testFixtureConstructor);
 
@@ -39,7 +39,7 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionSet(testFixtureDescription: string) {
         const testFixtureDecorator = TestFixtureDecorator(testFixtureDescription);
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = () => undefined;
 
         testFixtureDecorator(testFixtureConstructor);
 

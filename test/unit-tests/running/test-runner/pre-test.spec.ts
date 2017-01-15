@@ -13,9 +13,9 @@ export class PreTestTests {
 
    @AsyncTest()
    public async tapVersionHeaderOutput() {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
       let testBuilder = new TestBuilder();
       testBuilder.addTestCase(new TestCaseBuilder().build());
@@ -35,9 +35,9 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          let testFixtureBuilder = new TestFixtureBuilder();
@@ -66,9 +66,9 @@ export class PreTestTests {
    @TestCase(5, 5)
    @AsyncTest()
    public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -135,9 +135,9 @@ export class PreTestTests {
    @Timeout(1000)
    @AsyncTest()
    public async multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -169,9 +169,9 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          let testFixtureBuilder = new TestFixtureBuilder();

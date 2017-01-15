@@ -40,7 +40,7 @@ export class RestoreTests {
    @Test()
    public targetsPropertySetterIsNoLongerASpyWhenCalledFromSpy() {
       const object = {
-         set originalProperty(value: any) {}
+         set originalProperty(value: any) { } // tslint:disable-line:no-empty
       };
 
       const originalPropertySetter = Object.getOwnPropertyDescriptor(object, "originalProperty").set;
@@ -57,7 +57,7 @@ export class RestoreTests {
    @Test()
    public targetsPropertyIsSetterNoLongerASpyWhenCalledFromProperty() {
       const object = {
-         set originalProperty(value: any) { }
+         set originalProperty(value: any) { } // tslint:disable-line:no-empty
       };
 
       const originalPropertySetter =  Object.getOwnPropertyDescriptor(object, "originalProperty").set;

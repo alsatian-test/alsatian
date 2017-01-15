@@ -8,7 +8,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -26,7 +26,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -44,7 +44,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -65,7 +65,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -86,7 +86,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -107,7 +107,7 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => {}, configurable: true };
+      const propertyDescriptor = { get: () => undefined, configurable: true };
 
       SpyOn(propertyDescriptor, "get");
 

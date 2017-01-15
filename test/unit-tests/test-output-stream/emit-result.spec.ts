@@ -1,10 +1,15 @@
-import { Expect, TestCase, Test, SpyOn, TestOutputStream, TestCaseResult} from "../../../core/alsatian-core";
-import { MatchError, EqualMatchError } from "../../../core/errors";
 import { ITest } from "../../../core/_interfaces";
+import { Expect, SpyOn, Test, TestCase, TestCaseResult, TestOutputStream} from "../../../core/alsatian-core";
+import { EqualMatchError, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
-    return  ` ---\n   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n   severity: fail\n   data:\n     got: ${JSON.stringify(error.actual)}\n     expect: ${JSON.stringify(error.expected)}\n ...\n`;
+    return  ` ---\n`
+          + `   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n`
+          + `   severity: fail\n`
+          + `   data:\n`
+          + `     got: ${JSON.stringify(error.actual)}\n`
+          + `     expect: ${JSON.stringify(error.expected)}\n ...\n`;
 };
 
 const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => {
@@ -64,7 +69,7 @@ export class EmitResultTests {
    @TestCase([ "a", 3, true ], "[ \"a\", 3, true ]")
    @TestCase([ 5.25, 6.25, 7.22 ], "[ 5.25, 6.25, 7.22 ]")
    @TestCase([ TypeError, RangeError ], "[ TypeError, RangeError ]")
-   @TestCase([ () => { } ], "[ anonymous function ]")
+   @TestCase([ () => "I am anonymous" ], "[ anonymous function ]")
    @TestCase([ undefined ], "[ undefined ]")
    public shouldEmitWithCorrectCaseArguments(testCaseArguments: Array<any>, testCaseOutput: string) {
       let testOutput = new TestOutputStream();
@@ -229,11 +234,12 @@ export class EmitResultTests {
    @TestCase(42)
    @TestCase(-42)
    public invalidResultOutcomeThrowsError(testOutcome: number) {
-      const testCaseResult = <TestCaseResult>{ outcome: testOutcome };
+      const testCaseResult = <TestCaseResult> { outcome: testOutcome };
 
       const testOutput = new TestOutputStream();
 
-      Expect(() => testOutput.emitResult(1, testCaseResult)).toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
+      Expect(() => testOutput.emitResult(1, testCaseResult))
+        .toThrowError(TypeError, `Invalid test outcome: ${testOutcome}`);
    }
 
    @TestCase("line 1\nline3\nline 7")
