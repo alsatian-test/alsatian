@@ -6,50 +6,50 @@ import { ITestCompleteEvent, IOnTestCompleteCBFunction } from "../events";
 import "reflect-metadata";
 
 export class TestRunner {
-   private _onTestCompleteCB: IOnTestCompleteCBFunction;
-   private _outputStream: TestOutputStream;
-   public get outputStream() {
-      return this._outputStream;
-   }
+    private _onTestCompleteCBs: IOnTestCompleteCBFunction[] = [];
+    private _outputStream: TestOutputStream;
+    public get outputStream() {
+        return this._outputStream;
+    }
 
-   constructor (outputStream?: TestOutputStream) {
-      // If we were given a TestOutput, use it, otherwise make one
-      if (outputStream !== undefined) {
-         this._outputStream = outputStream;
-      } else {
-         this._outputStream = new TestOutputStream();
-      }
-   }
+    constructor(outputStream?: TestOutputStream) {
+        // If we were given a TestOutput, use it, otherwise make one
+        if (outputStream !== undefined) {
+            this._outputStream = outputStream;
+        } else {
+            this._outputStream = new TestOutputStream();
+        }
+    }
 
-   public async run(testSet: TestSet, timeout?: number) {
+    public async run(testSet: TestSet, timeout?: number) {
 
-      const testPlan = new TestPlan(testSet);
-      if (testPlan.testItems.length === 0) {
-         throw new Error("no tests to run.");
-      }
+        const testPlan = new TestPlan(testSet);
+        if (testPlan.testItems.length === 0) {
+            throw new Error("no tests to run.");
+        }
 
-      if (!timeout) {
-         timeout = 500;
-      }
+        if (!timeout) {
+            timeout = 500;
+        }
 
-      const testSetResults = new TestSetResults();
+        const testSetResults = new TestSetResults();
 
-      this._outputStream.emitVersion();
-      this._outputStream.emitPlan(testPlan.testItems.length);
+        this._outputStream.emitVersion();
+        this._outputStream.emitPlan(testPlan.testItems.length);
 
-      const testSetRunInfo = new TestSetRunInfo(
+        const testSetRunInfo = new TestSetRunInfo(
             testPlan,
             testSetResults,
             timeout);
 
-       await this._runTests(testSetRunInfo, testSetResults);
+        await this._runTests(testSetRunInfo, testSetResults);
     }
 
     /**
      * Defined the call back function to be called when the test is completed
      */
-    public onTestComplete( testCompleteCB: IOnTestCompleteCBFunction) {
-        this._onTestCompleteCB = testCompleteCB;
+    public onTestComplete(testCompleteCB: IOnTestCompleteCBFunction) {
+        this._onTestCompleteCBs.push(testCompleteCB);
     }
 
     private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
@@ -86,15 +86,17 @@ export class TestRunner {
             }
 
             // emit onComplete event out of Alsatian if call back has been defined
-            if ( this._onTestCompleteCB ) {
-                this._onTestCompleteCB( {
-                    testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1,
-                    test: testItem.test,
-                    testFixture: testItem.testFixture,
-                    outcome: result.outcome,
-                    testCase: testItem.testCase,
-                    error: errorOccurredRunningTest
-                } );
+            if (this._onTestCompleteCBs) {
+                this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+                   onTestCompleteCB({
+                        testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1,
+                        test: testItem.test,
+                        testFixture: testItem.testFixture,
+                        outcome: result.outcome,
+                        testCase: testItem.testCase,
+                        error: errorOccurredRunningTest
+                    });
+                });
             }
 
             this._outputStream.emitResult(testItemIndex + 1, result);
