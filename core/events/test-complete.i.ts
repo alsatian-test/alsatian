@@ -1,4 +1,4 @@
-import { ITestCase, ITest, ITestFixture } from "./index";
+import { ITestCase, ITest, ITestFixture } from "../_interfaces/index";
 import { TestOutcome } from "../results/test-outcome";
 
 export interface  ITestCompleteEvent {

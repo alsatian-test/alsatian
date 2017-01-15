@@ -4,7 +4,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { ITestCompleteEvent } from "../../../../core/_interfaces";
+import { ITestCompleteEvent } from "../../../../core/events";
 import "reflect-metadata";
 
 export class RunTestTests {

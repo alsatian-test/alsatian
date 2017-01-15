@@ -2,7 +2,7 @@
 import { TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream } from "../alsatian-core";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
-import { ITestCompleteEvent, IOnTestCompleteCBFunction } from "../_interfaces";
+import { ITestCompleteEvent, IOnTestCompleteCBFunction } from "../events";
 import "reflect-metadata";
 
 export class TestRunner {
