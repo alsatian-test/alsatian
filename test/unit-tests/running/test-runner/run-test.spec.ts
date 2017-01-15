@@ -34,9 +34,15 @@ export class RunTestTests {
     @AsyncTest()
     public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
         let testCompletedValue: ITestCompleteEvent = null;
-        const test = new TestBuilder().withTestCaseCount(1).build();
+        const testDescription = "testDescriptionToCheck";
+        const test = new TestBuilder()
+            .withDescription(testDescription)
+            .withTestCaseCount(1)
+            .build();
 
+        const testFixtureDescription = "testFixtureDescriptionToCheck";
         const testFixture = new TestFixtureBuilder()
+            .withDescription(testFixtureDescription)
             .addTest(test)
             .build();
 
@@ -54,11 +60,20 @@ export class RunTestTests {
             }
         };
 
+        SpyOn(spyContainer, "onCompleteCB");
         testRunner.onTestComplete(spyContainer.onCompleteCB);
 
         await testRunner.run(testSet);
-        Expect(testCompletedValue).not.toBeNull();
+
+        Expect(spyContainer.onCompleteCB).toHaveBeenCalled().exactly(1);
+
         Expect(testCompletedValue.testId).toEqual(1);
+        Expect(testCompletedValue.test.description).toEqual(testDescription);
+        Expect(testCompletedValue.testFixture.description).toEqual(testFixtureDescription);
+        Expect(testCompletedValue.outcome).not.toBeNull();
+        Expect(testCompletedValue.testCase).not.toBeNull();
+        Expect(testCompletedValue.error).toBeNull();
+
     }
 
     @AsyncTest()
@@ -84,11 +99,13 @@ export class RunTestTests {
             }
         };
 
+        SpyOn(spyContainer, "onCompleteCB");
         // same as before test, but no CB registered
         // testRunner.onTestComplete(spyContainer.onCompleteCB);
 
         await testRunner.run(testSet);
-        Expect(testCompletedValue).toBeNull();
+
+        Expect(spyContainer.onCompleteCB).not.toHaveBeenCalled();
     }
 
     @AsyncTest()
@@ -117,14 +134,15 @@ export class RunTestTests {
                 testCompletedValue2 = testCompleted;
             }
         };
+
+        SpyOn(spyContainer, "onCompleteCB1");
+        SpyOn(spyContainer, "onCompleteCB2");
         testRunner.onTestComplete(spyContainer.onCompleteCB1);
         testRunner.onTestComplete(spyContainer.onCompleteCB2);
 
         await testRunner.run(testSet);
-        Expect(testCompletedValue1).not.toBeNull();
-        Expect(testCompletedValue1.testId).toEqual(1);
-        Expect(testCompletedValue2).not.toBeNull();
-        Expect(testCompletedValue2.testId).toEqual(1);
+        Expect(spyContainer.onCompleteCB1).toHaveBeenCalled().exactly(1);
+        Expect(spyContainer.onCompleteCB2).toHaveBeenCalled().exactly(1);
     }
 
     @AsyncTest()
@@ -209,7 +227,7 @@ export class RunTestTests {
             }
         };
 
-        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ "setupFunction" ], fixtureObject);
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, ["setupFunction"], fixtureObject);
 
         const testFixture = new TestFixtureBuilder()
             .withFixture(fixtureObject)
