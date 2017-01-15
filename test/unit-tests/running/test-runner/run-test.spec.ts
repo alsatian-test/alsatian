@@ -56,7 +56,6 @@ export class RunTestTests {
 
         testRunner.onTestComplete(spyContainer.onCompleteCB);
 
-        // return new Promise((resolve, reject) => {
         await testRunner.run(testSet);
         Expect(testCompletedValue).not.toBeNull();
         Expect(testCompletedValue.testId).toEqual(1);
