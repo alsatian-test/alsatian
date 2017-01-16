@@ -10,9 +10,9 @@ export default class AlsatianWikiEndToEndTests {
     @AsyncSetup
     private async _goToWiki() {
         if (!this._driver) {
-            this._driver = new Builder().
-                withCapabilities(Capabilities.chrome()).
-                build();
+            this._driver = new Builder()
+                .withCapabilities(Capabilities.chrome())
+                .build();
 
             await this._driver.get("https://github.com/alsatian-test/alsatian/wiki");
         }
