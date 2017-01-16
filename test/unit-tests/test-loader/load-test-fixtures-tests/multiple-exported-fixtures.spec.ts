@@ -42,7 +42,7 @@ export class MultipleExportedFixtureTests {
       const testFixtureConstructor = () => testFixtureInstance;
 
       const testFixtureWrapper = {
-         firstThing: () => undefined,
+         firstThing: () => {},
          secondThing: testFixtureConstructor,
          thirdThing: testFixtureConstructor
       };
@@ -93,7 +93,7 @@ export class MultipleExportedFixtureTests {
 
       const testFixtureWrapper = {
          firstThing: testFixtureConstructor,
-         secondThing: () => undefined,
+         secondThing: () => {},
          thirdThing: testFixtureConstructor
       };
 
@@ -144,7 +144,7 @@ export class MultipleExportedFixtureTests {
       const testFixtureWrapper = {
          firstThing: testFixtureConstructor,
          secondThing: testFixtureConstructor,
-         thirdThing: () => undefined
+         thirdThing: () => {}
       };
 
       const spy = SpyOn(fileRequirer, "require");
@@ -169,7 +169,7 @@ export class MultipleExportedFixtureTests {
       const testFixtureWrapper = {
          firstThing: testFixtureConstructor,
          secondThing: testFixtureConstructor,
-         thirdThing: () => undefined
+         thirdThing: () => {}
       };
 
       const spy = SpyOn(fileRequirer, "require");

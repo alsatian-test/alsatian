@@ -10,7 +10,7 @@ export class CallTests {
    @TestCase([ { some: "thing" }, [] ])
    public argumentsRecorded(args: Array<any>) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       let spy = new RestorableFunctionSpy(object, "originalFunction");
@@ -25,7 +25,7 @@ export class CallTests {
    @TestCase(42)
    public callAddedForEachCall(callCount: number) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       let spy = new RestorableFunctionSpy(object, "originalFunction");
@@ -40,7 +40,7 @@ export class CallTests {
    @Test()
    public originalFunctionIsCalled() {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
@@ -57,7 +57,7 @@ export class CallTests {
    @Test()
    public originalFunctionNotCalledIfSpyStub() {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
@@ -83,7 +83,7 @@ export class CallTests {
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");

@@ -32,7 +32,7 @@ export class AndCallSetterTests {
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const propertySpy = new PropertySpy(testObject, "property").andCallSetter(() => undefined);
+      const propertySpy = new PropertySpy(testObject, "property").andCallSetter(() => {});
 
       testObject.property = "something";
 
@@ -52,7 +52,7 @@ export class AndCallSetterTests {
 
       const propertySpy = new PropertySpy(testObject, "property");
 
-      Expect(propertySpy.andCallSetter(() => undefined)).toBe(propertySpy);
+      Expect(propertySpy.andCallSetter(() => {})).toBe(propertySpy);
    }
 
    @TestCase(null)
@@ -65,13 +65,18 @@ export class AndCallSetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { set: (value: any) => undefined, get: () => testObject._secretValue, configurable: true };
+      const propertyDescriptor = {
+        configurable: true,
+        get: () => testObject._secretValue,
+        set: (value: any) => {}
+      };
 
       SpyOn(propertyDescriptor, "set");
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const propertySpy = new PropertySpy(testObject, "property").andCallSetter((value: any) => { testObject._secretValue = value; });
+      const propertySpy = new PropertySpy(testObject, "property")
+                                .andCallSetter((value: any) => { testObject._secretValue = value; });
 
       testObject.property = expectedValue;
 
@@ -88,13 +93,19 @@ export class AndCallSetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { set: () => undefined, get: () => testObject._secretValue, configurable: true };
+      const propertyDescriptor = {
+        configurable: true,
+        get: () => testObject._secretValue,
+        set: (value: any) => {}
+      };
 
       SpyOn(propertyDescriptor, "set");
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      new PropertySpy(testObject, "property").andReturnValue(andReturnValue).andCallSetter((value: any) => { testObject._secretValue = value; });
+      const propertySpy = new PropertySpy(testObject, "property")
+                                .andReturnValue(andReturnValue)
+                                .andCallSetter((value: any) => { testObject._secretValue = value; });
 
       testObject.property = setterValue;
 
@@ -111,7 +122,11 @@ export class AndCallSetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { set: () => undefined, get: () => testObject._secretValue, configurable: true };
+      const propertyDescriptor = {
+        configurable: true,
+        get: () => testObject._secretValue,
+        set: (value: any) => {}
+      };
 
       SpyOn(propertyDescriptor, "set");
 

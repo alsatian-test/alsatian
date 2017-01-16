@@ -11,7 +11,7 @@ export class IgnoredTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {
-       unignoredTest: () => undefined
+       unignoredTest: () => {}
      };
      let unignoredTest = {
        key: "unignoredTest"
@@ -35,7 +35,7 @@ export class IgnoredTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        ignoredTest: () => undefined
+        ignoredTest: () => {}
       };
       let unignoredTest = {
         key: "ignoredTest"
@@ -61,7 +61,7 @@ export class IgnoredTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        ignoredTest: () => undefined
+        ignoredTest: () => {}
       };
       let unignoredTest = {
         key: "ignoredTest"

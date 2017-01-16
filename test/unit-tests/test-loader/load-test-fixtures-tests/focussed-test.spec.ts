@@ -11,7 +11,7 @@ export class FocussedTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {
-       unfocussedTest: () => undefined
+       unfocussedTest: () => {}
      };
      let unfocussedTest = {
        key: "unfocussedTest"
@@ -35,7 +35,7 @@ export class FocussedTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        focussedTest: () => undefined
+        focussedTest: () => {}
       };
       let unfocussedTest = {
         key: "focussedTest"

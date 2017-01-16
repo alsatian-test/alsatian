@@ -8,15 +8,18 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      new PropertySpy(testObject, "property");
+      const propertySpy = new PropertySpy(testObject, "property");
 
-      testObject.property;
+      const property = testObject.property;
 
       Expect(propertyDescriptor.get).toHaveBeenCalled();
    }
@@ -26,15 +29,18 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      new PropertySpy(testObject, "property").andCallGetter(() => undefined);
+      const propertySpy = new PropertySpy(testObject, "property").andCallGetter(() => {});
 
-      testObject.property;
+      const property = testObject.property;
 
       Expect(propertyDescriptor.get).not.toHaveBeenCalled();
    }
@@ -44,7 +50,10 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -52,7 +61,7 @@ export class AndCallGetterTests {
 
       const propertySpy = new PropertySpy(testObject, "property");
 
-      Expect(propertySpy.andCallGetter(() => undefined)).toBe(propertySpy);
+      Expect(propertySpy.andCallGetter(() => {})).toBe(propertySpy);
    }
 
    @TestCase(null)
@@ -65,7 +74,10 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -86,7 +98,10 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 
@@ -107,7 +122,10 @@ export class AndCallGetterTests {
 
       const testObject: any = { };
 
-      const propertyDescriptor = { get: () => undefined, configurable: true };
+      const propertyDescriptor = {
+          configurable: true,
+          get: () => {}
+      };
 
       SpyOn(propertyDescriptor, "get");
 

@@ -150,7 +150,7 @@ export class PropertySetMatchErrorTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public expectedValueAndShouldMatchShouldBeSetToPropertyToBeSetToValue(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };
@@ -169,7 +169,7 @@ export class PropertySetMatchErrorTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public expectedValueAndShouldNotMatchShouldBeSetToPropertyNotToBeSetToValue(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };

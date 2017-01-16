@@ -14,7 +14,7 @@ export class PropertySpyConstructorTests {
    public getterIsReplacedWithSpy() {
       const object = { };
 
-      const originalGetter = () => undefined;
+      const originalGetter = () => {};
 
       Object.defineProperty(object, "property", { get: originalGetter, configurable: true });
 
@@ -27,7 +27,7 @@ export class PropertySpyConstructorTests {
    public setterIsReplacedWithSpy() {
       const object = { };
 
-      const originalSetter = () => undefined;
+      const originalSetter = () => {};
 
       Object.defineProperty(object, "property", { set: originalSetter, configurable: true });
 
@@ -91,7 +91,7 @@ export class PropertySpyConstructorTests {
    public spyShouldBeReturned() {
       let object = { };
 
-      Object.defineProperty(object, "property", { get: () => undefined, configurable: true });
+      Object.defineProperty(object, "property", { get: () => {}, configurable: true });
 
       let spy = new PropertySpy(object, "property");
 
@@ -114,7 +114,7 @@ export class PropertySpyConstructorTests {
    public spyingOnPropertyShouldNotThrowError(propertyName: string) {
       let object: { [propertyName: string]: any } = { };
 
-      Object.defineProperty(object, propertyName, { get: () => undefined, configurable: true });
+      Object.defineProperty(object, propertyName, { get: () => {}, configurable: true });
 
       Expect(() => new PropertySpy(object, propertyName)).not.toThrow();
    }

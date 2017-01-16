@@ -5,7 +5,7 @@ export class SpyOnTests {
    @Test()
    public functionIsReplacedWithSpy() {
       let object = {
-         function: () => undefined
+         function: () => {}
       };
 
       let originalFunction = object.function;
@@ -35,7 +35,7 @@ export class SpyOnTests {
    @Test()
    public callsPropertyIsSetOnFunction() {
       let object = {
-         function: () => undefined
+         function: () => {}
       };
 
       let originalFunction = object.function;
@@ -49,7 +49,7 @@ export class SpyOnTests {
    @Test()
    public spyShouldBeReturned() {
       let object = {
-         function: () => undefined
+         function: () => {}
       };
 
       let originalFunction = object.function;

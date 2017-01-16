@@ -46,7 +46,8 @@ export class TestSetRunInfoTests {
 
       const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
 
-      Expect(() => testSetRunInfo.testPlanItem = testPlanItem).toThrowError(TypeError, "testPlanItem must not be null or undefined.");
+      Expect(() => testSetRunInfo.testPlanItem = testPlanItem)
+        .toThrowError(TypeError, "testPlanItem must not be null or undefined.");
    }
 
    @Test()
@@ -55,7 +56,11 @@ export class TestSetRunInfoTests {
 
       const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
 
-      const testPlanItem = new TestItem(new TestFixtureBuilder().build(), new TestBuilder().build(), new TestCaseBuilder().build());
+      const testPlanItem = new TestItem(
+        new TestFixtureBuilder().build(),
+        new TestBuilder().build(),
+        new TestCaseBuilder().build()
+      );
 
       testSetRunInfo.testPlanItem = testPlanItem;
 

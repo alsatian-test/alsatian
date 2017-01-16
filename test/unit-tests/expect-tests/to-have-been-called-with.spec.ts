@@ -7,7 +7,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionCalledPasses() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -20,7 +20,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionNotCalledFails() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -31,7 +31,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionNotCalledFailsWithCorrectError() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -45,7 +45,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(["argument", 1])
    public functionCalledWithCorrectArgumentsPasses(expectedArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -70,7 +70,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, 42], ["1", "42"])
    public functionCalledWithSimilarArgumentsFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -93,7 +93,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([42, 1], [])
    public functionCalledWithWrongNumberOfArgumentsFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -110,7 +110,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, "argument"], ["argument", 1])
    public functionCalledWithRightArgumentsInWrongOrderFailsWithCorrectError(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -126,7 +126,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionNotCalledPassesWhenShouldNotCall() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -137,7 +137,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionThrowsErrorFailsWhenShouldNotThrow() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -150,7 +150,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public functionThrowsErrorFailsWithCorrectError() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -172,7 +172,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, 42], ["1", "42"])
    public functionCalledWithSimilarArgumentsPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -195,7 +195,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([42, 1], [])
    public functionCalledWithWrongNumberOfArgumentsPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -212,7 +212,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, "argument"], ["argument", 1])
    public functionNotCalledWithRightArgumentsInWrongOrderPasses(expectedArguments: Array<any>, actualArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -231,7 +231,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(["argument", 1])
    public functionNotCalledWithDifferentArgumentsFailsWithCorrectError(expectedArguments: Array<any>) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -253,7 +253,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toHaveBeenCalledWith()).toThrowError(TypeError, "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -268,7 +268,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenCalledWith()).toThrowError(TypeError, "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -281,7 +281,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([["this", "or"], ["that", "other", "thing"]])
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
       let some = {
-         function: (args: Array<any>) => undefined
+         function: (args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -311,7 +311,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([["this", "or"], ["that", "other", "thing"]])
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalledWithArguments(actualArgumentsList: Array<Array<any>>) {
       let some = {
-         function: (args: Array<any>) => undefined
+         function: (args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -342,7 +342,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, "or", 2, "other", "things"])
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalledWithArguments(expectedArguments: Array<any>) {
       let some = {
-         function: (args: Array<any>) => undefined
+         function: (args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -369,7 +369,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([1, "or", 2, "other", "things"])
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalledWithArguments(expectedArguments: Array<any>) {
       let some = {
-         function: (args: Array<any>) => undefined
+         function: (args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -422,7 +422,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyArgumentShouldNotThrowIfOneArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -435,7 +435,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public anyArgumentShouldNotThrowIfTwoArguments() {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -448,7 +448,7 @@ export class ToHaveBeenCalledWithTests {
    @Test()
    public anyArgumentShouldNotThrowIfThreeArguments() {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -465,7 +465,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("some", "function", "arguments")
    public anyArgumentShouldThrowIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -482,7 +482,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("some", "function", "arguments")
    public anyArgumentShouldThrowIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -499,7 +499,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("some", "function", "arguments")
    public anyArgumentShouldThrowWithExpectedMessageIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -526,7 +526,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("some", "function", "arguments")
    public anyArgumentShouldThrowWithexpectedMessageIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -556,7 +556,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Number(-42))
    public anyNumberArgumentShouldNotThrowIfNumberArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -576,7 +576,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Number(-42))
    public anyNumberArgumentShouldNotBeCalledShouldThrowIfNumberArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -608,7 +608,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyNumberArgumentShouldThrowIfNonNumberArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -640,7 +640,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyNumberArgumentShouldThrowWithExpectedValueIfNonNumberArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -666,7 +666,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new String("test"))
    public anyStringArgumentShouldNotThrowIfStringArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -682,7 +682,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new String("test"))
    public anyStringArgumentShouldNotBeCalledShouldThrowIfStringArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -718,7 +718,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyStringArgumentShouldThrowIfNonStringArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -754,7 +754,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyStringArgumentShouldThrowWithExpectedValueIfNonStringArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -780,7 +780,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Boolean(false))
    public anyBooleanArgumentShouldNotThrowIfBooleanArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -796,7 +796,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Boolean(false))
    public anyBooleanArgumentShouldNotBeCalledShouldThrowIfBooleanArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -832,7 +832,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyBooleanArgumentShouldThrowIfNonBooleanArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -868,7 +868,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyBooleanArgumentShouldThrowWithExpectedValueIfNonBooleanArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -908,7 +908,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyObjectArgumentShouldNotThrowIfObjectArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -938,7 +938,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyObjectArgumentShouldNotBeCalledShouldThrowIfObjectArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -960,7 +960,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(false)
    public anyObjectArgumentShouldThrowIfNonObjectArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -982,7 +982,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(false)
    public anyObjectArgumentShouldThrowWithExpectedValueIfNonObjectArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1008,7 +1008,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public anyArrayArgumentShouldNotThrowIfArrayArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1024,7 +1024,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public anyArrayArgumentShouldNotBeCalledShouldThrowIfArrayArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1060,7 +1060,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyArrayArgumentShouldThrowIfNonArrayArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1096,7 +1096,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyArrayArgumentShouldThrowWithExpectedValueIfNonArrayArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1120,7 +1120,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyErrorArgumentShouldNotThrowIfErrorArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1134,7 +1134,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Error("something went wrong"))
    public anyErrorArgumentShouldNotBeCalledShouldThrowIfErrorArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1172,7 +1172,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public anyErrorArgumentShouldThrowIfNonErrorArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1210,7 +1210,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public anyErrorArgumentShouldThrowWithExpectedValueIfNonErrorArgument(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1256,7 +1256,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1291,7 +1291,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1326,7 +1326,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyTypeArgumentAndAnyArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1361,7 +1361,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyTypeArgumentAndAnyArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1396,7 +1396,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedExactArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1431,7 +1431,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedExactArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1466,7 +1466,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyTypeArgumentAndExactArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1501,7 +1501,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyTypeArgumentAndExactArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1536,7 +1536,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public expectedExactArgumentAndAnyArgumentGivenCorrectArgumentsPass(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1572,7 +1572,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]))
    public expectedAnyArgumentAndExactArgumentGivenCorrectArgumentsPass(argument: any) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1586,7 +1586,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledExactlyCorrectNumberOfTimesWithCorrectArgumentsPasses(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1603,7 +1603,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledExactlyCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1620,7 +1620,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledExactlyCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1637,7 +1637,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledExactlyCorrectNumberOfTimesWithWrongArgumentsThrowsError(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1662,7 +1662,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledExactlyCorrectNumberOfTimesWithRightArgumentsInTheWrongOrderThrowsError(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1687,7 +1687,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 10)
    public calledAnythingButCorrectNumberOfTimesWithCorrectArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1704,7 +1704,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 10)
    public calledAnythingButCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1721,7 +1721,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 10)
    public calledAnythingButCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(notExpectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1738,7 +1738,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledAnythingButCorrectNumberOfTimesWithExtraCallWithWrongArgumentsThrowsError(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1763,7 +1763,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledAnythingButCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(expectedCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1788,7 +1788,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 100)
    public calledGreaterThanCorrectNumberOfTimesWithCorrectArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1805,7 +1805,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 100)
    public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1822,7 +1822,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, 100)
    public calledGreaterThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(minimumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1839,7 +1839,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledGreaterThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsThrowsError(minimumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1864,7 +1864,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledGreaterThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(minimumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1889,7 +1889,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(100, 42)
    public calledLessThanCorrectNumberOfTimesWithCorrectArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1906,7 +1906,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(100, 42)
    public calledLessThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1923,7 +1923,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(100, 42)
    public calledLessThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1940,7 +1940,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledLessThanCorrectNumberOfTimesWithOneCallWithWrongArgumentsPasses(maximumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1960,7 +1960,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledLessThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderPasses(maximumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -1980,7 +1980,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledTheSameTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
@@ -2002,7 +2002,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42)
    public calledOneMoreTimesWhenExpectedLessThanThrowsError(maximumCallCount: number) {
       const some = {
-         function: (...args: Array<any>) => undefined
+         function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");

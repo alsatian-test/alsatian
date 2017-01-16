@@ -17,7 +17,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroExactlyValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -32,7 +32,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42)
    public exactlyMatchesDoesNotThrow(callCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -51,7 +51,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 2)
    public exactlyDoesntMatchThrowsError(expectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -76,7 +76,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroAnythingButValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -91,7 +91,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 2)
    public anythingButMatchesDoesNotThrow(unexpectedCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -110,7 +110,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42)
    public anythingButDoesntMatchThrowsError(unexpectedCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -135,7 +135,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroLessThanValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -150,7 +150,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 36)
    public lessThanMatchesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -169,7 +169,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 56)
    public lessThanDoesntMatchThrowsError(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -194,7 +194,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(-42)
    public negativeOrZeroGreaterThanValueThrowsError(expectedCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -209,7 +209,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 56)
    public greaterThanMatchesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -228,7 +228,7 @@ export class FunctionSpyMatcherTests {
    @TestCase(42, 36)
    public greaterThanDoesntMatchThrowsError(maximumCallCount: number, actualCallCount: number) {
       const some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");

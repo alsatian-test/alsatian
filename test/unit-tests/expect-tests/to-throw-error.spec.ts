@@ -5,7 +5,7 @@ export class ToThrowErrorTests {
 
    @Test()
    public errorNotThrownWhenExpectedShouldThrowError() {
-      let nonThrowFunction = () => undefined;
+      let nonThrowFunction = () => {};
 
       Expect(() => Expect(nonThrowFunction).toThrowError(Error, "error message"))
       .toThrowError(ErrorMatchError,
@@ -64,7 +64,7 @@ export class ToThrowErrorTests {
 
    @Test()
    public noErrorThrownWhenNoneExpectedPasses() {
-      let nonThrowFunction = () => undefined;
+      let nonThrowFunction = () => {};
 
       Expect(() => Expect(nonThrowFunction).not.toThrowError(Error, "error message"))
       .not.toThrow();
@@ -130,7 +130,7 @@ export class ToThrowErrorTests {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => undefined).toThrowError(Error, "this error won't be thrown.");
+         Expect(() => {}).toThrowError(Error, "this error won't be thrown.");
       }
       catch (error) {
          errorMatchError = error;

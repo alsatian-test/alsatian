@@ -11,7 +11,7 @@ export class AndCallTests {
    @TestCase([ "an", "array" ])
    public spyShoulReturnCorrectValue(returnValue: any) {
       let someObject = {
-         func: () => { }
+         func: () => {}
       };
 
       SpyOn(someObject, "func").andCall(() => {
@@ -21,11 +21,11 @@ export class AndCallTests {
       Expect(someObject.func()).toBe(returnValue);
    }
 
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase(() => 1 + 1)
    public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       let fake = {

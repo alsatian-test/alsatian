@@ -10,7 +10,7 @@ export class CallTests {
    @TestCase([ { some: "thing" }, [] ])
    public argumentsRecorded(args: Array<any>) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       let spy = new FunctionSpy();
@@ -25,7 +25,7 @@ export class CallTests {
    @TestCase(42)
    public callAddedForEachCall(callCount: number) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       let spy = new FunctionSpy();
@@ -47,7 +47,7 @@ export class CallTests {
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");

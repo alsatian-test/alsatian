@@ -6,7 +6,7 @@ export class AndCallThroughTests {
    @Test()
    public originalFunctionNotCalledIfSpyStub() {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
@@ -25,7 +25,7 @@ export class AndCallThroughTests {
    @Test()
    public originalFunctionCalledIfSpyStubbedThenRestored() {
       let object = {
-         originalFunction: () => undefined
+         originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");

@@ -6,7 +6,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionCalledPasses() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -19,7 +19,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionNotCalledFails() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -30,7 +30,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionNotCalledFailsWithCorrectError() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -41,7 +41,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionNotCalledPassesWhenShouldNotCall() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -52,7 +52,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionThrowsErrorFailsWhenShouldNotThrow() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -65,7 +65,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public functionThrowsErrorFailsWithCorrectError() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -84,7 +84,7 @@ export class ToHaveBeenCalledTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toHaveBeenCalled()).toThrowError(TypeError, "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -99,7 +99,7 @@ export class ToHaveBeenCalledTests {
    @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
-   @TestCase(() => undefined)
+   @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenCalled()).toThrowError(TypeError, "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -108,7 +108,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -130,7 +130,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -154,7 +154,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -176,7 +176,7 @@ export class ToHaveBeenCalledTests {
    @Test()
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -202,7 +202,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesDoesNotThrow(callCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -219,7 +219,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 1)
    public spyCalledCorrectAmountOfTimesThrowsCorrectError(expectedCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -245,7 +245,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 1)
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorExpectedValue(expectedCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -279,7 +279,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 1)
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorActualValue(expectedCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -313,7 +313,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 1)
    public spyNotCalledCorrectAmountOfTimesDoesNotThrow(expectedCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -330,7 +330,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectError(callCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -356,7 +356,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorExpectedValue(callCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -390,7 +390,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorActualValue(callCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -424,7 +424,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 50)
    public spyCalledGreaterThanMinimumTimesDoesNotThrow(minimumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -441,7 +441,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 13)
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectError(minimumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -467,7 +467,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 13)
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(minimumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -501,7 +501,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 13)
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(minimumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -534,7 +534,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 13)
    public spyNotCalledLessThanMaximumTimesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -551,7 +551,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 50)
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectError(maximumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -577,7 +577,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 50)
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorExpectedValue(maximumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");
@@ -611,7 +611,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(42, 50)
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorActualValue(maximumCallCount: number, actualCallCount: number) {
       let some = {
-         function: () => undefined
+         function: () => {}
       };
 
       SpyOn(some, "function");

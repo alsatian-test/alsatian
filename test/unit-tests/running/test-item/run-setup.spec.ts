@@ -12,7 +12,7 @@ export class TestItemRunSetupTests {
    public async successfulSyncSetup(setupFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => undefined;
+      const testFunction = () => {};
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
@@ -50,7 +50,7 @@ export class TestItemRunSetupTests {
    public async successfulAsyncSetup(setupFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => undefined;
+      const testFunction = () => {};
 
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
