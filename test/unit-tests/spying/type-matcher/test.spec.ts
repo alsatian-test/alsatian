@@ -1,7 +1,6 @@
 import { Expect, TestCase } from "../../../../core/alsatian-core";
 import { TypeMatcher } from "../../../../core/spying/type-matcher";
 
-/* tslint:disable:no-construct */
 export class TypeMatcherTestFunctionTests {
 
    @TestCase(0)

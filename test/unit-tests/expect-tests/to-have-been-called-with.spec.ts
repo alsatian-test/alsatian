@@ -1,7 +1,6 @@
 import { Any, Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 
-/* tslint:disable:no-construct */
 export class ToHaveBeenCalledWithTests {
 
    @Test()

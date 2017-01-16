@@ -2,7 +2,7 @@ import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
 
 class Testing {
-   set property(value: number) { } // tslint:disable-line:no-empty
+   set property(value: number) { }
    get property() {
       return 42;
    }

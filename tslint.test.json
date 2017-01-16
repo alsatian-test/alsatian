@@ -10,13 +10,8 @@
     /*
      * Any rules specified here will override those from the base config we are extending.
      */
-     "array-type": [true, "generic"],
-     "arrow-parens": false,
-     "max-classes-per-file": false, // allow private classes
-     "one-line": [ true, "check-open-brace", "check-whitespace"],
-     "trailing-comma": false,
-     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
-     "no-empty": false
+     "no-empty": false,
+     "no-construct": false
   },
   "jsRules": {
     /*
