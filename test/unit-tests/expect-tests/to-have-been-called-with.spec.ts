@@ -35,7 +35,8 @@ export class ToHaveBeenCalledWithTests {
 
       SpyOn(some, "function");
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith()).toThrowError(FunctionCallMatchError, "Expected function to be called with [].");
+      Expect(() => Expect(some.function).toHaveBeenCalledWith())
+        .toThrowError(FunctionCallMatchError, "Expected function to be called with [].");
    }
 
    @TestCase([1])
@@ -462,14 +463,14 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, undefined)
    @TestCase(1, 2, 3)
    @TestCase("some", "function", "arguments")
-   public anyArgumentShouldThrowIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
+   public anyArgumentShouldThrowIfOneArgumentExpectedAndNotProvided(...callArguments: Array<any>) {
       const some = {
          function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
 
-      some.function.apply(some, args);
+      some.function.apply(some, callArguments);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Anything].");
    }
@@ -479,14 +480,14 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("argument")
    @TestCase(1, 2, undefined)
    @TestCase("some", "function", "arguments")
-   public anyArgumentShouldThrowIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
+   public anyArgumentShouldThrowIfTwoArgumentsExpectedAndNotProvided(...callArguments: Array<any>) {
       const some = {
          function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
 
-      some.function.apply(some, args);
+      some.function.apply(some, callArguments);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Anything, Anything].");
    }
@@ -496,13 +497,13 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(42, undefined)
    @TestCase(1, 2, 3)
    @TestCase("some", "function", "arguments")
-   public anyArgumentShouldThrowWithExpectedMessageIfOneArgumentExpectedAndNotProvided(...args: Array<any>) {
+   public anyArgumentShouldThrowWithExpectedMessageIfOneArgumentExpectedAndNotProvided(...callArguments: Array<any>) {
       const some = {
          function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
-      some.function.apply(some, args);
+      some.function.apply(some, callArguments);
 
       let functionCallError: FunctionCallMatchError;
 
@@ -523,13 +524,13 @@ export class ToHaveBeenCalledWithTests {
    @TestCase("argument")
    @TestCase(1, 2, undefined)
    @TestCase("some", "function", "arguments")
-   public anyArgumentShouldThrowWithexpectedMessageIfTwoArgumentsExpectedAndNotProvided(...args: Array<any>) {
+   public anyArgumentShouldThrowWithexpectedMessageIfTwoArgumentsExpectedAndNotProvided(...callArguments: Array<any>) {
       const some = {
          function: (...args: Array<any>) => {}
       };
 
       SpyOn(some, "function");
-      some.function.apply(some, args);
+      some.function.apply(some, callArguments);
 
       let functionCallError: FunctionCallMatchError;
 
@@ -1253,7 +1254,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], Array)
    @TestCase(new Array([]), Array)
    @TestCase(new Array([ "an", "array" ]), Array)
-   public expectedAnyArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1261,7 +1262,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(42, argument);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(Type))).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(type))).not.toThrow();
    }
 
    @TestCase(0, String)
@@ -1288,7 +1289,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], String)
    @TestCase(new Array([]), Boolean)
    @TestCase(new Array([ "an", "array" ]), Error)
-   public expectedAnyArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1296,7 +1297,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(42, argument);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(Type))).toThrowError(FunctionCallMatchError, "Expected function to be called with [Anything, Any " + (<any>Type).name + "].");
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(type))).toThrowError(FunctionCallMatchError, "Expected function to be called with [Anything, Any " + (<any> type).name + "].");
    }
 
    @TestCase(0, Number)
@@ -1323,7 +1324,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], Array)
    @TestCase(new Array([]), Array)
    @TestCase(new Array([ "an", "array" ]), Array)
-   public expectedAnyTypeArgumentAndAnyArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyTypeArgumentAndAnyArgumentGivenCorrectArgumentsPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1331,7 +1332,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(argument, 42);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Type), Any)).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), Any)).not.toThrow();
    }
 
    @TestCase(0, String)
@@ -1358,7 +1359,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], String)
    @TestCase(new Array([]), Boolean)
    @TestCase(new Array([ "an", "array" ]), Error)
-   public expectedAnyTypeArgumentAndAnyArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyTypeArgumentAndAnyArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1366,7 +1367,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(argument, 42);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Type), Any)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Any " + (<any>Type).name + ", Anything].");
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), Any)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Any " + (<any> type).name + ", Anything].");
    }
 
    @TestCase(0, Number)
@@ -1393,7 +1394,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], Array)
    @TestCase(new Array([]), Array)
    @TestCase(new Array([ "an", "array" ]), Array)
-   public expectedExactArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedExactArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1401,7 +1402,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(42, argument);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(42, Any(Type))).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42, Any(type))).not.toThrow();
    }
 
    @TestCase(0, String)
@@ -1428,7 +1429,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], String)
    @TestCase(new Array([]), Boolean)
    @TestCase(new Array([ "an", "array" ]), Error)
-   public expectedExactArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedExactArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1436,7 +1437,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(42, argument);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(42, Any(Type))).toThrowError(FunctionCallMatchError, "Expected function to be called with [42, Any " + (<any>Type).name + "].");
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(42, Any(type))).toThrowError(FunctionCallMatchError, "Expected function to be called with [42, Any " + (<any> type).name + "].");
    }
 
    @TestCase(0, Number)
@@ -1463,7 +1464,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], Array)
    @TestCase(new Array([]), Array)
    @TestCase(new Array([ "an", "array" ]), Array)
-   public expectedAnyTypeArgumentAndExactArgumentGivenCorrectArgumentsPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyTypeArgumentAndExactArgumentGivenCorrectArgumentsPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1471,7 +1472,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(argument, 42);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Type), 42)).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), 42)).not.toThrow();
    }
 
    @TestCase(0, String)
@@ -1498,7 +1499,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase([ "an", "array" ], String)
    @TestCase(new Array([]), Boolean)
    @TestCase(new Array([ "an", "array" ]), Error)
-   public expectedAnyTypeArgumentAndExactArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, Type: new(...args: Array<any>) => Object) {
+   public expectedAnyTypeArgumentAndExactArgumentToThorwGivenIncorrectArgumentTypesPass(argument: any, type: new(...args: Array<any>) => Object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1506,7 +1507,7 @@ export class ToHaveBeenCalledWithTests {
       SpyOn(some, "function");
       some.function(argument, 42);
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Type), 42)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Any " + (<any>Type).name + ", 42].");
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), 42)).toThrowError(FunctionCallMatchError, "Expected function to be called with [Any " + (<any> type).name + ", 42].");
    }
 
    @TestCase(0)
@@ -1851,17 +1852,24 @@ export class ToHaveBeenCalledWithTests {
       some.function(43);
 
       if (minimumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [42] greater than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                "Expected function to be called with [42] greater than 1 time.");
       }
       else {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with [42] greater than ${minimumCallCount} times.`);
+         Expect(() => Expect(some.function).toHaveBeenCalledWith(42).greaterThan(minimumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                `Expected function to be called with [42] greater than ${minimumCallCount} times.`);
       }
    }
 
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
-   public calledGreaterThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(minimumCallCount: number) {
+   public calledGreaterThanCorrectNumberOfTimesWithExtraCallWithArgumentsInWrongOrderThrowsError(
+                                                                                minimumCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1876,17 +1884,25 @@ export class ToHaveBeenCalledWithTests {
       some.function("thing", "some");
 
       if (minimumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] greater than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                "Expected function to be called with [\"some\", \"thing\"] greater than 1 time.");
       }
       else {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] greater than ${minimumCallCount} times.`);
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").greaterThan(minimumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                `Expected function to be called with ["some", "thing"] greater than ${minimumCallCount} times.`);
       }
    }
 
    @TestCase(2, 1)
    @TestCase(5, 2)
    @TestCase(100, 42)
-   public calledLessThanCorrectNumberOfTimesWithCorrectArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+   public calledLessThanCorrectNumberOfTimesWithCorrectArgumentsPasses(
+                                                        maximumCallCount: number,
+                                                        actualCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1903,7 +1919,9 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(2, 1)
    @TestCase(5, 2)
    @TestCase(100, 42)
-   public calledLessThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyArgumentsPasses(
+                                                            maximumCallCount: number,
+                                                            actualCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1914,13 +1932,16 @@ export class ToHaveBeenCalledWithTests {
          some.function(42);
       }
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).lessThan(maximumCallCount).times).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any).lessThan(maximumCallCount).times)
+        .not.toThrow();
    }
 
    @TestCase(2, 1)
    @TestCase(5, 2)
    @TestCase(100, 42)
-   public calledLessThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(maximumCallCount: number, actualCallCount: number) {
+   public calledLessThanCorrectNumberOfTimesWithCorrectAnyTypeArgumentsPasses(
+                                                            maximumCallCount: number,
+                                                            actualCallCount: number) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1931,7 +1952,8 @@ export class ToHaveBeenCalledWithTests {
          some.function(42);
       }
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).lessThan(maximumCallCount).times).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(Number)).lessThan(maximumCallCount).times)
+        .not.toThrow();
    }
 
    @TestCase(3)
@@ -1971,7 +1993,8 @@ export class ToHaveBeenCalledWithTests {
       // called an extra time with arguments in wrong order
       some.function("thing", "some");
 
-      Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).not.toThrow();
+      Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times)
+        .not.toThrow();
    }
 
    @TestCase(1)
@@ -1989,10 +2012,16 @@ export class ToHaveBeenCalledWithTests {
       }
 
       if (maximumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
       }
       else {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
       }
    }
 
@@ -2014,10 +2043,16 @@ export class ToHaveBeenCalledWithTests {
       some.function("some", "thing");
 
       if (maximumCallCount === 1) {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                "Expected function to be called with [\"some\", \"thing\"] less than 1 time.");
       }
       else {
-         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
+         Expect(() => Expect(some.function).toHaveBeenCalledWith("some", "thing").lessThan(maximumCallCount).times)
+            .toThrowError(
+                FunctionCallCountMatchError,
+                `Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`);
       }
    }
 }

@@ -35,7 +35,8 @@ export class ToHaveBeenSetTests {
 
       const propertySpy = SpyOnProperty(some, "property");
 
-      Expect(() => Expect(propertySpy).toHaveBeenSet()).toThrowError(PropertySetMatchError, "Expected property to be set.");
+      Expect(() => Expect(propertySpy).toHaveBeenSet())
+        .toThrowError(PropertySetMatchError, "Expected property to be set.");
    }
 
    @Test()
@@ -62,7 +63,6 @@ export class ToHaveBeenSetTests {
       Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrow();
    }
 
-
    @Test()
    public propertySetButShouldNotBeThrowsCorrectError() {
       const some = {
@@ -73,7 +73,8 @@ export class ToHaveBeenSetTests {
 
       some.property = "something";
 
-      Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrowError(PropertySetMatchError, "Expected property not to be set.");
+      Expect(() => Expect(propertySpy).not.toHaveBeenSet())
+        .toThrowError(PropertySetMatchError, "Expected property not to be set.");
    }
 
    @TestCase(undefined)
@@ -88,7 +89,8 @@ export class ToHaveBeenSetTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasBeenSetShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
+      Expect(() => Expect(actualValue).toHaveBeenSet())
+        .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
 
    @TestCase(undefined)
@@ -103,7 +105,8 @@ export class ToHaveBeenSetTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasNotBeenSetShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenSet()).toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
+      Expect(() => Expect(actualValue).not.toHaveBeenSet())
+        .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
 
    @Test()
