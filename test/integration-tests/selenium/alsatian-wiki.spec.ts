@@ -25,7 +25,7 @@ export default class AlsatianWikiEndToEndTests {
         Expect(title).toBe("Home");
     }
 
-    @AsyncTest("everyone get's a nice welcome")
+    @AsyncTest("everyone gets a nice welcome")
     public async checkContent() {
         const title = await this._driver.findElement(By.id("wiki-body")).getText();
 
