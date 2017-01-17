@@ -36,7 +36,6 @@ export class TestPlanTests {
       Expect(testPlan.testItems.length).toBe(testFixtureCount * testCount * testCaseCount);
    }
 
-
    @TestCase(1, 1, 1)
    @TestCase(2, 1, 1)
    @TestCase(1, 2, 1)

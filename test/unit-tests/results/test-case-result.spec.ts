@@ -44,12 +44,12 @@ export class TestCaseResultTests {
   @TestCase(TypeError)
   @TestCase(RangeError)
   @TestCase(EvalError)
-  public errorOutcomeIsError(ErrorType: new () => Error) {
+  public errorOutcomeIsError(errorType: new () => Error) {
 
     const test = new TestBuilder().build();
     test.ignored = true;
 
-    const testCaseResult = new TestCaseResult(test, [], new ErrorType());
+    const testCaseResult = new TestCaseResult(test, [], new errorType());
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Error);
   }
@@ -57,12 +57,12 @@ export class TestCaseResultTests {
   @TestCase(MatchError)
   @TestCase(ExactMatchError)
   @TestCase(EqualMatchError)
-  public matchErrorOutcomeIsFail(ErrorType: new () => Error) {
+  public matchErrorOutcomeIsFail(errorType: new () => Error) {
 
     const test = new TestBuilder().build();
     test.ignored = true;
 
-    const testCaseResult = new TestCaseResult(test, [], new ErrorType());
+    const testCaseResult = new TestCaseResult(test, [], new errorType());
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Fail);
   }

@@ -23,12 +23,16 @@ export class ToThrowErrorTests {
    @TestCase(EvalError, "something went wrong")
    @TestCase(ReferenceError, "A much worse thing happened!")
    @TestCase(SyntaxError, "THE END IS NIGH")
-   public differentErrorThrownWhenNoneExpectedFailsWithCorrectMessage(expectedErrorType: new (...args: Array<any>) => Error, expectedErrorMessage: string) {
+   public differentErrorThrownWhenNoneExpectedFailsWithCorrectMessage(
+                                                            expectedErrorType: new (...args: Array<any>) => Error,
+                                                            expectedErrorMessage: string) {
+
       let throwWrongErrorFunction = () => { throw new RangeError("another message"); };
 
       Expect(() => Expect(throwWrongErrorFunction).toThrowError(expectedErrorType, expectedErrorMessage))
       .toThrowError(ErrorMatchError,
-         "Expected an error with message \"" + expectedErrorMessage + "\" and type " + (<any> expectedErrorType)["name"] + " to have been thrown, but it wasn't.");
+         "Expected an error with message \"" + expectedErrorMessage +
+         "\" and type " + (<any> expectedErrorType).name + " to have been thrown, but it wasn't.");
    }
 
    @TestCase(EvalError, SyntaxError)
@@ -39,7 +43,8 @@ export class ToThrowErrorTests {
 
       Expect(() => Expect(throwWrongTypeFunction).toThrowError(expectedErrorType, "error message"))
       .toThrowError(ErrorMatchError,
-         "Expected an error of type " + (<any> expectedErrorType)["name"] + " to have been thrown, but " + (<any> ActualErrorType)["name"] + " was thrown instead.");
+         "Expected an error of type " + (<any> expectedErrorType).name +
+         " to have been thrown, but " + (<any> actualErrorType).name + " was thrown instead.");
    }
 
    @TestCase("something went wrong")
@@ -163,11 +168,11 @@ export class ToThrowErrorTests {
    @TestCase(EvalError, "something went wrong", ReferenceError, "A much worse thing happened!")
    @TestCase(ReferenceError, "A much worse thing happened!", SyntaxError, "THE END IS NIGH")
    @TestCase(SyntaxError, "THE END IS NIGH", EvalError, "something went wrong")
-   public actualValueAndShouldMatchAndExpectedErrorShouldBeSetToWrongErrorWasThrown(expectedErrorType: new (message: string) => Error, expectedErrorMessage: string, ActualErrorType: new (message: string) => Error, actualErrorMessage: string) {
+   public actualValueAndShouldMatchAndExpectedErrorShouldBeSetToWrongErrorWasThrown(expectedErrorType: new (message: string) => Error, expectedErrorMessage: string, actualErrorType: new (message: string) => Error, actualErrorMessage: string) {
       let errorMatchError: ErrorMatchError;
 
       try {
-         Expect(() => { throw new ActualErrorType(actualErrorMessage); }).toThrowError(expectedErrorType, expectedErrorMessage);
+         Expect(() => { throw new actualErrorType(actualErrorMessage); }).toThrowError(expectedErrorType, expectedErrorMessage);
       }
       catch (error) {
          errorMatchError = error;
@@ -175,7 +180,7 @@ export class ToThrowErrorTests {
 
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
-      Expect(errorMatchError.actual).toBe(`${(<any> ActualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+      Expect(errorMatchError.actual).toBe(`${(<any> actualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")

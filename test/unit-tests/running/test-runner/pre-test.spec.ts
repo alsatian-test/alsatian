@@ -65,7 +65,8 @@ export class PreTestTests {
    @TestCase(5, 2)
    @TestCase(5, 5)
    @AsyncTest()
-   public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
+   public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number,
+                                                                            testCount: number) {
       let testSet = <TestSet> {};
 
       (<any> testSet).testFixtures = [];
@@ -85,14 +86,14 @@ export class PreTestTests {
       }
 
       let resultPromise: any = {
+         catch: (error: Error) => {},
          resolve: () => {
 
          },
          then: (callback: (testResults: Array<any>) => any) => {
             resultPromise.resolve = callback;
             return resultPromise;
-         },
-         catch: (error: Error) => {}         
+         }
       };
 
       let output = new TestOutputStream();

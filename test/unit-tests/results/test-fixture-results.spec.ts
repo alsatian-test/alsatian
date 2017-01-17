@@ -39,7 +39,7 @@ export class TestFixtureResultsTests {
     @TestCase(TypeError)
     @TestCase(RangeError)
     @TestCase(EvalError)
-    public oneTestErrorOutcomeError(ErrorType: new () => Error) {
+    public oneTestErrorOutcomeError(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -47,7 +47,7 @@ export class TestFixtureResultsTests {
       const testFixtureResults = new TestFixtureResults(testFixture);
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testFixtureResults.outcome).toBe(TestOutcome.Error);
     }
@@ -55,7 +55,7 @@ export class TestFixtureResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public oneTestMatchErrorOutcomeFail(ErrorType: new () => Error) {
+    public oneTestMatchErrorOutcomeFail(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -63,7 +63,7 @@ export class TestFixtureResultsTests {
       const testFixtureResults = new TestFixtureResults(testFixture);
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testFixtureResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -71,7 +71,7 @@ export class TestFixtureResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public twoTestsOnePassOneMatchErrorOutcomeFail(ErrorType: new () => Error) {
+    public twoTestsOnePassOneMatchErrorOutcomeFail(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -82,7 +82,7 @@ export class TestFixtureResultsTests {
                  .addTestCaseResult([]);
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testFixtureResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -90,7 +90,7 @@ export class TestFixtureResultsTests {
     @TestCase(EvalError)
     @TestCase(RangeError)
     @TestCase(TypeError)
-    public twoTestsOnePassOneErrorOutcomeError(ErrorType: new () => Error) {
+    public twoTestsOnePassOneErrorOutcomeError(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -101,7 +101,7 @@ export class TestFixtureResultsTests {
                  .addTestCaseResult([]);
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testFixtureResults.outcome).toBe(TestOutcome.Error);
     }
@@ -109,7 +109,7 @@ export class TestFixtureResultsTests {
     @TestCase(EvalError, MatchError)
     @TestCase(ExactMatchError, RangeError)
     @TestCase(TypeError, EqualMatchError)
-    public twoTestsOneMatchErrorOneErrorOutcomeError(ErrorTypeA: new () => Error, ErrorTypeB: new () => Error) {
+    public twoTestsOneMatchErrorOneErrorOutcomeError(errorTypeA: new () => Error, errorTypeB: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -117,10 +117,10 @@ export class TestFixtureResultsTests {
       const testFixtureResults = new TestFixtureResults(testFixture);
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorTypeA());
+                 .addTestCaseResult([], new errorTypeA());
 
       testFixtureResults.addTestResult(test)
-                 .addTestCaseResult([], new ErrorTypeB());
+                 .addTestCaseResult([], new errorTypeB());
 
       Expect(testFixtureResults.outcome).toBe(TestOutcome.Error);
     }

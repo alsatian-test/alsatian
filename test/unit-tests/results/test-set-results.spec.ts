@@ -41,7 +41,7 @@ export class TestSetResultsTests {
     @TestCase(TypeError)
     @TestCase(RangeError)
     @TestCase(EvalError)
-    public oneTestFixtureErrorOutcomeError(ErrorType: new () => Error) {
+    public oneTestFixtureErrorOutcomeError(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -50,7 +50,7 @@ export class TestSetResultsTests {
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testSetResults.outcome).toBe(TestOutcome.Error);
     }
@@ -58,7 +58,7 @@ export class TestSetResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public oneTestFixtureMatchErrorOutcomeFail(ErrorType: new () => Error) {
+    public oneTestFixtureMatchErrorOutcomeFail(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -67,7 +67,7 @@ export class TestSetResultsTests {
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testSetResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -75,7 +75,7 @@ export class TestSetResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public twoTestFixturesOnePassOneMatchErrorOutcomeFail(ErrorType: new () => Error) {
+    public twoTestFixturesOnePassOneMatchErrorOutcomeFail(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -88,7 +88,7 @@ export class TestSetResultsTests {
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testSetResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -96,7 +96,7 @@ export class TestSetResultsTests {
     @TestCase(EvalError)
     @TestCase(RangeError)
     @TestCase(TypeError)
-    public twoTestFixturesOnePassOneErrorOutcomeError(ErrorType: new () => Error) {
+    public twoTestFixturesOnePassOneErrorOutcomeError(errorType: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -109,7 +109,7 @@ export class TestSetResultsTests {
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorType());
+                 .addTestCaseResult([], new errorType());
 
       Expect(testSetResults.outcome).toBe(TestOutcome.Error);
     }
@@ -117,7 +117,7 @@ export class TestSetResultsTests {
     @TestCase(EvalError, MatchError)
     @TestCase(ExactMatchError, RangeError)
     @TestCase(TypeError, EqualMatchError)
-    public twoTestFixturesOneMatchErrorOneErrorOutcomeError(ErrorTypeA: new () => Error, ErrorTypeB: new () => Error) {
+    public twoTestFixturesOneMatchErrorOneErrorOutcomeError(errorTypeA: new () => Error, errorTypeB: new () => Error) {
 
       const testFixture = new TestFixtureBuilder().build();
       const test = new TestBuilder().build();
@@ -126,11 +126,11 @@ export class TestSetResultsTests {
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorTypeA());
+                 .addTestCaseResult([], new errorTypeA());
 
       testSetResults.addTestFixtureResult(testFixture)
                  .addTestResult(test)
-                 .addTestCaseResult([], new ErrorTypeB());
+                 .addTestCaseResult([], new errorTypeB());
 
       Expect(testSetResults.outcome).toBe(TestOutcome.Error);
     }

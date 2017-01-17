@@ -36,7 +36,12 @@ export class FailingTestsTests {
 
       (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
-      testFixtureBuilder.withFixture({ failingTest: () => { throw new MatchError("nothing", "something", "expected nothing to be something."); }});
+      testFixtureBuilder.withFixture({
+          failingTest: () => {
+              throw new MatchError("nothing", "something", "expected nothing to be something.");
+          }
+      });
+
       let testBuilder = new TestBuilder();
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());

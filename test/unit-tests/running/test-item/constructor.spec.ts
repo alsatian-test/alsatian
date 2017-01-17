@@ -12,7 +12,8 @@ export class TestItemConstructorTests {
     public nullOrUndefinedTestFixtureThrowsError(testFixture: ITestFixture) {
         const test = new TestBuilder().build();
         const testCase = new TestCaseBuilder().build();
-        Expect(() => new TestItem(testFixture, test, testCase)).toThrowError(TypeError, "testFixture must not be null or undefined.");
+        Expect(() => new TestItem(testFixture, test, testCase))
+            .toThrowError(TypeError, "testFixture must not be null or undefined.");
     }
 
     @TestCase(null)
@@ -20,7 +21,8 @@ export class TestItemConstructorTests {
     public nullOrUndefinedTestThrowsError(test: ITest) {
         const testFixture = new TestFixtureBuilder().build();
         const testCase = new TestCaseBuilder().build();
-        Expect(() => new TestItem(testFixture, test, testCase)).toThrowError(TypeError, "test must not be null or undefined.");
+        Expect(() => new TestItem(testFixture, test, testCase))
+            .toThrowError(TypeError, "test must not be null or undefined.");
     }
 
     @TestCase(null)
@@ -28,6 +30,7 @@ export class TestItemConstructorTests {
     public nullOrUndefinedTestCaseThrowsError(testCase: ITestCase) {
         const testFixture = new TestFixtureBuilder().build();
         const test = new TestBuilder().build();
-        Expect(() => new TestItem(testFixture, test, testCase)).toThrowError(TypeError, "testCase must not be null or undefined.");
+        Expect(() => new TestItem(testFixture, test, testCase))
+            .toThrowError(TypeError, "testCase must not be null or undefined.");
     }
 }
