@@ -35,7 +35,7 @@ export class ToBeTests {
    public differentValuesThrowsExactMatchError () {
       let expect = Expect(1);
 
-      Expect(() => expect.toBe(2)).toThrowError(<any>ExactMatchError, "Expected 1 to be 2.");
+      Expect(() => expect.toBe(2)).toThrowError(ExactMatchError, "Expected 1 to be 2.");
    }
 
    @TestCase("something", "something else")
@@ -55,7 +55,8 @@ export class ToBeTests {
    public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toBe(expected))
+        .toThrowError(ExactMatchError, `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}.`);
    }
 
    @TestCase(undefined, null)
@@ -101,7 +102,11 @@ export class ToBeTests {
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual).replace(/,/g, ", ") + " to be " + JSON.stringify(expected).replace(/,/g, ", ") + ".");
+      Expect(() => expect.toBe(expected))
+        .toThrowError(
+            ExactMatchError,
+            `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
+            `to be ${JSON.stringify(expected).replace(/,/g, ", ")}.`);
    }
 
    @TestCase({}, [])

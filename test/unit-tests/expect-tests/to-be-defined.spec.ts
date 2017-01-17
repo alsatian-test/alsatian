@@ -33,7 +33,7 @@ export class ToBeDefinedTests {
 
       let expectedErrorMessage = "Expected undefined not to be undefined.";
 
-      Expect(() => expect.toBeDefined()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @TestCase(null)
@@ -52,7 +52,7 @@ export class ToBeDefinedTests {
 
       let expectedErrorMessage = "Expected " + JSON.stringify(value).replace(",", ", ") + " to be undefined.";
 
-      Expect(() => expect.not.toBeDefined()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.not.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @Test()

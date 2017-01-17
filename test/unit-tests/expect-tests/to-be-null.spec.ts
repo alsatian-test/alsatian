@@ -49,7 +49,7 @@ export class ToBeNullTests {
 
       let expectedErrorMessage = "Expected " + stringifiedArgument + " to be null.";
 
-      Expect(() => expect.toBeNull()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.toBeNull()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @Test()
@@ -58,7 +58,7 @@ export class ToBeNullTests {
 
       let expectedErrorMessage = "Expected null not to be null.";
 
-      Expect(() => expect.not.toBeNull()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.not.toBeNull()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @TestCase(undefined)

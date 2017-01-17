@@ -52,7 +52,8 @@ export class ToBeGreaterThanTests {
    public shouldBeGreaterThanMessage(value: number, lowerLimit: number) {
       let expect = Expect(value);
 
-      Expect(() => expect.toBeGreaterThan(lowerLimit)).toThrowError(<any>GreaterThanMatchError, "Expected " + value + " to be greater than " + lowerLimit + ".");
+      Expect(() => expect.toBeGreaterThan(lowerLimit))
+        .toThrowError(GreaterThanMatchError, "Expected " + value + " to be greater than " + lowerLimit + ".");
    }
 
    @TestCase(1, 0)
@@ -60,7 +61,8 @@ export class ToBeGreaterThanTests {
    public shouldNotBeGreaterThanMessage(value: number, lowerLimit: number) {
       let expect = Expect(value);
 
-      Expect(() => expect.not.toBeGreaterThan(lowerLimit)).toThrowError(<any>GreaterThanMatchError, "Expected " + value + " not to be greater than " + lowerLimit + ".");
+      Expect(() => expect.not.toBeGreaterThan(lowerLimit))
+        .toThrowError(GreaterThanMatchError, "Expected " + value + " not to be greater than " + lowerLimit + ".");
    }
 
    @TestCase(0)
@@ -138,7 +140,8 @@ export class ToBeGreaterThanTests {
    @TestCase(undefined)
    @TestCase(null)
    public checkingGreaterThanNullOrUndefinedShouldThrow(lowerLimit: number) {
-      Expect(() => Expect(42).toBeGreaterThan(lowerLimit)).toThrowError(TypeError, "toBeGreaterThan lower limit must not be null or undefined.");
+      Expect(() => Expect(42).toBeGreaterThan(lowerLimit))
+        .toThrowError(TypeError, "toBeGreaterThan lower limit must not be null or undefined.");
    }
 
    @TestCase(undefined)
@@ -150,6 +153,7 @@ export class ToBeGreaterThanTests {
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingNonNumberGreaterThanSomethingShouldThrow(value: number) {
-      Expect(() => Expect(value).toBeGreaterThan(42)).toThrowError(TypeError, "toBeGreaterThan can only check numbers.");
+      Expect(() => Expect(value).toBeGreaterThan(42))
+        .toThrowError(TypeError, "toBeGreaterThan can only check numbers.");
    }
 }

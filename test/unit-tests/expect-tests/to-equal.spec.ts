@@ -35,7 +35,7 @@ export class ToEqualTests {
    public differentValuesThrowsExactMatchError () {
       let expect = Expect(1);
 
-      Expect(() => expect.toEqual(2)).toThrowError(<any>EqualMatchError, "Expected 1 to be equal to 2.");
+      Expect(() => expect.toEqual(2)).toThrowError(EqualMatchError, "Expected 1 to be equal to 2.");
    }
 
    @TestCase("something", "something else")
@@ -55,7 +55,10 @@ export class ToEqualTests {
    public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual) + " to be equal to " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toEqual(expected))
+        .toThrowError(
+           EqualMatchError,
+           "Expected " + JSON.stringify(actual) + " to be equal to " + JSON.stringify(expected) + ".");
    }
 
    @TestCase(undefined, null)
@@ -107,7 +110,11 @@ export class ToEqualTests {
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toEqual(expected)).toThrowError(<any>EqualMatchError, "Expected " + JSON.stringify(actual).replace(/,/g, ", ") + " to be equal to " + JSON.stringify(expected).replace(/,/g, ", ") + ".");
+      Expect(() => expect.toEqual(expected))
+        .toThrowError(
+            EqualMatchError,
+            `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
+            `to be equal to ${JSON.stringify(expected).replace(/,/g, ", ")}.`);
    }
 
    @TestCase({}, [])

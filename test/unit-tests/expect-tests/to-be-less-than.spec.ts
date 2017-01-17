@@ -150,7 +150,8 @@ export class ToBeLessThanTests {
    @TestCase(undefined)
    @TestCase(null)
    public checkingLessThanNullOrUndefinedShouldThrow(upperLimit: number) {
-      Expect(() => Expect(42).toBeLessThan(upperLimit)).toThrowError(TypeError, "toBeLessThan upper limit must not be null or undefined.");
+      Expect(() => Expect(42).toBeLessThan(upperLimit))
+        .toThrowError(TypeError, "toBeLessThan upper limit must not be null or undefined.");
    }
 
    @TestCase(undefined)

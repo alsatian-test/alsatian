@@ -9,7 +9,8 @@ export class ToBeTruthyTests {
    public shouldBeTruthyAndIsNotThrows(actualValue: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.toBeTruthy()).toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " to be truthy.");
+      Expect(() => expect.toBeTruthy())
+        .toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " to be truthy.");
    }
 
    @TestCase(-1)
@@ -40,7 +41,8 @@ export class ToBeTruthyTests {
    public shouldNotBeTruthyMessageAndIsThrows(actualValue: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.not.toBeTruthy()).toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " not to be truthy.");
+      Expect(() => expect.not.toBeTruthy())
+        .toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " not to be truthy.");
    }
 
    @TestCase(0)
