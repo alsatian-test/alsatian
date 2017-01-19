@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { TestFixture as TestFixtureMetadata } from "../../../core/";
-import { Expect, METADATA_KEYS, SpyOn, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import { Expect, METADATA_KEYS, SpyOn, SpyOnProperty, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 import { FileRequirer } from "../../../core/file-requirer";
 import { TestLoader } from "../../../core/test-loader";
 import { TestBuilder } from "../../builders/test-builder";
@@ -143,33 +143,38 @@ export class LoadTestTests {
      Expect(testLoader.loadTestFixture("test").length).toBe(0);
    }
 
-   @Test()
-   public descriptionShouldBeSetWhenNotConstructor() {
+   @TestCase("something")
+   @TestCase("wow, this is super!")
+   @TestCase("Mega Hyper AWESOME test...")
+   public descriptionShouldBeSetWhenNotConstructor(propertyName: string) {
        let fileRequirer = new FileRequirer();
 
        let testFixtureInstance = {};
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-       let testFixtureSet = {
-          testFixture: () => testFixtureInstance
-       };
+       let testFixtureSet: { [propertyName: string]: () => any } = {};
+
+       testFixtureSet[propertyName] = () => testFixtureInstance;
 
        let spy = SpyOn(fileRequirer, "require");
        spy.andStub();
        spy.andReturn(testFixtureSet);
 
        let testLoader = new TestLoader(fileRequirer);
-       Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe(propertyName);
    }
 
-   @Test()
-   public descriptionShouldBeSetWhenConstructor() {
+   @TestCase("something")
+   @TestCase("wow, this is super!")
+   @TestCase("Mega Hyper AWESOME test...")
+   public descriptionShouldBeSetToConstructorNameWhenConstructor(constructorName: string) {
        let fileRequirer = new FileRequirer();
 
        let testFixtureInstance = {};
        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
        let testFixtureSet = () => testFixtureInstance;
+       SpyOnProperty(testFixtureSet, "name").andReturnValue(constructorName);
 
        let spy = SpyOn(fileRequirer, "require");
        spy.andStub();
@@ -177,7 +182,7 @@ export class LoadTestTests {
 
        let testLoader = new TestLoader(fileRequirer);
 
-       Expect(testLoader.loadTestFixture("test")[0].description).toBe("testFixture");
+       Expect(testLoader.loadTestFixture("test")[0].description).toBe(constructorName);
    }
 
    @TestCase("something")

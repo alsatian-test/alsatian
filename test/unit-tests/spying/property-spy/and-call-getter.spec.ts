@@ -38,7 +38,7 @@ export class AndCallGetterTests {
 
       Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const propertySpy = new PropertySpy(testObject, "property").andCallGetter(() => {});
+      const propertySpy = new PropertySpy(testObject, "property").andCallGetter(() => undefined);
 
       const property = testObject.property;
 
@@ -61,7 +61,7 @@ export class AndCallGetterTests {
 
       const propertySpy = new PropertySpy(testObject, "property");
 
-      Expect(propertySpy.andCallGetter(() => {})).toBe(propertySpy);
+      Expect(propertySpy.andCallGetter(() => undefined)).toBe(propertySpy);
    }
 
    @TestCase(null)
