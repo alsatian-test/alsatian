@@ -573,7 +573,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), exactValue ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [Any ${(<any> type).name}, ${JSON.stringify(exactValue)}].`);
+        .toBe(`Expected function to be called with [Any ${(<any> type).name}, ${JSON.stringify(exactValue)}].`);
    }
 
    @TestCase(Number, "test")
