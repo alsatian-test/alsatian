@@ -1,5 +1,5 @@
 <p id="banner" align="center">
-    <img src="/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
+    <img src="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium/documentation/images/alsatian-mascot-logo.png?raw=true" alt="Alsatian Mascot Logo" />
     <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with [selenium](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium), istanbul and tap reporters.</p>
 </p>
 <p id="badges" align="center">
@@ -47,7 +47,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Active support if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
-![Alsatian Test Run Video](/documentation/images/alsatian-test-run.gif?raw=true)
+![Alsatian Test Run Video](https://github.com/alsatian-test/alsatian/raw/master/documentation/images/alsatian-test-run.gif)
 
 ## Installing
 
