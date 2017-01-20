@@ -13,7 +13,7 @@ export default class AlsatianWikiEndToEndTests {
         this._driver = new Builder()
                             .withCapabilities(Capabilities.chrome())
                             .build();
-        
+
         // go to the wiki home page
         await this._driver.get("https://github.com/alsatian-test/alsatian/wiki");
     }
