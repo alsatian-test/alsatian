@@ -1,5 +1,5 @@
 import { Builder, By, Capabilities, WebDriver } from "selenium-webdriver";
-import { TestFixture, AsyncTest, AsyncSetup, Expect } from "../../../core/alsatian-core";
+import { AsyncTest, AsyncSetup, AsyncTeardown, Expect, TestFixture } from "../../../core/alsatian-core";
 
 
 @TestFixture("Alsatian Wiki")
@@ -9,26 +9,38 @@ export default class AlsatianWikiEndToEndTests {
 
     @AsyncSetup
     private async _goToWiki() {
-        if (!this._driver) {
-            this._driver = new Builder()
-                .withCapabilities(Capabilities.chrome())
-                .build();
+        // create a driver if one hasn't yet been created
+        this._driver = new Builder()
+                            .withCapabilities(Capabilities.chrome())
+                            .build();
+        
+        // go to the wiki home page
+        await this._driver.get("https://github.com/alsatian-test/alsatian/wiki");
+    }
 
-            await this._driver.get("https://github.com/alsatian-test/alsatian/wiki");
-        }
+    @AsyncTeardown
+    private async _tidyUp() {
+        // quit the browser so it's not hanging about
+        this._driver.quit();
     }
 
     @AsyncTest("page title is Home")
     public async correctTitle() {
-        const title = await this._driver.findElement(By.className("gh-header-title")).getText();
+        // get the wiki title
+        const title = await this._driver
+                                .findElement(By.className("gh-header-title"))
+                                .getText();
 
+        // check it contains what we'd expect
         Expect(title).toBe("Home");
     }
 
     @AsyncTest("everyone gets a nice welcome")
     public async checkContent() {
+        // get the wiki body
         const title = await this._driver.findElement(By.id("wiki-body")).getText();
 
+        // check it contains what we'd expect
         Expect(title).toContain("Welcome to the alsatian wiki!");
     }
 }
