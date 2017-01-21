@@ -1,4 +1,4 @@
-import { Setup, AsyncSetup, Teardown, TestFixture, Expect, Test } from "../../../../core/alsatian-core";
+import { AsyncSetup, Expect, Setup, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
 
 @TestFixture("setup tests")
 export class SetupTests {
@@ -35,4 +35,3 @@ export class SetupTests {
        Expect(this._asyncSetupComplete).toBe(true);
    }
 }
-   

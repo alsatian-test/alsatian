@@ -9,14 +9,17 @@ export class GulpIntegrationTests {
    @Timeout(3000)
    public toBeExpectations() {
 
-      const result = child.exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+      const result = child
+                    .exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt").toString();
+      let expectedOutput = FileSystem
+                                .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
+                                .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
@@ -33,14 +36,17 @@ export class GulpIntegrationTests {
    @Timeout(3000)
    public syntaxTests(syntaxTestName: string) {
 
-      const result = child.exec("gulp test-syntax --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+      const result = child
+                    .exec("gulp test-syntax --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt").toString();
+      let expectedOutput = FileSystem
+                            .readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt")
+                            .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {

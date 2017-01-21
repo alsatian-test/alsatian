@@ -38,6 +38,8 @@ export class GreaterThanMatchErrorTests {
    @TestCase(-1)
    @TestCase(42)
    public shouldSetExpectedValueToNotGreaterhanLowerLimit(lowerLimit: number) {
-      Expect(new GreaterThanMatchError(512, lowerLimit, false).expected).toBe("a number not greater than " + lowerLimit);
+      const greaterThanMatchError = new GreaterThanMatchError(512, lowerLimit, false);
+
+      Expect(greaterThanMatchError.expected).toBe("a number not greater than " + lowerLimit);
    }
 }

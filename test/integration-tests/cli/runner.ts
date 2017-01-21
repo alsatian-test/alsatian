@@ -7,17 +7,23 @@ export class CliIntegrationTests {
 
    @TestCase("to-be")
    @AsyncTest()
-   @Timeout(1000)
+   @Timeout(2000)
    public toBeExpectations(expectationTestName: string) {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/expectations/" + expectationTestName + ".spec.js --tap");
+      const result = child
+                    .exec(`alsatian ` +
+                          `./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
+                          ` --tap`);
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/expectations/" + expectationTestName + ".txt").toString();
+      let expectedOutput = FileSystem
+                              .readFileSync(`./test/integration-tests/expected-output/` +
+                                            `expectations/${expectationTestName}.txt`)
+                              .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
@@ -31,17 +37,22 @@ export class CliIntegrationTests {
    @TestCase("setup")
    @TestCase("teardown")
    @AsyncTest()
-   @Timeout(1000)
+   @Timeout(2000)
    public syntaxTests(syntaxTestName: string) {
 
-      const result = child.exec("alsatian ./test/integration-tests/test-sets/test-syntax/" + syntaxTestName + ".spec.js --tap");
+      const result = child
+                    .exec(`alsatian ` +
+                          `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}.spec.js ` +
+                          `--tap`);
 
       let consoleOutput = "";
 
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem.readFileSync("./test/integration-tests/expected-output/test-syntax/" + syntaxTestName + ".txt").toString();
+      let expectedOutput = FileSystem
+                            .readFileSync(`./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`)
+                            .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {

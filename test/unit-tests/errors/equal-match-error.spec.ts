@@ -10,7 +10,8 @@ export class EqualMatchErrorTests {
    public shouldMatchMessage(actualValue: any, expectedValue: any) {
       let error = new EqualMatchError(actualValue, expectedValue, true);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " to be equal to " + JSON.stringify(expectedValue) + ".");
+      Expect(error.message)
+        .toBe(`Expected ${JSON.stringify(actualValue)} to be equal to ${JSON.stringify(expectedValue)}.`);
    }
 
    @TestCase(undefined, undefined)
@@ -24,6 +25,7 @@ export class EqualMatchErrorTests {
    public shouldNotMatchMessage(actualValue: any, expectedValue: any) {
       let error = new EqualMatchError(actualValue, expectedValue, false);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " not to be equal to " + JSON.stringify(expectedValue) + ".");
+      Expect(error.message)
+        .toBe(`Expected ${JSON.stringify(actualValue)} not to be equal to ${JSON.stringify(expectedValue)}.`);
    }
  }

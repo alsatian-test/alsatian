@@ -8,14 +8,14 @@ export class TestBuilder {
 
   public constructor() {
     this._test = {
-      focussed: false,
-      ignored: false,
-      ignoreReason: undefined,
-      isAsync: false,
-      timeout: null,
-      key: "testFunction",
       description: "Test Function",
-      testCases: [ ]
+      focussed: false,
+      ignoreReason: undefined,
+      ignored: false,
+      isAsync: false,
+      key: "testFunction",
+      testCases: [ ],
+      timeout: null
     };
   }
 

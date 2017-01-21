@@ -16,6 +16,6 @@ export class EqualMatchErrorTests {
    public shouldNotMatchMessage(actualValue: any, expectedRegex: any) {
       let error = new RegexMatchError(actualValue, expectedRegex, false);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " not to conform to " + expectedRegex + ".");
+      Expect(error.message).toBe(`Expected ${JSON.stringify(actualValue)} not to conform to ${expectedRegex}.`);
    }
  }

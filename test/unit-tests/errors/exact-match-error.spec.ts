@@ -10,7 +10,7 @@ export class ExactMatchErrorTests {
    public shouldMatchMessage(actualValue: any, expectedValue: any) {
       let error = new ExactMatchError(actualValue, expectedValue, true);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " to be " + JSON.stringify(expectedValue) + ".");
+      Expect(error.message).toBe(`Expected ${JSON.stringify(actualValue)} to be ${JSON.stringify(expectedValue)}.`);
    }
 
    @TestCase(undefined, undefined)
@@ -24,6 +24,7 @@ export class ExactMatchErrorTests {
    public shouldNotMatchMessage(actualValue: any, expectedValue: any) {
       let error = new ExactMatchError(actualValue, expectedValue, false);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " not to be " + JSON.stringify(expectedValue) + ".");
+      Expect(error.message)
+        .toBe(`Expected ${JSON.stringify(actualValue)} not to be ${JSON.stringify(expectedValue)}.`);
    }
  }

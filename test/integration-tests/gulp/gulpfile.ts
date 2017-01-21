@@ -11,7 +11,8 @@ Gulp.task("test-expectations", (done: () => any) => {
     const testRunner = new TestRunner();
 
     testRunner.outputStream
-              // .pipe(TapBark.create().getPipeable()) // pipe to your favourite tap producer or not and just get TAP :) 
+              // pipe to your favourite tap producer or not and just get TAP :) 
+              // .pipe(TapBark.create().getPipeable()) 
               .pipe(process.stdout);
 
     // run the test set
@@ -28,7 +29,8 @@ Gulp.task("test-syntax", (done: () => any) => {
     const testRunner = new TestRunner();
 
     testRunner.outputStream
-              // .pipe(TapBark.create().getPipeable()) // pipe to your favourite tap producer or not and just get TAP :) 
+              // .pipe(TapBark.create().getPipeable())
+              // pipe to your favourite tap producer or not and just get TAP :) 
               .pipe(process.stdout);
 
     // run the test set

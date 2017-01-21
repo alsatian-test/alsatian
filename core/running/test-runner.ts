@@ -49,7 +49,7 @@ export class TestRunner {
             testSetResults,
             timeout);
 
-       await this._runTests(testSetRunInfo, testSetResults);
+      await this._runTests(testSetRunInfo, testSetResults);
     }
 
     private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {

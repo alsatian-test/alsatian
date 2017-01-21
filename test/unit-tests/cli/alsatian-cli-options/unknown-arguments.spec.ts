@@ -13,7 +13,7 @@ export class UnknownArgumentsTests {
    }
 
    @TestCase([ "--unknown", "-q"], "unrecognised arguments \"unknown\" and \"q\".")
-   @TestCase(["--weird", "-X", "--another-weird-argument"], "unrecognised arguments \"weird\" and \"X\" and \"another-weird-argument\".")
+   @TestCase(["--weird", "-X", "--unknown-arg"], "unrecognised arguments \"weird\" and \"X\" and \"unknown-arg\".")
    public multipleUnknownArgumentsThrowsError(unknownArguments: Array<string>, expectedMessage: string) {
       Expect(() => new AlsatianCliOptions(unknownArguments)).toThrowError(InvalidArgumentNamesError, expectedMessage);
    }

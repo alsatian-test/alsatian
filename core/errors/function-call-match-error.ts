@@ -1,5 +1,5 @@
-import { MatchError } from "./match-error";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
+import { MatchError } from "./match-error";
 
 export class FunctionCallMatchError extends MatchError {
 

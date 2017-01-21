@@ -28,8 +28,10 @@ export class FileGlobsTests {
       Expect(options.fileGlobs).toEqual(expectedFileGlobs);
    }
 
-   @TestCase([ "file.ts", "./another-path/to/find/files.ts", "--timeout", "1" ], [ "file.ts", "./another-path/to/find/files.ts" ])
-   @TestCase([ ".//*.css", "-t", "42", "./**/more/*.css", "/another*/location.css" ], [ ".//*.css", "./**/more/*.css", "/another*/location.css" ])
+   @TestCase([ "file.ts", "./another-path/to/find/files.ts", "--timeout", "1" ],
+             [ "file.ts", "./another-path/to/find/files.ts" ])
+   @TestCase([ ".//*.css", "-t", "42", "./**/more/*.css", "/another*/location.css" ],
+             [ ".//*.css", "./**/more/*.css", "/another*/location.css" ])
    public knownArgumentsIgnoredFromFileGlobs(inputArguments: Array<string>, expectedFileGlobs: Array<string>) {
       const options = new AlsatianCliOptions(inputArguments);
 

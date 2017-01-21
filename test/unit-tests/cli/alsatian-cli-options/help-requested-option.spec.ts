@@ -24,7 +24,7 @@ export class HelpRequestedTests {
    @TestCase("-h", "-h")
    public duplicateTapArgumentsThrowsError(firstArgument: string, secondArgument: string) {
       Expect(() => {
-         new AlsatianCliOptions([ firstArgument, secondArgument ]);
+         const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
       }).toThrowError(DuplicateCliArgumentError, "Duplicate \"help\" arguments were provided.");
    }
 

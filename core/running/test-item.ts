@@ -71,7 +71,8 @@ export class TestItem {
     }
 
    private async _setup() {
-      const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.SETUP, this._testFixture.fixture);
+      const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.SETUP,
+                                                                                this._testFixture.fixture);
 
       if (setupFunctions) {
          for (const setupFunction of setupFunctions) {
@@ -86,7 +87,8 @@ export class TestItem {
    }
 
    private async _teardown() {
-      let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
+      let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN,
+                                                                                 this._testFixture.fixture);
 
       if (teardownFunctions) {
          for (const teardownFunction of teardownFunctions) {

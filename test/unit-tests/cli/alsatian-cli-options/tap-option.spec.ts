@@ -24,7 +24,7 @@ export class TapOptionTests {
    @TestCase("-T", "-T")
    public duplicateTapArgumentsThrowsError(firstArgument: string, secondArgument: string) {
       Expect(() => {
-        new AlsatianCliOptions([ firstArgument, secondArgument ]);
+        const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
       }).toThrowError(DuplicateCliArgumentError, "Duplicate \"tap\" arguments were provided.");
    }
 
