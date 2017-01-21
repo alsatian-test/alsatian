@@ -1,5 +1,5 @@
-import { TypeMatcher } from "../../../../core/spying/type-matcher";
 import { Expect, TestCase } from "../../../../core/alsatian-core";
+import { TypeMatcher } from "../../../../core/spying/type-matcher";
 
 export class TypeMatcherConstructorTests {
 

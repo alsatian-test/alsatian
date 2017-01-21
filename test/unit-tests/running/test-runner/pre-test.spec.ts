@@ -1,10 +1,10 @@
+import { AsyncTest, Expect, Setup, SpyOn, Teardown, TestCase, Timeout } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
+import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestSet } from "../../../../core/test-set";
-import { Expect, AsyncTest, TestCase, SpyOn, Timeout } from "../../../../core/alsatian-core";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { TestOutputStream } from "../../../../core/test-output-stream";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 
 export class PreTestTests {
 
@@ -13,9 +13,9 @@ export class PreTestTests {
 
    @AsyncTest()
    public async tapVersionHeaderOutput() {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
       let testBuilder = new TestBuilder();
       testBuilder.addTestCase(new TestCaseBuilder().build());
@@ -35,9 +35,9 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          let testFixtureBuilder = new TestFixtureBuilder();
@@ -65,10 +65,11 @@ export class PreTestTests {
    @TestCase(5, 2)
    @TestCase(5, 5)
    @AsyncTest()
-   public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number, testCount: number) {
-      let testSet = <TestSet>{};
+   public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number,
+                                                                            testCount: number) {
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -85,14 +86,13 @@ export class PreTestTests {
       }
 
       let resultPromise: any = {
+         catch: (error: Error) => {},
          resolve: () => {
 
          },
          then: (callback: (testResults: Array<any>) => any) => {
             resultPromise.resolve = callback;
             return resultPromise;
-         },
-         catch: (error: Error) => {
          }
       };
 
@@ -134,10 +134,14 @@ export class PreTestTests {
    @TestCase(5, 2, 5)
    @Timeout(1000)
    @AsyncTest()
-   public async multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(testFixtureCount: number, testCount: number, testCaseCount: number) {
-      let testSet = <TestSet>{};
+   public async multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(
+                                            testFixtureCount: number,
+                                            testCount: number,
+                                            testCaseCount: number) {
 
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -169,9 +173,9 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          let testFixtureBuilder = new TestFixtureBuilder();

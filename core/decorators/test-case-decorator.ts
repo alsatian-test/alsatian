@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { TESTS, TEST_CASES } from "./_metadata-keys";
+import { TEST_CASES, TESTS } from "./_metadata-keys";
 
 export function TestCase(...testCaseArguments: Array<any>) {
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {

@@ -1,10 +1,11 @@
+import { AsyncTest, Expect, SpyOn, Test } from "../../../../core/alsatian-core";
+import { MatchError } from "../../../../core/errors/match-error";
 import { TestRunner } from "../../../../core/running/test-runner";
-import { TestSet } from "../../../../core/test-set";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { Expect, AsyncTest } from "../../../../core/alsatian-core";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 
 export class FocussedTestTests {
 
@@ -12,8 +13,8 @@ export class FocussedTestTests {
    public async twoUnfocussedTestsBothRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
@@ -50,8 +51,8 @@ export class FocussedTestTests {
    public async firstTestFocussedSecondUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
@@ -89,8 +90,8 @@ export class FocussedTestTests {
    public async secondTestFocussedFirstUnfocussedFirstIsRun() {
       let output = new TestOutputStream();
 
-      let testSet = <TestSet>{};
-      (<any>testSet).testFixtures = [];
+      let testSet = <TestSet> {};
+      (<any> testSet).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;

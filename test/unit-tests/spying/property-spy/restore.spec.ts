@@ -1,5 +1,5 @@
+import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
-import { Expect, Test } from "../../../../core/alsatian-core";
 
 export class RestoreTests {
 
@@ -40,7 +40,7 @@ export class RestoreTests {
    @Test()
    public targetsPropertySetterIsNoLongerASpyWhenCalledFromSpy() {
       const object = {
-         set originalProperty(value: any) {}
+         set originalProperty(value: any) { }
       };
 
       const originalPropertySetter = Object.getOwnPropertyDescriptor(object, "originalProperty").set;

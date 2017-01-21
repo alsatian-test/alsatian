@@ -1,7 +1,7 @@
-import { TestLoader } from "../../../../core/test-loader";
-import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, TestCase, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import { FileRequirer } from "../../../../core/file-requirer";
+import { TestLoader } from "../../../../core/test-loader";
 
 export class IgnoredTestTests {
 
@@ -11,7 +11,7 @@ export class IgnoredTestTests {
      let fileRequirer = new FileRequirer();
 
      let testFixtureInstance = {
-       "unignoredTest": () => {}
+       unignoredTest: () => {}
      };
      let unignoredTest = {
        key: "unignoredTest"
@@ -35,7 +35,7 @@ export class IgnoredTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        "ignoredTest": () => {}
+        ignoredTest: () => {}
       };
       let unignoredTest = {
         key: "ignoredTest"
@@ -61,7 +61,7 @@ export class IgnoredTestTests {
       let fileRequirer = new FileRequirer();
 
       let testFixtureInstance = {
-        "ignoredTest": () => {}
+        ignoredTest: () => {}
       };
       let unignoredTest = {
         key: "ignoredTest"

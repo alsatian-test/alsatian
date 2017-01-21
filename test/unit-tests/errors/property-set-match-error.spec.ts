@@ -1,5 +1,5 @@
-import { PropertySetMatchError } from "../../../core/errors/property-set-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { PropertySetMatchError } from "../../../core/errors/property-set-match-error";
 
 export class PropertySetMatchErrorTests {
 
@@ -31,7 +31,7 @@ export class PropertySetMatchErrorTests {
    @TestCase(-4.2)
    @TestCase("")
    @TestCase("value")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public shouldBeSetToValueMessage(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };
@@ -51,7 +51,7 @@ export class PropertySetMatchErrorTests {
    @TestCase(-4.2)
    @TestCase("")
    @TestCase("value")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public shouldNotBeSetToValueMessage(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };
@@ -147,7 +147,7 @@ export class PropertySetMatchErrorTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})
@@ -166,7 +166,7 @@ export class PropertySetMatchErrorTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(() => {})

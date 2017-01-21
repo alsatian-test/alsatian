@@ -1,4 +1,4 @@
-import { Teardown, AsyncTeardown, TestFixture, Expect, Test } from "../../../../core/alsatian-core";
+import { AsyncTeardown, Expect, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
 
 @TestFixture("teardown tests")
 export class TeardownTests {
@@ -31,4 +31,3 @@ export class TeardownTests {
        Expect(this._asyncTeardownComplete).toBe(true);
    }
 }
-   

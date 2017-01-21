@@ -2,7 +2,9 @@ import "reflect-metadata";
 import { ISetupTeardownMetadata } from "./_interfaces";
 import { TEARDOWN } from "./_metadata-keys";
 
-export function AsyncTeardown(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<() => any>) {
+export function AsyncTeardown(target: any,
+                              decoratedPropertyKey: string,
+                              descriptor: TypedPropertyDescriptor<() => any>) {
 
     let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(TEARDOWN, target);
 
@@ -12,7 +14,7 @@ export function AsyncTeardown(target: any, propertyKey: string, descriptor: Type
 
     teardownFunctions.push({
         isAsync: true,
-        propertyKey: propertyKey
+        propertyKey: decoratedPropertyKey
     });
 
     // mark as setup test method

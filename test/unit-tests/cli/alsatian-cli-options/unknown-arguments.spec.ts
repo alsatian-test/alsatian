@@ -1,6 +1,6 @@
-import { Expect, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { InvalidArgumentNamesError } from "../../../../cli/errors/invalid-argument-names-error";
+import { Expect, TestCase } from "../../../../core/alsatian-core";
 
 export class UnknownArgumentsTests {
 
@@ -13,7 +13,7 @@ export class UnknownArgumentsTests {
    }
 
    @TestCase([ "--unknown", "-q"], "unrecognised arguments \"unknown\" and \"q\".")
-   @TestCase(["--weird", "-X", "--another-weird-argument"], "unrecognised arguments \"weird\" and \"X\" and \"another-weird-argument\".")
+   @TestCase(["--weird", "-X", "--unknown-arg"], "unrecognised arguments \"weird\" and \"X\" and \"unknown-arg\".")
    public multipleUnknownArgumentsThrowsError(unknownArguments: Array<string>, expectedMessage: string) {
       Expect(() => new AlsatianCliOptions(unknownArguments)).toThrowError(InvalidArgumentNamesError, expectedMessage);
    }

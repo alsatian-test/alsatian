@@ -1,5 +1,5 @@
-import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { ContentsMatchError } from "../../../core/errors/contents-match-error";
 
 export class ToContainTests {
 
@@ -10,7 +10,10 @@ export class ToContainTests {
    public shouldContainAndDoesNotThrows(actualValue: any, expectedContent: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue) + " to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(() => expect.toContain(expectedContent))
+        .toThrowError(
+          ContentsMatchError,
+          `Expected ${JSON.stringify(actualValue).replace(",", ", ")} to contain ${JSON.stringify(expectedContent)}.`);
    }
 
    @TestCase([ 1 ], 1)
@@ -40,7 +43,11 @@ export class ToContainTests {
    public shouldNotContainAndDoesThrows(actualValue: any, expectedContent: any) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.not.toContain(expectedContent)).toThrowError(ContentsMatchError, "Expected " + JSON.stringify(actualValue) + " not to contain " + JSON.stringify(expectedContent) + ".");
+      Expect(() => expect.not.toContain(expectedContent))
+        .toThrowError(
+          ContentsMatchError,
+          `Expected ${JSON.stringify(actualValue).replace(",", ", ")} ` +
+          `not to contain ${JSON.stringify(expectedContent)}.`);
    }
 
    @TestCase([], 1)
@@ -129,9 +136,12 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    public checkingNonStringOrArraysContainShouldThrow(container: any) {
-      Expect(() => Expect(container).toContain("something")).toThrowError(TypeError, "toContain must only be used to check whether strings or arrays contain given contents.");
+      Expect(() => Expect(container).toContain("something"))
+        .toThrowError(
+          TypeError,
+          "toContain must only be used to check whether strings or arrays contain given contents.");
    }
 
    @TestCase(undefined)
@@ -140,9 +150,12 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
-      Expect(() => Expect(container).not.toContain("something")).toThrowError(TypeError, "toContain must only be used to check whether strings or arrays contain given contents.");
+      Expect(() => Expect(container).not.toContain("something"))
+        .toThrowError(
+          TypeError,
+          "toContain must only be used to check whether strings or arrays contain given contents.");
    }
 
    @TestCase(undefined)
@@ -151,11 +164,14 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array"])
    public checkingStringContainsNonStringShouldThrow(expectedContent: any) {
-      Expect(() => Expect("something").toContain(expectedContent)).toThrowError(TypeError, "toContain cannot check whether a string contains a non string value.");
+      Expect(() => Expect("something").toContain(expectedContent))
+        .toThrowError(
+          TypeError,
+          "toContain cannot check whether a string contains a non string value.");
    }
 
    @TestCase(undefined)
@@ -164,10 +180,13 @@ export class ToContainTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingStringDoesNotContainsNonStringShouldThrow(expectedContent: any) {
-      Expect(() => Expect("something").not.toContain(expectedContent)).toThrowError(TypeError, "toContain cannot check whether a string contains a non string value.");
+      Expect(() => Expect("something").not.toContain(expectedContent))
+        .toThrowError(
+          TypeError,
+          "toContain cannot check whether a string contains a non string value.");
    }
  }

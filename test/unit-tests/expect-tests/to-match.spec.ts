@@ -1,5 +1,5 @@
-import { RegexMatchError } from "../../../core/errors/regex-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { RegexMatchError } from "../../../core/errors/regex-match-error";
 
 export class ToMatchTests {
 
@@ -8,7 +8,8 @@ export class ToMatchTests {
    public shouldMatchAndDoesNotThrows(actualValue: any, expectedRegex: RegExp) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.toMatch(expectedRegex)).toThrowError(RegexMatchError, "Expected " + JSON.stringify(actualValue) + " to conform to " + expectedRegex + ".");
+      Expect(() => expect.toMatch(expectedRegex))
+   .toThrowError(RegexMatchError, `Expected ${JSON.stringify(actualValue)} to conform to ${expectedRegex}.`);
    }
 
    @TestCase("something", /thing/)
@@ -32,7 +33,8 @@ export class ToMatchTests {
    public shouldNotMatchAndDoesThrows(actualValue: any, expectedRegex: RegExp) {
       let expect = Expect(actualValue);
 
-      Expect(() => expect.not.toMatch(expectedRegex)).toThrowError(RegexMatchError, "Expected " + JSON.stringify(actualValue) + " not to conform to " + expectedRegex + ".");
+      Expect(() => expect.not.toMatch(expectedRegex))
+        .toThrowError(RegexMatchError, `Expected ${JSON.stringify(actualValue)} not to conform to ${expectedRegex}.`);
    }
 
    @TestCase(undefined)
@@ -41,11 +43,12 @@ export class ToMatchTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringMatchesRegexShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toMatch(/test/)).toThrowError(TypeError, "toMatch must only be used to match on strings.");
+      Expect(() => Expect(actualValue).toMatch(/test/))
+        .toThrowError(TypeError, "toMatch must only be used to match on strings.");
    }
 
    @TestCase(undefined)
@@ -54,22 +57,25 @@ export class ToMatchTests {
    @TestCase(1)
    @TestCase(42)
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringDoesNotMatchRegexShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toMatch(/test/)).toThrowError(TypeError, "toMatch must only be used to match on strings.");
+      Expect(() => Expect(actualValue).not.toMatch(/test/))
+        .toThrowError(TypeError, "toMatch must only be used to match on strings.");
    }
 
    @TestCase(undefined)
    @TestCase(null)
    public checkingStringMatchesNullOrUndefinedRegularExpressionShouldThrow(regex: RegExp) {
-      Expect(() => Expect("something").toMatch(regex)).toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
+      Expect(() => Expect("something").toMatch(regex))
+        .toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
    }
 
    @TestCase(undefined)
    @TestCase(null)
    public checkingStringDoesNotMatchNullOrUndefinedRegularExpressionShouldThrow(regex: RegExp) {
-      Expect(() => Expect("something").not.toMatch(regex)).toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
+      Expect(() => Expect("something").not.toMatch(regex))
+        .toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
    }
  }

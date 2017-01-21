@@ -1,5 +1,6 @@
 import * as Gulp from "gulp";
-import { TestSet, TestRunner } from "../../../core/alsatian-core";
+import { TapBark } from "tap-bark";
+import { TestRunner, TestSet } from "../../../core/alsatian-core";
 
 Gulp.task("test-expectations", (done: () => any) => {
 
@@ -10,7 +11,8 @@ Gulp.task("test-expectations", (done: () => any) => {
     const testRunner = new TestRunner();
 
     testRunner.outputStream
-              // .pipe(TapBark.create().getPipeable()) // pipe to your favourite tap producer or not and just get TAP :) 
+              // pipe to your favourite tap producer or not and just get TAP :) 
+              // .pipe(TapBark.create().getPipeable()) 
               .pipe(process.stdout);
 
     // run the test set
@@ -27,7 +29,8 @@ Gulp.task("test-syntax", (done: () => any) => {
     const testRunner = new TestRunner();
 
     testRunner.outputStream
-              // .pipe(TapBark.create().getPipeable()) // pipe to your favourite tap producer or not and just get TAP :) 
+              // .pipe(TapBark.create().getPipeable())
+              // pipe to your favourite tap producer or not and just get TAP :) 
               .pipe(process.stdout);
 
     // run the test set

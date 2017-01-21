@@ -1,4 +1,11 @@
-import { Expect, TestCase, SpyOn, TestOutputStream, TestSet, AsyncTest, TestRunner, MatchError } from "../../../../core/alsatian-core";
+import { AsyncTest,
+         Expect,
+         MatchError,
+         SpyOn,
+         TestCase,
+         TestOutputStream,
+         TestRunner,
+         TestSet } from "../../../../core/alsatian-core";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
@@ -16,7 +23,7 @@ export class FixtureInfoTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{
+      let testSet = <TestSet> {
          testFixtures: []
       };
 
@@ -46,7 +53,7 @@ export class FixtureInfoTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{
+      let testSet = <TestSet> {
          testFixtures: []
       };
 
@@ -56,7 +63,11 @@ export class FixtureInfoTests {
       .build();
 
       let testFixture = new TestFixtureBuilder()
-      .withFixture({ test: () => { throw new MatchError("nothing", "something", "expected nothing to be something."); }})
+      .withFixture({
+          test: () => {
+            throw new MatchError("nothing", "something", "expected nothing to be something.");
+          }
+      })
       .addTest(test)
       .withDescription(description)
       .build();

@@ -1,5 +1,5 @@
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { LessThanMatchError } from "../../../core/errors/less-than-match-error";
-import { Expect, TestCase } from "../../../core/alsatian-core";
 
 export class ToBeLessThanTests {
 
@@ -150,7 +150,8 @@ export class ToBeLessThanTests {
    @TestCase(undefined)
    @TestCase(null)
    public checkingLessThanNullOrUndefinedShouldThrow(upperLimit: number) {
-      Expect(() => Expect(42).toBeLessThan(upperLimit)).toThrowError(TypeError, "toBeLessThan upper limit must not be null or undefined.");
+      Expect(() => Expect(42).toBeLessThan(upperLimit))
+        .toThrowError(TypeError, "toBeLessThan upper limit must not be null or undefined.");
    }
 
    @TestCase(undefined)
@@ -158,7 +159,7 @@ export class ToBeLessThanTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingNonNumberLessThanSomethingShouldThrow(value: number) {

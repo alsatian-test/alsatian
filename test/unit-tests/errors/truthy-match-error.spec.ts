@@ -1,5 +1,5 @@
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { TruthyMatchError } from "../../../core/errors/truthy-match-error";
-import { Expect, TestCase, Test } from "../../../core/alsatian-core";
 
 export class TruthyMatchErrorTests {
 
@@ -31,7 +31,7 @@ export class TruthyMatchErrorTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public actualValueSet(actualValue: any) {

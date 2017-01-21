@@ -1,8 +1,8 @@
-import { TestResults } from "../../../core/results/test-results";
-import { TestOutcome } from "../../../core/results/test-outcome";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { EqualMatchError, ExactMatchError, MatchError } from "../../../core/errors";
+import { TestOutcome } from "../../../core/results/test-outcome";
+import { TestResults } from "../../../core/results/test-results";
 import { TestBuilder } from "../../builders/test-builder";
-import { MatchError, ExactMatchError, EqualMatchError } from "../../../core/errors";
 
 export class TestResultsTests {
 
@@ -34,13 +34,13 @@ export class TestResultsTests {
     @TestCase(TypeError)
     @TestCase(RangeError)
     @TestCase(EvalError)
-    public oneTestCaseErrorOutcomeError(ErrorType: new () => Error) {
+    public oneTestCaseErrorOutcomeError(errorType: new () => Error) {
 
       const test = new TestBuilder().build();
 
       const testResults = new TestResults(test);
 
-      testResults.addTestCaseResult([], new ErrorType());
+      testResults.addTestCaseResult([], new errorType());
 
       Expect(testResults.outcome).toBe(TestOutcome.Error);
     }
@@ -48,13 +48,13 @@ export class TestResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public oneTestCaseMatchErrorOutcomeError(ErrorType: new () => Error) {
+    public oneTestCaseMatchErrorOutcomeError(errorType: new () => Error) {
 
       const test = new TestBuilder().build();
 
       const testResults = new TestResults(test);
 
-      testResults.addTestCaseResult([], new ErrorType());
+      testResults.addTestCaseResult([], new errorType());
 
       Expect(testResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -62,14 +62,14 @@ export class TestResultsTests {
     @TestCase(MatchError)
     @TestCase(ExactMatchError)
     @TestCase(EqualMatchError)
-    public twoTestCasesOnePassOneMatchErrorOutcomeFail(ErrorType: new () => Error) {
+    public twoTestCasesOnePassOneMatchErrorOutcomeFail(errorType: new () => Error) {
 
       const test = new TestBuilder().build();
 
       const testResults = new TestResults(test);
 
       testResults.addTestCaseResult([]);
-      testResults.addTestCaseResult([], new ErrorType());
+      testResults.addTestCaseResult([], new errorType());
 
       Expect(testResults.outcome).toBe(TestOutcome.Fail);
     }
@@ -77,14 +77,14 @@ export class TestResultsTests {
     @TestCase(EvalError)
     @TestCase(RangeError)
     @TestCase(TypeError)
-    public twoTestCasesOnePassOneErrorOutcomeError(ErrorType: new () => Error) {
+    public twoTestCasesOnePassOneErrorOutcomeError(errorType: new () => Error) {
 
       const test = new TestBuilder().build();
 
       const testResults = new TestResults(test);
 
       testResults.addTestCaseResult([]);
-      testResults.addTestCaseResult([], new ErrorType());
+      testResults.addTestCaseResult([], new errorType());
 
       Expect(testResults.outcome).toBe(TestOutcome.Error);
     }
@@ -92,14 +92,14 @@ export class TestResultsTests {
     @TestCase(EvalError, MatchError)
     @TestCase(ExactMatchError, RangeError)
     @TestCase(TypeError, EqualMatchError)
-    public twoTestCasesOneMatchErrorOneErrorOutcomeError(ErrorTypeA: new () => Error, ErrorTypeB: new () => Error) {
+    public twoTestCasesOneMatchErrorOneErrorOutcomeError(errorTypeA: new () => Error, errorTypeB: new () => Error) {
 
       const test = new TestBuilder().build();
 
       const testResults = new TestResults(test);
 
-      testResults.addTestCaseResult([], new ErrorTypeA());
-      testResults.addTestCaseResult([], new ErrorTypeB());
+      testResults.addTestCaseResult([], new errorTypeA());
+      testResults.addTestCaseResult([], new errorTypeB());
 
       Expect(testResults.outcome).toBe(TestOutcome.Error);
     }

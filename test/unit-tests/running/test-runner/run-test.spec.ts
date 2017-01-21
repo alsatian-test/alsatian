@@ -1,11 +1,11 @@
-import { AsyncTest, Timeout, Expect, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
-import { TestRunner } from "../../../../core/running/test-runner";
-import { TestSetBuilder } from "../../../builders/test-set-builder";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
-import { TestBuilder } from "../../../builders/test-builder";
-import { TestOutputStream } from "../../../../core/test-output-stream";
-import { ITestCompleteEvent } from "../../../../core/events";
 import "reflect-metadata";
+import { AsyncTest, Expect, METADATA_KEYS, SpyOn, Timeout } from "../../../../core/alsatian-core";
+import { ITestCompleteEvent } from "../../../../core/events";
+import { TestRunner } from "../../../../core/running/test-runner";
+import { TestOutputStream } from "../../../../core/test-output-stream";
+import { TestBuilder } from "../../../builders/test-builder";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class RunTestTests {
 

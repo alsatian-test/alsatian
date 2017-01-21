@@ -1,16 +1,16 @@
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
 import { FocusTests as FocusTestsDecorator } from "../../../core/decorators/focus-tests-decorator";
-import { Expect, Test, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class FocusTestsDecoratorTests {
 
     @Test()
     public focusTestKeyMetaDataAdded(key: string) {
 
-       let TestFixture = () => {};
+       let testFixture = () => {};
 
-       FocusTestsDecorator(TestFixture);
+       FocusTestsDecorator(testFixture);
 
-       Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixture)).toBe(true);
+       Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture)).toBe(true);
     }
 }

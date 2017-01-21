@@ -1,11 +1,11 @@
+import { AsyncTest, Expect, Setup, SpyOn, Teardown, TestCase } from "../../../../core/alsatian-core";
+import { MatchError } from "../../../../core/errors/match-error";
 import { TestRunner } from "../../../../core/running/test-runner";
-import { TestSet } from "../../../../core/test-set";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
-import { MatchError } from "../../../../core/errors/match-error";
-import { Expect, AsyncTest, SpyOn, Setup, Teardown } from "../../../../core/alsatian-core";
+import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 
 export class FailingTestsTests {
 
@@ -32,11 +32,16 @@ export class FailingTestsTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
-      testFixtureBuilder.withFixture({ failingTest: () => { throw new MatchError("nothing", "something", "expected nothing to be something."); }});
+      testFixtureBuilder.withFixture({
+          failingTest: () => {
+              throw new MatchError("nothing", "something", "expected nothing to be something.");
+          }
+      });
+
       let testBuilder = new TestBuilder();
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());
@@ -54,9 +59,9 @@ export class FailingTestsTests {
       let output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet>{};
+      let testSet = <TestSet> {};
 
-      (<any>testSet).testFixtures = [];
+      (<any> testSet).testFixtures = [];
       let testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({ failingTest: () => { throw new Error("something went wrong."); }});
       let testBuilder = new TestBuilder();

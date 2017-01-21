@@ -1,5 +1,5 @@
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { ExactMatchError } from "../../../core/errors/exact-match-error";
 
 export class ToBeDefinedTests {
 
@@ -33,7 +33,7 @@ export class ToBeDefinedTests {
 
       let expectedErrorMessage = "Expected undefined not to be undefined.";
 
-      Expect(() => expect.toBeDefined()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @TestCase(null)
@@ -50,9 +50,9 @@ export class ToBeDefinedTests {
    public notDefinedShouldThrowError(value: any) {
       let expect = Expect(value);
 
-      let expectedErrorMessage = "Expected " + JSON.stringify(value) + " to be undefined.";
+      let expectedErrorMessage = "Expected " + JSON.stringify(value).replace(",", ", ") + " to be undefined.";
 
-      Expect(() => expect.not.toBeDefined()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.not.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @Test()

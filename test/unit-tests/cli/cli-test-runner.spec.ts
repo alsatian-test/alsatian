@@ -1,6 +1,17 @@
-import { CliTestRunner } from "../../../cli/cli-test-runner";
 import { AlsatianCliOptions } from "../../../cli/alsatian-cli-options";
-import { Expect, AsyncTest, TestCase, SpyOn, Setup, Teardown, TestOutcome, TestRunner } from "../../../core/alsatian-core";
+import { CliTestRunner } from "../../../cli/cli-test-runner";
+import { AsyncTest,
+         Expect,
+         Setup,
+         SpyOn,
+         Teardown,
+         TestCase,
+         TestOutcome,
+         TestRunner,
+         TestSet } from "../../../core/alsatian-core";
+import { TestBuilder } from "../../builders/test-builder";
+import { TestCaseBuilder } from "../../builders/test-case-builder";
+import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class CliTestRunnerTests {
 
@@ -87,7 +98,7 @@ export class CliTestRunnerTests {
          const cliTestRunner = new CliTestRunner(testRunner);
 
          const testRunnerRunSpy = SpyOn(testRunner, "run");
-         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andReturn(new Promise((cliResolve, cliReject) => { cliResolve(); }));
          testRunnerRunSpy.andStub();
 
          const cliOptions = new AlsatianCliOptions([]);
@@ -100,7 +111,6 @@ export class CliTestRunnerTests {
                resolve();
             }
             catch (error) {
-               console.log((process.exit as any).calls);
                reject(error);
             }
          }, 0);
@@ -175,7 +185,7 @@ export class CliTestRunnerTests {
          const cliTestRunner = new CliTestRunner(testRunner);
 
          const testRunnerRunSpy = SpyOn(testRunner, "run");
-         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andReturn(new Promise((cliResolve, cliReject) => { cliResolve(); }));
          testRunnerRunSpy.andStub();
 
          const cliOptions = new AlsatianCliOptions([ "--tap" ]);
@@ -205,7 +215,7 @@ export class CliTestRunnerTests {
          const cliTestRunner = new CliTestRunner(testRunner);
 
          const testRunnerRunSpy = SpyOn(testRunner, "run");
-         testRunnerRunSpy.andReturn(new Promise((resolve, reject) => { resolve(); }));
+         testRunnerRunSpy.andReturn(new Promise((cliResolve, cliReject) => { cliResolve(); }));
          testRunnerRunSpy.andStub();
 
          const cliOptions = new AlsatianCliOptions([ "-T" ]);
@@ -242,7 +252,8 @@ export class CliTestRunnerTests {
 
          setTimeout(() => {
             try {
-               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               Expect(process.stdout.write)
+                .toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
                resolve();
             }
             catch (error) {
@@ -270,7 +281,8 @@ export class CliTestRunnerTests {
 
          setTimeout(() => {
             try {
-               Expect(process.stdout.write).toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
+               Expect(process.stdout.write)
+                .toHaveBeenCalledWith("alsatian version " + require("../../../package.json").version);
                resolve();
             }
             catch (error) {
@@ -360,10 +372,14 @@ export class CliTestRunnerTests {
                   "=========================\n" +
                   "CLI options\n" +
                   "=========================\n" +
-                  "HELP:    --help / -h                      (outputs CLI information)\n" +
-                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
-                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
-                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "HELP:    --help / -h                      " +
+                  "(outputs CLI information)\n" +
+                  "VERSION: --version / -v                   " +
+                  "(outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       " +
+                  "(runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] " +
+                  "(sets the timeout period for tests in milliseconds - default 500)\n" +
                   "\n");
 
                resolve();
@@ -399,10 +415,14 @@ export class CliTestRunnerTests {
                   "=========================\n" +
                   "CLI options\n" +
                   "=========================\n" +
-                  "HELP:    --help / -h                      (outputs CLI information)\n" +
-                  "VERSION: --version / -v                   (outputs the version of the CLI)\n" +
-                  "TAP:     --tap / -T                       (runs alsatian with TAP output)\n" +
-                  "TIMEOUT: --timeout [number] / -t [number] (sets the timeout period for tests in milliseconds - default 500)\n" +
+                  "HELP:    --help / -h                      " +
+                  "(outputs CLI information)\n" +
+                  "VERSION: --version / -v                   " +
+                  "(outputs the version of the CLI)\n" +
+                  "TAP:     --tap / -T                       " +
+                  "(runs alsatian with TAP output)\n" +
+                  "TIMEOUT: --timeout [number] / -t [number] " +
+                  "(sets the timeout period for tests in milliseconds - default 500)\n" +
                   "\n");
 
                resolve();

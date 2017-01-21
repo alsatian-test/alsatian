@@ -1,6 +1,6 @@
-import { Expect, TestCase, SpyOn } from "../../../core/alsatian-core";
-import { FunctionSpyMatcher } from "../../../core/matchers";
+import { Expect, SpyOn, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError } from "../../../core/errors";
+import { FunctionSpyMatcher } from "../../../core/matchers";
 import { FunctionSpy } from "../../../core/spying";
 
 export class FunctionSpyMatcherTests {
@@ -22,9 +22,10 @@ export class FunctionSpyMatcherTests {
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
-      Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(TypeError, "expectedCallCount must be greater than 0.");
+      Expect(() => spyMatcher.exactly(expectedCallCount).times)
+        .toThrowError(TypeError, "expectedCallCount must be greater than 0.");
    }
 
    @TestCase(1)
@@ -41,7 +42,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.exactly(callCount).times).not.toThrow();
    }
@@ -60,13 +61,15 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (expectedCallCount === 1) {
-         Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called 1 time.`);
+         Expect(() => spyMatcher.exactly(expectedCallCount).times)
+            .toThrowError(FunctionCallCountMatchError, `Expected function to be called 1 time.`);
       }
       else {
-         Expect(() => spyMatcher.exactly(expectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called ${expectedCallCount} times.`);
+         Expect(() => spyMatcher.exactly(expectedCallCount).times)
+            .toThrowError(FunctionCallCountMatchError, `Expected function to be called ${expectedCallCount} times.`);
       }
    }
 
@@ -81,9 +84,10 @@ export class FunctionSpyMatcherTests {
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
-      Expect(() => spyMatcher.anythingBut(expectedCallCount).times).toThrowError(TypeError, "unexpectedCallCount must be greater than 0.");
+      Expect(() => spyMatcher.anythingBut(expectedCallCount).times)
+        .toThrowError(TypeError, "unexpectedCallCount must be greater than 0.");
    }
 
    @TestCase(1, 42)
@@ -100,7 +104,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).not.toThrow();
    }
@@ -119,13 +123,16 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (unexpectedCallCount === 1) {
-         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called 1 time.`);
+         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times)
+            .toThrowError(FunctionCallCountMatchError, `Expected function not to be called 1 time.`);
       }
       else {
-         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function not to be called ${unexpectedCallCount} times.`);
+         Expect(() => spyMatcher.anythingBut(unexpectedCallCount).times)
+            .toThrowError(FunctionCallCountMatchError,
+                         `Expected function not to be called ${unexpectedCallCount} times.`);
       }
    }
 
@@ -140,9 +147,10 @@ export class FunctionSpyMatcherTests {
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
-      Expect(() => spyMatcher.lessThan(expectedCallCount).times).toThrowError(TypeError, "maximumCallCount must be greater than 0.");
+      Expect(() => spyMatcher.lessThan(expectedCallCount).times)
+        .toThrowError(TypeError, "maximumCallCount must be greater than 0.");
    }
 
    @TestCase(1, 0)
@@ -159,7 +167,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.lessThan(maximumCallCount).times).not.toThrow();
    }
@@ -178,13 +186,16 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (maximumCallCount === 1) {
-         Expect(() => spyMatcher.lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called less than 1 time.`);
+         Expect(() => spyMatcher.lessThan(maximumCallCount).times)
+            .toThrowError(FunctionCallCountMatchError, `Expected function to be called less than 1 time.`);
       }
       else {
-         Expect(() => spyMatcher.lessThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called less than ${maximumCallCount} times.`);
+         Expect(() => spyMatcher.lessThan(maximumCallCount).times)
+            .toThrowError(FunctionCallCountMatchError,
+                         `Expected function to be called less than ${maximumCallCount} times.`);
       }
    }
 
@@ -199,9 +210,10 @@ export class FunctionSpyMatcherTests {
 
       SpyOn(some, "function");
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
-      Expect(() => spyMatcher.greaterThan(expectedCallCount).times).toThrowError(TypeError, "minimumCallCount must be greater than 0.");
+      Expect(() => spyMatcher.greaterThan(expectedCallCount).times)
+        .toThrowError(TypeError, "minimumCallCount must be greater than 0.");
    }
 
    @TestCase(1, 2)
@@ -218,7 +230,7 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       Expect(() => spyMatcher.greaterThan(maximumCallCount).times).not.toThrow();
    }
@@ -237,13 +249,16 @@ export class FunctionSpyMatcherTests {
          some.function();
       }
 
-      const spyMatcher = new FunctionSpyMatcher(<any>some.function);
+      const spyMatcher = new FunctionSpyMatcher(<any> some.function);
 
       if (maximumCallCount === 1) {
-         Expect(() => spyMatcher.greaterThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called greater than 1 time.`);
+         Expect(() => spyMatcher.greaterThan(maximumCallCount).times)
+            .toThrowError(FunctionCallCountMatchError, `Expected function to be called greater than 1 time.`);
       }
       else {
-         Expect(() => spyMatcher.greaterThan(maximumCallCount).times).toThrowError(FunctionCallCountMatchError, `Expected function to be called greater than ${maximumCallCount} times.`);
+         Expect(() => spyMatcher.greaterThan(maximumCallCount).times)
+            .toThrowError(FunctionCallCountMatchError,
+                         `Expected function to be called greater than ${maximumCallCount} times.`);
       }
    }
 }

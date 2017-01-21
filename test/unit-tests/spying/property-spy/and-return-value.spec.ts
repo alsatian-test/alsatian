@@ -1,5 +1,5 @@
-import { PropertySpy } from "../../../../core/spying";
 import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
+import { PropertySpy } from "../../../../core/spying";
 
 export class PropertySpyTests {
 
@@ -26,7 +26,7 @@ export class PropertySpyTests {
    @TestCase("")
    @TestCase("something")
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase([])
    @TestCase([ "an", "array" ])
    public getterReturnsGivenValue(value: any) {

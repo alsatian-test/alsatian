@@ -1,6 +1,6 @@
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
 import { IgnoreTest as IgnoreTestDecorator } from "../../../core/decorators/ignore-test-decorator";
-import { Expect, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 
 export class IgnoreTestDecoratorTests {
 

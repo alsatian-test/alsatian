@@ -1,4 +1,4 @@
-import { Expect, TestCase, SpyOn, TestOutputStream } from "../../../core/alsatian-core";
+import { Expect, SpyOn, TestCase, TestOutputStream } from "../../../core/alsatian-core";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class EmitFixtureTests {

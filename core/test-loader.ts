@@ -1,19 +1,19 @@
-import { ITestFixture, ITest, ITestCase } from "./_interfaces";
 import { FileRequirer, TestFixture } from "./";
+import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
 
    public constructor(private _fileRequirer: FileRequirer) { }
 
-   loadTestFixture(filePath: string): Array<ITestFixture> {
-      let Test = this._fileRequirer.require(filePath);
-      let testFixtureKeys = Object.keys(Test);
+   public loadTestFixture(filePath: string): Array<ITestFixture> {
+      let testFixureModule = this._fileRequirer.require(filePath);
+      let testFixtureKeys = Object.keys(testFixureModule);
       let testFixtures: Array<ITestFixture> = [];
 
       // if the default export is class constructor
-      if (typeof Test === "function") {
-         let testFixture = this._loadTestFixture(Test, Test.name);
+      if (typeof testFixureModule === "function") {
+         let testFixture = this._loadTestFixture(testFixureModule, testFixureModule.name);
          if (testFixture !== null) {
             testFixtures.push(testFixture);
          }
@@ -21,8 +21,8 @@ export class TestLoader {
       // otherwise there are multiple exports and we must handle all of them
       else {
          testFixtureKeys.forEach(testFixtureKey => {
-            if (typeof Test[testFixtureKey] === "function") {
-               let testFixture = this._loadTestFixture(Test[testFixtureKey], testFixtureKey);
+            if (typeof testFixureModule[testFixtureKey] === "function") {
+               let testFixture = this._loadTestFixture(testFixureModule[testFixtureKey], testFixtureKey);
                if (testFixture !== null) {
                   testFixtures.push(testFixture);
                }
@@ -75,7 +75,10 @@ export class TestLoader {
             test.ignored = true;
 
             // individual test ignore reasons take precedence over test fixture ignore reasons
-            test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture.fixture, test.key) || testFixture.ignoreReason;
+            test.ignoreReason = Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON,
+                                                    testFixture.fixture,
+                                                    test.key)
+                             || testFixture.ignoreReason;
          }
 
          test.focussed = false;

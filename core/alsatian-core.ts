@@ -1,8 +1,8 @@
 import {
    Expect,
    Matcher,
-   TestSet,
-   TestOutputStream
+   TestOutputStream,
+   TestSet
 } from "./";
 
 import {
@@ -15,9 +15,9 @@ import {
    IgnoreTests,
    Setup,
    Teardown,
-   TestFixture,
    Test,
    TestCase,
+   TestFixture,
    Timeout
 } from "./decorators";
 
@@ -29,11 +29,11 @@ import {
 } from "./spying";
 
 import {
-   TestSetResults,
-   TestOutcome,
+   TestCaseResult,
    TestFixtureResults,
+   TestOutcome,
    TestResults,
-   TestCaseResult
+   TestSetResults
 } from "./results";
 
 import {

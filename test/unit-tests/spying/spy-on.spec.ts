@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase, SpyOn } from "../../../core/alsatian-core";
+import { Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 
 export class SpyOnTests {
 
@@ -18,10 +18,10 @@ export class SpyOnTests {
    @Test()
    public functionStillWorks() {
       let object = {
-         functionCalled: false,
          function: () => {
             object.functionCalled = true;
-         }
+         },
+         functionCalled: false
       };
 
       let originalFunction = object.function;
@@ -42,8 +42,8 @@ export class SpyOnTests {
 
       SpyOn(object, "function");
 
-      Expect((<any>object.function).calls).toBeDefined();
-      Expect((<any>object.function).calls).not.toBeNull();
+      Expect((<any> object.function).calls).toBeDefined();
+      Expect((<any> object.function).calls).not.toBeNull();
    }
 
    @Test()

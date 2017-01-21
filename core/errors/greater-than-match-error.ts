@@ -1,4 +1,4 @@
-import { MatchError } from "../errors";
+import { MatchError } from "./match-error";
 
 export class GreaterThanMatchError extends MatchError {
 

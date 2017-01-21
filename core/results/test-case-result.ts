@@ -1,6 +1,6 @@
-import { TestOutcome } from "./test-outcome";
 import { ITest } from "../_interfaces/test.i";
 import { MatchError } from "../errors";
+import { TestOutcome } from "./test-outcome";
 
 export class TestCaseResult {
 

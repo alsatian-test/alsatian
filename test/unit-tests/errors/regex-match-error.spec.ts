@@ -1,5 +1,5 @@
-import { RegexMatchError } from "../../../core/errors/regex-match-error";
 import { Expect, TestCase } from "../../../core/alsatian-core";
+import { RegexMatchError } from "../../../core/errors/regex-match-error";
 
 export class EqualMatchErrorTests {
 
@@ -16,6 +16,6 @@ export class EqualMatchErrorTests {
    public shouldNotMatchMessage(actualValue: any, expectedRegex: any) {
       let error = new RegexMatchError(actualValue, expectedRegex, false);
 
-      Expect(error.message).toBe("Expected " + JSON.stringify(actualValue) + " not to conform to " + expectedRegex + ".");
+      Expect(error.message).toBe(`Expected ${JSON.stringify(actualValue)} not to conform to ${expectedRegex}.`);
    }
  }

@@ -1,5 +1,5 @@
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { ExactMatchError } from "../../../core/errors/exact-match-error";
 
 export class ToBeTests {
 
@@ -35,7 +35,7 @@ export class ToBeTests {
    public differentValuesThrowsExactMatchError () {
       let expect = Expect(1);
 
-      Expect(() => expect.toBe(2)).toThrowError(<any>ExactMatchError, "Expected 1 to be 2.");
+      Expect(() => expect.toBe(2)).toThrowError(ExactMatchError, "Expected 1 to be 2.");
    }
 
    @TestCase("something", "something else")
@@ -55,7 +55,8 @@ export class ToBeTests {
    public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toBe(expected))
+        .toThrowError(ExactMatchError, `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}.`);
    }
 
    @TestCase(undefined, null)
@@ -69,11 +70,11 @@ export class ToBeTests {
    }
 
    @TestCase({})
-   @TestCase({ "with": "something" })
-   @TestCase({ "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42})
+   @TestCase({ with: "something" })
+   @TestCase({ with: { something: "more" }, complex: "!", foSho: true, answer: 42})
    @TestCase([])
    @TestCase([ 1, 2, 3 ])
-   @TestCase([ { "with": "something" }, { "and": "something", "else": "!"} ])
+   @TestCase([ { with: "something" }, { and: "something", else: "!"} ])
    public identicalComplexTypesDontThrow(value: any) {
       let expect = Expect(value);
 
@@ -81,34 +82,38 @@ export class ToBeTests {
    }
 
    @TestCase({}, {})
-   @TestCase({ "with": "something" }, { "with": "something" })
-   @TestCase({ "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42},
-             { "with": { "something": "more" }, "complex": "!", foSho: true, answer: 42})
+   @TestCase({ with: "something" }, { with: "something" })
+   @TestCase({ with: { something: "more" }, complex: "!", foSho: true, answer: 42},
+             { with: { something: "more" }, complex: "!", foSho: true, answer: 42})
    @TestCase([], [])
    @TestCase([ 1, 2, 3 ], [ 1, 2, 3 ])
-   @TestCase([ { "with": "something" }, { "and": "something", "else": "!"} ],
-             [ { "with": "something" }, { "and": "something", "else": "!"} ])
+   @TestCase([ { with: "something" }, { and: "something", else: "!"} ],
+             [ { with: "something" }, { and: "something", else: "!"} ])
    public matchingComplexTypesThrow(expected: any, actual: any) {
       let expect = Expect(actual);
 
       Expect(() => expect.toBe(expected)).toThrow();
    }
 
-   @TestCase({}, { "with": "something" })
-   @TestCase({ "with": "something" }, { })
+   @TestCase({}, { with: "something" })
+   @TestCase({ with: "something" }, { })
    @TestCase([], [ 1, 2, 3 ])
    @TestCase([ 1, 2, 3 ], [])
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
       let expect = Expect(actual);
 
-      Expect(() => expect.toBe(expected)).toThrowError(<any>ExactMatchError, "Expected " + JSON.stringify(actual) + " to be " + JSON.stringify(expected) + ".");
+      Expect(() => expect.toBe(expected))
+        .toThrowError(
+            ExactMatchError,
+            `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
+            `to be ${JSON.stringify(expected).replace(/,/g, ", ")}.`);
    }
 
    @TestCase({}, [])
    @TestCase([], {})
-   @TestCase({ "with": "something" }, [ 1, 2, 3 ])
-   @TestCase([ 1, 2, 3 ], { "with": "something" })
-   @TestCase([ ], { "with": "something" })
+   @TestCase({ with: "something" }, [ 1, 2, 3 ])
+   @TestCase([ 1, 2, 3 ], { with: "something" })
+   @TestCase([ ], { with: "something" })
    @TestCase([ 1, 2, 3 ], { })
    public differentComplexTypesToThrow(expected: any, actual: any) {
       let expect = Expect(actual);

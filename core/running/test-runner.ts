@@ -1,12 +1,20 @@
-
-import { TestSetResults, TestFixtureResults, TestResults, TestCaseResult, TestSet, TestOutputStream } from "../alsatian-core";
+import "reflect-metadata";
+import { ITest, ITestFixture } from "../_interfaces";
+import { MatchError,
+         TestCaseResult,
+         TestFixtureResults,
+         TestOutputStream,
+         TestResults,
+         TestSet,
+         TestSetResults,
+         TestTimeoutError } from "../alsatian-core";
+import { IOnTestCompleteCBFunction, ITestCompleteEvent } from "../events";
+import { TestItem } from "./test-item";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
-import { ITestCompleteEvent, IOnTestCompleteCBFunction } from "../events";
-import "reflect-metadata";
 
 export class TestRunner {
-    private _onTestCompleteCBs: IOnTestCompleteCBFunction[] = [];
+    private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
     private _outputStream: TestOutputStream;
     public get outputStream() {
         return this._outputStream;
@@ -89,12 +97,12 @@ export class TestRunner {
             if (this._onTestCompleteCBs) {
                 this._onTestCompleteCBs.forEach(onTestCompleteCB => {
                    onTestCompleteCB({
-                        testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1,
-                        test: testItem.test,
-                        testFixture: testItem.testFixture,
+                        error: errorOccurredRunningTest,
                         outcome: result.outcome,
+                        test: testItem.test,
                         testCase: testItem.testCase,
-                        error: errorOccurredRunningTest
+                        testFixture: testItem.testFixture,
+                        testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
                     });
                 });
             }

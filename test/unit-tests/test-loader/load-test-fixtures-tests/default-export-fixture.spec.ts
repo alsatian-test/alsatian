@@ -1,7 +1,7 @@
-import { TestLoader } from "../../../../core/test-loader";
-import { FileRequirer } from "../../../../core/file-requirer";
-import { Expect, Test, SpyOn, METADATA_KEYS } from "../../../../core/alsatian-core";
 import "reflect-metadata";
+import { Expect, METADATA_KEYS, SpyOn, Test } from "../../../../core/alsatian-core";
+import { FileRequirer } from "../../../../core/file-requirer";
+import { TestLoader } from "../../../../core/test-loader";
 
 export class DefaultExportFixtureTests {
 
@@ -29,10 +29,10 @@ export class DefaultExportFixtureTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+     let testFixtureInstance = {};
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      let testFixtureConstructor = () => testFixtureInstance;
+     let testFixtureConstructor = () => testFixtureInstance;
 
      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureConstructor);
 
@@ -69,10 +69,10 @@ export class DefaultExportFixtureTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+     let testFixtureInstance = {};
+     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      let testFixtureConstructor = () => testFixtureInstance;
+     let testFixtureConstructor = () => testFixtureInstance;
 
      Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureConstructor);
 
@@ -90,9 +90,9 @@ export class DefaultExportFixtureTests {
 
      let fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {};
+     let testFixtureInstance = {};
 
-      let testFixtureConstructor = () => testFixtureInstance;
+     let testFixtureConstructor = () => testFixtureInstance;
 
      let spy = SpyOn(fileRequirer, "require");
      spy.andStub();

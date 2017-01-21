@@ -2,7 +2,10 @@ import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
 
 export function AsyncTest(description?: string) {
-   return  (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<(...args: any[]) => Promise<any>>) => {
+
+   return (target: any,
+           propertyKey: string,
+           descriptor: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>) => {
 
       // check if this has been registered as a test already
       let tests: Array<any> = Reflect.getMetadata(TESTS, target);
@@ -21,9 +24,9 @@ export function AsyncTest(description?: string) {
       }
 
       // mark it as async and add the description
-      let test = tests.filter(test => test.key === propertyKey)[0];
-      test.isAsync = true;
-      test.description = description;
+      const testDefinition = tests.filter(test => test.key === propertyKey)[0];
+      testDefinition.isAsync = true;
+      testDefinition.description = description;
 
       // update the register
       Reflect.defineMetadata(TESTS, tests, target);

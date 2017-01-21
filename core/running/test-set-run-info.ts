@@ -1,6 +1,6 @@
 import { TestSetResults } from "../alsatian-core";
-import { TestPlan } from "./test-plan";
 import { TestItem } from "./test-item";
+import { TestPlan } from "./test-plan";
 
 export class TestSetRunInfo {
 

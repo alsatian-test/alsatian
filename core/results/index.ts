@@ -1,13 +1,13 @@
-import { TestSetResults } from "./test-set-results";
-import { TestFixtureResults } from "./test-fixture-results";
-import { TestResults } from "./test-results";
 import { TestCaseResult } from "./test-case-result";
+import { TestFixtureResults } from "./test-fixture-results";
 import { TestOutcome } from "./test-outcome";
+import { TestResults } from "./test-results";
+import { TestSetResults } from "./test-set-results";
 
 export {
-    TestSetResults,
-    TestFixtureResults,
-    TestResults,
     TestCaseResult,
-    TestOutcome
+    TestFixtureResults,
+    TestOutcome,
+    TestResults,
+    TestSetResults
 };

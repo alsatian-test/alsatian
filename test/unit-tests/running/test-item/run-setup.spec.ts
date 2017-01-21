@@ -1,4 +1,4 @@
-import { AsyncTest, TestCase, Expect, METADATA_KEYS, FunctionSpy } from "../../../../core/alsatian-core";
+import { AsyncTest, Expect, FunctionSpy, METADATA_KEYS, TestCase } from "../../../../core/alsatian-core";
 import { TestItem } from "../../../../core/running/test-item";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
@@ -12,11 +12,9 @@ export class TestItemRunSetupTests {
    public async successfulSyncSetup(setupFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => {};
-
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
-                                    testFunction: testFunction
+                                    testFunction: () => {}
                                  })
                                  .addTest(test)
                                  .build();
@@ -50,11 +48,9 @@ export class TestItemRunSetupTests {
    public async successfulAsyncSetup(setupFunctionCount: number) {
       const test = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFunction = () => {};
-
       const testFixture = new TestFixtureBuilder()
                                  .withFixture({
-                                    testFunction: testFunction
+                                    testFunction: () => {}
                                  })
                                  .addTest(test)
                                  .build();

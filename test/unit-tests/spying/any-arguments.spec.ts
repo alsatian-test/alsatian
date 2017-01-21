@@ -1,6 +1,6 @@
+import { Expect, TestCase } from "../../../core/alsatian-core";
 import { Any } from "../../../core/spying/any-argument";
 import { TypeMatcher } from "../../../core/spying/type-matcher";
-import { Expect, TestCase } from "../../../core/alsatian-core";
 
 export class AnyArgumentsTests {
 

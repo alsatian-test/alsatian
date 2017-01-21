@@ -1,5 +1,5 @@
-import { TypeMatcher } from "../../../../core/spying/type-matcher";
 import { Expect, TestCase } from "../../../../core/alsatian-core";
+import { TypeMatcher } from "../../../../core/spying/type-matcher";
 
 export class TypeMatcherTestFunctionTests {
 
@@ -27,9 +27,9 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(new Array([]))
@@ -65,9 +65,9 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(new Array([]))
@@ -103,9 +103,9 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Number(42))
    @TestCase(new Number(-42))
    @TestCase({})
-   @TestCase({ "an": "object"})
+   @TestCase({ an: "object"})
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase([])
    @TestCase([ "an", "array" ])
    @TestCase(new Array([]))
@@ -126,7 +126,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase(new Array([]))
    @TestCase(new Array([ "an", "array" ]))
    @TestCase(new Error())
@@ -177,7 +177,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase(new Error())
    @TestCase(new Error("something went wrong"))
    public arrayTypeAndNonArrayValueReturnsTrue(value: any) {
@@ -211,7 +211,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
    @TestCase(new Object({}))
-   @TestCase(new Object({ "an": "object"}))
+   @TestCase(new Object({ an: "object"}))
    @TestCase(new Array([]))
    @TestCase(new Array([ "an", "array" ]))
    public errorTypeAndNonErrorValueReturnsTrue(value: any) {

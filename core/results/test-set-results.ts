@@ -1,6 +1,6 @@
 import { ITestFixture } from "../_interfaces/test-fixture.i";
-import { TestOutcome } from "./test-outcome";
 import { TestFixtureResults } from "./test-fixture-results";
+import { TestOutcome } from "./test-outcome";
 
 export class TestSetResults {
 

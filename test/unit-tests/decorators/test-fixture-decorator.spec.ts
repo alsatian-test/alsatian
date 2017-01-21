@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { TestFixture as TestFixtureDecorator } from "../../../core/decorators/test-fixture-decorator";
-import { Expect, Test, TestFixture, TestCase, METADATA_KEYS } from "../../../core/alsatian-core";
 import { TestFixture as TestFixtureMetadata } from "../../../core/";
+import { Expect, METADATA_KEYS, SpyOnProperty, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import { TestFixture as TestFixtureDecorator } from "../../../core/decorators/test-fixture-decorator";
 
 @TestFixture("Test Fixture Decorator Tests")
 export class TestFixtureDecoratorTests {
@@ -55,7 +55,7 @@ export class TestFixtureDecoratorTests {
         const testFixtureDecorator = TestFixtureDecorator();
 
         const testFixtureConstructor = <Function> { };
-        (<any>testFixtureConstructor).name = testFixtureClassName;
+        (<any> testFixtureConstructor).name = testFixtureClassName;
 
         testFixtureDecorator(testFixtureConstructor);
 

@@ -1,5 +1,5 @@
+import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { FunctionSpy } from "../../../../core/spying/function-spy";
-import { Expect, TestCase, SpyOn } from "../../../../core/alsatian-core";
 
 export class AndCallTests {
 
@@ -7,11 +7,11 @@ export class AndCallTests {
    @TestCase(undefined)
    @TestCase(42)
    @TestCase("something")
-   @TestCase({ "an": "object" })
+   @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public spyShoulReturnCorrectValue(returnValue: any) {
       let someObject = {
-         func: () => { }
+         func: () => {}
       };
 
       SpyOn(someObject, "func").andCall(() => {

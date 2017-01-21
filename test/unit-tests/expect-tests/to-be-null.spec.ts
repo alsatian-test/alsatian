@@ -1,5 +1,5 @@
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { ExactMatchError } from "../../../core/errors/exact-match-error";
 
 export class ToBeNullTests {
 
@@ -41,9 +41,15 @@ export class ToBeNullTests {
    public nullShouldThrowCorrectErrorWithCorrectMessageForNonNullValues(value: any) {
       let expect = Expect(value);
 
-      let expectedErrorMessage = "Expected " + JSON.stringify(value) + " to be null.";
+      let stringifiedArgument = JSON.stringify(value);
 
-      Expect(() => expect.toBeNull()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      if (stringifiedArgument) {
+          stringifiedArgument = stringifiedArgument.replace(",", ", ");
+      }
+
+      let expectedErrorMessage = "Expected " + stringifiedArgument + " to be null.";
+
+      Expect(() => expect.toBeNull()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @Test()
@@ -52,7 +58,7 @@ export class ToBeNullTests {
 
       let expectedErrorMessage = "Expected null not to be null.";
 
-      Expect(() => expect.not.toBeNull()).toThrowError(<any>ExactMatchError, expectedErrorMessage);
+      Expect(() => expect.not.toBeNull()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @TestCase(undefined)

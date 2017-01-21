@@ -1,6 +1,6 @@
-import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { AlsatianCliOptions } from "../../../../cli/alsatian-cli-options";
 import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-argument-error";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 
 export class TapOptionTests {
 
@@ -24,7 +24,7 @@ export class TapOptionTests {
    @TestCase("-T", "-T")
    public duplicateTapArgumentsThrowsError(firstArgument: string, secondArgument: string) {
       Expect(() => {
-        new AlsatianCliOptions([ firstArgument, secondArgument ]);
+        const options = new AlsatianCliOptions([ firstArgument, secondArgument ]);
       }).toThrowError(DuplicateCliArgumentError, "Duplicate \"tap\" arguments were provided.");
    }
 

@@ -1,5 +1,5 @@
-
-import { Expect, Test, SpyOn } from "../../../../core/alsatian-core";
+import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
 
 export class RestoreTests {
 

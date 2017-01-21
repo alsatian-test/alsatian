@@ -2,9 +2,14 @@ import { Any, TypeMatcher } from "../spying";
 
 export class SpyCall {
 
-   private _args: Array<any> = [];
    public get args() {
       return this._args;
+   }
+
+   private _args: Array<any> = [];
+
+   public constructor(args: Array<any>) {
+      this._args = args;
    }
 
    public allArgumentsMatch(... expectedArguments: Array<any>): boolean {
@@ -28,9 +33,5 @@ export class SpyCall {
       }
 
       return actualArgument === expectedArgument;
-   }
-
-   public constructor(args: Array<any>) {
-      this._args = args;
    }
 }
