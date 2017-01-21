@@ -1,6 +1,5 @@
 import { Builder, By, Capabilities, WebDriver } from "selenium-webdriver";
-import { AsyncTest, AsyncSetup, AsyncTeardown, Expect, TestFixture } from "../../../core/alsatian-core";
-
+import { AsyncSetup, AsyncTeardown, AsyncTest, Expect, TestFixture } from "../../../core/alsatian-core";
 
 @TestFixture("Alsatian Wiki")
 export default class AlsatianWikiEndToEndTests {
