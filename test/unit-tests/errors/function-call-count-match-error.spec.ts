@@ -214,7 +214,7 @@ export class FunctionCallCountMatchErrorTests {
       let error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.LessThan, expectedArguments);
 
       Expect(error.message)
-        .toBe(`Expected function not to be called with ` +
+        .toBe(`Expected function to be called with ` +
               `[${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}] less than 1 time.`);
    }
 
@@ -741,7 +741,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function not to be called with [Any ${(<any> typeOne).name}, Any ${(<any> typeTwo).name}1 time.`);
+        .toBe(`function not to be called with [Any ${(<any> typeOne).name}, Any ${(<any> typeTwo).name}] 1 time.`);
    }
 
    @TestCase(Number)

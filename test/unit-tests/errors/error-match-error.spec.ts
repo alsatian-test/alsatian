@@ -105,7 +105,7 @@ export class ErrorMatchErrorTests {
       let error = new ErrorMatchError(new expectedErrorType(message), false, expectedErrorType, message);
 
       Expect(error.message)
-        .toBe(`Expected an error with message "${message} ` +
+        .toBe(`Expected an error with message "${message}" ` +
               `and type ${(<any> expectedErrorType).name} to not have been thrown, but it was.`);
    }
 
