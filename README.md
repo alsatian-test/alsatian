@@ -55,6 +55,7 @@ So many awesome things!
 * write end to end tests with [Selenium](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium)
 * check your code coverage with NYC
 * set up a wonderful CI process and give confidence in the quality of your product
+* have the output look however you desire using TAP reporters
 
 ## Quick Start
 
