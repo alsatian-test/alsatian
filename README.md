@@ -49,6 +49,13 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
 ![Alsatian Test Run Video](https://github.com/alsatian-test/alsatian/raw/master/documentation/images/alsatian-test-run.gif)
 
+## Besides unit tests, what can I do with Alsatian
+
+So many awesome things!
+* write end to end tests with [Selenium](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium)
+* check your code coverage with NYC
+* set up a wonderful CI process and give confidence in the quality of your product
+
 ## Quick Start
 
 If you're loving TypeScript then pop on down to our [TypeScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/typescript-setup).
