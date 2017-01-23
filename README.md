@@ -61,3 +61,7 @@ So many awesome things!
 If you're loving TypeScript then pop on down to our [TypeScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/typescript-setup).
 
 Otherwise if you're more of a JavaScript kinda person, have a gander at our [JavaScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/javascript-setup)
+
+## Support
+
+If at any time things are unclear or you think there may be something going wrong feel free to [raise an issue](https://github.com/alsatian-test/alsatian/issues/new) and we'll be glad to get back to you with a solution quickly.
