@@ -36,7 +36,7 @@
 The key question! Well Alsatian has a lot going for it here are just a few great things to note:
 
 * All the awesome features you love from existing frameworks
-* TestCase decorator allows you to write smaller, DRY and more readable tests
+* The [TestCase](https://github.com/alsatian-test/alsatian/wiki/test-structure#test-cases) decorator allows you to write smaller, DRY and more readable tests
 * No globals!
 * TAP support so you can use your favourite TAP reporter
 * Great CI process, every pull request and push on every branch is scrutinised to ensure high quality
@@ -44,7 +44,7 @@ The key question! Well Alsatian has a lot going for it here are just a few great
 * Various services rate us very highly on lots of different factors, check out our badges
 * Everything is documented in a friendly and simple way to help you get to the unit test setup of your dreams
 * Being written in TypeScript it fits perfectly into your TypeScript but still compatible with JavaScript too!
-* Active support if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
+* Active support - if you've got a question, a suggestion or found an issue let us know and we'll get back to you quickly
 
 Also it's lightning fast, watch it run all of it's unit tests in super quick time!
 ![Alsatian Test Run Video](https://github.com/alsatian-test/alsatian/raw/master/documentation/images/alsatian-test-run.gif)
