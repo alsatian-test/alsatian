@@ -1,4 +1,5 @@
 import { ContentsMatchError } from "./contents-match-error";
+import { EmptyMatchError } from "./empty-match-error";
 import { EqualMatchError } from "./equal-match-error";
 import { ErrorMatchError } from "./error-match-error";
 import { ExactMatchError } from "./exact-match-error";
@@ -25,5 +26,6 @@ export {
     FunctionCallMatchError,
     FunctionCallCountMatchError,
     TestTimeoutError,
-    PropertySetMatchError
+    PropertySetMatchError,
+    EmptyMatchError
 };
