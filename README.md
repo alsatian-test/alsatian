@@ -69,6 +69,10 @@ Full documentation can be found [here](https://github.com/alsatian-test/alsatian
 
 If at any time things are unclear or you think there may be something going wrong feel free to [raise an issue](https://github.com/alsatian-test/alsatian/issues/new) and we'll be glad to get back to you with a solution quickly.
 
+## Contributing
+
+We're always glad to have help out with Alsatian, check out the [guidelines](https://github.com/alsatian-test/alsatian/blob/master/CONTRIBUTING.md)]
+
 ## License
 
 Alsatian has been released under the MIT license which can be found [here](https://github.com/alsatian-test/alsatian/blob/master/LICENSE)
