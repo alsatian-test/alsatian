@@ -32,7 +32,47 @@
     </a>
 </p>
 
+## Quick Start
+
+If you're loving TypeScript then pop on down to our [TypeScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/typescript-setup).
+
+Otherwise if you're more of a JavaScript kinda person, have a gander at our [JavaScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/javascript-setup)
+
+Full documentation can be found [here](https://github.com/alsatian-test/alsatian/wiki/) the examples are usually in TypeScript but should be pretty much the same code for JavaScript (just lose the access modifiers and types).
+
+## Alsatian is different
+
+Using a different approach than other JavaScript test frameworks allows us to use more powerful patterns.
+
+```typescript
+// no globals and typing support out of the box with intellisense
+import { AsyncTest, Expect, Test, TestCase, TestFixture } from "alsatian";
+
+@TestFixture("whatever you'd like to call the fixture")
+export class SetOfTests {
+    
+    // use the async/await pattern in your tests as you would in your code
+    @AsyncTest("asychronous test")
+    public asyncTest() {
+        const response = await somethingToHappen();
+
+        Expect(response).toBeDefined();
+    }
+
+    // pass arguments into your test functions to keep your test code from being repetative
+    @TestCase(2, 2, 4)
+    @TestCase(2, 3, 5)
+    @TestCase(3, 3, 6)
+    @Test("addition tests")
+    public addTest(firstNumber: number, secondNumber: number, expectedSum: number) {
+        Expect(firstNumber + secondNumber).toBe(expectedSum);
+    }
+}
+
+```
+
 ## Why would I use Alsatian?
+
 The key question! Well Alsatian has a lot going for it here are just a few great things to note:
 
 * All the awesome features you love from existing frameworks
@@ -56,14 +96,6 @@ So many awesome things!
 * check your code coverage with NYC
 * set up a wonderful CI process and give confidence in the quality of your product
 * have the output look however you desire using TAP reporters
-
-## Quick Start
-
-If you're loving TypeScript then pop on down to our [TypeScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/typescript-setup).
-
-Otherwise if you're more of a JavaScript kinda person, have a gander at our [JavaScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/javascript-setup)
-
-Full documentation can be found [here](https://github.com/alsatian-test/alsatian/wiki/) the examples are usually in TypeScript but should be pretty much the same code for JavaScript (just lose the access modifiers and types).
 
 ## Support
 
