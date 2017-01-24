@@ -2,7 +2,7 @@
 
 Let's keep this simple, Social Coding should be fun so we're going to lay off the rules and only have essential rules so we can keep it that way.
 
-## First of thanks
+## First off - thanks
 
 Social coding is great so thank you for being a part of it! Hats off to you!!!
 
