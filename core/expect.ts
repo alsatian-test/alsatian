@@ -185,15 +185,27 @@ export class Matcher {
    }
 
    /**
-    * Checks that an array is empty
+    * Checks that an array is empty, a string is empty, or an object literal has no properties
     */
    public toBeEmpty() {
-      if (!Array.isArray(this._actualValue)) {
-         throw new TypeError("toBeEmpty requires value passed in to Expect to be an array");
+      if (null === this.actualValue || undefined === this.actualValue) {
+         throw new TypeError("toBeEmpty requires value passed in to Expect not to be null or undefined");
       }
 
-      if ((this.actualValue.length === 0) !== this.shouldMatch) {
-         throw new EmptyMatchError(this._actualValue, this.shouldMatch);
+      if (typeof this.actualValue === "string") {
+         if ((this.actualValue.length === 0) !== this.shouldMatch) {
+            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+         }
+      } else if (Array.isArray(this.actualValue)) {
+         if ((this.actualValue.length === 0) !== this.shouldMatch) {
+            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+         }
+      } else if (this.actualValue.constructor === Object) {
+         if ((Object.keys(this.actualValue).length === 0) !== this.shouldMatch) {
+            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+         }
+      } else {
+         throw new TypeError("toBeEmpty requires value passed in to Expect to be an array, string or object literal");
       }
    }
 

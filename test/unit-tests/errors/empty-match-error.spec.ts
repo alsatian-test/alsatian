@@ -16,4 +16,11 @@ export class EmptyMatchErrorTests {
 
       Expect(error.message).toBe(`Expected "${JSON.stringify([])}" not to be empty.`);
    }
+
+   @Test()
+   public doesNotDoubleQuoteStrings() {
+      let error = new EmptyMatchError("something", false);
+
+      Expect(error.message).toBe(`Expected "something" not to be empty.`);
+   }
 }

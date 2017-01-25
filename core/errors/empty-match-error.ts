@@ -6,7 +6,7 @@ export class EmptyMatchError extends MatchError {
    public constructor(actualValue: any, shouldMatch: boolean) {
       super();
 
-      const value = new ArgumentStringifier().stringify(actualValue);
+      const value = (typeof actualValue === "string") ? actualValue : new ArgumentStringifier().stringify(actualValue);
 
       this.message = `Expected "${value}" ${shouldMatch ? "to be" : "not to be"} empty.`;
 
