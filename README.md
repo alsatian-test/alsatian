@@ -93,7 +93,7 @@ Also it's lightning fast, watch it run all of it's unit tests in super quick tim
 
 So many awesome things!
 * write end to end tests with [Selenium](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium)
-* check your code coverage with NYC
+* check your code coverage with [NYC](https://github.com/alsatian-test/alsatian/wiki/check-test-coverage-with-nyc)
 * set up a wonderful CI process and give confidence in the quality of your product
 * have the output look however you desire using TAP reporters
 
