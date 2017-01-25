@@ -38,7 +38,7 @@ If you're loving TypeScript then pop on down to our [TypeScript Quick Start](htt
 
 Otherwise if you're more of a JavaScript kinda person, have a gander at our [JavaScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/javascript-setup)
 
-Full documentation can be found [here](https://github.com/alsatian-test/alsatian/wiki/) the examples are usually in TypeScript but should be pretty much the same code for JavaScript (just lose the access modifiers and types).
+Full documentation can be found on our [wiki](https://github.com/alsatian-test/alsatian/wiki/) the examples are usually in TypeScript but should be pretty much the same code for JavaScript (just lose the access modifiers and types).
 
 ## Alsatian is different
 
@@ -103,7 +103,7 @@ If at any time things are unclear or you think there may be something going wron
 
 ## Contributing
 
-We're always glad to have help out with Alsatian, check out the [guidelines](https://github.com/alsatian-test/alsatian/blob/master/CONTRIBUTING.md)]
+We're always glad to have help out with Alsatian, check out the [guidelines](https://github.com/alsatian-test/alsatian/blob/master/CONTRIBUTING.md)
 
 ## License
 
