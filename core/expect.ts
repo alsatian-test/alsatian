@@ -192,11 +192,7 @@ export class Matcher {
          throw new TypeError("toBeEmpty requires value passed in to Expect not to be null or undefined");
       }
 
-      if (typeof this.actualValue === "string") {
-         if ((this.actualValue.length === 0) !== this.shouldMatch) {
-            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
-         }
-      } else if (Array.isArray(this.actualValue)) {
+      if (typeof this.actualValue === "string" || Array.isArray(this.actualValue)) {
          if ((this.actualValue.length === 0) !== this.shouldMatch) {
             throw new EmptyMatchError(this.actualValue, this.shouldMatch);
          }
