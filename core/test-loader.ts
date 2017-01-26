@@ -34,9 +34,9 @@ export class TestLoader {
    }
 
    private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture {
-      // get test fixture metadata or create new metadata 
-      // to support not requiring the TestFixture decorator. 
-      // This functionality will be removed in 2.0.0 where 
+      // get test fixture metadata or create new metadata
+      // to support not requiring the TestFixture decorator.
+      // This functionality will be removed in 2.0.0 where
       // TestFixture decorator will become mandatory
       const testFixture = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor)
                        || new TestFixture(defaultFixtureDescription);
