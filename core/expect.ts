@@ -1,5 +1,6 @@
 import {
    ContentsMatchError,
+   EmptyMatchError,
    EqualMatchError,
    ErrorMatchError,
    ExactMatchError,
@@ -180,6 +181,27 @@ export class Matcher {
 
       if (this._actualValue > lowerLimit !== this.shouldMatch) {
          throw new GreaterThanMatchError(this._actualValue, lowerLimit, this.shouldMatch);
+      }
+   }
+
+   /**
+    * Checks that an array is empty, a string is empty, or an object literal has no properties
+    */
+   public toBeEmpty() {
+      if (null === this.actualValue || undefined === this.actualValue) {
+         throw new TypeError("toBeEmpty requires value passed in to Expect not to be null or undefined");
+      }
+
+      if (typeof this.actualValue === "string" || Array.isArray(this.actualValue)) {
+         if ((this.actualValue.length === 0) !== this.shouldMatch) {
+            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+         }
+      } else if (this.actualValue.constructor === Object) {
+         if ((Object.keys(this.actualValue).length === 0) !== this.shouldMatch) {
+            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+         }
+      } else {
+         throw new TypeError("toBeEmpty requires value passed in to Expect to be an array, string or object literal");
       }
    }
 
