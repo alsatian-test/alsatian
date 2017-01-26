@@ -72,6 +72,11 @@ export class TestRunner {
 
             // if new fixture
             if (!previousTestItem || previousTestItem.testFixture !== testItem.testFixture) {
+                
+                //TODO: teardown previous item if exists
+                
+                //TODO: setup next fixture
+
                 this._outputStream.emitFixture(testItem.testFixture);
                 currentTestFixtureResults = results.addTestFixtureResult(testItem.testFixture);
             }
