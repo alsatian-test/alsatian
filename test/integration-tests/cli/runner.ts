@@ -7,7 +7,7 @@ export class CliIntegrationTests {
 
    @TestCase("to-be")
    @AsyncTest()
-   @Timeout(2000)
+   @Timeout(5000)
    public toBeExpectations(expectationTestName: string) {
 
       const result = child
@@ -37,7 +37,7 @@ export class CliIntegrationTests {
    @TestCase("setup")
    @TestCase("teardown")
    @AsyncTest()
-   @Timeout(2000)
+   @Timeout(5000)
    public syntaxTests(syntaxTestName: string) {
 
       const result = child
