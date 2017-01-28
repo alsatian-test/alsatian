@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Expect, METADATA_KEYS, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 import { AsyncSetupFixture } from "../../../core/decorators/async-setup-fixture-decorator";
 
-@TestFixture("@AsyncAsyncSetupFixture decorator tests")
+@TestFixture("@AsyncSetupFixture decorator tests")
 export class AsyncSetupFixtureDecoratorTests {
 
    @Test("async setup fixture function added to metadata")
