@@ -11,7 +11,9 @@ const FOCUS: "alsatian:focus" = "alsatian:focus";
 const IGNORE: "alsatian:ignore" = "alsatian:ignore";
 const IGNORE_REASON: "alsatian:ignore-reason" = "alsatian:ignore-reason";
 const SETUP: "alsatian:setup" = "alsatian:setup";
+const SETUP_FIXTURE: "alsatian:setup-fixture" = "alsatian:setup-fixture";
 const TEARDOWN: "alsatian:teardown" = "alsatian:teardown";
+const TEARDOWN_FIXTURE: "alsatian:teardown-fixture" = "alsatian:teardown-fixture";
 const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
 const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";
 
@@ -22,7 +24,9 @@ export {
     IGNORE,
     IGNORE_REASON,
     SETUP,
+    SETUP_FIXTURE,
     TEARDOWN,
+    TEARDOWN_FIXTURE,
     TEST_CASES,
     TIMEOUT
 };
