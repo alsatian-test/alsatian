@@ -1,4 +1,4 @@
-import { Any, TypeMatcher } from "../spying";
+import { Any, ArgumentMatcher } from "../spying";
 
 export class SpyCall {
 
@@ -28,7 +28,7 @@ export class SpyCall {
       if (expectedArgument === Any) {
          return true;
       }
-      else if (expectedArgument instanceof TypeMatcher) {
+      else if (expectedArgument instanceof ArgumentMatcher) {
          return expectedArgument.test(actualArgument);
       }
 

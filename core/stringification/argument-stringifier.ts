@@ -1,4 +1,4 @@
-import { Any, TypeMatcher } from "../spying";
+import { Any, ArgumentMatcher } from "../spying";
 
 export class ArgumentStringifier {
 
@@ -19,8 +19,8 @@ export class ArgumentStringifier {
         if (argument === Any) {
             return "Anything";
         }
-        else if (argument instanceof TypeMatcher) {
-            return "Any " + (argument.type as any).name;
+        else if (argument instanceof ArgumentMatcher) {
+            return argument.stringify();
         }
         else {
             return JSON.stringify(argument);

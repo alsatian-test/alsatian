@@ -1,4 +1,6 @@
-export class TypeMatcher {
+import { ArgumentMatcher } from "./argument-matcher";
+
+export class TypeMatcher extends ArgumentMatcher {
 
    private _type: new (...args: Array<any>) => Object;
    public get type() {
@@ -6,6 +8,7 @@ export class TypeMatcher {
    }
 
    public constructor(type: new (...args: Array<any>) => Object) {
+      super();
       if (type === null || type === undefined) {
          throw new TypeError("type must not be null or undefined");
       }
@@ -26,5 +29,9 @@ export class TypeMatcher {
       else {
          return value instanceof this._type;
       }
+   }
+
+   public stringify() {
+      return `Any ${(this.type as any).name}`;
    }
 }

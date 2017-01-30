@@ -1,4 +1,4 @@
-import { Any, FunctionSpy, TypeMatcher } from "../spying";
+import { Any, ArgumentMatcher, FunctionSpy } from "../spying";
 import { MatchError } from "./match-error";
 
 export class FunctionCallMatchError extends MatchError {
@@ -9,8 +9,8 @@ export class FunctionCallMatchError extends MatchError {
                if (arg === Any) {
                   return "Anything";
                }
-               else if (arg instanceof TypeMatcher) {
-                  return "Any " + (<any> arg.type).name;
+               else if (arg instanceof ArgumentMatcher) {
+                  return arg.stringify();
                }
                else {
                   return JSON.stringify(arg);
