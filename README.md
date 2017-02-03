@@ -53,7 +53,7 @@ export class SetOfTests {
     
     // use the async/await pattern in your tests as you would in your code
     @AsyncTest("asychronous test")
-    public asyncTest() {
+    public async asyncTest() {
         const response = await somethingToHappen();
 
         Expect(response).toBeDefined();
