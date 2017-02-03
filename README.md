@@ -1,6 +1,6 @@
 <p id="banner" align="center">
     <img src="https://github.com/alsatian-test/alsatian/raw/master/documentation/images/alsatian-mascot-logo.png" alt="Alsatian Mascot Logo" />
-    <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium">selenium</a>, istanbul and tap reporters.</p>
+    <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium">selenium</a>, <a href="https://github.com/alsatian-test/alsatian/wiki/check-test-coverage-with-nyc">coverage checkers</a> and <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-tap-reporters">TAP reporters</a>.</p>
 </p>
 <p id="badges" align="center">
     <a href="https://www.npmjs.com/package/alsatian">
