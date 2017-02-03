@@ -107,4 +107,4 @@ We're always glad to have help out with Alsatian, check out the [guidelines](htt
 
 ## License
 
-Alsatian has been released under the MIT license which can be found [here](https://github.com/alsatian-test/alsatian/blob/master/LICENSE)
+Alsatian has been released under the [MIT license](https://github.com/alsatian-test/alsatian/blob/master/LICENSE)
