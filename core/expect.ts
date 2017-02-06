@@ -15,10 +15,9 @@ import {
 
 import {
    Any,
-   ArgumentMatcher,
    FunctionSpy,
-   Matches,
-   PropertySpy
+   PropertySpy,
+   TypeMatcher
 } from "./spying";
 
 import {
@@ -287,17 +286,15 @@ export class Matcher {
          );
       }
 
-      const validActualValueCalls = this._actualValue.calls.filter((call: any) => {
+      if (this._actualValue.calls.filter((call: any) => {
          return call.args.length === expectedArguments.length && // the call has the same amount of arguments
          call.args.filter((arg: any, index: number) => {
             const expectedArgument = expectedArguments[index];
             return arg === expectedArgument ||
                    expectedArgument === Any ||
-                   (expectedArgument instanceof ArgumentMatcher && expectedArgument.test(arg));
+                  (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg));
          }).length === expectedArguments.length; // and all call arguments match expected arguments
-      });
-
-      if (validActualValueCalls.length === 0 === this.shouldMatch) {
+      }).length === 0 === this.shouldMatch) {
          throw new FunctionCallMatchError(this._actualValue, this.shouldMatch, expectedArguments);
       }
 

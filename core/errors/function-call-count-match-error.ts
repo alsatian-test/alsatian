@@ -1,5 +1,5 @@
 import { SpyCallCountType } from "../matchers";
-import { Any, ArgumentMatcher, FunctionSpy } from "../spying";
+import { Any, FunctionSpy, TypeMatcher } from "../spying";
 import { MatchError } from "./match-error";
 
 export class FunctionCallCountMatchError extends MatchError {
@@ -40,8 +40,8 @@ export class FunctionCallCountMatchError extends MatchError {
                if (arg === Any) {
                   return "Anything";
                }
-               else if (arg instanceof ArgumentMatcher) {
-                  return arg.stringify();
+               else if (arg instanceof TypeMatcher) {
+                  return "Any " + (<any> arg.type).name;
                }
                else {
                   return JSON.stringify(arg);
