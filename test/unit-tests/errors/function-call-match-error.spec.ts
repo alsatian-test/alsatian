@@ -451,6 +451,253 @@ export class FunctionCallMatchErrorTests {
         .toBe("function not to be called with [Any " + (<any> type).name + ", Anything].");
    }
 
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInMessage<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function to be called with [${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+      typeOne: new (...args: Array<any>) => ExpectedType1,
+      typeTwo: new (...args: Array<any>) => ExpectedType2) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
+      const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyTypeOne, anyTypeTwo]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function to be called with [${anyTypeOne.stringify()}, ${anyTypeTwo.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInNotExpectedMessage<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function not to be called with [${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+      typeOne: new (...args: Array<any>) => ExpectedType1,
+      typeTwo: new (...args: Array<any>) => ExpectedType2) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
+      const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyTypeOne, anyTypeTwo]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function not to be called with [${anyTypeOne.stringify()}, ${anyTypeTwo.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInExpectedValue<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType]);
+
+      Expect(functionCallError.expected).toBe(`function to be called with [${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+      typeOne: new (...args: Array<any>) => ExpectedType1,
+      typeTwo: new (...args: Array<any>) => ExpectedType2) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
+      const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyTypeOne, anyTypeTwo]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function to be called with [${anyTypeOne.stringify()}, ${anyTypeTwo.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeArgumentThatMatchesOutputAsAnyTypeInNotExpectedValue<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function not to be called with [${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, Array)
+   @TestCase(String, Object)
+   @TestCase(Object, String)
+   @TestCase(Array, Number)
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+      typeOne: new (...args: Array<any>) => ExpectedType1,
+      typeTwo: new (...args: Array<any>) => ExpectedType2) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
+      const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyTypeOne, anyTypeTwo]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function not to be called with [${anyTypeOne.stringify()}, ${anyTypeTwo.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessage<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [Any, anyType]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function to be called with [Anything, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [Any, anyType]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function not to be called with [Anything, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [Any, anyType]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function to be called with [Anything, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [Any, anyType]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function not to be called with [Anything, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessage<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType, Any]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function to be called with [${anyType.stringify()}, Anything].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType, Any]);
+
+      Expect(functionCallError.message)
+         .toBe(`Expected function not to be called with [${anyType.stringify()}, Anything].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue<ExpectedType extends Object>(
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType, Any]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function to be called with [${anyType.stringify()}, Anything].`);
+   }
+
+   @TestCase(Number)
+   @TestCase(String)
+   @TestCase(Object)
+   @TestCase(Array)
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+      type: new (...args: Array<any>) => ExpectedType) {
+      let fakeSpy: any = { calls: [] };
+
+      const anyType = Any(type).thatMatches((e: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType, Any]);
+
+      Expect(functionCallError.expected)
+         .toBe(`function not to be called with [${anyType.stringify()}, Anything].`);
+   }
+
    @TestCase("test")
    @TestCase(42)
    @TestCase("something else")
@@ -673,5 +920,133 @@ export class FunctionCallMatchErrorTests {
 
       Expect(functionCallError.expected)
         .toBe("function not to be called with [Any " + (<any> type).name + ", " + JSON.stringify(exactValue) + "].");
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessage<ExpectedType extends Object>(
+                                                  type: new (...args: Array<any>) => ExpectedType,
+                                                  exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, anyType ]);
+
+      Expect(functionCallError.message)
+        .toBe(`Expected function to be called with [${JSON.stringify(exactValue)}, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+                                                                  type: new (...args: Array<any>) => ExpectedType,
+                                                                  exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, anyType ]);
+
+      Expect(functionCallError.message)
+        .toBe(`Expected function not to be called with [${JSON.stringify(exactValue)}, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInExpectedValue<ExpectedType extends Object>(
+                                                      type: new (...args: Array<any>) => Object,
+                                                      exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, anyType ]);
+
+      Expect(functionCallError.expected)
+        .toBe(`function to be called with [${JSON.stringify(exactValue)}, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue<ExpectedType extends Object>(
+                                              type: new (...args: Array<any>) => Object,
+                                              exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, anyType ]);
+
+      Expect(functionCallError.expected)
+        .toBe(`function not to be called with [${JSON.stringify(exactValue)}, ${anyType.stringify()}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessage<ExpectedType extends Object>(
+                                                    type: new (...args: Array<any>) => Object,
+                                                    exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ anyType, exactValue ]);
+
+      Expect(functionCallError.message)
+        .toBe(`Expected function to be called with [${anyType.stringify()}, ${JSON.stringify(exactValue)}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+                                                                    type: new (...args: Array<any>) => Object,
+                                                                    exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ anyType, exactValue ]);
+
+      Expect(functionCallError.message)
+        .toBe(`Expected function not to be called with [${anyType.stringify()}, ${JSON.stringify(exactValue)}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInExpectedValue<ExpectedType extends Object>(
+                                            type: new (...args: Array<any>) => Object,
+                                            exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ anyType, exactValue ]);
+
+      Expect(functionCallError.expected)
+        .toBe(`function to be called with [${anyType.stringify()}, ${JSON.stringify(exactValue)}].`);
+   }
+
+   @TestCase(Number, "test")
+   @TestCase(String, 42)
+   @TestCase(Object, "something else")
+   @TestCase(Array, -42)
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue<ExpectedType extends Object>(
+                                                type: new (...args: Array<any>) => Object,
+                                                exactValue: any) {
+      let fakeSpy: any = { calls: [ ] };
+
+      const anyType = Any(type).thatMatches((v: ExpectedType) => true);
+      const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ anyType, exactValue ]);
+
+      Expect(functionCallError.expected)
+        .toBe(`function not to be called with [${anyType.stringify()}, ${JSON.stringify(exactValue)}].`);
    }
 }
