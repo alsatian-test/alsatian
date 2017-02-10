@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { ITest, ITestFixture } from "../_interfaces";
 import { MatchError,
+         METADATA_KEYS,
          TestCaseResult,
          TestFixtureResults,
          TestOutputStream,
@@ -8,6 +9,7 @@ import { MatchError,
          TestSet,
          TestSetResults,
          TestTimeoutError } from "../alsatian-core";
+import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { IOnTestCompleteCBFunction, ITestCompleteEvent } from "../events";
 import { TestItem } from "./test-item";
 import { TestPlan } from "./test-plan";
@@ -72,10 +74,12 @@ export class TestRunner {
 
             // if new fixture
             if (!previousTestItem || previousTestItem.testFixture !== testItem.testFixture) {
-                
-                //TODO: teardown previous item if exists
-                
-                //TODO: setup next fixture
+
+                if (previousTestItem) {
+                    await this._teardownFixture(previousTestItem.testFixture.fixture);
+                }
+
+                await this._setupFixture(testItem.testFixture.fixture);
 
                 this._outputStream.emitFixture(testItem.testFixture);
                 currentTestFixtureResults = results.addTestFixtureResult(testItem.testFixture);
@@ -116,5 +120,30 @@ export class TestRunner {
         }
 
         this._outputStream.end();
+    }
+
+    private async _setupFixture(fixture: { [key: string]: Function }) {
+        await this._runFixtureFunctions(fixture, METADATA_KEYS.SETUP_FIXTURE);
+    }
+
+    private async _teardownFixture(fixture: { [key: string]: Function }) {
+        await this._runFixtureFunctions(fixture, METADATA_KEYS.TEARDOWN_FIXTURE);
+    }
+
+    private async _runFixtureFunctions(fixture: { [key: string]: Function }, metadataKey: string) {
+
+        const fixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(metadataKey,
+                                                                        fixture);
+
+        if (fixtureFunctions) {
+            for (const fixtureFunction of fixtureFunctions) {
+                if (fixtureFunction.isAsync) {
+                    await fixture[fixtureFunction.propertyKey].call(fixture);
+                }
+                else {
+                    fixture[fixtureFunction.propertyKey].call(fixture);
+                }
+            }
+        }
     }
 }
