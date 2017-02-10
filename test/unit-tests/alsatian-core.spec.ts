@@ -63,10 +63,34 @@ export class AlsatianCoreTests {
       Expect(Alsatian.Setup).not.toBeNull();
    }
 
+   @Test("AsyncSetup decorator is exposed")
+   public asyncSetupShouldBeExposed() {
+      Expect(Alsatian.AsyncSetup).toBeDefined();
+      Expect(Alsatian.AsyncSetup).not.toBeNull();
+   }
+
+   @Test("AsyncSetupFixture decorator is exposed")
+   public asyncSetupFixtureShouldBeExposed() {
+      Expect(Alsatian.AsyncSetupFixture).toBeDefined();
+      Expect(Alsatian.AsyncSetupFixture).not.toBeNull();
+   }
+
    @Test()
    public teardownShouldBeExposed() {
       Expect(Alsatian.Teardown).toBeDefined();
       Expect(Alsatian.Teardown).not.toBeNull();
+   }
+
+   @Test("AsyncTeardown decorator is exposed")
+   public asyncTeardownShouldBeExposed() {
+      Expect(Alsatian.AsyncTeardown).toBeDefined();
+      Expect(Alsatian.AsyncTeardown).not.toBeNull();
+   }
+
+   @Test("AsyncTeardownFixture decorator is exposed")
+   public asyncTeardownFixtureShouldBeExposed() {
+      Expect(Alsatian.AsyncTeardownFixture).toBeDefined();
+      Expect(Alsatian.AsyncTeardownFixture).not.toBeNull();
    }
 
    @Test()
