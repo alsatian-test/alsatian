@@ -1,5 +1,6 @@
 import { AsyncTest,
          Expect,
+         FocusTests,
          FunctionSpy,
          METADATA_KEYS,
          SpyOn,
@@ -11,8 +12,9 @@ import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
 
-@TestFixture("setting up tests")
-export class SetupTests {
+@FocusTests
+@TestFixture("tearing down tests")
+export class TeardownTests {
 
     private _createTestFixture() {
         const test = new TestBuilder()
@@ -21,7 +23,7 @@ export class SetupTests {
             .build();
 
         const fixtureObject = {
-            setupFunction: (new FunctionSpy() as any),
+            teardownFunction: (new FunctionSpy() as any),
             testFunction: () => { }
         };
 
@@ -31,16 +33,16 @@ export class SetupTests {
             .build();
     }
 
-    @AsyncTest("single setup function called")
-    public async singleSetupFunctionCalled() {
+    @AsyncTest("single teardown function called")
+    public async singleTeardownFunctionCalled() {
 
         const testFixture = this._createTestFixture();
 
-        const functionKey = "setupFunction";
+        const functionKey = "teardownFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
-            propertyKey: "setupFunction"
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
+            propertyKey: "teardownFunction"
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -54,20 +56,20 @@ export class SetupTests {
 
         await runner.run(testSet);
 
-        Expect(testFixture.fixture["setupFunction"]).toHaveBeenCalled();
+        Expect(testFixture.fixture["teardownFunction"]).toHaveBeenCalled();
     }
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple setup functions called")
-    public async multipleSetupFunctionsCalled(setupFunctionCount: number) {        
+    @AsyncTest("multiple teardown functions called")
+    public async multipleTeardownFunctionsCalled(teardownFunctionCount: number) {        
 
         const testFixture = this._createTestFixture();
 
         const functionDetails = [];
 
-        for (let i = 0; i < setupFunctionCount; i++) {
-            const functionKey = "setupFunction" + i;
+        for (let i = 0; i < teardownFunctionCount; i++) {
+            const functionKey = "teardownFunction" + i;
             testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
             functionDetails.push({
@@ -75,7 +77,7 @@ export class SetupTests {
             });
         }
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, functionDetails, testFixture.fixture);
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, functionDetails, testFixture.fixture);
 
         const testSet = new TestSetBuilder()
             .addTestFixture(testFixture)
@@ -88,15 +90,15 @@ export class SetupTests {
 
         await runner.run(testSet);
 
-        for (let i = 0; i < setupFunctionCount; i++) {
-            Expect(testFixture.fixture["setupFunction" + i]).toHaveBeenCalled();
+        for (let i = 0; i < teardownFunctionCount; i++) {
+            Expect(testFixture.fixture["teardownFunction" + i]).toHaveBeenCalled();
         }
     }
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple tests setup correct amount of times")
-    public async multipleTestsSetupFunctionCalledEachTime(testCount: number) {        
+    @AsyncTest("multiple tests teardown correct amount of times")
+    public async multipleTestsTeardownFunctionCalledEachTime(testCount: number) {        
 
         const testFixture = this._createTestFixture();
         
@@ -108,11 +110,11 @@ export class SetupTests {
             );
         }
 
-        const functionKey = "setupFunction";
+        const functionKey = "teardownFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
-            propertyKey: "setupFunction"
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
+            propertyKey: "teardownFunction"
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -131,8 +133,8 @@ export class SetupTests {
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple test cases setup correct amount of times")
-    public async multipleTestCasesSetupFunctionCalledEachTime(testCaseCount: number) {        
+    @AsyncTest("multiple test cases teardown correct amount of times")
+    public async multipleTestCasesTeardownFunctionCalledEachTime(testCaseCount: number) {        
 
         const testFixture = this._createTestFixture();
 
@@ -144,11 +146,11 @@ export class SetupTests {
             });
         }
 
-        const functionKey = "setupFunction";
+        const functionKey = "teardownFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
-            propertyKey: "setupFunction"
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
+            propertyKey: "teardownFunction"
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -165,16 +167,16 @@ export class SetupTests {
         Expect(testFixture.fixture[functionKey]).toHaveBeenCalled().exactly(testCaseCount).times;
     }
 
-    @AsyncTest("single setup fixure function called")
-    public async singleSetupFixtureFunctionCalled() {
+    @AsyncTest("single teardown fixure function called")
+    public async singleTeardownFixtureFunctionCalled() {
 
         const testFixture = this._createTestFixture();
 
-        const functionKey = "setupFixtureFunction";
+        const functionKey = "teardownFixtureFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP_FIXTURE, [ {
-            propertyKey: "setupFixtureFunction"
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, [ {
+            propertyKey: "teardownFixtureFunction"
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -188,20 +190,20 @@ export class SetupTests {
 
         await runner.run(testSet);
 
-        Expect(testFixture.fixture["setupFixtureFunction"]).toHaveBeenCalled();
+        Expect(testFixture.fixture["teardownFixtureFunction"]).toHaveBeenCalled();
     }
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple setup fixture functions called")
-    public async multipleSetupFixtureFunctionsCalled(setupFunctionCount: number) {        
+    @AsyncTest("multiple teardown fixture functions called")
+    public async multipleTeardownFixtureFunctionsCalled(teardownFunctionCount: number) {        
 
         const testFixture = this._createTestFixture();
 
         const functionDetails = [];
 
-        for (let i = 0; i < setupFunctionCount; i++) {
-            const functionKey = "setupFixtureFunction" + i;
+        for (let i = 0; i < teardownFunctionCount; i++) {
+            const functionKey = "teardownFixtureFunction" + i;
             testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
             functionDetails.push({
@@ -209,7 +211,7 @@ export class SetupTests {
             });
         }
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP_FIXTURE, functionDetails, testFixture.fixture);
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, functionDetails, testFixture.fixture);
 
         const testSet = new TestSetBuilder()
             .addTestFixture(testFixture)
@@ -222,15 +224,15 @@ export class SetupTests {
 
         await runner.run(testSet);
 
-        for (let i = 0; i < setupFunctionCount; i++) {
-            Expect(testFixture.fixture["setupFixtureFunction" + i]).toHaveBeenCalled();
+        for (let i = 0; i < teardownFunctionCount; i++) {
+            Expect(testFixture.fixture["teardownFixtureFunction" + i]).toHaveBeenCalled();
         }
     }
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple tests only setup fixture once")
-    public async multipleTestsOnlySetupFixtureOnce(testCount: number) {        
+    @AsyncTest("multiple tests only teardown fixture once")
+    public async multipleTestsOnlyTeardownFixtureOnce(testCount: number) {        
 
         const testFixture = this._createTestFixture();
         
@@ -242,10 +244,10 @@ export class SetupTests {
             );
         }
 
-        const functionKey = "setupFixtureFunction";
+        const functionKey = "teardownFixtureFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP_FIXTURE, [ {
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, [ {
             propertyKey: functionKey
         }], testFixture.fixture);
 
@@ -265,8 +267,8 @@ export class SetupTests {
 
     @TestCase(2)
     @TestCase(5)
-    @AsyncTest("multiple test cases only setup fixture once")
-    public async multipleTestCasesOnlySetupFixureOnce(testCaseCount: number) {        
+    @AsyncTest("multiple test cases only teardown fixture once")
+    public async multipleTestCasesOnlyTeardownFixureOnce(testCaseCount: number) {        
 
         const testFixture = this._createTestFixture();
 
@@ -278,10 +280,10 @@ export class SetupTests {
             });
         }
 
-        const functionKey = "setupFixtureFunction";
+        const functionKey = "teardownFixtureFunction";
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP_FIXTURE, [ {
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, [ {
             propertyKey: functionKey
         }], testFixture.fixture);
 

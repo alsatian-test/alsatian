@@ -119,6 +119,10 @@ export class TestRunner {
             this._outputStream.emitResult(testItemIndex + 1, result);
         }
 
+        // teardown the last test fixture
+        const lastTestItem = testSetRunInfo.testPlan.testItems[testSetRunInfo.testPlan.testItems.length - 1];
+        await this._teardownFixture(lastTestItem.testFixture.fixture);
+
         this._outputStream.end();
     }
 
