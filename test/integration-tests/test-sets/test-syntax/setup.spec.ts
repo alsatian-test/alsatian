@@ -1,10 +1,16 @@
-import { AsyncSetup, Expect, Setup, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
+import { AsyncSetup, Expect, Setup, SetupFixture, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
 
 @TestFixture("setup tests")
 export class SetupTests {
 
    private _setupComplete: boolean = false;
    private _asyncSetupComplete: boolean = false;
+   private _setupFixtureCount: number = 0;
+
+   @SetupFixture
+   private _setupFixture() {
+       this._setupFixtureCount ++;
+   }
 
    @Setup
    private _setup() {
@@ -33,5 +39,10 @@ export class SetupTests {
    @Test("simple async setup")
    public asyncSetupTest() {
        Expect(this._asyncSetupComplete).toBe(true);
+   }
+
+   @Test("setup fixture only happened once")
+   public setupFixtureOnlyHappenedOnce() {
+       Expect(this._setupFixtureCount).toBe(1);
    }
 }

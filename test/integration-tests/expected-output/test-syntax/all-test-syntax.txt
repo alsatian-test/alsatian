@@ -1,5 +1,5 @@
 TAP version 13
-1..6
+1..7
 # FIXTURE asynchronous tests
 ok 1 simple passing asynchronous test
 not ok 2 simple failing asynchronous test
@@ -13,6 +13,7 @@ not ok 2 simple failing asynchronous test
 # FIXTURE setup tests
 ok 3 simple setup
 ok 4 simple async setup
+ok 5 setup fixture only happened once
 # FIXTURE teardown tests
-ok 5 teardown not called before first test
-ok 6 teardown has been called after first test and before second
+ok 6 teardown not called before first test
+ok 7 teardown has been called after first test and before second
