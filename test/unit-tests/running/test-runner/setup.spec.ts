@@ -16,9 +16,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 @TestFixture("setting up tests")
 export class SetupTests {
 
-    @AsyncTest("single setup function called")
-    public async singleSetupFunctionCalled() {
-
+    private _createTestFixture() {
         const test = new TestBuilder()
             .withTestCaseCount(1)
             .withKey("testFunction")
@@ -29,14 +27,23 @@ export class SetupTests {
             testFunction: () => { }
         };
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
-            propertyKey: "setupFunction"
-        }], fixtureObject);
-
-        const testFixture = new TestFixtureBuilder()
+        return new TestFixtureBuilder()
             .withFixture(fixtureObject)
             .addTest(test)
             .build();
+    }
+
+    @AsyncTest("single setup function called")
+    public async singleSetupFunctionCalled() {
+
+        const testFixture = this._createTestFixture();
+
+        const functionKey = "setupFunction";
+        testFixture.fixture[functionKey] = (new FunctionSpy() as any);
+
+        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
+            propertyKey: "setupFunction"
+        }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
             .addTestFixture(testFixture)
@@ -49,40 +56,28 @@ export class SetupTests {
 
         await runner.run(testSet);
 
-        Expect(fixtureObject.setupFunction).toHaveBeenCalled();
+        Expect(testFixture.fixture["setupFunction"]).toHaveBeenCalled();
     }
 
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple setup function called")
-    public async multipleSetupFunctionCalled(setupFunctionCount: number) {
+    public async multipleSetupFunctionsCalled(setupFunctionCount: number) {        
 
-        const test = new TestBuilder()
-            .withTestCaseCount(1)
-            .withKey("testFunction")
-            .build();
-
-        const fixtureObject: { [key: string]: any } = {
-            testFunction: () => { }
-        };
+        const testFixture = this._createTestFixture();
 
         const functionDetails = [];
 
         for (let i = 0; i < setupFunctionCount; i++) {
             const functionKey = "setupFunction" + i;
-            fixtureObject[functionKey] = new FunctionSpy();
+            testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
             functionDetails.push({
                 propertyKey: functionKey
             });
         }
 
-        Reflect.defineMetadata(METADATA_KEYS.SETUP, functionDetails, fixtureObject);
-
-        const testFixture = new TestFixtureBuilder()
-            .withFixture(fixtureObject)
-            .addTest(test)
-            .build();
+        Reflect.defineMetadata(METADATA_KEYS.SETUP, functionDetails, testFixture.fixture);
 
         const testSet = new TestSetBuilder()
             .addTestFixture(testFixture)
@@ -96,7 +91,79 @@ export class SetupTests {
         await runner.run(testSet);
 
         for (let i = 0; i < setupFunctionCount; i++) {
-            Expect(fixtureObject["setupFunction" + i]).toHaveBeenCalled();
+            Expect(testFixture.fixture["setupFunction" + i]).toHaveBeenCalled();
         }
+    }
+
+    @TestCase(2)
+    @TestCase(5)
+    @AsyncTest("multiple tests setup correct amount of times")
+    public async multipleTestsSetupFunctionCalledEachTime(testCount: number) {        
+
+        const testFixture = this._createTestFixture();
+        
+        while (testFixture.tests.length < testCount) {
+            testFixture.tests.push(new TestBuilder()
+                                            .withTestCaseCount(1)
+                                            .withKey("testFunction" + testFixture.tests.length)
+                                            .build()
+            );
+        }
+
+        const functionKey = "setupFunction";
+        testFixture.fixture[functionKey] = (new FunctionSpy() as any);
+
+        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
+            propertyKey: "setupFunction"
+        }], testFixture.fixture);
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+        SpyOn(outputStream, "push");
+
+        const runner = new TestRunner(outputStream);
+
+        await runner.run(testSet);
+
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled().exactly(testCount).times;
+    }
+
+    @TestCase(2)
+    @TestCase(5)
+    @AsyncTest("multiple test cases setup correct amount of times")
+    public async multipleTestCasesSetupFunctionCalledEachTime(testCaseCount: number) {        
+
+        const testFixture = this._createTestFixture();
+
+        const test = testFixture.tests[0];
+        
+        while (test.testCases.length < testCaseCount) {
+            test.testCases.push({
+                arguments: []
+            });
+        }
+
+        const functionKey = "setupFunction";
+        testFixture.fixture[functionKey] = (new FunctionSpy() as any);
+
+        Reflect.defineMetadata(METADATA_KEYS.SETUP, [ {
+            propertyKey: "setupFunction"
+        }], testFixture.fixture);
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+        SpyOn(outputStream, "push");
+
+        const runner = new TestRunner(outputStream);
+
+        await runner.run(testSet);
+
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled().exactly(testCaseCount).times;
     }
 }
