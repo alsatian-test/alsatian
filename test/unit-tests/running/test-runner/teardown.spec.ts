@@ -1,6 +1,5 @@
 import { AsyncTest,
          Expect,
-         FocusTests,
          FunctionSpy,
          METADATA_KEYS,
          SpyOn,
@@ -12,7 +11,6 @@ import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
 
-@FocusTests
 @TestFixture("tearing down tests")
 export class TeardownTests {
 
