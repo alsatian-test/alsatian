@@ -6,7 +6,7 @@ import { AsyncTest, Expect, Timeout } from "../../../../core/alsatian-core";
 export class BabelIntegrationTests {
 
    @AsyncTest()
-   @Timeout(2000)
+   @Timeout(5000)
    public toBeExpectations() {
 
       const result = child
@@ -30,7 +30,7 @@ export class BabelIntegrationTests {
    }
 
    @AsyncTest()
-   @Timeout(2000)
+   @Timeout(5000)
    public asyncTest() {
 
       const result = child
