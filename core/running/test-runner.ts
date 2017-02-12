@@ -136,7 +136,8 @@ export class TestRunner {
 
     private async _runFixtureFunctions(fixture: { [key: string]: Function }, metadataKey: string) {
 
-        const fixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(metadataKey,
+        const fixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
+                                                                        metadataKey,
                                                                         fixture);
 
         if (fixtureFunctions) {

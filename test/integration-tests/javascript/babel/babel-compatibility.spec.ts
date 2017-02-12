@@ -34,7 +34,7 @@ export class BabelIntegrationTests {
    public asyncTest() {
 
       const result = child
-                        .exec("alsatian \"./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js\" --tap");
+                    .exec("alsatian \"./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js\" --tap");
 
       let consoleOutput = "";
 

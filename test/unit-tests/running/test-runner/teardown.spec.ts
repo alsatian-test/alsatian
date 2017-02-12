@@ -40,7 +40,7 @@ export class TeardownTests {
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
         Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
-            propertyKey: "teardownFunction"
+            propertyKey: functionKey
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -54,13 +54,40 @@ export class TeardownTests {
 
         await runner.run(testSet);
 
-        Expect(testFixture.fixture["teardownFunction"]).toHaveBeenCalled();
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
+    }
+
+    @AsyncTest("single async teardown function called")
+    public async singleAsyncTeardownFunctionCalled() {
+
+        const testFixture = this._createTestFixture();
+
+        const functionKey = "teardownFunction";
+        testFixture.fixture[functionKey] = (new FunctionSpy() as any);
+
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
+            isAsync: true,
+            propertyKey: functionKey
+        }], testFixture.fixture);
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+        SpyOn(outputStream, "push");
+
+        const runner = new TestRunner(outputStream);
+
+        await runner.run(testSet);
+
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
     }
 
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple teardown functions called")
-    public async multipleTeardownFunctionsCalled(teardownFunctionCount: number) {        
+    public async multipleTeardownFunctionsCalled(teardownFunctionCount: number) {
 
         const testFixture = this._createTestFixture();
 
@@ -96,10 +123,10 @@ export class TeardownTests {
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple tests teardown correct amount of times")
-    public async multipleTestsTeardownFunctionCalledEachTime(testCount: number) {        
+    public async multipleTestsTeardownFunctionCalledEachTime(testCount: number) {
 
         const testFixture = this._createTestFixture();
-        
+
         while (testFixture.tests.length < testCount) {
             testFixture.tests.push(new TestBuilder()
                                             .withTestCaseCount(1)
@@ -112,7 +139,7 @@ export class TeardownTests {
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
         Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
-            propertyKey: "teardownFunction"
+            propertyKey: functionKey
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -132,12 +159,12 @@ export class TeardownTests {
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple test cases teardown correct amount of times")
-    public async multipleTestCasesTeardownFunctionCalledEachTime(testCaseCount: number) {        
+    public async multipleTestCasesTeardownFunctionCalledEachTime(testCaseCount: number) {
 
         const testFixture = this._createTestFixture();
 
         const test = testFixture.tests[0];
-        
+
         while (test.testCases.length < testCaseCount) {
             test.testCases.push({
                 arguments: []
@@ -148,7 +175,7 @@ export class TeardownTests {
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
         Reflect.defineMetadata(METADATA_KEYS.TEARDOWN, [ {
-            propertyKey: "teardownFunction"
+            propertyKey: functionKey
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -174,7 +201,7 @@ export class TeardownTests {
         testFixture.fixture[functionKey] = (new FunctionSpy() as any);
 
         Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, [ {
-            propertyKey: "teardownFixtureFunction"
+            propertyKey: functionKey
         }], testFixture.fixture);
 
         const testSet = new TestSetBuilder()
@@ -188,13 +215,40 @@ export class TeardownTests {
 
         await runner.run(testSet);
 
-        Expect(testFixture.fixture["teardownFixtureFunction"]).toHaveBeenCalled();
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
+    }
+
+    @AsyncTest("single async teardown fixure function called")
+    public async singleAsyncTeardownFixtureFunctionCalled() {
+
+        const testFixture = this._createTestFixture();
+
+        const functionKey = "teardownFixtureFunction";
+        testFixture.fixture[functionKey] = (new FunctionSpy() as any);
+
+        Reflect.defineMetadata(METADATA_KEYS.TEARDOWN_FIXTURE, [ {
+            isAsync: true,
+            propertyKey: functionKey
+        }], testFixture.fixture);
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+        SpyOn(outputStream, "push");
+
+        const runner = new TestRunner(outputStream);
+
+        await runner.run(testSet);
+
+        Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
     }
 
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple teardown fixture functions called")
-    public async multipleTeardownFixtureFunctionsCalled(teardownFunctionCount: number) {        
+    public async multipleTeardownFixtureFunctionsCalled(teardownFunctionCount: number) {
 
         const testFixture = this._createTestFixture();
 
@@ -230,10 +284,10 @@ export class TeardownTests {
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple tests only teardown fixture once")
-    public async multipleTestsOnlyTeardownFixtureOnce(testCount: number) {        
+    public async multipleTestsOnlyTeardownFixtureOnce(testCount: number) {
 
         const testFixture = this._createTestFixture();
-        
+
         while (testFixture.tests.length < testCount) {
             testFixture.tests.push(new TestBuilder()
                                             .withTestCaseCount(1)
@@ -266,12 +320,12 @@ export class TeardownTests {
     @TestCase(2)
     @TestCase(5)
     @AsyncTest("multiple test cases only teardown fixture once")
-    public async multipleTestCasesOnlyTeardownFixureOnce(testCaseCount: number) {        
+    public async multipleTestCasesOnlyTeardownFixureOnce(testCaseCount: number) {
 
         const testFixture = this._createTestFixture();
 
         const test = testFixture.tests[0];
-        
+
         while (test.testCases.length < testCaseCount) {
             test.testCases.push({
                 arguments: []

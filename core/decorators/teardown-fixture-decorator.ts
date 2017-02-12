@@ -2,7 +2,9 @@ import "reflect-metadata";
 import { ISetupTeardownMetadata } from "./_interfaces";
 import { TEARDOWN_FIXTURE } from "./_metadata-keys";
 
-export function TeardownFixture(target: any, decoratedPropertyKey: string, descriptor: TypedPropertyDescriptor<() => any>) {
+export function TeardownFixture(target: any,
+                                decoratedPropertyKey: string,
+                                descriptor: TypedPropertyDescriptor<() => any>) {
 
     let teardownFixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(TEARDOWN_FIXTURE, target);
 

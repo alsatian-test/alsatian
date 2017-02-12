@@ -47,10 +47,10 @@ export class TestItem {
       else {
          await this._setup();
          try {
-            await this._runTest(this._test.timeout || timeout);            
+            await this._runTest(this._test.timeout || timeout);
             await this._teardown();
          }
-         catch (error) {             
+         catch (error) {
             await this._teardown();
             throw error;
          }
