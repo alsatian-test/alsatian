@@ -42,7 +42,7 @@ export class CliIntegrationTests {
 
       const result = child
                     .exec(`alsatian ` +
-                          `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}.spec.js ` +
+                          `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
                           `--tap`);
 
       let consoleOutput = "";
