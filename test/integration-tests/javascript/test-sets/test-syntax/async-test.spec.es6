@@ -12,7 +12,7 @@ export class AsyncTests {
    @AsyncTest("simple passing asynchronous test")
    passingAsyncTest() {
        return this._asyncFunction()
-       .then(result => {           
+       .then(result => {
           Expect(result).toBe(4);
        });
    }
@@ -20,7 +20,7 @@ export class AsyncTests {
    @AsyncTest("simple failing asynchronous test")
    failingAsyncTest() {
        return this._asyncFunction()
-       .then(result => {           
+       .then(result => {
           Expect(result).toBe(5);
        });
    }

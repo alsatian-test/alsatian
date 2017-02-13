@@ -1,5 +1,9 @@
 TAP version 13
-1..2
+1..5
+# FIXTURE teardown fixtures
+ok 1 teardown fixture not called before first test
+ok 2 teardown fixture has still not been called after first test or before second
 # FIXTURE teardown tests
-ok 1 teardown not called before first test
-ok 2 teardown has been called after first test and before second
+ok 3 teardown not called before first test
+ok 4 teardown has been called after first test and before second
+ok 5 teardown fixture has been called when previous fixture completes
