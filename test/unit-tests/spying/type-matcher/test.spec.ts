@@ -1,5 +1,9 @@
-import { Expect, TestCase } from "../../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 import { TypeMatcher } from "../../../../core/spying/type-matcher";
+
+export class DerivedError extends Error {
+   constructor(public state: any, message?: string) { super(message); }
+}
 
 export class TypeMatcherTestFunctionTests {
 
@@ -218,4 +222,112 @@ export class TypeMatcherTestFunctionTests {
       const matcher = new TypeMatcher(Error);
       Expect(matcher.test(value)).toBe(false);
    }
+
+   @Test()
+   public thatMatchesWithValidArgumentsDoesNotThrow() {
+       const sut = new TypeMatcher(Error);
+       Expect(() => sut.thatMatches("a", null)).not.toThrow();
+       Expect(() => sut.thatMatches({})).not.toThrow();
+       Expect(() => sut.thatMatches((v: Error) => true)).not.toThrow();
+   }
+
+   @Test()
+   public thatMatchesWithInvalidArgumentsDoesThrow() {
+      const sut = new TypeMatcher(Error);
+
+      Expect(() => sut.thatMatches(null as Object))
+         .toThrowError(TypeError, "thatMatches requires none-null or non-undefined argument");
+      Expect(() => sut.thatMatches(null as ((v: Error) => boolean)))
+         .toThrowError(TypeError, "thatMatches requires none-null or non-undefined argument");
+      Expect(() => sut.thatMatches(new Error("Something else")))
+         .toThrowError(TypeError, "thatMatches requires value passed in to be an object literal");
+      Expect(() => sut.thatMatches(3))
+         .toThrowError(Error, "Invalid arguments");
+   }
+
+   @TestCase(new Error("This is my error"), "message", "This is my error", true)
+   @TestCase(new Error("This is not my error"), "message", "This is my error", false)
+   @TestCase(new Error("This is not my error"), "someNonExistantProperty", "This property doesn't exist", false)
+   @TestCase(new DerivedError(32, "This is my error"), "state", 32, true)
+   @TestCase(new DerivedError(32, "This is my error"), "state", "32", false)
+   @TestCase(new DerivedError(32, "This is my error"), "state", 24, false)
+   @TestCase("This is a string", "length", 16, true)
+   @TestCase([2], "length", 1, true)
+   public thatMatchesWithKeyAndValueReturnsExpected<ItemType extends Object>(item: ItemType, key: string, value: any, output: boolean) { /* tslint:disable-line:max-line-length */
+      const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
+         .thatMatches(key, value);
+
+      Expect(sut.test(item)).toBe(output);
+   }
+
+   @TestCase(new Error("This is my error"), { message: "This is my error"}, true)
+   @TestCase(new Error("This is not my error"), { message: "This is my error" }, false)
+   @TestCase(new Error("This is not my error"), { someNonExistantProperty: "This property doesn't exist" }, false)
+   @TestCase(new DerivedError(32, "This is my error"), { state: 32 }, true)
+   @TestCase(new DerivedError(32, "This is my error"), { state: 32, message: "This is my error" }, true)
+   @TestCase(new DerivedError(32, "This is my error"), { state: "32" }, false)
+   @TestCase(new DerivedError(32, "This is my error"), { state: 24, message: "This is my error" }, false)
+   @TestCase("This is a string", { length: 16 }, true)
+   @TestCase([2], { length: 1 }, true)
+   public thatMatchesWithObjectLiteralReturnsExpected<ItemType extends Object>(item: ItemType, properties: Object, output: boolean) { /* tslint:disable-line:max-line-length */
+      const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
+         .thatMatches(properties);
+
+      Expect(sut.test(item)).toBe(output);
+   }
+
+   @TestCase(new Error("This is my error"), (e: Error) => e.message === "This is my error", true)
+   @TestCase(new Error("This is not my error"), (e: Error) => e.message === "This is my error", false)
+   @TestCase(new DerivedError(32, "This is my error"), (e: DerivedError) => e.state === 32, true)
+   @TestCase(new DerivedError(32, "This is my error"), (e: DerivedError) => e.message === "This is my error", true)
+   @TestCase(new DerivedError(32, "This is not my error"), (e: DerivedError) => e.message === "This is my error", false)
+   @TestCase("This is a string", (e: string) => e.length === 16, true)
+   @TestCase([2], (e: Array<number>) => e.length === 1, true)
+   public thatMatchesWithDelegateReturnsExpected<ItemType extends Object>(item: ItemType, delegate: (v: ItemType) => boolean, output: boolean) { /* tslint:disable-line:max-line-length */
+      const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
+         .thatMatches(delegate);
+
+      Expect(sut.test(item)).toBe(output);
+   }
+
+   @Test()
+   public thatMatchesWithKeyAndValueStringifiesAsExpected() {
+      const sut = new TypeMatcher(Error).thatMatches("message", "This is my error");
+      Expect(sut.stringify()).toBe("Any Error and with property 'message' equal to '\"This is my error\"'");
+   }
+
+   @Test()
+   public thatMatchesWithObjectLiteralStringifiesAsExpected() {
+      const literal = { message: "This is my error", someFunc: (v: any) => true };
+      const sut = new TypeMatcher(Error).thatMatches(literal);
+      Expect(sut.stringify()).toBe(`Any Error and matches '${JSON.stringify(literal, replacer)}'`);
+   }
+
+   @Test()
+   public thatMatchesWithDelegateStringifiesAsExpected() {
+      const matcher = (e: Error) => e.message === "This is my error";
+      const sut = new TypeMatcher(Error).thatMatches(matcher);
+      Expect(sut.stringify()).toBe(`Any Error and matches '${matcher.toString()}'`);
+   }
+
+   @Test()
+   public thatMatchesWithChainStringifiesAsExpected() {
+      const literal = { message: "This is my error" };
+      const matcher = (e: Error) => e.message === "This is my error";
+      const sut = new TypeMatcher(Error)
+         .thatMatches("message", "This is my error")
+         .thatMatches(literal)
+         .thatMatches(matcher);
+
+      Expect(sut.stringify())
+         .toBe(`Any Error and with property 'message' equal to '\"This is my error\"' and matches '${JSON.stringify(literal, replacer)}' and matches '${matcher.toString()}'`); /* tslint:disable-line:max-line-length */
+   }
 }
+
+const replacer = (key: string, value: any) => {
+   if (typeof value === "function") {
+      return value.toString();
+   }
+
+   return value;
+};

@@ -20,7 +20,7 @@ export class ArgumentStringifier {
             return "Anything";
         }
         else if (argument instanceof TypeMatcher) {
-            return "Any " + (argument.type as any).name;
+            return argument.stringify();
         }
         else {
             return JSON.stringify(argument);

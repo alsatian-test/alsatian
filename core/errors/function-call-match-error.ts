@@ -10,7 +10,7 @@ export class FunctionCallMatchError extends MatchError {
                   return "Anything";
                }
                else if (arg instanceof TypeMatcher) {
-                  return "Any " + (<any> arg.type).name;
+                  return arg.stringify();
                }
                else {
                   return JSON.stringify(arg);
