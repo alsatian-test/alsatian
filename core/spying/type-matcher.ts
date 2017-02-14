@@ -3,6 +3,14 @@ type Tester = {
    stringify: () => string;
 };
 
+function replacer(key: string, value: any) {
+    if (typeof value === "function") {
+        return value.toString();
+    }
+
+    return value;
+}
+
 export class TypeMatcher<ExpectedType extends Object> {
 
    private _testers: Array<Tester> = [];
@@ -54,21 +62,21 @@ export class TypeMatcher<ExpectedType extends Object> {
       }
 
       if (typeof first === "string") {
-         return this.matchesKeyAndValue(first, second);
+         return this._matchesKeyAndValue(first, second);
       }
 
       if (typeof first === "function") {
-         return this.matchesDelegate(first);
+         return this._matchesDelegate(first);
       }
 
       if (typeof first === "object") {
-         return this.matchesObjectLiteral(first);
+         return this._matchesObjectLiteral(first);
       }
 
       throw new Error("Invalid arguments");
    }
 
-   private matchesKeyAndValue(key: string, value: any): this {
+   private _matchesKeyAndValue(key: string, value: any): this {
       this._testers.push({
          stringify: () => `with property '${key}' equal to '${JSON.stringify(value) || value.toString()}'`,
          test: (v: any) => {
@@ -83,7 +91,7 @@ export class TypeMatcher<ExpectedType extends Object> {
       return this;
    }
 
-   private matchesDelegate(delegate: (argument: ExpectedType) => boolean): this {
+   private _matchesDelegate(delegate: (argument: ExpectedType) => boolean): this {
       this._testers.push({
          stringify: () => `matches '${delegate.toString()}'`,
          test: (v: any) => delegate(v)
@@ -92,13 +100,13 @@ export class TypeMatcher<ExpectedType extends Object> {
       return this;
    }
 
-   private matchesObjectLiteral(properties: Object): this {
+   private _matchesObjectLiteral(properties: Object): this {
       if (properties.constructor !== Object) {
          throw new TypeError("thatMatches requires value passed in to be an object literal");
       }
 
       this._testers.push({
-         stringify: () => `matches '${JSON.stringify(properties, this.replacer)}'`,
+         stringify: () => `matches '${JSON.stringify(properties, replacer)}'`,
          test: (v: any) => {
             const targetKeys = Object.getOwnPropertyNames(v);
             return Object.getOwnPropertyNames(properties).every(key => {
@@ -112,13 +120,5 @@ export class TypeMatcher<ExpectedType extends Object> {
       });
 
       return this;
-   }
-
-   private replacer(key: string, value: any) {
-      if (typeof value === "function") {
-         return value.toString();
-      }
-
-      return value;
    }
 }
