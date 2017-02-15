@@ -94,11 +94,11 @@ export class TestRunner {
 
             try {
                 await testItem.run(testSetRunInfo.timeout);
-                result = currentTestResults.addTestCaseResult(testItem.testCase.arguments);
+                result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments);
                 errorOccurredRunningTest = null;
             }
             catch (error) {
-                result = currentTestResults.addTestCaseResult(testItem.testCase.arguments, error);
+                result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments, error);
                 errorOccurredRunningTest = error;
             }
 

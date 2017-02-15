@@ -99,7 +99,7 @@ export class TestLoader {
          test.testCases = [];
 
          if (!testCases) {
-            test.testCases.push({ arguments: [] });
+            test.testCases.push({ caseArguments: [] });
          }
          else {
             testCases.forEach((testCase: ITestCase) => {
