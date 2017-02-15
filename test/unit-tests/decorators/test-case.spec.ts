@@ -93,7 +93,7 @@ export class TestCaseDecoratorTests {
 
     let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
 
-    Expect(testCases[0].arguments).toEqual(expectedArguments);
+    Expect(testCases[0].caseArguments).toEqual(expectedArguments);
   }
 
   @TestCase("key")
@@ -130,6 +130,6 @@ export class TestCaseDecoratorTests {
 
     let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
 
-    Expect(testCases[0].arguments).toEqual(args);
+    Expect(testCases[0].caseArguments).toEqual(args);
   }
 }
