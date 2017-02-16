@@ -59,12 +59,13 @@ export class TestItem {
             }, timeout);
 
             if (this._test.isAsync) {
-                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments)
+                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.caseArguments)
                 .then(resolve)
                 .catch(reject);
             }
             else {
-                this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.arguments);
+                this._testFixture.fixture[this._test.key]
+                   .apply(this._testFixture.fixture, this._testCase.caseArguments);
                 resolve();
             }
         });
