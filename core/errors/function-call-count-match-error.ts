@@ -29,7 +29,7 @@ export class FunctionCallCountMatchError extends MatchError {
 
   private static _buildActualValue(actualValue: FunctionSpy, args?: Array<any>) {
     return `function was called` +
-    `${args && actualValue.calls.length ? " with " + 
+    `${args && actualValue.calls.length ? " with " +
     actualValue.calls.map(call => JSON.stringify(call.args)).join(", ") : ""} `
     + `${actualValue.calls.length} time${actualValue.calls.length === 1 ? "" : "s"}.`;
   }

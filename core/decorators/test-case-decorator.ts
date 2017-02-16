@@ -32,7 +32,7 @@ export function TestCase(...testCaseArguments: Array<any>) {
 
     // add the test case to the list
     testCases.unshift({
-      arguments: testCaseArguments
+      caseArguments: testCaseArguments
     });
 
     // update the list of test cases

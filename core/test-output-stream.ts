@@ -81,9 +81,9 @@ export class TestOutputStream extends ReadableStream {
       let testDescription = test.description;
 
       if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-         testDescription += ` [ ${testCaseArguments.map(argument => 
+         testDescription += ` ( ${testCaseArguments.map(argument =>
              this._getArgumentDescription(argument)
-         ).join(", ")} ]`;
+         ).join(", ")} )`;
       }
 
       return testDescription;
