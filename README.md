@@ -1,6 +1,6 @@
 <p id="banner" align="center">
     <img src="https://github.com/alsatian-test/alsatian/raw/master/documentation/images/alsatian-mascot-logo.png" alt="Alsatian Mascot Logo" />
-    <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium">selenium</a>, istanbul and tap reporters.</p>
+    <p id="tag-line" align="center">Awesomely easy and useful TypeScript and JavaScript testing framework with test cases, compatible with <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium">selenium</a>, <a href="https://github.com/alsatian-test/alsatian/wiki/check-test-coverage-with-nyc">coverage checkers</a> and <a href="https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-tap-reporters">TAP reporters</a>.</p>
 </p>
 <p id="badges" align="center">
     <a href="https://www.npmjs.com/package/alsatian">
@@ -56,7 +56,7 @@ export class SetOfTests {
     
     // use the async/await pattern in your tests as you would in your code
     @AsyncTest("asychronous test")
-    public asyncTest() {
+    public async asyncTest() {
         const response = await somethingToHappen();
 
         Expect(response).toBeDefined();
@@ -98,7 +98,7 @@ So many awesome things!
 * write end to end tests with [Selenium](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-selenium)
 * check your code coverage with [NYC](https://github.com/alsatian-test/alsatian/wiki/check-test-coverage-with-nyc)
 * set up a wonderful CI process and give confidence in the quality of your product
-* have the output look however you desire using TAP reporters
+* have the output look however you desire using  [TAP reporters](https://github.com/alsatian-test/alsatian/wiki/using-alsatian-with-tap-reporters)
 
 ## Support
 
@@ -110,4 +110,4 @@ We're always glad to have help out with Alsatian, check out the [guidelines](htt
 
 ## License
 
-Alsatian has been released under the MIT license which can be found [here](https://github.com/alsatian-test/alsatian/blob/master/LICENSE)
+Alsatian has been released under the [MIT license](https://github.com/alsatian-test/alsatian/blob/master/LICENSE)

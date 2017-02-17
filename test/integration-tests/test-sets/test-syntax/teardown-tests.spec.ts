@@ -1,4 +1,5 @@
-import { AsyncTeardown, Expect, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
+import { AsyncTeardown, Expect, Teardown, TeardownFixture, Test, TestFixture } from "../../../../core/alsatian-core";
+import { TeardownFixtureTests } from "./teardown-fixture.spec";
 
 @TestFixture("teardown tests")
 export class TeardownTests {
@@ -29,5 +30,10 @@ export class TeardownTests {
    public async teardownNowHasBeenCalled() {
        Expect(this._teardownComplete).toBe(true);
        Expect(this._asyncTeardownComplete).toBe(true);
+   }
+
+   @Test("teardown fixture has been called when previous fixture completes")
+   public teardownFixtureCalledOnPreviousFixture() {
+       Expect(TeardownFixtureTests.teardownFixtureCount).toBe(1);
    }
 }
