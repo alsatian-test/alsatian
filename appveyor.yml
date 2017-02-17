@@ -7,6 +7,9 @@ environment:
 
 # Install scripts. (runs after repo cloning)
 install:
+  # Update Appveyor Build Number in line with npm version
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version 
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install modules
