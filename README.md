@@ -13,7 +13,7 @@
         <img src="https://travis-ci.org/alsatian-test/alsatian.svg?branch=master" alt="Linux and OSX Build Status" />
     </a>
     <a href="https://ci.appveyor.com/project/jamesrichford/alsatian">
-        <img src="https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true" alt="Windows Build Status" />
+        <img src="https://ci.appveyor.com/api/projects/status/github/alsatian-test/alsatian?branch=master&amp;svg=true" alt="Windows Build Status" />
     </a>
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg" alt="Code Climate" />
