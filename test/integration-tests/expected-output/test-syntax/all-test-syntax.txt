@@ -1,5 +1,5 @@
 TAP version 13
-1..10
+1..16
 # FIXTURE asynchronous tests
 ok 1 simple passing asynchronous test
 not ok 2 simple failing asynchronous test
@@ -10,14 +10,21 @@ not ok 2 simple failing asynchronous test
      got: 4
      expect: 5
  ...
+# FIXTURE CaseArgumentTestsTests
+ok 3 AddNumbers ( 1, 2, 3 )
+ok 4 AddNumbers ( 1.5, 2.5, 4 )
+ok 5 AddStrings ( "Hello", " world!", "Hello world!" )
+ok 6 AddStrings ( "Far", "away", "Faraway" )
+ok 7 AddObjectProperty ( {"a":1}, {"a":2}, 3 )
+ok 8 AddArray ( [1,2], [3,4], 10 )
 # FIXTURE setup tests
-ok 3 simple setup
-ok 4 simple async setup
-ok 5 setup fixture only happened once
+ok 9 simple setup
+ok 10 simple async setup
+ok 11 setup fixture only happened once
 # FIXTURE teardown fixtures
-ok 6 teardown fixture not called before first test
-ok 7 teardown fixture has still not been called after first test or before second
+ok 12 teardown fixture not called before first test
+ok 13 teardown fixture has still not been called after first test or before second
 # FIXTURE teardown tests
-ok 8 teardown not called before first test
-ok 9 teardown has been called after first test and before second
-ok 10 teardown fixture has been called when previous fixture completes
+ok 14 teardown not called before first test
+ok 15 teardown has been called after first test and before second
+ok 16 teardown fixture has been called when previous fixture completes

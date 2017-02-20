@@ -78,15 +78,15 @@ export class TestOutputStream extends ReadableStream {
    }
 
    private _getTestDescription(test: ITest, testCaseArguments: Array<any>): string {
-      let testDescription = test.description;
-
-      if (testCaseArguments !== undefined && testCaseArguments.length > 0) {
-         testDescription += ` [ ${testCaseArguments.map(argument =>
-             this._getArgumentDescription(argument)
-         ).join(", ")} ]`;
+      if (testCaseArguments === undefined || testCaseArguments.length <= 0) {
+         return test.description;
       }
 
-      return testDescription;
+      const formattedArguments = testCaseArguments
+         .map(argument => this._getArgumentDescription(argument))
+         .join(", ");
+
+      return `${test.description} ( ${formattedArguments} )`;
    }
 
    private _getArgumentDescription(argument: any): string {

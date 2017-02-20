@@ -167,7 +167,7 @@ export class SetupTests {
 
         while (test.testCases.length < testCaseCount) {
             test.testCases.push({
-                arguments: []
+                caseArguments: []
             });
         }
 
@@ -328,7 +328,7 @@ export class SetupTests {
 
         while (test.testCases.length < testCaseCount) {
             test.testCases.push({
-                arguments: []
+                caseArguments: []
             });
         }
 

@@ -36,6 +36,7 @@ export class CliIntegrationTests {
    @TestCase("async-test")
    @TestCase("setup")
    @TestCase("teardown")
+   @TestCase("case-arguments")
    @AsyncTest()
    @Timeout(5000)
    public syntaxTests(syntaxTestName: string) {
