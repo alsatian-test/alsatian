@@ -102,19 +102,17 @@ export class TestRunner {
                 errorOccurredRunningTest = error;
             }
 
-            // emit onComplete event out of Alsatian if call back has been defined
-            if (this._onTestCompleteCBs) {
-                this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-                   onTestCompleteCB({
-                        error: errorOccurredRunningTest,
-                        outcome: result.outcome,
-                        test: testItem.test,
-                        testCase: testItem.testCase,
-                        testFixture: testItem.testFixture,
-                        testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
-                    });
+            // emit onComplete event
+            this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+                onTestCompleteCB({
+                    error: errorOccurredRunningTest,
+                    outcome: result.outcome,
+                    test: testItem.test,
+                    testCase: testItem.testCase,
+                    testFixture: testItem.testFixture,
+                    testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
                 });
-            }
+            });
 
             this._outputStream.emitResult(testItemIndex + 1, result);
         }
