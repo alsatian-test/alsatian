@@ -1,5 +1,4 @@
-import { TestFixture, Test, TestCase, Expect } from "../../../core/alsatian-core";
-const mock = require("mock-require");
+import { Expect, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 
 @TestFixture("temporary tests to satisfy TypeScript quirk")
 export class TempTests {
@@ -22,10 +21,12 @@ export class TempTests {
     @Test("give all those errors a go without a super")
     public testErrors(error: string, className: string) {
         let mockMatch: any = {
-            "MatchError": () => {}
+            MatchError: () => {}
         };
 
-        mock("../../../core/errors/match-error", mockMatch);        
+        const mock = require("mock-require");
+
+        mock("../../../core/errors/match-error", mockMatch);
         delete require.cache[require.resolve(`../../../core/errors/${error}.js`)];
 
         const errorModule = require(`../../../core/errors/${error}`);
