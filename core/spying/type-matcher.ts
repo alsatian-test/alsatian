@@ -1,3 +1,5 @@
+import { ArgumentStringifier } from "../stringification";
+
 type Tester = {
    test: (value: any) => boolean;
    stringify: () => string;
@@ -13,6 +15,7 @@ function replacer(key: string, value: any) {
 
 export class TypeMatcher<ExpectedType extends Object> {
 
+   private _argumentStringifier = new ArgumentStringifier();
    private _testers: Array<Tester> = [];
    private _type: new (...args: Array<any>) => Object;
    public get type() {
@@ -78,7 +81,7 @@ export class TypeMatcher<ExpectedType extends Object> {
 
    private _matchesKeyAndValue(key: string, value: any): this {
       this._testers.push({
-         stringify: () => `with property '${key}' equal to '${JSON.stringify(value) || value.toString()}'`,
+         stringify: () => `with property '${key}' equal to '${this._argumentStringifier.stringify(value)}'`,
          test: (v: any) => {
             if (Object.getOwnPropertyNames(v).indexOf(key) < 0) {
                return false;
