@@ -9,7 +9,7 @@
       "preserveConstEnums": true,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      "lib": [ "es5", "es2015.promise" ]
+      "lib": [ "es2015" ]
    },
    "buildOnSave": false,
    "compileOnSave": true,
