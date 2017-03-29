@@ -6,7 +6,7 @@ export class ToMatchTests {
    @TestCase("thing", /something/)
    @TestCase("another thing", /this and that/)
    public shouldMatchAndDoesNotThrows(actualValue: any, expectedRegex: RegExp) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toMatch(expectedRegex))
    .toThrowError(RegexMatchError, `Expected ${JSON.stringify(actualValue)} to conform to ${expectedRegex}.`);
@@ -15,7 +15,7 @@ export class ToMatchTests {
    @TestCase("something", /thing/)
    @TestCase("another thing", /another thing/)
    public shouldMatchAndDoesDoesNotThrow(actualValue: any, expectedRegex: RegExp) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toMatch(expectedRegex)).not.toThrow();
    }
@@ -23,7 +23,7 @@ export class ToMatchTests {
    @TestCase("thing", /something/)
    @TestCase("another thing", /this and that/)
    public shouldNotMatchAndDoesNotDoesNotThrow(actualValue: any, expectedRegex: RegExp) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toMatch(expectedRegex)).not.toThrow();
    }
@@ -31,7 +31,7 @@ export class ToMatchTests {
    @TestCase("something", /thing/)
    @TestCase("another thing", /another thing/)
    public shouldNotMatchAndDoesThrows(actualValue: any, expectedRegex: RegExp) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toMatch(expectedRegex))
         .toThrowError(RegexMatchError, `Expected ${JSON.stringify(actualValue)} not to conform to ${expectedRegex}.`);

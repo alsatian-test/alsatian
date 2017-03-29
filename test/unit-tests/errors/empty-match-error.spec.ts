@@ -5,21 +5,21 @@ export class EmptyMatchErrorTests {
 
    @Test()
    public shouldBeEmptyMessage() {
-      let error = new EmptyMatchError([], true);
+      const error = new EmptyMatchError([], true);
 
       Expect(error.message).toBe(`Expected "${JSON.stringify([])}" to be empty.`);
    }
 
    @Test()
    public shouldNotBeEmptyMessage() {
-      let error = new EmptyMatchError([], false);
+      const error = new EmptyMatchError([], false);
 
       Expect(error.message).toBe(`Expected "${JSON.stringify([])}" not to be empty.`);
    }
 
    @Test()
    public doesNotDoubleQuoteStrings() {
-      let error = new EmptyMatchError("something", false);
+      const error = new EmptyMatchError("something", false);
 
       Expect(error.message).toBe(`Expected "something" not to be empty.`);
    }

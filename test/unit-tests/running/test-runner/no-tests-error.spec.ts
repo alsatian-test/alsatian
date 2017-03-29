@@ -26,11 +26,11 @@ export class NotestsErrorTests {
 
    @AsyncTest("empty test fixture throws no tests error")
    public async emptyTestFixturesThrowsError() {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
-      let testRunner = new TestRunner();
+      const testRunner = new TestRunner();
 
       let error: Error;
 
@@ -52,11 +52,11 @@ export class NotestsErrorTests {
    @TestCase(13)
    @AsyncTest("one test fixture with multiple empty tests throws no tests error")
    public async testFixtureWithEmptyTestsOutputsNoTestError(testCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
-      let testFixtureBuilder = new TestFixtureBuilder();
+      const testFixtureBuilder = new TestFixtureBuilder();
 
       for (let i = 0; i < testCount; i++) {
         testFixtureBuilder.addTest(new TestBuilder().build());
@@ -64,7 +64,7 @@ export class NotestsErrorTests {
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let testRunner = new TestRunner();
+      const testRunner = new TestRunner();
 
       let error: Error;
 
@@ -86,15 +86,15 @@ export class NotestsErrorTests {
    @TestCase(13)
    @AsyncTest("multiple test fixtures with no tests throws no tests error")
    public async multipleTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
         testSet.testFixtures.push(new TestFixtureBuilder().build());
       }
 
-      let testRunner = new TestRunner();
+      const testRunner = new TestRunner();
 
       let error: Error;
 
@@ -123,12 +123,12 @@ export class NotestsErrorTests {
    @AsyncTest("multiple test fixtures with multiple empty tests throws no tests error")
    public async multipleTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number,
                                                                            testCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        let testFixtureBuilder = new TestFixtureBuilder();
+        const testFixtureBuilder = new TestFixtureBuilder();
 
         for (let j = 0; j < testCount; j++) {
           testFixtureBuilder.addTest(new TestBuilder().build());
@@ -137,7 +137,7 @@ export class NotestsErrorTests {
         testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let testRunner = new TestRunner();
+      const testRunner = new TestRunner();
 
       let error: Error;
 

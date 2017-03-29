@@ -5,64 +5,64 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public shouldBeCalledMessage() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
-      let error = new FunctionCallMatchError(fakeFunction, true);
+      const error = new FunctionCallMatchError(fakeFunction, true);
 
       Expect(error.message).toBe("Expected function to be called.");
    }
 
    @Test()
    public shouldNotBeCalledMessage() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, false);
+      const error = new FunctionCallMatchError(fakeFunction, false);
 
       Expect(error.message).toBe("Expected function not to be called.");
    }
 
    @Test()
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, true);
+      const error = new FunctionCallMatchError(fakeFunction, true);
 
       Expect(error.actual).toBe("function was not called.");
    }
 
    @Test()
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, false);
+      const error = new FunctionCallMatchError(fakeFunction, false);
 
       Expect(error.actual).toBe("function was called.");
    }
 
    @Test()
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, true);
+      const error = new FunctionCallMatchError(fakeFunction, true);
 
       Expect(error.expected).toBe("function to be called.");
    }
 
    @Test()
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, false);
+      const error = new FunctionCallMatchError(fakeFunction, false);
 
       Expect(error.expected).toBe("function not to be called.");
    }
@@ -71,11 +71,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase([ "this", "that" ])
    @TestCase([ 1, 2, 3 ])
    public shouldBeCalledWithArgsMessage(args: Array<any>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: [] });
 
-      let error = new FunctionCallMatchError(fakeFunction, true, args);
+      const error = new FunctionCallMatchError(fakeFunction, true, args);
 
       Expect(error.message)
         .toBe("Expected function to be called with [" + args.map(arg => JSON.stringify(arg)).join(", ") + "].");
@@ -85,11 +85,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase([ "this", "that" ])
    @TestCase([ 1, 2, 3 ])
    public shouldNotBeCalledWithArgsMessage(expectedArguments: Array<any>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      let error = new FunctionCallMatchError(fakeFunction, false, expectedArguments);
+      const error = new FunctionCallMatchError(fakeFunction, false, expectedArguments);
 
       Expect(error.message)
         .toBe("Expected function not to be called with " +
@@ -103,13 +103,13 @@ export class FunctionCallMatchErrorTests {
    @TestCase([["this", "or"], ["that", "other", "thing"]])
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalledWithArguments(
                                                     actualArgumentsList: Array<Array<any>>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       actualArgumentsList.forEach(actualArguments => {
          fakeFunction.calls.push({ args: actualArguments });
       });
 
-      let error = new FunctionCallMatchError(fakeFunction, true, []);
+      const error = new FunctionCallMatchError(fakeFunction, true, []);
 
       Expect(error.actual)
         .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
@@ -122,13 +122,13 @@ export class FunctionCallMatchErrorTests {
    @TestCase([["this", "or"], ["that", "other", "thing"]])
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalledWithArguments(
                                                     actualArgumentsList: Array<Array<any>>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       actualArgumentsList.forEach(actualArguments => {
          fakeFunction.calls.push({ args: actualArguments });
       });
 
-      let error = new FunctionCallMatchError(fakeFunction, false, []);
+      const error = new FunctionCallMatchError(fakeFunction, false, []);
 
       Expect(error.actual)
         .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
@@ -139,9 +139,9 @@ export class FunctionCallMatchErrorTests {
    @TestCase(["something"])
    @TestCase([1, "or", 2, "other", "things"])
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalledWithArguments(expectedArguments: Array<any>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
-      let error = new FunctionCallMatchError(fakeFunction, true, expectedArguments);
+      const error = new FunctionCallMatchError(fakeFunction, true, expectedArguments);
 
       Expect(error.expected)
         .toBe("function to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
@@ -152,11 +152,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(["something"])
    @TestCase([1, "or", 2, "other", "things"])
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalledWithArguments(expectedArguments: Array<any>) {
-      let fakeFunction: any = { calls: [ ] };
+      const fakeFunction: any = { calls: [ ] };
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      let error = new FunctionCallMatchError(fakeFunction, false, expectedArguments);
+      const error = new FunctionCallMatchError(fakeFunction, false, expectedArguments);
 
       Expect(error.expected)
         .toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + ".");
@@ -164,7 +164,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public anyArgumentOutputAsAnythingInMessage() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any ]);
 
@@ -173,7 +173,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInMessage() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any ]);
 
@@ -182,7 +182,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public anyArgumentOutputAsAnythingInNotExpectedMessage() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any ]);
 
@@ -191,7 +191,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInNotExpectedMessage() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any ]);
 
@@ -200,7 +200,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public anyArgumentOutputAsAnythingInExpectedValue() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any ]);
 
@@ -209,7 +209,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInExpectedValue() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any ]);
 
@@ -218,7 +218,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public anyArgumentOutputAsAnythingInNotExpectedValue() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any ]);
 
@@ -227,7 +227,7 @@ export class FunctionCallMatchErrorTests {
 
    @Test()
    public twoAnyArgumentsBothOutputAsAnythingInNotExpectedValue() {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any ]);
 
@@ -239,11 +239,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeArgumentOutputAsAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (<any> type).name + "].");
+      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (type as any).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -253,12 +253,12 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInMessage(
                                     typeOne: new (...args: Array<any>) => Object,
                                     typeTwo: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [Any ${(<any> typeOne).name}, Any ${(<any> typeTwo).name}].`);
+        .toBe(`Expected function to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}].`);
    }
 
    @TestCase(Number)
@@ -266,12 +266,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (<any> type).name + "].");
+        .toBe("Expected function not to be called with [Any " + (type as any).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -281,12 +281,12 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedMessage(
                                             typeOne: new (...args: Array<any>) => Object,
                                             typeTwo: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [Any ${(<any> typeOne).name}, Any ${(<any> typeTwo).name}].`);
+        .toBe(`Expected function not to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}].`);
    }
 
    @TestCase(Number)
@@ -294,11 +294,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeArgumentOutputAsAnyTypeInExpectedValue(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Any " + (<any> type).name +  "].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as any).name +  "].");
    }
 
    @TestCase(Number, Array)
@@ -308,12 +308,12 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInExpectedValue(
                                       typeOne: new (...args: Array<any>) => Object,
                                       typeTwo: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Any " + (<any> typeOne).name + ", Any " + (<any> typeTwo).name + "].");
+        .toBe("function to be called with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "].");
    }
 
    @TestCase(Number)
@@ -321,11 +321,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function not to be called with [Any " + (<any> type).name + "].");
+      Expect(functionCallError.expected).toBe("function not to be called with [Any " + (type as any).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -335,12 +335,12 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedValue(
                                               typeOne: new (...args: Array<any>) => Object,
                                               typeTwo: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (<any> typeOne).name + ", Any " + (<any> typeTwo).name + "].");
+        .toBe("function not to be called with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "].");
    }
 
    @TestCase(Number)
@@ -348,12 +348,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Anything, Any " + (<any> type).name + "].");
+        .toBe("Expected function to be called with [Anything, Any " + (type as any).name + "].");
    }
 
    @TestCase(Number)
@@ -362,12 +362,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage(
                                                                     type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Anything, Any " + (<any> type).name + "].");
+        .toBe("Expected function not to be called with [Anything, Any " + (type as any).name + "].");
    }
 
    @TestCase(Number)
@@ -376,11 +376,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue(
                                                       type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Anything, Any " + (<any> type).name + "].");
+      Expect(functionCallError.expected).toBe("function to be called with [Anything, Any " + (type as any).name + "].");
    }
 
    @TestCase(Number)
@@ -389,12 +389,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue(
                                                             type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Anything, Any " + (<any> type).name + "].");
+        .toBe("function not to be called with [Anything, Any " + (type as any).name + "].");
    }
 
    @TestCase(Number)
@@ -402,12 +402,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (<any> type).name + ", Anything].");
+        .toBe("Expected function to be called with [Any " + (type as any).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -416,12 +416,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage(
                                                                 type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (<any> type).name + ", Anything].");
+        .toBe("Expected function not to be called with [Any " + (type as any).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -430,11 +430,11 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue(
                                                           type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Any " + (<any> type).name + ", Anything].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as any).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -443,12 +443,12 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue(
                                                       type: new (...args: Array<any>) => Object) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (<any> type).name + ", Anything].");
+        .toBe("function not to be called with [Any " + (type as any).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -457,7 +457,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeThatMatchesArgumentOutputAsAnyTypeInMessage<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType]);
@@ -473,7 +473,7 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
       const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
@@ -489,7 +489,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeThatMatchesArgumentOutputAsAnyTypeInNotExpectedMessage<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType]);
@@ -505,7 +505,7 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
       const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
@@ -521,7 +521,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeThatMatchesArgumentOutputAsAnyTypeInExpectedValue<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType]);
@@ -536,7 +536,7 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
       const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
@@ -552,7 +552,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeArgumentThatMatchesOutputAsAnyTypeInNotExpectedValue<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType]);
@@ -568,7 +568,7 @@ export class FunctionCallMatchErrorTests {
    public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyTypeOne = Any(typeOne).thatMatches((e: ExpectedType1) => true);
       const anyTypeTwo = Any(typeTwo).thatMatches((e: ExpectedType2) => true);
@@ -584,7 +584,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessage<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [Any, anyType]);
@@ -599,7 +599,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [Any, anyType]);
@@ -614,7 +614,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [Any, anyType]);
@@ -629,7 +629,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [Any, anyType]);
@@ -644,7 +644,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessage<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType, Any]);
@@ -659,7 +659,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType, Any]);
@@ -674,7 +674,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue<ExpectedType extends Object>(
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [anyType, Any]);
@@ -689,7 +689,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Array)
    public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
-      let fakeSpy: any = { calls: [] };
+      const fakeSpy: any = { calls: [] };
 
       const anyType = Any(type).thatMatches((e: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [anyType, Any]);
@@ -703,7 +703,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInMessage( exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any]);
 
@@ -716,7 +716,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInMessageAnyTyoeInNotExpectedMessage(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any]);
 
@@ -729,7 +729,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInExpectedValue(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any]);
 
@@ -742,7 +742,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public exactAndAnyArgumentsBothOutputAsExactAndAnythingInNotExpectedValue(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any]);
 
@@ -755,7 +755,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInMessage(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, exactValue ]);
 
@@ -768,7 +768,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public anyAndExaactArgumentsBothOutputAsAnythingAndExactInMessageAnyTyoeInNotExpectedMessage(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, exactValue ]);
 
@@ -781,7 +781,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInExpectedValue(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, exactValue ]);
 
@@ -794,7 +794,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase("something else")
    @TestCase(-42)
    public anyAndExactArgumentsBothOutputAsAnythingAndExactInNotExpectedValue(exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, exactValue ]);
 
@@ -809,12 +809,12 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessage(
                                                   type: new (...args: Array<any>) => Object,
                                                   exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [${JSON.stringify(exactValue)}, Any ${(<any> type).name}].`);
+        .toBe(`Expected function to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}].`);
    }
 
    @TestCase(Number, "test")
@@ -824,12 +824,12 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage(
                                                                   type: new (...args: Array<any>) => Object,
                                                                   exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [${JSON.stringify(exactValue)}, Any ${(<any> type).name}].`);
+        .toBe(`Expected function not to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}].`);
    }
 
    @TestCase(Number, "test")
@@ -839,12 +839,12 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInExpectedValue(
                                                       type: new (...args: Array<any>) => Object,
                                                       exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any> type).name + "].");
+        .toBe("function to be called with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "].");
    }
 
    @TestCase(Number, "test")
@@ -854,12 +854,12 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue(
                                               type: new (...args: Array<any>) => Object,
                                               exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (<any> type).name + "].");
+        .toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "].");
    }
 
    @TestCase(Number, "test")
@@ -869,12 +869,12 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInMessage(
                                                     type: new (...args: Array<any>) => Object,
                                                     exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), exactValue ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [Any ${(<any> type).name}, ${JSON.stringify(exactValue)}].`);
+        .toBe(`Expected function to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}].`);
    }
 
    @TestCase(Number, "test")
@@ -884,12 +884,12 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExaactArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage(
                                                                     type: new (...args: Array<any>) => Object,
                                                                     exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), exactValue ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [Any ${(<any> type).name}, ${JSON.stringify(exactValue)}].`);
+        .toBe(`Expected function not to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}].`);
    }
 
    @TestCase(Number, "test")
@@ -899,12 +899,12 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInExpectedValue(
                                             type: new (...args: Array<any>) => Object,
                                             exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Any " + (<any> type).name + ", " + JSON.stringify(exactValue) + "].");
+        .toBe("function to be called with [Any " + (type as any).name + ", " + JSON.stringify(exactValue) + "].");
    }
 
    @TestCase(Number, "test")
@@ -914,12 +914,12 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue(
                                                 type: new (...args: Array<any>) => Object,
                                                 exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (<any> type).name + ", " + JSON.stringify(exactValue) + "].");
+        .toBe("function not to be called with [Any " + (type as any).name + ", " + JSON.stringify(exactValue) + "].");
    }
 
    @TestCase(Number, "test")
@@ -929,7 +929,7 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessage<ExpectedType extends Object>(
                                                   type: new (...args: Array<any>) => ExpectedType,
                                                   exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, anyType ]);
@@ -945,7 +945,7 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
                                                                   type: new (...args: Array<any>) => ExpectedType,
                                                                   exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, anyType ]);
@@ -961,7 +961,7 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInExpectedValue<ExpectedType extends Object>(
                                                       type: new (...args: Array<any>) => Object,
                                                       exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, anyType ]);
@@ -977,7 +977,7 @@ export class FunctionCallMatchErrorTests {
    public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue<ExpectedType extends Object>(
                                               type: new (...args: Array<any>) => Object,
                                               exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, anyType ]);
@@ -993,7 +993,7 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessage<ExpectedType extends Object>(
                                                     type: new (...args: Array<any>) => Object,
                                                     exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ anyType, exactValue ]);
@@ -1009,7 +1009,7 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
                                                                     type: new (...args: Array<any>) => Object,
                                                                     exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ anyType, exactValue ]);
@@ -1025,7 +1025,7 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInExpectedValue<ExpectedType extends Object>(
                                             type: new (...args: Array<any>) => Object,
                                             exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ anyType, exactValue ]);
@@ -1041,7 +1041,7 @@ export class FunctionCallMatchErrorTests {
    public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue<ExpectedType extends Object>(
                                                 type: new (...args: Array<any>) => Object,
                                                 exactValue: any) {
-      let fakeSpy: any = { calls: [ ] };
+      const fakeSpy: any = { calls: [ ] };
 
       const anyType = Any(type).thatMatches((v: ExpectedType) => true);
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ anyType, exactValue ]);

@@ -17,7 +17,7 @@ export class GulpIntegrationTests {
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem
+      const expectedOutput = FileSystem
                                 .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
                                 .toString();
 
@@ -44,7 +44,7 @@ export class GulpIntegrationTests {
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem
+      const expectedOutput = FileSystem
                             .readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt")
                             .toString();
 

@@ -29,26 +29,26 @@ export class FailingTestsTests {
 
    @AsyncTest()
    public async failingTestOutputsNotOk() {
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
-      let testFixtureBuilder = new TestFixtureBuilder();
+      (testSet as any).testFixtures = [];
+      const testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({
           failingTest: () => {
               throw new MatchError("nothing", "something", "expected nothing to be something.");
           }
       });
 
-      let testBuilder = new TestBuilder();
+      const testBuilder = new TestBuilder();
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
@@ -56,22 +56,22 @@ export class FailingTestsTests {
 
    @AsyncTest()
    public async testThrowsErrorOutputsNotOk() {
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
-      let testFixtureBuilder = new TestFixtureBuilder();
+      (testSet as any).testFixtures = [];
+      const testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({ failingTest: () => { throw new Error("something went wrong."); }});
-      let testBuilder = new TestBuilder();
+      const testBuilder = new TestBuilder();
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
 
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");

@@ -5,7 +5,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionCalledPasses() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -18,7 +18,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledFails() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -29,7 +29,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledFailsWithCorrectError() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -41,7 +41,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledPassesWhenShouldNotCall() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -52,7 +52,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionThrowsErrorFailsWhenShouldNotThrow() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -65,7 +65,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionThrowsErrorFailsWithCorrectError() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -115,7 +115,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -137,7 +137,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -161,7 +161,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -183,7 +183,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -209,7 +209,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesDoesNotThrow(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -226,7 +226,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 1)
    public spyCalledCorrectAmountOfTimesThrowsCorrectError(expectedCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -254,7 +254,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorExpectedValue(
                                                     expectedCallCount: number,
                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -290,7 +290,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorActualValue(
                                                     expectedCallCount: number,
                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -324,7 +324,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 1)
    public spyNotCalledCorrectAmountOfTimesDoesNotThrow(expectedCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -341,7 +341,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectError(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -367,7 +367,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorExpectedValue(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -401,7 +401,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorActualValue(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -435,7 +435,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 50)
    public spyCalledGreaterThanMinimumTimesDoesNotThrow(minimumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -452,7 +452,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 1)
    @TestCase(42, 13)
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectError(minimumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -484,7 +484,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(
                                                             minimumCallCount: number,
                                                             actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -520,7 +520,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(
                                                             minimumCallCount: number,
                                                             actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -553,7 +553,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 1)
    @TestCase(42, 13)
    public spyNotCalledLessThanMaximumTimesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -572,7 +572,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectError(
                                                         maximumCallCount: number,
                                                         actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -604,7 +604,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorExpectedValue(
                                                                     maximumCallCount: number,
                                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -640,7 +640,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorActualValue(
                                                                     maximumCallCount: number,
                                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 

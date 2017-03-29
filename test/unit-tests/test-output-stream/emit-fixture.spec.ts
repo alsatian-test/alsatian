@@ -11,10 +11,10 @@ export class EmitFixtureTests {
     @TestCase("AnotherTestFixture")
     @TestCase("lastOneIPromise")
     public shouldEmitCorrectFixtureInfo(description: string) {
-        let testOutput = new TestOutputStream();
+        const testOutput = new TestOutputStream();
         SpyOn(testOutput, "push");
 
-        let fixture = new TestFixtureBuilder()
+        const fixture = new TestFixtureBuilder()
             .withDescription(description)
             .build();
 

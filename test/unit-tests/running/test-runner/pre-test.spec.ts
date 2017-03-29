@@ -13,19 +13,19 @@ export class PreTestTests {
 
    @AsyncTest()
    public async tapVersionHeaderOutput() {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
-      let testFixtureBuilder = new TestFixtureBuilder();
-      let testBuilder = new TestBuilder();
+      (testSet as any).testFixtures = [];
+      const testFixtureBuilder = new TestFixtureBuilder();
+      const testBuilder = new TestBuilder();
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("TAP version 13\n");
    }
@@ -35,22 +35,22 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-         let testFixtureBuilder = new TestFixtureBuilder();
-         let testBuilder = new TestBuilder();
+         const testFixtureBuilder = new TestFixtureBuilder();
+         const testBuilder = new TestBuilder();
          testBuilder.addTestCase(new TestCaseBuilder().build());
          testFixtureBuilder.addTest(testBuilder.build());
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
    }
@@ -67,17 +67,17 @@ export class PreTestTests {
    @AsyncTest()
    public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number,
                                                                             testCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
-         let testFixtureBuilder = new TestFixtureBuilder();
+         const testFixtureBuilder = new TestFixtureBuilder();
 
          for (let j = 0; j < testCount; j++) {
-            let testFunctionKey = "testFunction" + j;
-            let testBuilder = new TestBuilder().withKey(testFunctionKey);
+            const testFunctionKey = "testFunction" + j;
+            const testBuilder = new TestBuilder().withKey(testFunctionKey);
             testBuilder.addTestCase(new TestCaseBuilder().build());
             testFixtureBuilder.addTest(testBuilder.build());
          }
@@ -85,7 +85,7 @@ export class PreTestTests {
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let resultPromise: any = {
+      const resultPromise: any = {
          catch: (error: Error) => {},
          resolve: () => {
 
@@ -96,10 +96,10 @@ export class PreTestTests {
          }
       };
 
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
 
@@ -139,17 +139,17 @@ export class PreTestTests {
                                             testCount: number,
                                             testCaseCount: number) {
 
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
-         let testFixtureBuilder = new TestFixtureBuilder();
+         const testFixtureBuilder = new TestFixtureBuilder();
 
          for (let j = 0; j < testCount; j++) {
-            let testFunctionKey = "testFunction" + j;
-            let testBuilder = new TestBuilder().withKey(testFunctionKey);
+            const testFunctionKey = "testFunction" + j;
+            const testBuilder = new TestBuilder().withKey(testFunctionKey);
             testFixtureBuilder.addTest(testBuilder.build());
 
             for (let k = 0; k < testCaseCount; k++) {
@@ -160,10 +160,10 @@ export class PreTestTests {
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("1.." + (testFixtureCount * testCount * testCaseCount) + "\n");
    }
@@ -173,25 +173,25 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
-      let testSet = <TestSet> {};
+      const testSet = {} as TestSet;
 
-      (<any> testSet).testFixtures = [];
+      (testSet as any).testFixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-         let testFixtureBuilder = new TestFixtureBuilder();
-         let testBuilder = new TestBuilder();
+         const testFixtureBuilder = new TestFixtureBuilder();
+         const testBuilder = new TestBuilder();
          testBuilder.addTestCase(new TestCaseBuilder().build());
          testFixtureBuilder.addTest(testBuilder.build());
          testSet.testFixtures.push(testFixtureBuilder.build());
       }
 
-      let testFixtureBuilder = new TestFixtureBuilder();
+      const testFixtureBuilder = new TestFixtureBuilder();
       testSet.testFixtures.push(testFixtureBuilder.build());
 
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith("1.." + testFixtureCount + "\n");
    }

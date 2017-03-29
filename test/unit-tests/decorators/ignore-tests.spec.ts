@@ -6,8 +6,8 @@ export class IgnoreTestsDecoratorTests {
 
     @Test()
     public focusTestKeyMetaDataAdded(key: string) {
-        let ignoreTestsDecorator = IgnoreTestsDecorator();
-        let testFixture = () => {};
+        const ignoreTestsDecorator = IgnoreTestsDecorator();
+        const testFixture = () => {};
 
         ignoreTestsDecorator(testFixture);
         Expect(Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture)).toBe(true);
@@ -17,8 +17,8 @@ export class IgnoreTestsDecoratorTests {
     @TestCase("another reason for it being ignored")
     @TestCase("bla bla bla")
     public ignoreTestCorrectReasonAdded(reason: string) {
-        let ignoreTestDecorator = IgnoreTestsDecorator(reason);
-        let testFixture = () => {};
+        const ignoreTestDecorator = IgnoreTestsDecorator(reason);
+        const testFixture = () => {};
 
         ignoreTestDecorator(testFixture);
 

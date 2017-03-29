@@ -20,7 +20,7 @@ export class CliIntegrationTests {
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem
+      const expectedOutput = FileSystem
                               .readFileSync(`./test/integration-tests/expected-output/` +
                                             `expectations/${expectationTestName}.txt`)
                               .toString();
@@ -51,7 +51,7 @@ export class CliIntegrationTests {
       result.stdout.on("data", (data) => consoleOutput += data);
       result.stderr.on("data", (data) => consoleOutput += data);
 
-      let expectedOutput = FileSystem
+      const expectedOutput = FileSystem
                             .readFileSync(`./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`)
                             .toString();
 

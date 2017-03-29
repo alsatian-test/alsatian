@@ -63,7 +63,7 @@ export class TestBuilder {
       return this;
   }
 
-  public build (): ITest {
+  public build(): ITest {
     return this._test;
   }
 }

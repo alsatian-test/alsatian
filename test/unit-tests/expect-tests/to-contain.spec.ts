@@ -8,7 +8,7 @@ export class ToContainTests {
    @TestCase("", "something")
    @TestCase("something", "another thing")
    public shouldContainAndDoesNotThrows(actualValue: any, expectedContent: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toContain(expectedContent))
         .toThrowError(
@@ -21,7 +21,7 @@ export class ToContainTests {
    @TestCase("something", "something")
    @TestCase("something", "thing")
    public shouldContainAndDoesDoesNotThrow(actualValue: any, expectedContent: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toContain(expectedContent)).not.toThrow();
    }
@@ -31,7 +31,7 @@ export class ToContainTests {
    @TestCase("", "something")
    @TestCase("something", "another thing")
    public shouldNotContainAndDoesNotDoesNotThrow(actualValue: any, expectedContent: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toContain(expectedContent)).not.toThrow();
    }
@@ -41,7 +41,7 @@ export class ToContainTests {
    @TestCase("something", "something")
    @TestCase("something", "thing")
    public shouldNotContainAndDoesThrows(actualValue: any, expectedContent: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toContain(expectedContent))
         .toThrowError(

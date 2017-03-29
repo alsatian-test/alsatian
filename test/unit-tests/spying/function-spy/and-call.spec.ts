@@ -10,7 +10,7 @@ export class AndCallTests {
    @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public spyShoulReturnCorrectValue(returnValue: any) {
-      let someObject = {
+      const someObject = {
          func: () => {}
       };
 
@@ -24,19 +24,19 @@ export class AndCallTests {
    @TestCase(() => {})
    @TestCase(() => 1 + 1)
    public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
-      let fake = {
+      const fake = {
          function: fakeFunction
       };
 
       SpyOn(fake, "function");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy();
+      const spy = new FunctionSpy();
 
       spy.call([]);
 
