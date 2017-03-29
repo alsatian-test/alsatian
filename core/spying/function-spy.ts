@@ -6,7 +6,7 @@ export class FunctionSpy {
    protected hasReturnValue: boolean;
    protected isStubbed: boolean;
    protected context: any;
-   private _fakeFunction: Function;
+   private _fakeFunction: () => any;
 
    private _calls: Array<SpyCall> = [];
    public get calls() {
@@ -39,7 +39,7 @@ export class FunctionSpy {
       this.hasReturnValue = true;
    }
 
-   public andCall(fakeFunction: Function) {
+   public andCall(fakeFunction: () => any) {
       this.isStubbed = true;
       this._fakeFunction = fakeFunction;
    }
