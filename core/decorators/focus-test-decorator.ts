@@ -5,4 +5,4 @@ export function FocusTest(target: any, propertyKey: string, descriptor: TypedPro
 
     // mark test method as focussed
     Reflect.defineMetadata(FOCUS, true, target, propertyKey);
-};
+}

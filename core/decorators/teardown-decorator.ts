@@ -17,4 +17,4 @@ export function Teardown(target: any, decoratedPropertyKey: string, descriptor: 
 
     // mark as teardown test method
     Reflect.defineMetadata(TEARDOWN, teardownFunctions, target);
-};
+}

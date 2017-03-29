@@ -19,4 +19,4 @@ export function AsyncSetup(target: any,
 
     // mark as setup test method
     Reflect.defineMetadata(SETUP, setupFunctions, target);
-};
+}
