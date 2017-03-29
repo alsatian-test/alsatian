@@ -1,5 +1,5 @@
-import { MatchError } from "./match-error";
 import { INameable } from "../_interfaces";
+import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
 

@@ -1,7 +1,7 @@
+import { INameable } from "../_interfaces";
 import { SpyCallCountType } from "../matchers";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
 import { MatchError } from "./match-error";
-import { INameable } from "../_interfaces";
 
 export class FunctionCallCountMatchError extends MatchError {
 
