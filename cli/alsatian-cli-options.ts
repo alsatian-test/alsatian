@@ -58,7 +58,7 @@ export class AlsatianCliOptions {
    }
 
    private _extractTimeout(args: Array<string>) {
-      let timeoutValue = this._getArgumentValueFromArgumentList(args, "timeout", "t");
+      const timeoutValue = this._getArgumentValueFromArgumentList(args, "timeout", "t");
 
       if (timeoutValue !== null) {
 
@@ -94,7 +94,7 @@ export class AlsatianCliOptions {
    }
 
    private _extractVersionRequested(args: Array<string>) {
-      let versionRequestedIndex = this._getArgumentIndexFromArgumentList(args, "version", "v");
+      const versionRequestedIndex = this._getArgumentIndexFromArgumentList(args, "version", "v");
 
       if (versionRequestedIndex > -1) {
 
@@ -109,7 +109,7 @@ export class AlsatianCliOptions {
    }
 
    private _extractHelpRequested(args: Array<string>) {
-      let helpRequestedIndex = this._getArgumentIndexFromArgumentList(args, "help", "h");
+      const helpRequestedIndex = this._getArgumentIndexFromArgumentList(args, "help", "h");
 
       if (helpRequestedIndex > -1) {
 
