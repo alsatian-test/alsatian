@@ -23,7 +23,7 @@ export class AndCallTests {
 
    @TestCase(() => {})
    @TestCase(() => 1 + 1)
-   public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
+   public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
       const object = {
          originalFunction: () => {}
       };

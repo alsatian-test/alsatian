@@ -15,7 +15,7 @@ export class TypeMatcherConstructorTests {
    @TestCase(Array)
    @TestCase(Object)
    @TestCase(Error)
-   public objectTypesDoNotThrow(type: new (...args: Array<any>) => Object) {
+   public objectTypesDoNotThrow(type: new (...args: Array<any>) => object) {
       Expect(() => new TypeMatcher(type)).not.toThrow();
    }
 }

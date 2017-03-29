@@ -238,7 +238,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
@@ -251,8 +251,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInMessage(
-                                    typeOne: new (...args: Array<any>) => Object,
-                                    typeTwo: new (...args: Array<any>) => Object) {
+                                    typeOne: new (...args: Array<any>) => object,
+                                    typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
@@ -265,7 +265,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
@@ -279,8 +279,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedMessage(
-                                            typeOne: new (...args: Array<any>) => Object,
-                                            typeTwo: new (...args: Array<any>) => Object) {
+                                            typeOne: new (...args: Array<any>) => object,
+                                            typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
@@ -293,7 +293,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInExpectedValue(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInExpectedValue(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
@@ -306,8 +306,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInExpectedValue(
-                                      typeOne: new (...args: Array<any>) => Object,
-                                      typeTwo: new (...args: Array<any>) => Object) {
+                                      typeOne: new (...args: Array<any>) => object,
+                                      typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
@@ -320,7 +320,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
@@ -333,8 +333,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedValue(
-                                              typeOne: new (...args: Array<any>) => Object,
-                                              typeTwo: new (...args: Array<any>) => Object) {
+                                              typeOne: new (...args: Array<any>) => object,
+                                              typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
@@ -347,7 +347,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
+   public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
@@ -361,7 +361,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage(
-                                                                    type: new (...args: Array<any>) => Object) {
+                                                                    type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
@@ -375,7 +375,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue(
-                                                      type: new (...args: Array<any>) => Object) {
+                                                      type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
@@ -388,7 +388,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue(
-                                                            type: new (...args: Array<any>) => Object) {
+                                                            type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
@@ -401,7 +401,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
@@ -415,7 +415,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage(
-                                                                type: new (...args: Array<any>) => Object) {
+                                                                type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
@@ -429,7 +429,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue(
-                                                          type: new (...args: Array<any>) => Object) {
+                                                          type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
@@ -442,7 +442,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue(
-                                                      type: new (...args: Array<any>) => Object) {
+                                                      type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
@@ -455,7 +455,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeThatMatchesArgumentOutputAsAnyTypeInMessage<ExpectedType extends Object>(
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInMessage<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -470,7 +470,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, Object)
    @TestCase(Object, String)
    @TestCase(Array, Number)
-   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInMessage<ExpectedType1 extends object, ExpectedType2 extends object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
       const fakeSpy: any = { calls: [] };
@@ -487,7 +487,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeThatMatchesArgumentOutputAsAnyTypeInNotExpectedMessage<ExpectedType extends Object>(
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInNotExpectedMessage<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -502,7 +502,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, Object)
    @TestCase(Object, String)
    @TestCase(Array, Number)
-   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedMessage<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedMessage<ExpectedType1 extends object, ExpectedType2 extends object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
       const fakeSpy: any = { calls: [] };
@@ -519,7 +519,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeThatMatchesArgumentOutputAsAnyTypeInExpectedValue<ExpectedType extends Object>(
+   public anyTypeThatMatchesArgumentOutputAsAnyTypeInExpectedValue<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -533,7 +533,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, Object)
    @TestCase(Object, String)
    @TestCase(Array, Number)
-   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInExpectedValue<ExpectedType1 extends object, ExpectedType2 extends object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
       const fakeSpy: any = { calls: [] };
@@ -550,7 +550,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentThatMatchesOutputAsAnyTypeInNotExpectedValue<ExpectedType extends Object>(
+   public anyTypeArgumentThatMatchesOutputAsAnyTypeInNotExpectedValue<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -565,7 +565,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, Object)
    @TestCase(Object, String)
    @TestCase(Array, Number)
-   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedValue<ExpectedType1 extends Object, ExpectedType2 extends Object>( /* tslint:disable-line:max-line-length */
+   public twoAnyTypeThatMatchesArgumentsBothOutputAsAnyTypeInNotExpectedValue<ExpectedType1 extends object, ExpectedType2 extends object>( /* tslint:disable-line:max-line-length */
       typeOne: new (...args: Array<any>) => ExpectedType1,
       typeTwo: new (...args: Array<any>) => ExpectedType2) {
       const fakeSpy: any = { calls: [] };
@@ -582,7 +582,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessage<ExpectedType extends Object>(
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessage<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -597,7 +597,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -612,7 +612,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue<ExpectedType extends Object>(
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -627,7 +627,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+   public anyAndAnyTypeThatMatchesArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -642,7 +642,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessage<ExpectedType extends Object>(
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessage<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -657,7 +657,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTypeInNotExpectedMessage<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -672,7 +672,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue<ExpectedType extends Object>(
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue<ExpectedType extends object>(
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -687,7 +687,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+   public anyTypeAndAnyThatMatchesArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
       type: new (...args: Array<any>) => ExpectedType) {
       const fakeSpy: any = { calls: [] };
 
@@ -807,7 +807,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessage(
-                                                  type: new (...args: Array<any>) => Object,
+                                                  type: new (...args: Array<any>) => object,
                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -822,7 +822,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage(
-                                                                  type: new (...args: Array<any>) => Object,
+                                                                  type: new (...args: Array<any>) => object,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -837,7 +837,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInExpectedValue(
-                                                      type: new (...args: Array<any>) => Object,
+                                                      type: new (...args: Array<any>) => object,
                                                       exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -852,7 +852,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue(
-                                              type: new (...args: Array<any>) => Object,
+                                              type: new (...args: Array<any>) => object,
                                               exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -867,7 +867,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInMessage(
-                                                    type: new (...args: Array<any>) => Object,
+                                                    type: new (...args: Array<any>) => object,
                                                     exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -882,7 +882,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExaactArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage(
-                                                                    type: new (...args: Array<any>) => Object,
+                                                                    type: new (...args: Array<any>) => object,
                                                                     exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -897,7 +897,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInExpectedValue(
-                                            type: new (...args: Array<any>) => Object,
+                                            type: new (...args: Array<any>) => object,
                                             exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -912,7 +912,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue(
-                                                type: new (...args: Array<any>) => Object,
+                                                type: new (...args: Array<any>) => object,
                                                 exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -926,7 +926,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessage<ExpectedType extends Object>(
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessage<ExpectedType extends object>(
                                                   type: new (...args: Array<any>) => ExpectedType,
                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
@@ -942,7 +942,7 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTypeInNotExpectedMessage<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
                                                                   type: new (...args: Array<any>) => ExpectedType,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
@@ -958,8 +958,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInExpectedValue<ExpectedType extends Object>(
-                                                      type: new (...args: Array<any>) => Object,
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInExpectedValue<ExpectedType extends object>(
+                                                      type: new (...args: Array<any>) => object,
                                                       exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -974,8 +974,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue<ExpectedType extends Object>(
-                                              type: new (...args: Array<any>) => Object,
+   public exactAndAnyTypeThatMatchesArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue<ExpectedType extends object>(
+                                              type: new (...args: Array<any>) => object,
                                               exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -990,8 +990,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessage<ExpectedType extends Object>(
-                                                    type: new (...args: Array<any>) => Object,
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessage<ExpectedType extends object>(
+                                                    type: new (...args: Array<any>) => object,
                                                     exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1006,8 +1006,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage<ExpectedType extends Object>( /* tslint:disable-line:max-line-length */
-                                                                    type: new (...args: Array<any>) => Object,
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage<ExpectedType extends object>( /* tslint:disable-line:max-line-length */
+                                                                    type: new (...args: Array<any>) => object,
                                                                     exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1022,8 +1022,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInExpectedValue<ExpectedType extends Object>(
-                                            type: new (...args: Array<any>) => Object,
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInExpectedValue<ExpectedType extends object>(
+                                            type: new (...args: Array<any>) => object,
                                             exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1038,8 +1038,8 @@ export class FunctionCallMatchErrorTests {
    @TestCase(String, 42)
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
-   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue<ExpectedType extends Object>(
-                                                type: new (...args: Array<any>) => Object,
+   public anyTypeAndExactThatMatchesArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue<ExpectedType extends object>(
+                                                type: new (...args: Array<any>) => object,
                                                 exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 

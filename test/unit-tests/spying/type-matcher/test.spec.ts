@@ -15,7 +15,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Number(1))
    @TestCase(new Number(42))
    @TestCase(new Number(-42))
-   public numberTypeAndNumberValueReturnsTrue(value: number | Number) {
+   public numberTypeAndNumberValueReturnsTrue(value: number) {
       const matcher = new TypeMatcher(Number);
       Expect(matcher.test(value)).toBe(true);
    }
@@ -49,7 +49,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new String(""))
    @TestCase("test")
    @TestCase(new String("test"))
-   public stringTypeAndStringValueReturnsTrue(value: string | String) {
+   public stringTypeAndStringValueReturnsTrue(value: string) {
       const matcher = new TypeMatcher(String);
       Expect(matcher.test(value)).toBe(true);
    }
@@ -87,7 +87,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(false)
    @TestCase(new Boolean(true))
    @TestCase(new Boolean(false))
-   public booleanTypeAndBooleanValueReturnsTrue(value: boolean | Boolean) {
+   public booleanTypeAndBooleanValueReturnsTrue(value: boolean) {
       const matcher = new TypeMatcher(Boolean);
       Expect(matcher.test(value)).toBe(true);
    }
@@ -135,7 +135,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Array([ "an", "array" ]))
    @TestCase(new Error())
    @TestCase(new Error("something went wrong"))
-   public objectTypeAndObjectValueReturnsTrue(value: Object) {
+   public objectTypeAndObjectValueReturnsTrue(value: object) {
       const matcher = new TypeMatcher(Object);
       Expect(matcher.test(value)).toBe(true);
    }
@@ -235,7 +235,7 @@ export class TypeMatcherTestFunctionTests {
    public thatMatchesWithInvalidArgumentsDoesThrow() {
       const sut = new TypeMatcher(Error);
 
-      Expect(() => sut.thatMatches(null as Object))
+      Expect(() => sut.thatMatches(null as object))
          .toThrowError(TypeError, "thatMatches requires none-null or non-undefined argument");
       Expect(() => sut.thatMatches(null as ((v: Error) => boolean)))
          .toThrowError(TypeError, "thatMatches requires none-null or non-undefined argument");
@@ -253,7 +253,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new DerivedError(32, "This is my error"), "state", 24, false)
    @TestCase("This is a string", "length", 16, true)
    @TestCase([2], "length", 1, true)
-   public thatMatchesWithKeyAndValueReturnsExpected<ItemType extends Object>(item: ItemType, key: string, value: any, output: boolean) { /* tslint:disable-line:max-line-length */
+   public thatMatchesWithKeyAndValueReturnsExpected<ItemType extends object>(item: ItemType, key: string, value: any, output: boolean) { /* tslint:disable-line:max-line-length */
       const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
          .thatMatches(key, value);
 
@@ -269,7 +269,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new DerivedError(32, "This is my error"), { state: 24, message: "This is my error" }, false)
    @TestCase("This is a string", { length: 16 }, true)
    @TestCase([2], { length: 1 }, true)
-   public thatMatchesWithObjectLiteralReturnsExpected<ItemType extends Object>(item: ItemType, properties: Object, output: boolean) { /* tslint:disable-line:max-line-length */
+   public thatMatchesWithObjectLiteralReturnsExpected<ItemType extends object>(item: ItemType, properties: object, output: boolean) { /* tslint:disable-line:max-line-length */
       const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
          .thatMatches(properties);
 
@@ -283,7 +283,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new DerivedError(32, "This is not my error"), (e: DerivedError) => e.message === "This is my error", false)
    @TestCase("This is a string", (e: string) => e.length === 16, true)
    @TestCase([2], (e: Array<number>) => e.length === 1, true)
-   public thatMatchesWithDelegateReturnsExpected<ItemType extends Object>(item: ItemType, delegate: (v: ItemType) => boolean, output: boolean) { /* tslint:disable-line:max-line-length */
+   public thatMatchesWithDelegateReturnsExpected<ItemType extends object>(item: ItemType, delegate: (v: ItemType) => boolean, output: boolean) { /* tslint:disable-line:max-line-length */
       const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
          .thatMatches(delegate);
 

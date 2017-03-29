@@ -1303,7 +1303,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(
                                                             argument: any,
-                                                            type: new(...args: Array<any>) => Object) {
+                                                            type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1340,7 +1340,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(
                                                                             argument: any,
-                                                                            type: new(...args: Array<any>) => Object) {
+                                                                            type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1378,7 +1378,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyTypeArgumentAndAnyArgumentGivenCorrectArgumentsPass(
                                                                 argument: any,
-                                                                type: new(...args: Array<any>) => Object) {
+                                                                type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1415,7 +1415,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyTypeArgumentAndAnyArgumentToThorwGivenIncorrectArgumentTypesPass(
                                                                             argument: any,
-                                                                            type: new(...args: Array<any>) => Object) {
+                                                                            type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1455,7 +1455,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedExactArgumentAndAnyTypeArgumentGivenCorrectArgumentsPass(
                                                                 argument: any,
-                                                                type: new(...args: Array<any>) => Object) {
+                                                                type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1492,7 +1492,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedExactArgumentAndAnyTypeArgumentToThorwGivenIncorrectArgumentTypesPass(
                                                                             argument: any,
-                                                                            type: new(...args: Array<any>) => Object) {
+                                                                            type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1530,7 +1530,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Array)
    public expectedAnyTypeArgumentAndExactArgumentGivenCorrectArgumentsPass(
                                                                 argument: any,
-                                                                type: new(...args: Array<any>) => Object) {
+                                                                type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };
@@ -1567,7 +1567,7 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(new Array([ "an", "array" ]), Error)
    public expectedAnyTypeArgumentAndExactArgumentToThorwGivenIncorrectArgumentTypesPass(
                                                                             argument: any,
-                                                                            type: new(...args: Array<any>) => Object) {
+                                                                            type: new(...args: Array<any>) => object) {
       const some = {
          function: (...args: Array<any>) => {}
       };

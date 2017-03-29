@@ -181,7 +181,8 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      const error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, expectedArguments);
+      const error = new FunctionCallCountMatchError(
+        fakeFunction, false, 1, SpyCallCountType.Exactly, expectedArguments);
 
       Expect(error.message)
         .toBe(`Expected function not to be called with ` +
@@ -211,7 +212,8 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      const error = new FunctionCallCountMatchError(fakeFunction, true, 1, SpyCallCountType.LessThan, expectedArguments);
+      const error = new FunctionCallCountMatchError(
+        fakeFunction, true, 1, SpyCallCountType.LessThan, expectedArguments);
 
       Expect(error.message)
         .toBe(`Expected function to be called with ` +
@@ -325,7 +327,8 @@ export class FunctionCallCountMatchErrorTests {
 
       fakeFunction.calls.push({ args: expectedArguments });
 
-      const error = new FunctionCallCountMatchError(fakeFunction, false, 1, SpyCallCountType.Exactly, expectedArguments);
+      const error = new FunctionCallCountMatchError(
+        fakeFunction, false, 1, SpyCallCountType.Exactly, expectedArguments);
 
       Expect(error.expected)
         .toBe("function not to be called with " + JSON.stringify(expectedArguments).replace(/,/g, ", ") + " 1 time.");
@@ -529,7 +532,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -547,8 +550,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInMessage(
-                                                          typeOne: new (...args: Array<any>) => Object,
-                                                          typeTwo: new (...args: Array<any>) => Object) {
+                                                          typeOne: new (...args: Array<any>) => object,
+                                                          typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -566,7 +569,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInNotExpectedMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -584,8 +587,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTyoeInNotExpectedMessage(
-                                                          typeOne: new (...args: Array<any>) => Object,
-                                                          typeTwo: new (...args: Array<any>) => Object) {
+                                                          typeOne: new (...args: Array<any>) => object,
+                                                          typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -603,7 +606,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInGreaterThanMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInGreaterThanMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -621,8 +624,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInGreaterThanMessage(
-                                                            typeOne: new (...args: Array<any>) => Object,
-                                                            typeTwo: new (...args: Array<any>) => Object) {
+                                                            typeOne: new (...args: Array<any>) => object,
+                                                            typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -640,7 +643,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInLessThanMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInLessThanMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -658,8 +661,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInLessThanMessage(
-                                                  typeOne: new (...args: Array<any>) => Object,
-                                                  typeTwo: new (...args: Array<any>) => Object) {
+                                                  typeOne: new (...args: Array<any>) => object,
+                                                  typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -677,7 +680,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInExpectedValue(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInExpectedValue(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -694,8 +697,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInExpectedValue(
-                                                    typeOne: new (...args: Array<any>) => Object,
-                                                    typeTwo: new (...args: Array<any>) => Object) {
+                                                    typeOne: new (...args: Array<any>) => object,
+                                                    typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -712,7 +715,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(type: new (...args: Array<any>) => Object) {
+   public anyTypeArgumentOutputAsAnyTypeInNotExpectedValue(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -730,8 +733,8 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, String)
    @TestCase(Array, Number)
    public twoAnyTypeArgumentsBothOutputAsAnyTypeInNotExpectedValue(
-                                                typeOne: new (...args: Array<any>) => Object,
-                                                typeTwo: new (...args: Array<any>) => Object) {
+                                                typeOne: new (...args: Array<any>) => object,
+                                                typeTwo: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -748,7 +751,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(type: new (...args: Array<any>) => Object) {
+   public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -766,7 +769,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInMessageAnyTyoeInNotExpectedMessage(
-                                                                        type: new (...args: Array<any>) => Object) {
+                                                                        type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -784,7 +787,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythingAndAnyTypeInExpectedValue(
-                                                        type: new (...args: Array<any>) => Object) {
+                                                        type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -802,7 +805,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyAndAnyTypeArgumentsBothOutputAsAnythignAndAnyTypeInNotExpectedValue(
-                                                        type: new (...args: Array<any>) => Object) {
+                                                        type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -819,7 +822,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(String)
    @TestCase(Object)
    @TestCase(Array)
-   public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(type: new (...args: Array<any>) => Object) {
+   public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessage(type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -837,7 +840,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInMessageAnyTyoeInNotExpectedMessage(
-                                                                      type: new (...args: Array<any>) => Object) {
+                                                                      type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -855,7 +858,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInExpectedValue(
-                                                              type: new (...args: Array<any>) => Object) {
+                                                              type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -873,7 +876,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object)
    @TestCase(Array)
    public anyTypeAndAnyArgumentsBothOutputAsAnyTypeAndAnythingInNotExpectedValue(
-                                                            type: new (...args: Array<any>) => Object) {
+                                                            type: new (...args: Array<any>) => object) {
       const fakeSpy: any = { calls: [ ] };
 
       const functionCallError = new FunctionCallCountMatchError(fakeSpy,
@@ -1027,7 +1030,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessage(
-                                                    type: new (...args: Array<any>) => Object,
+                                                    type: new (...args: Array<any>) => object,
                                                     exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1047,7 +1050,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInMessageAnyTyoeInNotExpectedMessage(
-                                                                          type: new (...args: Array<any>) => Object,
+                                                                          type: new (...args: Array<any>) => object,
                                                                           exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1067,7 +1070,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInExpectedValue(
-                                                                  type: new (...args: Array<any>) => Object,
+                                                                  type: new (...args: Array<any>) => object,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1086,7 +1089,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public exactAndAnyTypeArgumentsBothOutputAsExactAndAnyTypeInNotExpectedValue(
-                                                          type: new (...args: Array<any>) => Object,
+                                                          type: new (...args: Array<any>) => object,
                                                           exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1105,7 +1108,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInMessage(
-                                                                  type: new (...args: Array<any>) => Object,
+                                                                  type: new (...args: Array<any>) => object,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1125,7 +1128,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExaactArgumentsBothOutputAsAnyTypeAndExactInMessageAnyTyoeInNotExpectedMessage(
-                                                                            type: new (...args: Array<any>) => Object,
+                                                                            type: new (...args: Array<any>) => object,
                                                                             exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1145,7 +1148,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInExpectedValue(
-                                                                  type: new (...args: Array<any>) => Object,
+                                                                  type: new (...args: Array<any>) => object,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
@@ -1164,7 +1167,7 @@ export class FunctionCallCountMatchErrorTests {
    @TestCase(Object, "something else")
    @TestCase(Array, -42)
    public anyTypeAndExactArgumentsBothOutputAsAnyTypeAndExactInNotExpectedValue(
-                                                                  type: new (...args: Array<any>) => Object,
+                                                                  type: new (...args: Array<any>) => object,
                                                                   exactValue: any) {
       const fakeSpy: any = { calls: [ ] };
 
