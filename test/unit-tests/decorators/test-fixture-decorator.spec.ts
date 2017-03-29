@@ -54,7 +54,7 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionDefaultsToConstructorName(testFixtureClassName: string) {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = <Function> { };
+        const testFixtureConstructor = function () { };
         (<any> testFixtureConstructor).name = testFixtureClassName;
 
         testFixtureDecorator(testFixtureConstructor);

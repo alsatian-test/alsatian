@@ -2,9 +2,10 @@ import "reflect-metadata";
 import { TestFixture as TestFixtureMetadata } from "../";
 import { TEST_FIXTURE } from "./_metadata-keys";
 
+
 export function TestFixture(description?: string) {
 
-  return (constructor: () => any) => {
+  return (constructor: ({ new (...args: Array<any>): any; }) | (() => any)) => {
 
     // create data about the test fixture
     // with the description either being the
