@@ -6,4 +6,4 @@ export {
    FunctionSpyCallCountMatcher,
    FunctionSpyMatcher,
    SpyCallCountType
-}
+};
