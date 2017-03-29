@@ -124,15 +124,15 @@ export class TestRunner {
         this._outputStream.end();
     }
 
-    private async _setupFixture(fixture: { [key: string]: Function }) {
+    private async _setupFixture(fixture: { [key: string]: () => any }) {
         await this._runFixtureFunctions(fixture, METADATA_KEYS.SETUP_FIXTURE);
     }
 
-    private async _teardownFixture(fixture: { [key: string]: Function }) {
+    private async _teardownFixture(fixture: { [key: string]: () => any }) {
         await this._runFixtureFunctions(fixture, METADATA_KEYS.TEARDOWN_FIXTURE);
     }
 
-    private async _runFixtureFunctions(fixture: { [key: string]: Function }, metadataKey: string) {
+    private async _runFixtureFunctions(fixture: { [key: string]: () => any }, metadataKey: string) {
 
         const fixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
                                                                         metadataKey,
