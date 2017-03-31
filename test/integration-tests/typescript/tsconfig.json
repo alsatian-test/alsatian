@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true
+  },
+  "exclude": [
+    "../test-sets/**/*.d.ts"
+  ],
+  "include": [
+    "../test-sets/**/*.spec.ts"
+  ]
+}
