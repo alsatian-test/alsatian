@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
 
 export function Test(description?: string) {
-  return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
+  return (target: Object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
 
     // check if this has been registered as a test already
     let tests: Array<any> = Reflect.getMetadata(TESTS, target);
