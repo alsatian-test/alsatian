@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": [ "es3", "es2015.promise" ]
   },
   "exclude": [
-    "../test-sets/**/*.d.ts"
+    "core",
+    "../../../cli",
+    "../../../**/*.d.ts"
   ],
   "include": [
     "../test-sets/**/*.spec.ts"
