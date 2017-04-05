@@ -13,7 +13,7 @@ export class TypeScriptCompilerTests {
    @Timeout(5000)
    public targetBuildCompiles(target: string) {
 
-      const result = child.exec("tsc -p ./test/integration-tests/typescript/tsconfig.json --target " + target);
+      const result = child.exec("tsc -p ./test/integration-tests/typescript --target " + target);
       
       let consoleOutput = "";
 
