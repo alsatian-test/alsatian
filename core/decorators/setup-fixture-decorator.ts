@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { ISetupTeardownMetadata } from "./_interfaces";
 import { SETUP_FIXTURE } from "./_metadata-keys";
 
-export function SetupFixture(target: Object,
+export function SetupFixture(target: object,
                              decoratedPropertyKey: string,
                              descriptor?: TypedPropertyDescriptor<() => any>) {
 

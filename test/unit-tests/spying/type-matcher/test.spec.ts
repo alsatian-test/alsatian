@@ -135,7 +135,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new Array([ "an", "array" ]))
    @TestCase(new Error())
    @TestCase(new Error("something went wrong"))
-   public objectTypeAndObjectValueReturnsTrue(value: Object) {
+   public objectTypeAndObjectValueReturnsTrue(value: object) {
       const matcher = new TypeMatcher(Object);
       Expect(matcher.test(value)).toBe(true);
    }
@@ -269,7 +269,7 @@ export class TypeMatcherTestFunctionTests {
    @TestCase(new DerivedError(32, "This is my error"), { state: 24, message: "This is my error" }, false)
    @TestCase("This is a string", { length: 16 }, true)
    @TestCase([2], { length: 1 }, true)
-   public thatMatchesWithObjectLiteralReturnsExpected<ItemType extends Object>(item: ItemType, properties: Object, output: boolean) { /* tslint:disable-line:max-line-length */
+   public thatMatchesWithObjectLiteralReturnsExpected<ItemType extends Object>(item: ItemType, properties: object, output: boolean) { /* tslint:disable-line:max-line-length */
       const sut = new TypeMatcher(item.constructor as (new (...args: Array<any>) => ItemType))
          .thatMatches(properties);
 

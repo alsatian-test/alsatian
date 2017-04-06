@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { ISetupTeardownMetadata } from "./_interfaces";
 import { TEARDOWN } from "./_metadata-keys";
 
-export function Teardown(target: Object,
+export function Teardown(target: object,
                          decoratedPropertyKey: string,
                          descriptor?: TypedPropertyDescriptor<() => any>) {
 

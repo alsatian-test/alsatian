@@ -3,7 +3,7 @@ import { TESTS } from "./_metadata-keys";
 
 export function AsyncTest(description?: string) {
 
-   return (target: Object,
+   return (target: object,
            propertyKey: string,
            descriptor?: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>) => {
 
