@@ -1,3 +1,5 @@
+/* tslint:disable:no-unused-expression */
+
 import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 
