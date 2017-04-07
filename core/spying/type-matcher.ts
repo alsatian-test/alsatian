@@ -57,7 +57,7 @@ export class TypeMatcher<ExpectedType extends Object> {
    }
 
    public thatMatches(key: string, value: any): this;
-   public thatMatches(properties: Object): this;
+   public thatMatches(properties: object): this;
    public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
    public thatMatches(first: string | Object | ((argument: ExpectedType) => boolean), second?: any): this {
       if (null === first || undefined === first ) {
@@ -103,7 +103,7 @@ export class TypeMatcher<ExpectedType extends Object> {
       return this;
    }
 
-   private _matchesObjectLiteral(properties: Object): this {
+   private _matchesObjectLiteral(properties: object): this {
       if (properties.constructor !== Object) {
          throw new TypeError("thatMatches requires value passed in to be an object literal");
       }

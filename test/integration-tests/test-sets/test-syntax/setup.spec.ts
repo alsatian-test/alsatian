@@ -1,4 +1,4 @@
-import { AsyncSetup, Expect, Setup, SetupFixture, Teardown, Test, TestFixture } from "../../../../core/alsatian-core";
+import { AsyncSetup, Expect, Setup, SetupFixture, Teardown, Test, TestFixture } from "alsatian";
 
 @TestFixture("setup tests")
 export class SetupTests {

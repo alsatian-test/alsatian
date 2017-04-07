@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, TestFixture } from "../../../../core/alsatian-core";
+import { AsyncTest, Expect, TestFixture } from "alsatian";
 
 @TestFixture("asynchronous tests")
 export class AsyncTests {
