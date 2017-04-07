@@ -241,7 +241,7 @@ export class TypeMatcherTestFunctionTests {
          .toThrowError(TypeError, "thatMatches requires none-null or non-undefined argument");
       Expect(() => sut.thatMatches(new Error("Something else")))
          .toThrowError(TypeError, "thatMatches requires value passed in to be an object literal");
-      Expect(() => sut.thatMatches(3))
+      Expect(() => sut.thatMatches(3 as any))
          .toThrowError(Error, "Invalid arguments");
    }
 
