@@ -4,7 +4,6 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
-        "declaration": true,
         "sourceMap": true,
         "preserveConstEnums": true,
         "experimentalDecorators": true,
@@ -14,7 +13,8 @@
     "buildOnSave": false,
     "compileOnSave": true,
     "exclude": [
-        "./**/*.d.ts"
+        "./**/*.d.ts",
+        "../../core/**/*.ts"
     ],
     "filesGlob": [
         "./**/*.ts"

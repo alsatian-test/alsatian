@@ -17,10 +17,11 @@
       "./core/**/*.d.ts",
       "./cli/**/*.d.ts",
       "./test/**/*.d.ts",
+      "./test/integration-tests",
       "./scripts/**/*.d.ts",
       "node_modules"
    ],
-   "filesGlob": [
+   "include": [
       "./cli/**/*.ts",
       "./core/**/*.ts",
       "./test/**/*.ts",
