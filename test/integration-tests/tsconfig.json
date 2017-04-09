@@ -4,17 +4,17 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
-        "declaration": true,
         "sourceMap": true,
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "lib": [ "es5", "es2015.promise" ]
+        "lib": [ "es2015" ]
     },
     "buildOnSave": false,
     "compileOnSave": true,
     "exclude": [
-        "./**/*.d.ts"
+        "./**/*.d.ts",
+        "../../core/**/*.ts"
     ],
     "filesGlob": [
         "./**/*.ts"

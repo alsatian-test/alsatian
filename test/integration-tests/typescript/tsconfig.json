@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": [ "es5", "es2015.promise" ]
+  },
+  "exclude": [
+  ],
+  "include": [
+    "../test-sets/expectations/to-be.spec.ts"
+  ]
+}

@@ -6,7 +6,7 @@ export function Timeout(timeoutInMs: number) {
      throw new RangeError("Timeout period must be greater than 0.");
   }
 
-  return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
+  return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
 
     Reflect.defineMetadata(TIMEOUT, timeoutInMs, target, propertyKey);
   };
