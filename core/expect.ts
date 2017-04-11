@@ -229,6 +229,29 @@ export class Matcher {
    }
 
    /**
+    * Checks that a function throws an error asynchronously when executed
+    */
+   public async toThrowAsync() {
+
+      if (this._actualValue instanceof Function === false) {
+         throw new TypeError("toThrow requires value passed in to Expect to be a function.");
+      }
+
+      let errorThrown: Error;
+
+      try {
+         await this._actualValue();
+      }
+      catch (error) {
+         errorThrown = error;
+      }
+
+      if (errorThrown === undefined === this.shouldMatch) {
+         throw new ErrorMatchError(errorThrown, this.shouldMatch);
+      }
+   }
+
+   /**
     * Checks that a function throws a specific error
     * @param errorType - the type of error that should be thrown
     * @param errorMessage - the message that the error should have

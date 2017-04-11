@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { AsyncTest, Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 
 export class ToThrowTests {
@@ -149,5 +149,33 @@ export class ToThrowTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.expected).toBe("error not to be thrown.");
+   }
+
+   // Asynchronous throw
+   private async asyncThrowError(delayMs: number): Promise<void> {
+      return new Promise<void>((_, reject) => {
+         setTimeout(reject(new Error("Timeout then reject")), delayMs);
+      });
+   }
+
+   // Asynchronous non-throw
+   private async asyncNonThrowError(delayMs: number): Promise<void> {
+      return new Promise<void>((resolve) => {
+         setTimeout(resolve(), delayMs);
+      });
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsyncShouldThrow")
+   public async testToThrowAsyncShouldThrow(delayMs: number) {
+      Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync")
+   public async testToThrowAsyncShouldNotThrow(delayMs: number) {
+      Expect(async () => this.asyncNonThrowError(delayMs)).not.toThrowAsync();
    }
 }
