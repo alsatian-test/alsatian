@@ -1,19 +1,35 @@
-#NPM
+# NPM
 node_modules
 npm-debug.log
 
-#Testing
+# Testing
 test
 coverage
+.nyc_output
 
-#CI
+# CI
 .travis.yml
 .codeclimate.yml
+.appveyor.yml
 
-#DevOps
+# DevOps
 scripts
 
 # TypeScript
 *.js.map
 *.ts
 !*.d.ts
+tsconfig.json
+tslint*.json
+
+# Documentation
+documentation
+
+# Git
+.gitattributes
+CONTRIBUTING.md
+PUBLISHING.md
+PULL_REQUEST_TEMPLATE.md
+
+# IDE
+.vscode
