@@ -20,7 +20,8 @@ scripts
 *.ts
 !*.d.ts
 tsconfig.json
-tslint*.json
+tslint.json
+tslint.test.json
 
 # Documentation
 documentation
