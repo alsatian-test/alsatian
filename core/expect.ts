@@ -25,6 +25,14 @@ import {
 } from "./matchers";
 
 /**
+ * Messages
+ */
+export interface Notifications {
+    onErr?: Function;
+    onOk?: Function;
+}
+
+/**
  * Allows checking of test outcomes
  * @param actualValue - the value or function under test
  */
@@ -226,6 +234,36 @@ export class Matcher {
       if (errorThrown === undefined === this.shouldMatch) {
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
+   }
+
+   /**
+    * Checks that a function throws an error asynchronously when executed
+    */
+   public async toThrowAsync(notify?: Notifications): Promise<void> {
+      if (this._actualValue instanceof Function === false) {
+         throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
+      }
+
+      let errorThrown: Error;
+
+      try {
+         await this._actualValue();
+      }
+      catch (error) {
+         errorThrown = error;
+      }
+
+      if (errorThrown === undefined === this.shouldMatch) {
+         if (notify && notify.onErr) {
+            notify.onErr();
+         }
+         throw new ErrorMatchError(errorThrown, this.shouldMatch);
+      } else {
+         if (notify && notify.onOk) {
+            notify.onOk();
+         }
+      }
+      return Promise.resolve();
    }
 
    /**

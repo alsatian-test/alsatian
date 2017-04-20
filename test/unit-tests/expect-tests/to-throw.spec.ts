@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { AsyncTest, Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 
 export class ToThrowTests {
@@ -149,5 +149,62 @@ export class ToThrowTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.expected).toBe("error not to be thrown.");
+   }
+
+   // Asynchronous throw
+   private async asyncThrowError(delayMs: number): Promise<void> {
+      return new Promise<void>((_, reject) => {
+         setTimeout(reject(new Error("Timeout then reject")), delayMs);
+      });
+   }
+
+   // Asynchronous non-throw
+   private async asyncNonThrowError(delayMs: number): Promise<void> {
+      return new Promise<void>((resolve) => {
+         setTimeout(resolve(), delayMs);
+      });
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsyncShouldThrow")
+   public async testToThrowAsyncShouldThrow(delayMs: number) {
+      await Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync")
+   public async testToThrowAsyncShouldNotThrow(delayMs: number) {
+      await Expect(async () => this.asyncNonThrowError(delayMs)).not.toThrowAsync();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync onOk notification")
+   public async testToThrowAsyncNotifyOnOk(delayMs: number) {
+      let onErrNotified, onOkNotified: boolean;
+      await Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync({
+         onErr: () => onErrNotified = true,
+         onOk: () => onOkNotified = true
+      });
+      Expect(onErrNotified).not.toBeDefined();
+      Expect(onOkNotified).toBeTruthy();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync onErr notification")
+   public async testToThrowAsyncNotifyOnErr(delayMs: number) {
+      let onErrNotified, onOkNotified: boolean;
+      try {
+         await Expect(async () => this.asyncThrowError(delayMs)).not.toThrowAsync({
+            onErr: () => onErrNotified = true,
+            onOk: () => onOkNotified = true
+         });
+      } catch (err) {
+      }
+      Expect(onErrNotified).toBeTruthy();
+      Expect(onOkNotified).not.toBeDefined();
    }
 }
