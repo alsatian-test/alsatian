@@ -169,13 +169,42 @@ export class ToThrowTests {
    @TestCase(100)
    @AsyncTest("Test toThrowAsyncShouldThrow")
    public async testToThrowAsyncShouldThrow(delayMs: number) {
-      Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync();
+      await Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync();
    }
 
    @TestCase(0)
    @TestCase(100)
    @AsyncTest("Test toThrowAsync")
    public async testToThrowAsyncShouldNotThrow(delayMs: number) {
-      Expect(async () => this.asyncNonThrowError(delayMs)).not.toThrowAsync();
+      await Expect(async () => this.asyncNonThrowError(delayMs)).not.toThrowAsync();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync onOk notification")
+   public async testToThrowAsyncNotifyOnOk(delayMs: number) {
+      let onErrNotified, onOkNotified: boolean;
+      await Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync({
+         onErr: () => onErrNotified = true,
+         onOk: () => onOkNotified = true
+      });
+      Expect(onErrNotified).not.toBeDefined();
+      Expect(onOkNotified).toBeTruthy();
+   }
+
+   @TestCase(0)
+   @TestCase(100)
+   @AsyncTest("Test toThrowAsync onErr notification")
+   public async testToThrowAsyncNotifyOnErr(delayMs: number) {
+      let onErrNotified, onOkNotified: boolean;
+      try {
+         await Expect(async () => this.asyncThrowError(delayMs)).not.toThrowAsync({
+            onErr: () => onErrNotified = true,
+            onOk: () => onOkNotified = true
+         });
+      } catch (err) {
+      }
+      Expect(onErrNotified).toBeTruthy();
+      Expect(onOkNotified).not.toBeDefined();
    }
 }

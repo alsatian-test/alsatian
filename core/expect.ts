@@ -27,7 +27,7 @@ import {
 /**
  * Messages
  */
-export interface Messages {
+export interface Notifications {
     onErr?: Function;
     onOk?: Function;
 }
@@ -239,9 +239,7 @@ export class Matcher {
    /**
     * Checks that a function throws an error asynchronously when executed
     */
-   public async toThrowAsync(messages?: Messages): Promise<void> {
-      if (messages && messages.onOk) messages.onOk();
-
+   public async toThrowAsync(notify?: Notifications): Promise<void> {
       if (this._actualValue instanceof Function === false) {
          throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
       }
@@ -256,8 +254,14 @@ export class Matcher {
       }
 
       if (errorThrown === undefined === this.shouldMatch) {
-         if (messages && messages.onErr) messages.onErr();
+         if (notify && notify.onErr) {
+            notify.onErr();
+         }
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
+      } else {
+         if (notify && notify.onOk) {
+            notify.onOk();
+         }
       }
       return Promise.resolve();
    }
