@@ -28,8 +28,8 @@ import {
  * Messages
  */
 export interface Messages {
-    onErr?: string;
-    onOk?: string;
+    onErr?: Function;
+    onOk?: Function;
 }
 
 /**
@@ -240,7 +240,7 @@ export class Matcher {
     * Checks that a function throws an error asynchronously when executed
     */
    public async toThrowAsync(messages?: Messages): Promise<void> {
-      if (messages && messages.onOk) console.log(messages.onOk);
+      if (messages && messages.onOk) messages.onOk();
 
       if (this._actualValue instanceof Function === false) {
          throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
@@ -256,7 +256,7 @@ export class Matcher {
       }
 
       if (errorThrown === undefined === this.shouldMatch) {
-         if (messages && messages.onErr) console.log(messages.onErr);
+         if (messages && messages.onErr) messages.onErr();
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
       return Promise.resolve();
