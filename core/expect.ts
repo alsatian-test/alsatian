@@ -231,7 +231,7 @@ export class Matcher {
    /**
     * Checks that a function throws an error asynchronously when executed
     */
-   public async toThrowAsync() {
+   public async toThrowAsync(): Promise<void> {
 
       if (this._actualValue instanceof Function === false) {
          throw new TypeError("toThrow requires value passed in to Expect to be a function.");
@@ -249,6 +249,7 @@ export class Matcher {
       if (errorThrown === undefined === this.shouldMatch) {
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
+      return Promise.resolve();
    }
 
    /**
