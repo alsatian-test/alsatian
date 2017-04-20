@@ -25,6 +25,14 @@ import {
 } from "./matchers";
 
 /**
+ * Messages
+ */
+export interface Messages {
+    onErr?: string;
+    onOk?: string;
+}
+
+/**
  * Allows checking of test outcomes
  * @param actualValue - the value or function under test
  */
@@ -231,10 +239,11 @@ export class Matcher {
    /**
     * Checks that a function throws an error asynchronously when executed
     */
-   public async toThrowAsync(): Promise<void> {
+   public async toThrowAsync(messages?: Messages): Promise<void> {
+      if (messages && messages.onOk) console.log(messages.onOk);
 
       if (this._actualValue instanceof Function === false) {
-         throw new TypeError("toThrow requires value passed in to Expect to be a function.");
+         throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
       }
 
       let errorThrown: Error;
@@ -247,6 +256,7 @@ export class Matcher {
       }
 
       if (errorThrown === undefined === this.shouldMatch) {
+         if (messages && messages.onErr) console.log(messages.onErr);
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
       return Promise.resolve();
