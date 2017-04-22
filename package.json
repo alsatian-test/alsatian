@@ -99,6 +99,7 @@
     "typescript": "^2.0.3"
   },
   "dependencies": {
+    "@types/es6-promise": "0.0.32",
     "@types/glob": "^5.0.30",
     "@types/node": ">=0.0.2",
     "extendo-error": "^1.0.1",
