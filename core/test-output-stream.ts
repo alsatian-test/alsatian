@@ -115,7 +115,8 @@ export class TestOutputStream extends ReadableStream {
        let sanitisedActual = JSON.stringify(error.actual);
        let sanitisedExpected = JSON.stringify(error.expected);
 
-       this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
+       this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected,
+               undefined, error.fileName, error.lineNumber, error.columnNumber);
 
    }
 
@@ -128,7 +129,15 @@ export class TestOutputStream extends ReadableStream {
 
    }
 
-   private _writeFailure(message: string, actual: string, expected: string, stack?: string): void {
+   private _writeFailure(
+       message: string,
+       actual: string,
+       expected: string,
+       stack?: string,
+       fileName?: string,
+       lineNumber?: number,
+       columnNumber?: number
+   ): void {
 
        let output =
            " ---\n" +
@@ -137,6 +146,15 @@ export class TestOutputStream extends ReadableStream {
            "   data:\n" +
            "     got: " + actual + "\n" +
            "     expect: " + expected + "\n";
+       if (fileName) {
+           output = output + "   file: " + fileName + "\n";
+       }
+       if (lineNumber > 0) {
+           output = output + "   line: " + lineNumber + "\n";
+       }
+       if (columnNumber > 0) {
+           output = output + "   col: " + columnNumber + "\n";
+       }
 
        if (stack) {
            output = output + "     stack: |\n";
