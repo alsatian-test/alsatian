@@ -1,10 +1,10 @@
-require('source-map-support').install();
+require("source-map-support").install();
 
 export class TraceLocation {
     public func: string;
     public file: string;
     public line: number;
-    public col:  number;
+    public col: number;
 
     public constructor() {
         this.file = "<no info>";
@@ -19,8 +19,6 @@ export class TraceLocation {
 }
 
 export class TraceMarker {
-    private _stackState: string;
-
     /**
      * Return the location of where this routine was called from
      */
@@ -29,11 +27,7 @@ export class TraceMarker {
         return tm.mark(callDepth).getLocation();
     }
 
-    /**
-     * Constructor
-     */
-    public constructor() {
-    }
+    private _stackState: string;
 
     /**
      * Mark the "current" location.
@@ -50,24 +44,23 @@ export class TraceMarker {
         let err = new Error();
         Error.captureStackTrace(err, this.mark);
         Error.stackTraceLimit = saveStackTraceLimit;
-        //console.log(`${err.stack}`);
+        // console.log(`${err.stack}`);
         this._stackState = err.stack;
         return this;
     }
-
 
     /**
      * Return the TraceLocation
      *
      */
     public getLocation(): TraceLocation {
-        //console.log(`${this.stackState}`);
+        // console.log(`${this.stackState}`);
         let stack = this._stackState.split("\n");
         let location = new TraceLocation();
         if (stack.length >= 2) {
-            //console.log(`stack[tos]=${stack[stack.length - 1]}`);
+            // console.log(`stack[tos]=${stack[stack.length - 1]}`);
             let r = /.*? at (.*?) \((.*?):(\d+):(\d+)\)/.exec(`${stack[stack.length - 1]}`);
-            //console.log(`r=${r}`);
+            // console.log(`r=${r}`);
             if (r.length > 2) {
                 location.file = r[2];
             }

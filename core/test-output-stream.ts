@@ -129,7 +129,15 @@ export class TestOutputStream extends ReadableStream {
 
    }
 
-   private _writeFailure(message: string, actual: string, expected: string, stack?: string, fileName?: string, lineNumber?: number, columnNumber?: number): void {
+   private _writeFailure(
+       message: string,
+       actual: string,
+       expected: string,
+       stack?: string,
+       fileName?: string,
+       lineNumber?: number,
+       columnNumber?: number
+   ): void {
 
        let output =
            " ---\n" +
@@ -141,10 +149,10 @@ export class TestOutputStream extends ReadableStream {
        if (fileName) {
            output = output + "   file: " + fileName + "\n";
        }
-       if (lineNumber) {
+       if (lineNumber > 0) {
            output = output + "   line: " + lineNumber + "\n";
        }
-       if (columnNumber) {
+       if (columnNumber > 0) {
            output = output + "   col: " + columnNumber + "\n";
        }
 

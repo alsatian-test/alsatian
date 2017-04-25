@@ -4,14 +4,14 @@ import {
    EqualMatchError,
    ErrorMatchError,
    ExactMatchError,
-   TypeMatchError,
    FunctionCallMatchError,
    GreaterThanMatchError,
    LessThanMatchError,
    MatchError,
    PropertySetMatchError,
    RegexMatchError,
-   TruthyMatchError
+   TruthyMatchError,
+   TypeMatchError
 } from "./errors";
 
 import {
@@ -42,6 +42,7 @@ export function Expect(actualValue: any) {
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher {
+   private _marker: TraceMarker | undefined;
 
    private _actualValue: any;
    protected get actualValue(): any {
@@ -51,22 +52,6 @@ export class Matcher {
    private _shouldMatch: boolean = true;
    protected get shouldMatch(): boolean {
        return this._shouldMatch;
-   }
-
-   private _marker: TraceMarker | undefined;
-
-   private _throwError(err: MatchError) {
-      let location: TraceLocation;
-      if (this._marker) {
-         location = this._marker.getLocation();
-      } else {
-         location = new TraceLocation(); // Empty location
-      }
-      err.fileName = location.file;
-      err.lineNumber = location.line;
-      err.columnNumber = location.col;
-
-      throw err;
    }
 
    public constructor(actualValue: any, marker?: TraceMarker) {
@@ -159,7 +144,8 @@ export class Matcher {
    public toContain(expectedContent: any) {
 
       if (this._actualValue instanceof Array === false && typeof this._actualValue !== "string") {
-         this._throwError(new TypeMatchError("toContain must only be used to check whether strings or arrays contain given contents."));
+         this._throwError(new TypeMatchError(
+            "toContain must only be used to check whether strings or arrays contain given contents."));
       }
 
       if (typeof this._actualValue === "string" && typeof expectedContent !== "string") {
@@ -212,7 +198,8 @@ export class Matcher {
     */
    public toBeEmpty() {
       if (null === this.actualValue || undefined === this.actualValue) {
-         this._throwError(new TypeMatchError("toBeEmpty requires value passed in to Expect not to be null or undefined"));
+         this._throwError(new TypeMatchError(
+            "toBeEmpty requires value passed in to Expect not to be null or undefined"));
       }
 
       if (typeof this.actualValue === "string" || Array.isArray(this.actualValue)) {
@@ -224,7 +211,8 @@ export class Matcher {
             this._throwError(new EmptyMatchError(this.actualValue, this.shouldMatch));
          }
       } else {
-         this._throwError(new TypeMatchError("toBeEmpty requires value passed in to Expect to be an array, string or object literal"));
+         this._throwError(new TypeMatchError(
+            "toBeEmpty requires value passed in to Expect to be an array, string or object literal"));
       }
    }
 
@@ -255,8 +243,6 @@ export class Matcher {
     * Checks that a function throws an error asynchronously when executed
     */
    public async toThrowAsync(): Promise<void> {
-
-       //console.trace("toThrowAsync");
 
       if (this._actualValue instanceof Function === false) {
          this._throwError(new TypeMatchError("toThrow requires value passed in to Expect to be a function."));
@@ -369,7 +355,8 @@ export class Matcher {
     */
    public toHaveBeenSetTo(value: any) {
       if (this._actualValue instanceof PropertySpy === false) {
-         this._throwError(new TypeMatchError("toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy."));
+         this._throwError(new TypeMatchError(
+            "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy."));
       }
 
       if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this.shouldMatch) {
@@ -415,4 +402,19 @@ export class Matcher {
       // all properties match so all is good
       return true;
    }
+
+   private _throwError(err: MatchError) {
+      let location: TraceLocation;
+      if (this._marker) {
+         location = this._marker.getLocation();
+      } else {
+         location = new TraceLocation(); // Empty location
+      }
+      err.fileName = location.file;
+      err.lineNumber = location.line;
+      err.columnNumber = location.col;
+
+      throw err;
+   }
+
 }
