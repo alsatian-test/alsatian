@@ -10,7 +10,8 @@ import {
    MatchError,
    PropertySetMatchError,
    RegexMatchError,
-   TruthyMatchError
+   TruthyMatchError,
+   TypeMatchError
 } from "./errors";
 
 import {
@@ -24,18 +25,24 @@ import {
    FunctionSpyMatcher
 } from "./matchers";
 
+import {
+   TraceLocation,
+   TraceMarker
+} from "./tracing";
+
 /**
  * Allows checking of test outcomes
  * @param actualValue - the value or function under test
  */
 export function Expect(actualValue: any) {
-   return new Matcher(actualValue);
+   return new Matcher(actualValue, new TraceMarker().mark(1));
 }
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher {
+   private _marker: TraceMarker | undefined;
 
    private _actualValue: any;
    protected get actualValue(): any {
@@ -47,8 +54,9 @@ export class Matcher {
        return this._shouldMatch;
    }
 
-   public constructor(actualValue: any) {
+   public constructor(actualValue: any, marker?: TraceMarker) {
       this._actualValue = actualValue;
+      this._marker = marker;
    }
 
    /**
@@ -65,7 +73,7 @@ export class Matcher {
     */
    public toBe(expectedValue: any) {
       if (expectedValue !== this._actualValue === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, expectedValue, this.shouldMatch);
+         this._throwError(new ExactMatchError(this._actualValue, expectedValue, this.shouldMatch));
       }
    }
 
@@ -79,7 +87,7 @@ export class Matcher {
 
          if (typeof expectedValue !== "object" ||
              this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this.shouldMatch) {
-            throw new EqualMatchError(this._actualValue, expectedValue, this.shouldMatch);
+            this._throwError(new EqualMatchError(this._actualValue, expectedValue, this.shouldMatch));
          }
       }
    }
@@ -90,15 +98,15 @@ export class Matcher {
     */
    public toMatch(regex: RegExp) {
       if (regex === null || regex === undefined) {
-         throw new TypeError("toMatch regular expression must not be null or undefined.");
+         this._throwError(new TypeMatchError("toMatch regular expression must not be null or undefined."));
       }
 
       if (typeof this._actualValue !== "string") {
-         throw new TypeError("toMatch must only be used to match on strings.");
+         this._throwError(new TypeMatchError("toMatch must only be used to match on strings."));
       }
 
       if (!regex.test(this._actualValue) === this.shouldMatch) {
-         throw new RegexMatchError(this._actualValue, regex, this.shouldMatch);
+         this._throwError(new RegexMatchError(this._actualValue, regex, this.shouldMatch));
       }
    }
 
@@ -107,7 +115,7 @@ export class Matcher {
     */
    public toBeDefined() {
       if (this._actualValue === undefined === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, undefined, !this.shouldMatch);
+         this._throwError(new ExactMatchError(this._actualValue, undefined, !this.shouldMatch));
       }
    }
 
@@ -116,7 +124,7 @@ export class Matcher {
     */
    public toBeNull() {
       if (this._actualValue !== null === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
+         this._throwError(new ExactMatchError(this._actualValue, null, this.shouldMatch));
       }
    }
 
@@ -125,7 +133,7 @@ export class Matcher {
     */
    public toBeTruthy() {
       if ((this._actualValue && !this.shouldMatch) || (!this._actualValue && this.shouldMatch)) {
-         throw new TruthyMatchError(this._actualValue, this.shouldMatch);
+         this._throwError(new TruthyMatchError(this._actualValue, this.shouldMatch));
       }
    }
 
@@ -136,15 +144,16 @@ export class Matcher {
    public toContain(expectedContent: any) {
 
       if (this._actualValue instanceof Array === false && typeof this._actualValue !== "string") {
-         throw new TypeError("toContain must only be used to check whether strings or arrays contain given contents.");
+         this._throwError(new TypeMatchError(
+            "toContain must only be used to check whether strings or arrays contain given contents."));
       }
 
       if (typeof this._actualValue === "string" && typeof expectedContent !== "string") {
-         throw new TypeError("toContain cannot check whether a string contains a non string value.");
+         this._throwError(new TypeMatchError("toContain cannot check whether a string contains a non string value."));
       }
 
       if (this._actualValue.indexOf(expectedContent) === -1 === this.shouldMatch) {
-         throw new ContentsMatchError(this._actualValue, expectedContent, this.shouldMatch);
+         this._throwError(new ContentsMatchError(this._actualValue, expectedContent, this.shouldMatch));
       }
    }
 
@@ -154,15 +163,15 @@ export class Matcher {
     */
    public toBeLessThan(upperLimit: number) {
       if (upperLimit === null || upperLimit === undefined) {
-         throw new TypeError("toBeLessThan upper limit must not be null or undefined.");
+         this._throwError(new TypeMatchError("toBeLessThan upper limit must not be null or undefined."));
       }
 
       if (typeof this._actualValue !== "number") {
-         throw new TypeError("toBeLessThan can only check numbers.");
+         this._throwError(new TypeMatchError("toBeLessThan can only check numbers."));
       }
 
       if (this._actualValue < upperLimit !== this.shouldMatch) {
-         throw new LessThanMatchError(this._actualValue, upperLimit, this.shouldMatch);
+         this._throwError(new LessThanMatchError(this._actualValue, upperLimit, this.shouldMatch));
       }
    }
 
@@ -172,15 +181,15 @@ export class Matcher {
     */
    public toBeGreaterThan(lowerLimit: number) {
       if (lowerLimit === null || lowerLimit === undefined) {
-         throw new TypeError("toBeGreaterThan lower limit must not be null or undefined.");
+         this._throwError(new TypeMatchError("toBeGreaterThan lower limit must not be null or undefined."));
       }
 
       if (typeof this._actualValue !== "number") {
-         throw new TypeError("toBeGreaterThan can only check numbers.");
+         this._throwError(new TypeMatchError("toBeGreaterThan can only check numbers."));
       }
 
       if (this._actualValue > lowerLimit !== this.shouldMatch) {
-         throw new GreaterThanMatchError(this._actualValue, lowerLimit, this.shouldMatch);
+         this._throwError(new GreaterThanMatchError(this._actualValue, lowerLimit, this.shouldMatch));
       }
    }
 
@@ -189,19 +198,21 @@ export class Matcher {
     */
    public toBeEmpty() {
       if (null === this.actualValue || undefined === this.actualValue) {
-         throw new TypeError("toBeEmpty requires value passed in to Expect not to be null or undefined");
+         this._throwError(new TypeMatchError(
+            "toBeEmpty requires value passed in to Expect not to be null or undefined"));
       }
 
       if (typeof this.actualValue === "string" || Array.isArray(this.actualValue)) {
          if ((this.actualValue.length === 0) !== this.shouldMatch) {
-            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+            this._throwError(new EmptyMatchError(this.actualValue, this.shouldMatch));
          }
       } else if (this.actualValue.constructor === Object) {
          if ((Object.keys(this.actualValue).length === 0) !== this.shouldMatch) {
-            throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+            this._throwError(new EmptyMatchError(this.actualValue, this.shouldMatch));
          }
       } else {
-         throw new TypeError("toBeEmpty requires value passed in to Expect to be an array, string or object literal");
+         this._throwError(new TypeMatchError(
+            "toBeEmpty requires value passed in to Expect to be an array, string or object literal"));
       }
    }
 
@@ -211,7 +222,7 @@ export class Matcher {
    public toThrow() {
 
       if (this._actualValue instanceof Function === false) {
-         throw new TypeError("toThrow requires value passed in to Expect to be a function.");
+         this._throwError(new TypeMatchError("toThrow requires value passed in to Expect to be a function."));
       }
 
       let errorThrown: Error;
@@ -224,8 +235,32 @@ export class Matcher {
       }
 
       if (errorThrown === undefined === this.shouldMatch) {
-         throw new ErrorMatchError(errorThrown, this.shouldMatch);
+         this._throwError(new ErrorMatchError(errorThrown, this.shouldMatch));
       }
+   }
+
+   /**
+    * Checks that a function throws an error asynchronously when executed
+    */
+   public async toThrowAsync(): Promise<void> {
+
+      if (this._actualValue instanceof Function === false) {
+         this._throwError(new TypeMatchError("toThrow requires value passed in to Expect to be a function."));
+      }
+
+      let errorThrown: Error;
+
+      try {
+         await this._actualValue();
+      }
+      catch (error) {
+         errorThrown = error;
+      }
+
+      if (errorThrown === undefined === this.shouldMatch) {
+         this._throwError(new ErrorMatchError(errorThrown, this.shouldMatch));
+      }
+      return Promise.resolve();
    }
 
    /**
@@ -236,7 +271,7 @@ export class Matcher {
    public toThrowError(errorType: new (...args: Array<any>) => Error, errorMessage: string) {
 
       if (this._actualValue instanceof Function === false) {
-         throw new TypeError("toThrowError requires value passed in to Expect to be a function.");
+         this._throwError(new TypeMatchError("toThrowError requires value passed in to Expect to be a function."));
       }
 
       let threwRightError = false;
@@ -254,7 +289,7 @@ export class Matcher {
       }
 
       if (threwRightError !== this.shouldMatch) {
-         throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+         this._throwError(new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage));
       }
    }
 
@@ -263,13 +298,13 @@ export class Matcher {
     */
    public toHaveBeenCalled(): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
-         throw new TypeError(
+         this._throwError(new TypeMatchError(
              "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function."
-         );
+         ));
       }
 
       if (this._actualValue.calls.length === 0 === this.shouldMatch) {
-         throw new FunctionCallMatchError(this._actualValue, this.shouldMatch);
+         this._throwError(new FunctionCallMatchError(this._actualValue, this.shouldMatch));
       }
 
       return new FunctionSpyMatcher(this._actualValue);
@@ -281,9 +316,9 @@ export class Matcher {
     */
    public toHaveBeenCalledWith(...expectedArguments: Array<any>): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this._actualValue) === false) {
-         throw new TypeError(
+         this._throwError(new TypeMatchError(
              "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
-         );
+         ));
       }
 
       if (this._actualValue.calls.filter((call: any) => {
@@ -295,7 +330,7 @@ export class Matcher {
                   (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg));
          }).length === expectedArguments.length; // and all call arguments match expected arguments
       }).length === 0 === this.shouldMatch) {
-         throw new FunctionCallMatchError(this._actualValue, this.shouldMatch, expectedArguments);
+         this._throwError(new FunctionCallMatchError(this._actualValue, this.shouldMatch, expectedArguments));
       }
 
       return new FunctionSpyMatcher(this._actualValue, expectedArguments);
@@ -306,11 +341,11 @@ export class Matcher {
     */
    public toHaveBeenSet() {
       if (this._actualValue instanceof PropertySpy === false) {
-         throw new TypeError("toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
+         this._throwError(new TypeMatchError("toHaveBeenSet requires value passed in to Expect to be a PropertySpy."));
       }
 
       if (this._actualValue.setCalls.length === 0 === this.shouldMatch) {
-         throw new PropertySetMatchError(this._actualValue, this.shouldMatch);
+         this._throwError(new PropertySetMatchError(this._actualValue, this.shouldMatch));
       }
    }
 
@@ -320,11 +355,12 @@ export class Matcher {
     */
    public toHaveBeenSetTo(value: any) {
       if (this._actualValue instanceof PropertySpy === false) {
-         throw new TypeError("toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
+         this._throwError(new TypeMatchError(
+            "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy."));
       }
 
       if (this._actualValue.setCalls.filter((call: any) => call.args[0] === value).length === 0 === this.shouldMatch) {
-         throw new PropertySetMatchError(this._actualValue, this.shouldMatch, value);
+         this._throwError(new PropertySetMatchError(this._actualValue, this.shouldMatch, value));
       }
    }
 
@@ -366,4 +402,19 @@ export class Matcher {
       // all properties match so all is good
       return true;
    }
+
+   private _throwError(err: MatchError) {
+      let location: TraceLocation;
+      if (this._marker) {
+         location = this._marker.getLocation();
+      } else {
+         location = new TraceLocation(); // Empty location
+      }
+      err.fileName = location.file;
+      err.lineNumber = location.line;
+      err.columnNumber = location.col;
+
+      throw err;
+   }
+
 }

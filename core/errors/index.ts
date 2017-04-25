@@ -12,11 +12,13 @@ import { PropertySetMatchError } from "./property-set-match-error";
 import { RegexMatchError } from "./regex-match-error";
 import { TestTimeoutError } from "./test-timeout-error";
 import { TruthyMatchError } from "./truthy-match-error";
+import { TypeMatchError } from "./type-match-error";
 
 export {
     MatchError,
     ExactMatchError,
     EqualMatchError,
+    TypeMatchError,
     RegexMatchError,
     TruthyMatchError,
     ContentsMatchError,
