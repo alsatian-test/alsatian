@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 
 export class ToThrowTests {
@@ -22,7 +22,7 @@ export class ToThrowTests {
       let nonThrowFunction = () => {};
 
       Expect(() => Expect(nonThrowFunction).toThrow())
-        .toThrowError(ErrorMatchError, "Expected an error to be thrown but no errors were thown.");
+        .toThrowError(ErrorMatchError, "Expected an error to be thrown but no errors were thrown.");
    }
 
    @Test()
@@ -44,7 +44,7 @@ export class ToThrowTests {
       let throwFunction = () => { throw new Error(); };
 
       Expect(() => Expect(throwFunction).not.toThrow())
-        .toThrowError(ErrorMatchError, "Expected an error not to be thrown but an error was thown.");
+        .toThrowError(ErrorMatchError, "Expected an error not to be thrown but an error was thrown.");
    }
 
    @TestCase(undefined)
@@ -151,31 +151,4 @@ export class ToThrowTests {
       Expect(errorMatchError.expected).toBe("error not to be thrown.");
    }
 
-   // Asynchronous throw
-   private async asyncThrowError(delayMs: number): Promise<void> {
-      return new Promise<void>((_, reject) => {
-         setTimeout(reject(new Error("Timeout then reject")), delayMs);
-      });
-   }
-
-   // Asynchronous non-throw
-   private async asyncNonThrowError(delayMs: number): Promise<void> {
-      return new Promise<void>((resolve) => {
-         setTimeout(resolve(), delayMs);
-      });
-   }
-
-   @TestCase(0)
-   @TestCase(100)
-   @AsyncTest("Test toThrowAsyncShouldThrow")
-   public async testToThrowAsyncShouldThrow(delayMs: number) {
-      Expect(async () => this.asyncThrowError(delayMs)).toThrowAsync();
-   }
-
-   @TestCase(0)
-   @TestCase(100)
-   @AsyncTest("Test toThrowAsync")
-   public async testToThrowAsyncShouldNotThrow(delayMs: number) {
-      Expect(async () => this.asyncNonThrowError(delayMs)).not.toThrowAsync();
-   }
 }
