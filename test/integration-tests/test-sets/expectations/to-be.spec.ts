@@ -1,4 +1,4 @@
-import { Expect, Test } from "alsatian";
+import { Expect, Test } from "../../../../core/alsatian-core";
 
 export class ToBeTests {
 

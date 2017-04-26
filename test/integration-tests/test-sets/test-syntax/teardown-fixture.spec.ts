@@ -1,4 +1,4 @@
-import { AsyncTeardown, Expect, Teardown, TeardownFixture, Test, TestFixture } from "alsatian";
+import { AsyncTeardown, Expect, Teardown, TeardownFixture, Test, TestFixture } from "../../../../core/alsatian-core";
 
 @TestFixture("teardown fixtures")
 export class TeardownFixtureTests {

@@ -1,4 +1,4 @@
-import { Expect, TestCase, TestFixture } from "alsatian";
+import { Expect, TestCase, TestFixture } from "../../../../core/alsatian-core";
 
 export class CaseArgumentTestsTests {
    @TestCase(1, 2, 3)
