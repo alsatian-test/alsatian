@@ -6,7 +6,7 @@ import { AsyncTest, Expect, TestCase, Timeout } from "../../../core/alsatian-cor
 export class GulpIntegrationTests {
 
    @AsyncTest()
-   @Timeout(5000)
+   @Timeout(10000)
    public toBeExpectations() {
 
       const result = child
@@ -33,7 +33,7 @@ export class GulpIntegrationTests {
    @TestCase("setup")
    @TestCase("teardown")
    @AsyncTest()
-   @Timeout(5000)
+   @Timeout(10000)
    public syntaxTests(syntaxTestName: string) {
 
       const result = child
