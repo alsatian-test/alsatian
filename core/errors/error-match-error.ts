@@ -29,10 +29,10 @@ export class ErrorMatchError extends MatchError {
       }
       else {
          if (shouldMatch) {
-            this.message = `Expected an error to be thrown but no errors were thown.`;
+            this.message = `Expected an error to be thrown but no errors were thrown.`;
          }
          else {
-            this.message = `Expected an error not to be thrown but an error was thown.`;
+            this.message = `Expected an error not to be thrown but an error was thrown.`;
          }
       }
    }
