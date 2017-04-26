@@ -10,7 +10,8 @@ export class BabelIntegrationTests {
    public toBeExpectations() {
 
       const result = child
-                .exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap");
+         .exec("node ./cli/alsatian-cli.js " +
+            "./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap");
 
       let consoleOutput = "";
 
@@ -34,7 +35,8 @@ export class BabelIntegrationTests {
    public asyncTest() {
 
       const result = child
-                    .exec("alsatian \"./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js\" --tap");
+         .exec("node ./cli/alsatian-cli.js " +
+            "\"./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js\" --tap");
 
       let consoleOutput = "";
 
