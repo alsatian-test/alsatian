@@ -18,6 +18,7 @@ export class TempTests {
     @TestCase("regex-match-error", "RegexMatchError")
     @TestCase("test-timeout-error", "TestTimeoutError")
     @TestCase("truthy-match-error", "TruthyMatchError")
+    @TestCase("type-match-error", "TypeMatchError")
     @Test("give all those errors a go without a super")
     public testErrors(error: string, className: string) {
         let mockMatch: any = {
