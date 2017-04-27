@@ -18,8 +18,8 @@ export class BabelIntegrationTests {
       result.stderr.on("data", (data) => consoleOutput += data);
 
       let expectedOutput = FileSystem
-                                .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
-                                .toString();
+         .readFileSync("./test/integration-tests/javascript/expected-output/expectations/to-be.txt")
+         .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {
@@ -66,8 +66,8 @@ export class BabelIntegrationTests {
       result.stderr.on("data", (data) => consoleOutput += data);
 
       let expectedOutput = FileSystem
-                            .readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt")
-                            .toString();
+         .readFileSync("./test/integration-tests/javascript/expected-output/test-syntax/all-test-syntax.txt")
+         .toString();
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {

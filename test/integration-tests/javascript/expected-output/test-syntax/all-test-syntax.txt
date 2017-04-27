@@ -9,9 +9,9 @@ not ok 2 simple failing asynchronous test
    data:
      got: 4
      expect: 5
-   file: test/integration-tests/test-sets/test-syntax/async-test.spec.ts
-   line: 21
-   col: 8
+   file: test/integration-tests/javascript/test-sets/test-syntax/async-test.spec.js
+   line: 80
+   col: 42
  ...
 # FIXTURE CaseArgumentTestsTests
 ok 3 AddNumbers ( 1, 2, 3 )

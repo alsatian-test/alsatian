@@ -35,7 +35,9 @@ import {
  * @param actualValue - the value or function under test
  */
 export function Expect(actualValue: any) {
-   return new Matcher(actualValue, new TraceMarker().mark(1));
+   let marker = new TraceMarker().mark(1);
+   // console.log(`Expect: location=${JSON.stringify(marker.getLocation())}`);
+   return new Matcher(actualValue, marker);
 }
 
 /**

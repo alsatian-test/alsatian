@@ -1,6 +1,8 @@
 import { install } from "source-map-support";
 install();
 
+import * as path from "path";
+
 export class TraceLocation {
    public func: string;
    public file: string;
@@ -8,8 +10,8 @@ export class TraceLocation {
    public col: number;
 
    public constructor() {
-      this.file = "<no info>";
-      this.func = "<no info>";
+      this.file = "";
+      this.func = "";
       this.line = -1;
       this.col  = -1;
    }
@@ -61,13 +63,29 @@ export class TraceMarker {
          let stack = this._stackState.split("\n");
          if (stack.length >= 2) {
             // console.log(`stack[tos]=${stack[stack.length - 1]}`);
+            let projectRoot = path.dirname(__dirname);
+
+            // Check for non-anonymous function which means
+            // location string is of the form; " at func (file:line:col)"
             let r = /.*? at (.*?) \((.*?):(\d+):(\d+)\)/.exec(`${stack[stack.length - 1]}`);
-            // console.log(`r=${r}`);
             if (r && r.length > 4) {
-               location.file = r[2];
+               let relative = path.relative(projectRoot, r[2]);
+               // console.log(`__dirname=${__dirname} project_root=${project_root} relative=${relative}`);
+               location.file = relative;
                location.func = r[1];
                location.line = Number(r[3]);
                location.col = Number(r[4]);
+            } else {
+               // Check for anonymous function which means location
+               // string has no func and is of the form; " at file:line:col"
+               r = /.*? at *(.*?):(\d+):(\d+)/.exec(`${stack[stack.length - 1]}`);
+               if (r && r.length > 3) {
+                  let relative = path.relative(projectRoot, r[1]);
+                  location.file = relative;
+                  location.func = "";
+                  location.line = Number(r[2]);
+                  location.col = Number(r[3]);
+               }
             }
          }
       }

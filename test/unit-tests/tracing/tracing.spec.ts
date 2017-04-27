@@ -1,4 +1,5 @@
 import {
+   AsyncTest,
    Expect,
    SpyOn,
    SpyOnProperty,
@@ -52,6 +53,23 @@ export class TracingTests {
       Expect(location.func).toBe(emptyLocation.func);
       Expect(location.line).toBe(emptyLocation.line);
       Expect(location.col).toBe(emptyLocation.col);
+   }
+
+   private async _asyncFunction(notA5: number): Promise<void> {
+      Expect(notA5).not.toBe(5);
+      return new Promise<void>(() => {
+         Expect(notA5).toBe(5);
+      });
+   }
+
+   @AsyncTest("test getLocation anonymous function path")
+   public async failingAsyncTestPasses() {
+      try {
+         await this._asyncFunction(4);
+         Expect("failingAsyncTestPasses: Failed, expected an error to be thrown it wasn't").not.toBeTruthy();
+      } catch (err) {
+         Expect(`failingAsyncTestPasses: Success, caught expected err=${err}`).toBeTruthy();
+      }
    }
 
 }

@@ -10,7 +10,7 @@ export class TestCaseResult {
     private _error: Error;
 
     public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
-        if (error instanceof MatchError) {
+        if (error instanceof MatchError && !error.fileName) {
             let location = TraceMarker.here(1);
             error.fileName = location.file;
             error.lineNumber = location.line;
