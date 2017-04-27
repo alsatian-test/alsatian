@@ -430,16 +430,12 @@ export class Matcher {
    }
 
    private _throwError(err: MatchError) {
-      let location: TraceLocation;
       if (this._marker) {
-         location = this._marker.getLocation();
-      } else {
-         location = new TraceLocation(); // Empty location
+         let location = this._marker.getLocation();
+         err.fileName = location.file;
+         err.lineNumber = location.line;
+         err.columnNumber = location.col;
       }
-      err.fileName = location.file;
-      err.lineNumber = location.line;
-      err.columnNumber = location.col;
-
       throw err;
    }
 

@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, Matcher, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { TypeMatchError } from "../../../core/errors/type-match-error";
 
@@ -150,6 +150,23 @@ export class ToThrowTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.expected).toBe("error not to be thrown.");
+   }
+
+   @Test()
+   public testThatIfThereIsNoMarkerLocationInfoHasDefaults() {
+      let matcher = new Matcher(true);
+
+      let error = undefined;
+      try {
+         matcher.toBe(false);
+      } catch (err) {
+         error = err;
+      }
+      Expect(error).toBeDefined();
+      Expect(error).not.toBeNull();
+      Expect(error.fileName).not.toBeTruthy();
+      Expect(error.lineNumber < 0).toBeTruthy();
+      Expect(error.columnNumber < 0).toBeTruthy();
    }
 
 }

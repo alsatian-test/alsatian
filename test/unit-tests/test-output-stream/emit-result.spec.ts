@@ -1,6 +1,15 @@
 import { ITest } from "../../../core/_interfaces";
-import { Expect, SpyOn, Test, TestCase, TestCaseResult, TestOutputStream} from "../../../core/alsatian-core";
+import {
+   Expect,
+   SpyOn,
+   SpyOnProperty,
+   Test,
+   TestCase,
+   TestCaseResult,
+   TestOutputStream
+} from "../../../core/alsatian-core";
 import { EqualMatchError, MatchError } from "../../../core/errors";
+import { TraceLocation, TraceMarker } from "../../../core/tracing";
 import { TestBuilder } from "../../builders/test-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
@@ -9,7 +18,10 @@ const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
           + `   severity: fail\n`
           + `   data:\n`
           + `     got: ${JSON.stringify(error.actual)}\n`
-          + `     expect: ${JSON.stringify(error.expected)}\n ...\n`;
+          + `     expect: ${JSON.stringify(error.expected)}\n`
+          + `   file: ${error.fileName}\n`
+          + `   line: ${error.lineNumber}\n`
+          + `   col: ${error.columnNumber}\n ...\n`;
 };
 
 const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => {
@@ -261,4 +273,5 @@ export class EmitResultTests {
 
        Expect(testOutput.push).toHaveBeenCalledWith(expected);
    }
+
 }
