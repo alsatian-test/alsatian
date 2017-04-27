@@ -1,5 +1,6 @@
 import { Expect, FocusTests, SpyOnProperty, Test, TestCase } from "../../../core/alsatian-core";
 import { PropertySetMatchError } from "../../../core/errors";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToHaveBeenSetToTests {
 
@@ -177,7 +178,7 @@ export class ToHaveBeenSetToTests {
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasBeenSetToAValueShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toHaveBeenSetTo("something"))
-        .toThrowError(TypeError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
+        .toThrowError(TypeMatchError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
    }
 
    @TestCase(undefined)
@@ -193,7 +194,7 @@ export class ToHaveBeenSetToTests {
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasNotBeenSetToAValueShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenSetTo("something"))
-        .toThrowError(TypeError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
+        .toThrowError(TypeMatchError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
    }
 
    @TestCase([null])

@@ -1,5 +1,6 @@
 import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToHaveBeenCalledTests {
 
@@ -91,7 +92,7 @@ export class ToHaveBeenCalledTests {
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toHaveBeenCalled())
         .toThrowError(
-            TypeError,
+            TypeMatchError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
    }
 
@@ -109,7 +110,7 @@ export class ToHaveBeenCalledTests {
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toHaveBeenCalled())
         .toThrowError(
-            TypeError,
+            TypeMatchError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
    }
 

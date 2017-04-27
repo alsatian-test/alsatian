@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToBeGreaterThanTests {
 
@@ -141,7 +142,7 @@ export class ToBeGreaterThanTests {
    @TestCase(null)
    public checkingGreaterThanNullOrUndefinedShouldThrow(lowerLimit: number) {
       Expect(() => Expect(42).toBeGreaterThan(lowerLimit))
-        .toThrowError(TypeError, "toBeGreaterThan lower limit must not be null or undefined.");
+        .toThrowError(TypeMatchError, "toBeGreaterThan lower limit must not be null or undefined.");
    }
 
    @TestCase(undefined)
@@ -154,6 +155,6 @@ export class ToBeGreaterThanTests {
    @TestCase([ "an", "array" ])
    public checkingNonNumberGreaterThanSomethingShouldThrow(value: number) {
       Expect(() => Expect(value).toBeGreaterThan(42))
-        .toThrowError(TypeError, "toBeGreaterThan can only check numbers.");
+        .toThrowError(TypeMatchError, "toBeGreaterThan can only check numbers.");
    }
 }

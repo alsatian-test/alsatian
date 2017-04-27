@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToThrowTests {
 
@@ -60,7 +61,7 @@ export class ToThrowTests {
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionThrowsShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toThrow())
-        .toThrowError(TypeError, "toThrow requires value passed in to Expect to be a function.");
+        .toThrowError(TypeMatchError, "toThrow requires value passed in to Expect to be a function.");
    }
 
    @TestCase(undefined)
@@ -76,7 +77,7 @@ export class ToThrowTests {
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionDoesNotThrowShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toThrow())
-        .toThrowError(TypeError, "toThrow requires value passed in to Expect to be a function.");
+        .toThrowError(TypeMatchError, "toThrow requires value passed in to Expect to be a function.");
    }
 
    @Test()

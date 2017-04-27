@@ -1,5 +1,6 @@
 import { Expect, TestCase } from "../../../core/alsatian-core";
 import { ContentsMatchError } from "../../../core/errors/contents-match-error";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToContainTests {
 
@@ -140,7 +141,7 @@ export class ToContainTests {
    public checkingNonStringOrArraysContainShouldThrow(container: any) {
       Expect(() => Expect(container).toContain("something"))
         .toThrowError(
-          TypeError,
+          TypeMatchError,
           "toContain must only be used to check whether strings or arrays contain given contents.");
    }
 
@@ -154,7 +155,7 @@ export class ToContainTests {
    public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
       Expect(() => Expect(container).not.toContain("something"))
         .toThrowError(
-          TypeError,
+          TypeMatchError,
           "toContain must only be used to check whether strings or arrays contain given contents.");
    }
 
@@ -170,7 +171,7 @@ export class ToContainTests {
    public checkingStringContainsNonStringShouldThrow(expectedContent: any) {
       Expect(() => Expect("something").toContain(expectedContent))
         .toThrowError(
-          TypeError,
+          TypeMatchError,
           "toContain cannot check whether a string contains a non string value.");
    }
 
@@ -186,7 +187,7 @@ export class ToContainTests {
    public checkingStringDoesNotContainsNonStringShouldThrow(expectedContent: any) {
       Expect(() => Expect("something").not.toContain(expectedContent))
         .toThrowError(
-          TypeError,
+          TypeMatchError,
           "toContain cannot check whether a string contains a non string value.");
    }
  }

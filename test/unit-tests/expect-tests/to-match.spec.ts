@@ -1,5 +1,6 @@
 import { Expect, TestCase } from "../../../core/alsatian-core";
 import { RegexMatchError } from "../../../core/errors/regex-match-error";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 export class ToMatchTests {
 
@@ -48,7 +49,7 @@ export class ToMatchTests {
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringMatchesRegexShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).toMatch(/test/))
-        .toThrowError(TypeError, "toMatch must only be used to match on strings.");
+        .toThrowError(TypeMatchError, "toMatch must only be used to match on strings.");
    }
 
    @TestCase(undefined)
@@ -62,20 +63,20 @@ export class ToMatchTests {
    @TestCase([ "an", "array" ])
    public checkingWhetherNonStringDoesNotMatchRegexShouldThrow(actualValue: any) {
       Expect(() => Expect(actualValue).not.toMatch(/test/))
-        .toThrowError(TypeError, "toMatch must only be used to match on strings.");
+        .toThrowError(TypeMatchError, "toMatch must only be used to match on strings.");
    }
 
    @TestCase(undefined)
    @TestCase(null)
    public checkingStringMatchesNullOrUndefinedRegularExpressionShouldThrow(regex: RegExp) {
       Expect(() => Expect("something").toMatch(regex))
-        .toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
+        .toThrowError(TypeMatchError, "toMatch regular expression must not be null or undefined.");
    }
 
    @TestCase(undefined)
    @TestCase(null)
    public checkingStringDoesNotMatchNullOrUndefinedRegularExpressionShouldThrow(regex: RegExp) {
       Expect(() => Expect("something").not.toMatch(regex))
-        .toThrowError(TypeError, "toMatch regular expression must not be null or undefined.");
+        .toThrowError(TypeMatchError, "toMatch regular expression must not be null or undefined.");
    }
  }

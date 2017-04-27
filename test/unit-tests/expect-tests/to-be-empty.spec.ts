@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { EmptyMatchError } from "../../../core/errors/empty-match-error";
+import { TypeMatchError } from "../../../core/errors/type-match-error";
 
 class DummyClass { }
 
@@ -16,7 +17,7 @@ export class ToBeEmptyTests {
 
       Expect(() => expect.toBeEmpty())
          .not
-         .toThrowError(TypeError, this._typeErrorMessage);
+         .toThrowError(TypeMatchError, this._typeErrorMessage);
    }
 
    @TestCase("")
@@ -26,7 +27,7 @@ export class ToBeEmptyTests {
 
       Expect(() => expect.toBeEmpty())
          .not
-         .toThrowError(TypeError, this._typeErrorMessage);
+         .toThrowError(TypeMatchError, this._typeErrorMessage);
    }
 
    @TestCase({})
@@ -36,7 +37,7 @@ export class ToBeEmptyTests {
 
       Expect(() => expect.toBeEmpty())
          .not
-         .toThrowError(TypeError, this._typeErrorMessage);
+         .toThrowError(TypeMatchError, this._typeErrorMessage);
    }
 
    @TestCase(null)
@@ -45,7 +46,7 @@ export class ToBeEmptyTests {
       const expect = Expect(value);
 
       Expect(() => expect.toBeEmpty())
-         .toThrowError(TypeError, "toBeEmpty requires value passed in to Expect not to be null or undefined");
+         .toThrowError(TypeMatchError, "toBeEmpty requires value passed in to Expect not to be null or undefined");
    }
 
    @TestCase(0)
@@ -59,7 +60,7 @@ export class ToBeEmptyTests {
       const expect = Expect(value);
 
       Expect(() => expect.toBeEmpty())
-         .toThrowError(TypeError, this._typeErrorMessage);
+         .toThrowError(TypeMatchError, this._typeErrorMessage);
    }
 
    @Test()
