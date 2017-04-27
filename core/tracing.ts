@@ -1,4 +1,5 @@
-require("source-map-support").install(); // tslint:disable-line
+import { install } from "source-map-support";
+install();
 
 export class TraceLocation {
    public func: string;
