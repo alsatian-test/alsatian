@@ -1,6 +1,6 @@
+import { here } from "traceloc";
 import { ITest } from "../_interfaces/test.i";
 import { MatchError } from "../errors";
-import { TraceMarker } from "../tracing";
 import { TestOutcome } from "./test-outcome";
 
 export class TestCaseResult {
@@ -11,7 +11,7 @@ export class TestCaseResult {
 
     public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
         if (error instanceof MatchError && !error.fileName) {
-            let location = TraceMarker.here(1);
+            let location = here(1);
             error.fileName = location.file;
             error.lineNumber = location.line;
             error.columnNumber = location.col;

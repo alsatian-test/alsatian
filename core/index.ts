@@ -5,7 +5,6 @@ import { TestFixture } from "./test-fixture";
 import { TestLoader } from "./test-loader";
 import { TestOutputStream } from "./test-output-stream";
 import { TestSet } from "./test-set";
-import { TraceLocation, TraceMarker } from "./tracing";
 
 export {
     Expect,
@@ -16,6 +15,4 @@ export {
     TestLoader,
     TestOutputStream,
     TestSet,
-    TraceLocation,
-    TraceMarker
 };

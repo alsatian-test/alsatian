@@ -25,26 +25,21 @@ import {
    FunctionSpyMatcher
 } from "./matchers";
 
-import {
-   TraceLocation,
-   TraceMarker
-} from "./tracing";
+import { here, ITraceLoc } from "traceloc";
 
 /**
  * Allows checking of test outcomes
  * @param actualValue - the value or function under test
  */
 export function Expect(actualValue: any) {
-   let marker = new TraceMarker().mark(1);
-   // console.log(`Expect: location=${JSON.stringify(marker.getLocation())}`);
-   return new Matcher(actualValue, marker);
+   return new Matcher(actualValue, here(1));
 }
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher {
-   private _marker: TraceMarker | undefined;
+   private _loc: ITraceLoc | undefined;
 
    private _actualValue: any;
    protected get actualValue(): any {
@@ -56,9 +51,9 @@ export class Matcher {
        return this._shouldMatch;
    }
 
-   public constructor(actualValue: any, marker?: TraceMarker) {
+   public constructor(actualValue: any, loc?: ITraceLoc) {
       this._actualValue = actualValue;
-      this._marker = marker;
+      this._loc = loc;
    }
 
    /**
@@ -432,11 +427,10 @@ export class Matcher {
    }
 
    private _throwError(err: MatchError) {
-      if (this._marker) {
-         let location = this._marker.getLocation();
-         err.fileName = location.file;
-         err.lineNumber = location.line;
-         err.columnNumber = location.col;
+      if (this._loc) {
+         err.fileName = this._loc.file;
+         err.lineNumber = this._loc.line;
+         err.columnNumber = this._loc.col;
       }
       throw err;
    }

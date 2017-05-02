@@ -9,7 +9,6 @@ import {
    TestOutputStream
 } from "../../../core/alsatian-core";
 import { EqualMatchError, MatchError } from "../../../core/errors";
-import { TraceLocation, TraceMarker } from "../../../core/tracing";
 import { TestBuilder } from "../../builders/test-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
