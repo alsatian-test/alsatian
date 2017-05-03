@@ -228,28 +228,24 @@ export class Matcher {
       }
    }
 
-   public async toThrowAsync(): Promise<void> {
+   public async toThrowAsync() {
 
-      return new Promise<void>(async (resolve, reject) => {
-         if (this._actualValue instanceof Function === false) {
-            return reject(new TypeError("toThrowAsync requires value passed in to Expect to be a function."));
-         }
+       if (this._actualValue instanceof Function === false) {
+          throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
+       }
 
-         let errorThrown: Error;
+       let errorThrown: Error;
 
-         try {
-            await this._actualValue();
-         }
-         catch (error) {
-            errorThrown = error;
-         }
+       try {
+          await this._actualValue();
+       }
+       catch (error) {
+          errorThrown = error;
+       }
 
-         if (errorThrown === undefined === this.shouldMatch) {
-            return reject(new ErrorMatchError(errorThrown, this.shouldMatch));
-         } else {
-            return resolve();
-         }
-      });
+       if (errorThrown === undefined === this.shouldMatch) {
+          throw new ErrorMatchError(errorThrown, this.shouldMatch);
+       }
    }
 
    /**
@@ -287,33 +283,29 @@ export class Matcher {
     * @param errorType - the type of error that should be thrown
     * @param errorMessage - the message that the error should have
     */
-   public async toThrowErrorAsync(errorType: new (...args: Array<any>) => Error, errorMessage: string): Promise<void> {
+   public async toThrowErrorAsync(errorType: new (...args: Array<any>) => Error, errorMessage: string) {
 
-      return new Promise<void>(async (resolve, reject) => {
-         if (this._actualValue instanceof Function === false) {
-            return reject(new TypeError("toThrowErrorAsync requires value passed to Expect to be a function."));
-         }
+       if (this._actualValue instanceof Function === false) {
+          throw new TypeError("toThrowErrorAsync requires value passed to Expect to be a function.");
+       }
 
-         let threwRightError = false;
-         let actualError: Error;
+       let threwRightError = false;
+       let actualError: Error;
 
-         try {
-            await this._actualValue();
-         }
-         catch (error) {
-            actualError = error;
+       try {
+          await this._actualValue();
+       }
+       catch (error) {
+          actualError = error;
 
-            if (error instanceof errorType && error.message === errorMessage) {
-               threwRightError = true;
-            }
-         }
+          if (error instanceof errorType && error.message === errorMessage) {
+             threwRightError = true;
+          }
+       }
 
-         if (threwRightError !== this.shouldMatch) {
-            return reject(new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage));
-         } else {
-            return resolve();
-         }
-      });
+       if (threwRightError !== this.shouldMatch) {
+          throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+       }
    }
 
    /**
