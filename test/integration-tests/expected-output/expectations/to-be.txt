@@ -10,9 +10,6 @@ not ok 3 twoPlusTwoDoNotMakeFour
    data:
      got: 4
      expect: 4
-   file: test/integration-tests/test-sets/expectations/to-be.spec.ts
-   line: 17
-   col: 5
  ...
 not ok 4 twoPlusTwoMakeFive
  ---
@@ -21,7 +18,4 @@ not ok 4 twoPlusTwoMakeFive
    data:
      got: 4
      expect: 5
-   file: test/integration-tests/test-sets/expectations/to-be.spec.ts
-   line: 22
-   col: 5
  ...

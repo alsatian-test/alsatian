@@ -9,8 +9,8 @@ export class TestCaseResult {
     private _arguments: Array<any>;
     private _error: Error;
 
-    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
-        if (error instanceof MatchError && !error.fileName) {
+    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error, errorComplete = false) {
+        if (error instanceof MatchError && !error.fileName && !errorComplete) {
             let location = here(1);
             error.fileName = location.file;
             error.lineNumber = location.line;

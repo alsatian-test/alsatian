@@ -2,13 +2,20 @@ import { Readable as ReadableStream } from "stream";
 import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
+import { TestSetRunInfo } from "./running/test-set-run-info";
 
 export class TestOutputStream extends ReadableStream {
+
+   private _testSetRunInfo: TestSetRunInfo;
 
    public _read() { } // tslint:disable-line:no-empty
 
    public end() {
       this.push(null);
+   }
+
+   public setTestSetRunInfo(testSetRunInfo: TestSetRunInfo) {
+      this._testSetRunInfo = testSetRunInfo;
    }
 
    public emitVersion(): void {
@@ -146,14 +153,16 @@ export class TestOutputStream extends ReadableStream {
            "   data:\n" +
            "     got: " + actual + "\n" +
            "     expect: " + expected + "\n";
-       if (fileName) {
-           output = output + "   file: " + fileName + "\n";
-       }
-       if (lineNumber > 0) {
-           output = output + "   line: " + lineNumber + "\n";
-       }
-       if (columnNumber > 0) {
-           output = output + "   col: " + columnNumber + "\n";
+       if (this._testSetRunInfo && this._testSetRunInfo.reportLocation) {
+           if (fileName) {
+               output = output + "   file: " + fileName + "\n";
+           }
+           if (lineNumber > 0) {
+               output = output + "   line: " + lineNumber + "\n";
+           }
+           if (columnNumber > 0) {
+               output = output + "   col: " + columnNumber + "\n";
+           }
        }
 
        if (stack) {

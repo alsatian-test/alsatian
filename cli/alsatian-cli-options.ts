@@ -30,6 +30,11 @@ export class AlsatianCliOptions {
       return this._helpRequested;
    }
 
+   private _reportLocation: boolean = true;
+   public get reportLocation(): boolean {
+      return this._reportLocation;
+   }
+
    public constructor(args: Array<string>) {
 
       args = this._extractTap(args);
@@ -37,6 +42,7 @@ export class AlsatianCliOptions {
       args = this._extractHelpRequested(args);
       args = this._extractFileGlobs(args);
       args = this._extractTimeout(args);
+      args = this._extractReportLocation(args);
 
       if (args.length > 0) {
          throw new InvalidArgumentNamesError(args);
@@ -121,6 +127,18 @@ export class AlsatianCliOptions {
       }
 
       return args;
+   }
+
+   private _extractReportLocation(args: Array<string>): Array<string> {
+      const argumentIndex = this._getArgumentIndexFromArgumentList(args, "location-report", "l");
+
+      // if we found the location-report argument, enable it
+      this._reportLocation = (argumentIndex !== -1);
+
+      // filter out the no-location-report argument and return the other args
+      return args.filter((value, index) => {
+        return index !== argumentIndex;
+      });
    }
 
    private _getArgumentIndexFromArgumentList(args: Array<string>,

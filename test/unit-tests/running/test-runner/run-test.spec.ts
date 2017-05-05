@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { AsyncTest, Expect, METADATA_KEYS, SpyOn, Timeout } from "../../../../core/alsatian-core";
+import { AsyncTest, Expect, METADATA_KEYS, SpyOn, TestCase, Timeout } from "../../../../core/alsatian-core";
 import { ITestCompleteEvent } from "../../../../core/events";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
@@ -449,4 +449,29 @@ export class RunTestTests {
         Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
         Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
     }
+
+    @TestCase(true)
+    @TestCase(false)
+    @AsyncTest("simulate user passing reportLocation to testRunner.run")
+    public async singlePassingTestRunsSuccessfullyReportLocation(reportLocation: boolean) {
+
+        const test = new TestBuilder().withTestCaseCount(1).build();
+
+        const testFixture = new TestFixtureBuilder()
+            .addTest(test)
+            .build();
+
+        const testSet = new TestSetBuilder()
+            .addTestFixture(testFixture)
+            .build();
+
+        const outputStream = new TestOutputStream();
+        SpyOn(outputStream, "push");
+
+        const testRunner = new TestRunner(outputStream);
+
+        await testRunner.run(testSet, undefined, reportLocation);
+        Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
+    }
+
 }

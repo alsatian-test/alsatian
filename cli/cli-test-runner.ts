@@ -41,6 +41,8 @@ export class CliTestRunner {
                               "(runs alsatian with TAP output)\n" +
                               "TIMEOUT: --timeout [number] / -t [number] " +
                               "(sets the timeout period for tests in milliseconds - default 500)\n" +
+                              "LOC:     --location-report / -l           " +
+                              "(Turn location reporting on)\n" +
                               "\n"
                               );
          return;
@@ -63,7 +65,7 @@ export class CliTestRunner {
       }
 
       try {
-         await this._testRunner.run(testSet, userArguments.timeout);
+         await this._testRunner.run(testSet, userArguments.timeout, userArguments.reportLocation);
       }
       catch (error) {
          this._handleTestSetRunError(error);

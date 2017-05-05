@@ -1,4 +1,4 @@
-import { TestSetResults } from "../alsatian-core";
+import { TestResults, TestSetResults } from "../alsatian-core";
 import { TestItem } from "./test-item";
 import { TestPlan } from "./test-plan";
 
@@ -6,6 +6,10 @@ export class TestSetRunInfo {
 
    public get timeout() {
       return this._timeout;
+   }
+
+   public get reportLocation() {
+      return this._reportLocation;
    }
 
    public get testPlan() {
@@ -33,5 +37,6 @@ export class TestSetRunInfo {
    public constructor(
       private _testPlan: TestPlan,
       private _testSetResults: TestSetResults,
-      private _timeout: number) {}
+      private _timeout: number,
+      private _reportLocation: boolean) {}
 }

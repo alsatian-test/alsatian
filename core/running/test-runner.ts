@@ -31,7 +31,7 @@ export class TestRunner {
         }
     }
 
-    public async run(testSet: TestSet, timeout?: number) {
+    public async run(testSet: TestSet, timeout?: number, reportLocation?: boolean) {
 
         const testPlan = new TestPlan(testSet);
         if (testPlan.testItems.length === 0) {
@@ -42,15 +42,21 @@ export class TestRunner {
             timeout = 500;
         }
 
-        const testSetResults = new TestSetResults();
+        if (!reportLocation) {
+            reportLocation = false;
+        }
 
-        this._outputStream.emitVersion();
-        this._outputStream.emitPlan(testPlan.testItems.length);
+        const testSetResults = new TestSetResults();
 
         const testSetRunInfo = new TestSetRunInfo(
             testPlan,
             testSetResults,
-            timeout);
+            timeout,
+            reportLocation);
+
+        this._outputStream.setTestSetRunInfo(testSetRunInfo);
+        this._outputStream.emitVersion();
+        this._outputStream.emitPlan(testPlan.testItems.length);
 
         await this._runTests(testSetRunInfo, testSetResults);
     }

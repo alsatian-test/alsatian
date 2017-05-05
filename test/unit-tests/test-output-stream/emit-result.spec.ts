@@ -6,21 +6,40 @@ import {
    Test,
    TestCase,
    TestCaseResult,
-   TestOutputStream
+   TestOutputStream,
+   TestSet
 } from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
-import { TestBuilder } from "../../builders/test-builder";
 
-const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
-    return  ` ---\n`
+import { TestBuilder } from    "../../builders/test-builder";
+
+import { EqualMatchError, MatchError } from "../../../core/errors";
+import { TestSetResults } from "../../../core/results/test-set-results";
+import { TestPlan } from "../../../core/running/test-plan";
+import { TestSetRunInfo } from "../../../core/running/test-set-run-info";
+
+const _getErrorYaml: (error: MatchError, rl: boolean) => string = (error: MatchError, rl: boolean) => {
+    let str =  ` ---\n`
           + `   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n`
           + `   severity: fail\n`
           + `   data:\n`
           + `     got: ${JSON.stringify(error.actual)}\n`
-          + `     expect: ${JSON.stringify(error.expected)}\n`
-          + `   file: ${error.fileName}\n`
-          + `   line: ${error.lineNumber}\n`
-          + `   col: ${error.columnNumber}\n ...\n`;
+          + `     expect: ${JSON.stringify(error.expected)}\n`;
+
+    if (rl) {
+       if (error.fileName) {
+          str += `   file: ${error.fileName}\n`;
+       }
+       if (error.lineNumber > 0) {
+          str += `   line: ${error.lineNumber}\n`;
+       }
+
+       if (error.columnNumber > 0) {
+          str += `   col: ${error.columnNumber}\n`;
+       }
+    }
+
+    str += ` ...\n`;
+    return str;
 };
 
 const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => {
@@ -38,6 +57,18 @@ const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => 
 };
 
 export class EmitResultTests {
+
+   private getTestOutputStream(reportLocation: boolean): TestOutputStream {
+      const testSet = TestSet.create();
+      const testSetRunInfo = new TestSetRunInfo(
+         new TestPlan(testSet),
+         new TestSetResults(),
+         500,
+         reportLocation);
+      let testOutput = new TestOutputStream();
+      testOutput.setTestSetRunInfo(testSetRunInfo);
+      return testOutput;
+   }
 
    @TestCase(1)
    @TestCase(2)
@@ -185,7 +216,8 @@ export class EmitResultTests {
    @TestCase("another message")
    @TestCase("yaba daba doo")
    public shouldEmitYamlWithCorrectMessage(message: string) {
-      let testOutput = new TestOutputStream();
+      const reportLocation = true;
+      const testOutput = this.getTestOutputStream(reportLocation);
       SpyOn(testOutput, "push");
 
       let test: ITest = new TestBuilder().build();
@@ -194,7 +226,7 @@ export class EmitResultTests {
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = _getErrorYaml(error);
+      let expected = _getErrorYaml(error, reportLocation);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -205,7 +237,8 @@ export class EmitResultTests {
    @TestCase("tweny")
    @TestCase(false)
    public shouldEmitYamlWithCorrectActualValue(actualValue: any) {
-      let testOutput = new TestOutputStream();
+      const reportLocation = true;
+      const testOutput = this.getTestOutputStream(true);
       SpyOn(testOutput, "push");
 
       let test: ITest = new TestBuilder().build();
@@ -214,7 +247,7 @@ export class EmitResultTests {
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = _getErrorYaml(error);
+      let expected = _getErrorYaml(error, reportLocation);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -225,7 +258,8 @@ export class EmitResultTests {
    @TestCase(20)
    @TestCase(true)
    public shouldEmitYamlWithCorrectExpectedValue(expectedValue: any) {
-      let testOutput = new TestOutputStream();
+      const reportLocation = true;
+      const testOutput = this.getTestOutputStream(reportLocation);
       SpyOn(testOutput, "push");
 
       let test: ITest = new TestBuilder().build();
@@ -234,7 +268,26 @@ export class EmitResultTests {
 
       let testCaseResult = new TestCaseResult(test, [], error);
 
-      let expected = _getErrorYaml(error);
+      let expected = _getErrorYaml(error, reportLocation);
+
+      testOutput.emitResult(1, testCaseResult);
+
+      Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase(true)
+   @TestCase(false)
+   public shouldEmitYamlWithCorrectLocationReport(reportLocation: boolean) {
+      const testOutput = this.getTestOutputStream(reportLocation);
+      SpyOn(testOutput, "push");
+
+      let test: ITest = new TestBuilder().build();
+
+      let error = new EqualMatchError(1, false, true);
+
+      let testCaseResult = new TestCaseResult(test, [], error);
+
+      let expected = _getErrorYaml(error, reportLocation);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -271,6 +324,35 @@ export class EmitResultTests {
        testOutput.emitResult(1, testCaseResult);
 
        Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase([{}])
+   @TestCase([{file: "file1"}])
+   @TestCase([{line: 1}])
+   @TestCase([{col: 1}])
+   @TestCase([{file: "aFile"}, {line: 123}])
+   @TestCase([{file: "aFile"}, {col: 456}])
+   @TestCase([{file: "aFile"}, {line: 123}, {col: 456}])
+   public shouldEmitYamlWithCorrectLocationReportContents(contents: Array<any>) {
+      const reportLocation = true;
+      const testOutput = this.getTestOutputStream(reportLocation);
+      SpyOn(testOutput, "push");
+
+      let test: ITest = new TestBuilder().build();
+
+      let error = new EqualMatchError(1, false, true);
+      for (let o of contents) {
+         if (o.file) { error.fileName = o.file; }
+         if (o.line) { error.lineNumber = o.line; }
+         if (o.col) { error.columnNumber = o.col; }
+      }
+      let testCaseResult = new TestCaseResult(test, [], error, true);
+
+      let expected = _getErrorYaml(error, reportLocation);
+
+      testOutput.emitResult(1, testCaseResult);
+
+      Expect(testOutput.push).toHaveBeenCalledWith(expected);
    }
 
 }

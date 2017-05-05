@@ -12,7 +12,7 @@ export class TestSetRunInfoTests {
    @TestCase(null)
    @TestCase(new TestPlan(new TestSetBuilder().build()))
    public correctTestPlanSet(testPlan: TestPlan) {
-      const testSetRunInfo = new TestSetRunInfo(testPlan, new TestSetResults(), 1);
+      const testSetRunInfo = new TestSetRunInfo(testPlan, new TestSetResults(), 1, false);
 
       Expect(testSetRunInfo.testPlan).toBe(testPlan);
    }
@@ -23,7 +23,7 @@ export class TestSetRunInfoTests {
    public correctTestSetResultsSet(testSetResults: TestSetResults) {
       const testSet = new TestSetBuilder().build();
 
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), testSetResults, 1);
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), testSetResults, 1, false);
 
       Expect(testSetRunInfo.testSetResults).toBe(testSetResults);
    }
@@ -34,7 +34,7 @@ export class TestSetRunInfoTests {
    public correctTimeoutSet(timeout: number) {
       const testSet = new TestSetBuilder().build();
 
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), timeout);
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), timeout, false);
 
       Expect(testSetRunInfo.timeout).toBe(timeout);
    }
@@ -44,7 +44,7 @@ export class TestSetRunInfoTests {
    public settingNullOrUndefinedTestPlanItemThrowsError(testPlanItem: TestItem) {
       const testSet = new TestSetBuilder().build();
 
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1, false);
 
       Expect(() => testSetRunInfo.testPlanItem = testPlanItem)
         .toThrowError(TypeError, "testPlanItem must not be null or undefined.");
@@ -54,7 +54,7 @@ export class TestSetRunInfoTests {
    public settingTestPlanItemIsStored() {
       const testSet = new TestSetBuilder().build();
 
-      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1);
+      const testSetRunInfo = new TestSetRunInfo(new TestPlan(testSet), new TestSetResults(), 1, false);
 
       const testPlanItem = new TestItem(
         new TestFixtureBuilder().build(),
