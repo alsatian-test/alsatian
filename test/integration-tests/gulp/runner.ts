@@ -10,7 +10,7 @@ export class GulpIntegrationTests {
    public toBeExpectations() {
 
       const result = child
-                    .exec("gulp test-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+        .exec("gulp test-to-be-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
 
       let consoleOutput = "";
 
@@ -19,6 +19,30 @@ export class GulpIntegrationTests {
 
       let expectedOutput = FileSystem
                                 .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
+                                .toString();
+
+      return new Promise<void>((resolve, reject) => {
+         result.on("close", (code: number) => {
+            Expect(consoleOutput).toContain(expectedOutput.replace(/\r/g, ""));
+            resolve();
+         });
+      });
+   }
+
+   @AsyncTest()
+   @Timeout(10000)
+   public toThrowExpectations() {
+
+      const result = child
+        .exec("gulp test-to-throw-expectations --gulpfile \"./test/integration-tests/gulp/gulpfile.js\" --cwd ./");
+
+      let consoleOutput = "";
+
+      result.stdout.on("data", (data) => consoleOutput += data);
+      result.stderr.on("data", (data) => consoleOutput += data);
+
+      let expectedOutput = FileSystem
+                                .readFileSync("./test/integration-tests/expected-output/expectations/to-throw.txt")
                                 .toString();
 
       return new Promise<void>((resolve, reject) => {

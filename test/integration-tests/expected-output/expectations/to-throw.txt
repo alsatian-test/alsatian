@@ -1,0 +1,11 @@
+TAP version 13
+1..8
+# FIXTURE error throwing
+ok 1 errorThrown
+ok 2 noErrorThrown
+ok 3 exactErrorThrown
+ok 4 notExactErrorThrown
+ok 5 asyncErrorThrown
+ok 6 asyncNoErrorThrown
+ok 7 asnycExactErrorThrown
+ok 8 asyncNotExactErrorThrown
