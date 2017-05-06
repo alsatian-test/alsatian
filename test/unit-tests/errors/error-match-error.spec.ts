@@ -7,14 +7,14 @@ export class ErrorMatchErrorTests {
    public noActualErrorShouldGiveCorrectMessage() {
       let error = new ErrorMatchError(null, true);
 
-      Expect(error.message).toBe("Expected an error to be thrown but no errors were thown.");
+      Expect(error.message).toBe("Expected an error to be thrown but no errors were thrown.");
    }
 
    @Test()
    public actualErrorThrownWhenNoneExpectedShouldGiveCorrectMessage() {
       let error = new ErrorMatchError(new Error(), false);
 
-      Expect(error.message).toBe("Expected an error not to be thrown but an error was thown.");
+      Expect(error.message).toBe("Expected an error not to be thrown but an error was thrown.");
    }
 
    @TestCase(Error, EvalError)
