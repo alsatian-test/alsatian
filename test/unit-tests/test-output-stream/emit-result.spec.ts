@@ -17,6 +17,8 @@ import { TestSetResults } from "../../../core/results/test-set-results";
 import { TestPlan } from "../../../core/running/test-plan";
 import { TestSetRunInfo } from "../../../core/running/test-set-run-info";
 
+import { here } from "traceloc";
+
 const _getErrorYaml: (error: MatchError, rl: boolean) => string = (error: MatchError, rl: boolean) => {
     let str =  ` ---\n`
           + `   message: "${error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"\n`
@@ -146,7 +148,8 @@ export class EmitResultTests {
 
    @Test()
    public shouldEmitWithNotOkIfPass() {
-      let testOutput = new TestOutputStream();
+      let reportLocation = false;
+      let testOutput = this.getTestOutputStream(reportLocation);
       SpyOn(testOutput, "push");
 
       let test: ITest = new TestBuilder().build();
@@ -157,6 +160,25 @@ export class EmitResultTests {
       testOutput.emitResult(1, testCaseResult);
 
       let expected = `not ok 1 ${test.description}\n`;
+
+      Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @Test()
+   public shouldEmitWithNotOkIfPassWithReportLocation() {
+      let reportLocation = true;
+      let testOutput = this.getTestOutputStream(reportLocation);
+      SpyOn(testOutput, "push");
+
+      let test: ITest = new TestBuilder().build();
+
+      // match error causes a "fail"
+      let loc = here();
+      let testCaseResult = new TestCaseResult(test, [], new MatchError("message", 1, 2));
+
+      testOutput.emitResult(1, testCaseResult);
+
+      let expected = `not ok 1 ${test.description} -- ${loc.file}:${loc.line + 1}\n`;
 
       Expect(testOutput.push).toHaveBeenCalledWith(expected);
    }

@@ -74,6 +74,11 @@ export class TestOutputStream extends ReadableStream {
    private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
       let description = this._getTestDescription(test, testCaseArguments);
 
+      if (this._testSetRunInfo && this._testSetRunInfo.reportLocation
+            && error instanceof MatchError && error.fileName && error.lineNumber > 0) {
+         description += ` -- ${error.fileName}:${error.lineNumber}`;
+      }
+
       this._writeOut(`not ok ${testId} ${description}\n`);
 
       // if it's a match error then log it properly, otherwise log it as unhandled

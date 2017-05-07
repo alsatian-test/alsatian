@@ -16,6 +16,11 @@ export class ToThrowAsyncTests {
       });
    }
 
+   // @AsyncTest("failing toBe")
+   // public async failing() {
+   //    Expect(1).toBe(2);
+   // }
+
    @TestCase(0)
    @TestCase(100)
    @AsyncTest("Test toThrowAsync catches thrown errors and does not rethrow")
