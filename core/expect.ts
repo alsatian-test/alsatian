@@ -24,13 +24,35 @@ import {
    FunctionSpyMatcher
 } from "./matchers";
 
-/**
- * Allows checking of test outcomes
- * @param actualValue - the value or function under test
- */
-export function Expect(actualValue: any) {
+function ExpectFunction(actualValue: any) {
    return new Matcher(actualValue);
 }
+
+function fail(message: string) {
+    throw new MatchError(message);
+}
+
+(ExpectFunction as IExpect).fail = fail;
+
+export interface IExpect {
+    /**
+     * Allows checking of test outcomes
+     * @param actualValue - the value or function under test
+     */
+    (actualValue: any): Matcher;
+
+    /**
+     * Fails the test with the given message
+     * @param message - the message that will be shown in the failure
+     */
+    fail(message: string): void;
+}
+
+const EXPECT = (ExpectFunction as IExpect);
+
+export {
+    EXPECT as Expect
+};
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
