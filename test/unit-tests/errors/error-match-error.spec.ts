@@ -215,7 +215,9 @@ export class ErrorMatchErrorTests {
                                       expectedErrorType,
                                       expectedErrorMessage);
 
+      const errorName = (expectedErrorType as INameable).name;
+
       Expect(error.expected)
-        .toBe(`${(expectedErrorType as INameable).name} error not to be thrown with message "${expectedErrorMessage}".`);
+        .toBe(`${errorName} error not to be thrown with message "${expectedErrorMessage}".`);
    }
 }

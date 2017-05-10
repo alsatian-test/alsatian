@@ -4,6 +4,7 @@ import { ITestFixture } from "./test-fixture.i";
 import { ITest } from "./test.i";
 import { Constructor } from "./constructor.i";
 import { ITester } from "./tester.i";
+import { ISpyCall } from "./spy-call.i";
 
 export {
     ITestCase,
@@ -11,5 +12,6 @@ export {
     ITest,
     INameable,
     Constructor,
-    ITester
+    ITester,
+    ISpyCall
 };
