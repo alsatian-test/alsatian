@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { TestFixture as TestFixtureMetadata } from "../../../core/";
 import { Expect, METADATA_KEYS, SpyOnProperty, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 import { TestFixture as TestFixtureDecorator } from "../../../core/decorators/test-fixture-decorator";
+import { ClassBuilder } from "../../builders/class-builder";
 
 @TestFixture("Test Fixture Decorator Tests")
 export class TestFixtureDecoratorTests {
@@ -10,7 +11,7 @@ export class TestFixtureDecoratorTests {
     public metaDataIsSet() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = new ClassBuilder().build();
 
         testFixtureDecorator(testFixtureConstructor);
 
@@ -24,7 +25,7 @@ export class TestFixtureDecoratorTests {
     public metaDataIsTestFixture() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = new ClassBuilder().build();
 
         testFixtureDecorator(testFixtureConstructor);
 
@@ -39,7 +40,7 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionSet(testFixtureDescription: string) {
         const testFixtureDecorator = TestFixtureDecorator(testFixtureDescription);
 
-        const testFixtureConstructor = () => {};
+        const testFixtureConstructor = new ClassBuilder().build();
 
         testFixtureDecorator(testFixtureConstructor);
 
@@ -54,9 +55,7 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionDefaultsToConstructorName(testFixtureClassName: string) {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = {
-          name: testFixtureClassName
-        } as () => any;
+        const testFixtureConstructor = new ClassBuilder().withName(testFixtureClassName).build();
 
         testFixtureDecorator(testFixtureConstructor);
 
