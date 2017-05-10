@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { INameable } from "../../../core/_interfaces";
 
 export class ErrorMatchErrorTests {
 
@@ -45,8 +46,8 @@ export class ErrorMatchErrorTests {
       const error = new ErrorMatchError(new actualErrorType(), true, expectedErrorType);
 
       Expect(error.message)
-        .toBe(`Expected an error of type ${(expectedErrorType as any).name} ` +
-              `to have been thrown, but ${(actualErrorType as any).name} was thrown instead.`);
+        .toBe(`Expected an error of type ${(expectedErrorType as INameable).name} ` +
+              `to have been thrown, but ${(actualErrorType as INameable).name} was thrown instead.`);
    }
 
    @TestCase(EvalError)
@@ -58,7 +59,7 @@ export class ErrorMatchErrorTests {
       const error = new ErrorMatchError(new errorType(), false, errorType);
 
       Expect(error.message)
-        .toBe("Expected an error of type " + (errorType as any).name + " to not have been thrown, but it was.");
+        .toBe("Expected an error of type " + (errorType as INameable).name + " to not have been thrown, but it was.");
    }
 
    @TestCase("something went wrong")
@@ -92,7 +93,7 @@ export class ErrorMatchErrorTests {
 
       Expect(error.message)
         .toBe(`Expected an error with message "${message}" ` +
-              `and type ${(expectedErrorType as any).name} to have been thrown, but it wasn't.`);
+              `and type ${(expectedErrorType as INameable).name} to have been thrown, but it wasn't.`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -106,7 +107,7 @@ export class ErrorMatchErrorTests {
 
       Expect(error.message)
         .toBe(`Expected an error with message "${message}" ` +
-              `and type ${(expectedErrorType as any).name} to not have been thrown, but it was.`);
+              `and type ${(expectedErrorType as INameable).name} to not have been thrown, but it was.`);
    }
 
    @Test()
@@ -126,7 +127,7 @@ export class ErrorMatchErrorTests {
       const error = new ErrorMatchError(new actualErrorType(actualErrorMessage), false);
 
       Expect(error.actual)
-        .toBe(`${(actualErrorType as any).name} error was thrown with message "${actualErrorMessage}".`);
+        .toBe(`${(actualErrorType as INameable).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @Test()
@@ -170,7 +171,7 @@ export class ErrorMatchErrorTests {
                                       expectedErrorMessage);
 
       Expect(error.actual)
-        .toBe(`${(actualErrorType as any).name} error was thrown with message "${actualErrorMessage}".`);
+        .toBe(`${(actualErrorType as INameable).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -186,7 +187,7 @@ export class ErrorMatchErrorTests {
                                       expectedErrorMessage);
 
       Expect(error.actual)
-        .toBe(`${(expectedErrorType as any).name} error was thrown with message "${expectedErrorMessage}".`);
+        .toBe(`${(expectedErrorType as INameable).name} error was thrown with message "${expectedErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -199,7 +200,7 @@ export class ErrorMatchErrorTests {
       const error = new ErrorMatchError(undefined, true, expectedErrorType, expectedErrorMessage);
 
       Expect(error.expected)
-        .toBe(`${(expectedErrorType as any).name} error to be thrown with message "${expectedErrorMessage}".`);
+        .toBe(`${(expectedErrorType as INameable).name} error to be thrown with message "${expectedErrorMessage}".`);
    }
 
    @TestCase(EvalError, "something went wrong")
@@ -215,6 +216,6 @@ export class ErrorMatchErrorTests {
                                       expectedErrorMessage);
 
       Expect(error.expected)
-        .toBe(`${(expectedErrorType as any).name} error not to be thrown with message "${expectedErrorMessage}".`);
+        .toBe(`${(expectedErrorType as INameable).name} error not to be thrown with message "${expectedErrorMessage}".`);
    }
 }
