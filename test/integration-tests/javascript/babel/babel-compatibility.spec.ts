@@ -31,6 +31,30 @@ export class BabelIntegrationTests {
 
    @AsyncTest()
    @Timeout(5000)
+   public toThrowExpectations() {
+
+      const result = child
+                .exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap");
+
+      let consoleOutput = "";
+
+      result.stdout.on("data", (data) => consoleOutput += data);
+      result.stderr.on("data", (data) => consoleOutput += data);
+
+      let expectedOutput = FileSystem
+                                .readFileSync("./test/integration-tests/expected-output/expectations/to-throw.txt")
+                                .toString();
+
+      return new Promise<void>((resolve, reject) => {
+         result.on("close", (code: number) => {
+            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+            resolve();
+         });
+      });
+   }
+
+   @AsyncTest()
+   @Timeout(5000)
    public asyncTest() {
 
       const result = child
