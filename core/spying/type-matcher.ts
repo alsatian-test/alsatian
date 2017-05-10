@@ -1,9 +1,5 @@
 import { ArgumentStringifier } from "../stringification";
-
-interface ITester {
-    test: (value: any) => boolean;
-    stringify: () => string;
-}
+import { ITester } from "../_interfaces";
 
 function replacer(key: string, value: any) {
     if (typeof value === "function") {
