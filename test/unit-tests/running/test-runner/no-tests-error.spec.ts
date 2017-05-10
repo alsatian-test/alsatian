@@ -3,6 +3,7 @@ import { TestRunner } from "../../../../core/running/test-runner";
 import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class NotestsErrorTests {
 
@@ -26,9 +27,7 @@ export class NotestsErrorTests {
 
    @AsyncTest("empty test fixture throws no tests error")
    public async emptyTestFixturesThrowsError() {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+     const testSet = new TestSetBuilder().build();
 
       const testRunner = new TestRunner();
 
@@ -52,17 +51,14 @@ export class NotestsErrorTests {
    @TestCase(13)
    @AsyncTest("one test fixture with multiple empty tests throws no tests error")
    public async testFixtureWithEmptyTestsOutputsNoTestError(testCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
-
       const testFixtureBuilder = new TestFixtureBuilder();
 
       for (let i = 0; i < testCount; i++) {
         testFixtureBuilder.addTest(new TestBuilder().build());
       }
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner();
 
@@ -86,13 +82,13 @@ export class NotestsErrorTests {
    @TestCase(13)
    @AsyncTest("multiple test fixtures with no tests throws no tests error")
    public async multipleTestFixtureWithEmptyTestOutputsNoTestError(testFixtureCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
-        testSet.testFixtures.push(new TestFixtureBuilder().build());
+        fixtures.push(new TestFixtureBuilder().build());
       }
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const testRunner = new TestRunner();
 
@@ -123,9 +119,7 @@ export class NotestsErrorTests {
    @AsyncTest("multiple test fixtures with multiple empty tests throws no tests error")
    public async multipleTestFixtureWithMultipleEmptyTestOutputsNoTestError(testFixtureCount: number,
                                                                            testCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
         const testFixtureBuilder = new TestFixtureBuilder();
@@ -134,8 +128,10 @@ export class NotestsErrorTests {
           testFixtureBuilder.addTest(new TestBuilder().build());
         }
 
-        testSet.testFixtures.push(testFixtureBuilder.build());
+        fixtures.push(testFixtureBuilder.build());
       }
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const testRunner = new TestRunner();
 

@@ -5,6 +5,7 @@ import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class PreTestTests {
 
@@ -13,14 +14,13 @@ export class PreTestTests {
 
    @AsyncTest()
    public async tapVersionHeaderOutput() {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
       const testFixtureBuilder = new TestFixtureBuilder();
       const testBuilder = new TestBuilder();
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
-      testSet.testFixtures.push(testFixtureBuilder.build());
+
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const output = new TestOutputStream();
       SpyOn(output, "push");
@@ -35,17 +35,17 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(testFixtureCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          const testFixtureBuilder = new TestFixtureBuilder();
          const testBuilder = new TestBuilder();
          testBuilder.addTestCase(new TestCaseBuilder().build());
          testFixtureBuilder.addTest(testBuilder.build());
-         testSet.testFixtures.push(testFixtureBuilder.build());
+         fixtures.push(testFixtureBuilder.build());
       }
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const output = new TestOutputStream();
       SpyOn(output, "push");
@@ -67,9 +67,7 @@ export class PreTestTests {
    @AsyncTest()
    public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(testFixtureCount: number,
                                                                             testCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -82,8 +80,10 @@ export class PreTestTests {
             testFixtureBuilder.addTest(testBuilder.build());
          }
 
-         testSet.testFixtures.push(testFixtureBuilder.build());
+         fixtures.push(testFixtureBuilder.build());
       }
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const resultPromise: any = {
          catch: (error: Error) => {},
@@ -139,9 +139,7 @@ export class PreTestTests {
                                             testCount: number,
                                             testCaseCount: number) {
 
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
 
@@ -157,8 +155,10 @@ export class PreTestTests {
             }
          }
 
-         testSet.testFixtures.push(testFixtureBuilder.build());
+         fixtures.push(testFixtureBuilder.build());
       }
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const output = new TestOutputStream();
       SpyOn(output, "push");
@@ -173,20 +173,20 @@ export class PreTestTests {
    @TestCase(5)
    @AsyncTest()
    public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(testFixtureCount: number) {
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
+      const fixtures = [];
 
       for (let i = 0; i < testFixtureCount; i++) {
          const testFixtureBuilder = new TestFixtureBuilder();
          const testBuilder = new TestBuilder();
          testBuilder.addTestCase(new TestCaseBuilder().build());
          testFixtureBuilder.addTest(testBuilder.build());
-         testSet.testFixtures.push(testFixtureBuilder.build());
+         fixtures.push(testFixtureBuilder.build());
       }
 
       const testFixtureBuilder = new TestFixtureBuilder();
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      fixtures.push(testFixtureBuilder.build());
+
+      const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
       const output = new TestOutputStream();
       SpyOn(output, "push");

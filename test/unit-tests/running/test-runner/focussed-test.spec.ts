@@ -6,15 +6,13 @@ import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class FocussedTestTests {
 
    @AsyncTest()
    public async twoUnfocussedTestsBothRun() {
       const output = new TestOutputStream();
-
-      const testSet = {} as TestSet;
-      (testSet as any).testFixtures = [];
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
@@ -38,7 +36,8 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner(output);
 
@@ -51,9 +50,6 @@ export class FocussedTestTests {
    public async firstTestFocussedSecondUnfocussedFirstIsRun() {
       const output = new TestOutputStream();
 
-      const testSet = {} as TestSet;
-      (testSet as any).testFixtures = [];
-
       let testOneExecuted = false;
       let testTwoExecuted = false;
 
@@ -77,7 +73,8 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner(output);
 
@@ -90,9 +87,6 @@ export class FocussedTestTests {
    public async secondTestFocussedFirstUnfocussedFirstIsRun() {
       const output = new TestOutputStream();
 
-      const testSet = {} as TestSet;
-      (testSet as any).testFixtures = [];
-
       let testOneExecuted = false;
       let testTwoExecuted = false;
 
@@ -116,7 +110,8 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner(output);
 

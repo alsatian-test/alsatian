@@ -6,6 +6,7 @@ import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class FailingTestsTests {
 
@@ -32,9 +33,6 @@ export class FailingTestsTests {
       const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
       const testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({
           failingTest: () => {
@@ -46,7 +44,9 @@ export class FailingTestsTests {
       testBuilder.withKey("failingTest");
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
-      testSet.testFixtures.push(testFixtureBuilder.build());
+
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner(output);
 
@@ -59,9 +59,6 @@ export class FailingTestsTests {
       const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      const testSet = {} as TestSet;
-
-      (testSet as any).testFixtures = [];
       const testFixtureBuilder = new TestFixtureBuilder();
       testFixtureBuilder.withFixture({ failingTest: () => { throw new Error("something went wrong."); }});
       const testBuilder = new TestBuilder();
@@ -69,7 +66,8 @@ export class FailingTestsTests {
       testBuilder.addTestCase(new TestCaseBuilder().build());
       testFixtureBuilder.addTest(testBuilder.build());
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
       const testRunner = new TestRunner(output);
 
