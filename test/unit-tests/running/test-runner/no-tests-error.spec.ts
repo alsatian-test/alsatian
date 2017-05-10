@@ -27,7 +27,7 @@ export class NotestsErrorTests {
 
    @AsyncTest("empty test fixture throws no tests error")
    public async emptyTestFixturesThrowsError() {
-     const testSet = new TestSetBuilder().build();
+      const testSet = new TestSetBuilder().build();
 
       const testRunner = new TestRunner();
 
