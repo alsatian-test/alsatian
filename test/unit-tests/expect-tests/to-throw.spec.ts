@@ -23,7 +23,7 @@ export class ToThrowTests {
       const nonThrowFunction = () => {};
 
       Expect(() => Expect(nonThrowFunction).toThrow())
-        .toThrowError(ErrorMatchError, "Expected an error to be thrown but no errors were thown.");
+        .toThrowError(ErrorMatchError, "Expected an error to be thrown but no errors were thrown.");
    }
 
    @Test()
@@ -45,7 +45,7 @@ export class ToThrowTests {
       const throwFunction = () => { throw new Error(); };
 
       Expect(() => Expect(throwFunction).not.toThrow())
-        .toThrowError(ErrorMatchError, "Expected an error not to be thrown but an error was thown.");
+        .toThrowError(ErrorMatchError, "Expected an error not to be thrown but an error was thrown.");
    }
 
    @TestCase(undefined)
@@ -151,4 +151,5 @@ export class ToThrowTests {
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.expected).toBe("error not to be thrown.");
    }
+
 }

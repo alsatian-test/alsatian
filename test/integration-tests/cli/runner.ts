@@ -6,6 +6,7 @@ import { AsyncTest, Expect, TestCase, Timeout } from "../../../core/alsatian-cor
 export class CliIntegrationTests {
 
    @TestCase("to-be")
+   @TestCase("to-throw")
    @AsyncTest()
    @Timeout(5000)
    public toBeExpectations(expectationTestName: string) {
