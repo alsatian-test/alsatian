@@ -2,6 +2,7 @@ import { Any, Expect, Test, TestCase, FunctionSpy } from "../../../core/alsatian
 import { FunctionCallMatchError } from "../../../core/errors/function-call-match-error";
 import { FunctionSpyBuilder } from "../../builders/function-spy-builder";
 import { SpyCallBuilder } from "../../builders/spy-call-builder";
+import { INameable } from "../../../core/_interfaces";
 
 export class FunctionCallMatchErrorTests {
 
@@ -245,7 +246,8 @@ export class FunctionCallMatchErrorTests {
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
 
-      Expect(functionCallError.message).toBe("Expected function to be called with [Any " + (type as any).name + "].");
+      Expect(functionCallError.message)
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -260,7 +262,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}].`);
+        .toBe(`Expected function to be called with [Any ${
+          (typeOne as INameable).name }, Any ${(typeTwo as INameable).name}].`);
    }
 
    @TestCase(Number)
@@ -273,7 +276,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (type as any).name + "].");
+        .toBe("Expected function not to be called with [Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -288,7 +291,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}].`);
+        .toBe(`Expected function not to be called with [Any ${
+          (typeOne as INameable).name }, Any ${(typeTwo as INameable).name}].`);
    }
 
    @TestCase(Number)
@@ -300,7 +304,7 @@ export class FunctionCallMatchErrorTests {
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as any).name +  "].");
+      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as INameable).name +  "].");
    }
 
    @TestCase(Number, Array)
@@ -315,7 +319,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "].");
+        .toBe("function to be called with [Any " + (typeOne as INameable).name +
+              ", Any " + (typeTwo as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -327,7 +332,7 @@ export class FunctionCallMatchErrorTests {
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function not to be called with [Any " + (type as any).name + "].");
+      Expect(functionCallError.expected).toBe("function not to be called with [Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number, Array)
@@ -342,7 +347,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "].");
+        .toBe("function not to be called with [Any " + (typeOne as INameable).name +
+              ", Any " + (typeTwo as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -355,7 +361,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Anything, Any " + (type as any).name + "].");
+        .toBe("Expected function to be called with [Anything, Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -369,7 +375,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Anything, Any " + (type as any).name + "].");
+        .toBe("Expected function not to be called with [Anything, Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -382,7 +388,8 @@ export class FunctionCallMatchErrorTests {
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any, Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Anything, Any " + (type as any).name + "].");
+      Expect(functionCallError.expected)
+        .toBe("function to be called with [Anything, Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -396,7 +403,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Anything, Any " + (type as any).name + "].");
+        .toBe("function not to be called with [Anything, Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number)
@@ -409,7 +416,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (type as any).name + ", Anything].");
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -423,7 +430,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (type as any).name + ", Anything].");
+        .toBe("Expected function not to be called with [Any " + (type as INameable).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -436,7 +443,8 @@ export class FunctionCallMatchErrorTests {
 
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), Any ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as any).name + ", Anything].");
+      Expect(functionCallError.expected)
+        .toBe("function to be called with [Any " + (type as INameable).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -450,7 +458,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), Any ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (type as any).name + ", Anything].");
+        .toBe("function not to be called with [Any " + (type as INameable).name + ", Anything].");
    }
 
    @TestCase(Number)
@@ -816,7 +824,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}].`);
+        .toBe(`Expected function to be called with [${
+          JSON.stringify(exactValue) }, Any ${(type as INameable).name}].`);
    }
 
    @TestCase(Number, "test")
@@ -831,7 +840,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}].`);
+        .toBe(`Expected function not to be called with [${
+          JSON.stringify(exactValue) }, Any ${(type as INameable).name}].`);
    }
 
    @TestCase(Number, "test")
@@ -846,7 +856,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "].");
+        .toBe("function to be called with [" + JSON.stringify(exactValue) +
+              ", Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number, "test")
@@ -861,7 +872,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "].");
+        .toBe("function not to be called with [" + JSON.stringify(exactValue) +
+              ", Any " + (type as INameable).name + "].");
    }
 
    @TestCase(Number, "test")
@@ -876,7 +888,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), exactValue ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}].`);
+        .toBe(`Expected function to be called with [Any ${(type as INameable).name}, ${JSON.stringify(exactValue)}].`);
    }
 
    @TestCase(Number, "test")
@@ -891,7 +903,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), exactValue ]);
 
       Expect(functionCallError.message)
-        .toBe(`Expected function not to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}].`);
+        .toBe(`Expected function not to be called with [Any ${
+          (type as INameable).name }, ${JSON.stringify(exactValue)}].`);
    }
 
    @TestCase(Number, "test")
@@ -906,7 +919,7 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, true, [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Any " + (type as any).name + ", " + JSON.stringify(exactValue) + "].");
+        .toBe("function to be called with [Any " + (type as INameable).name + ", " + JSON.stringify(exactValue) + "].");
    }
 
    @TestCase(Number, "test")
@@ -921,7 +934,8 @@ export class FunctionCallMatchErrorTests {
       const functionCallError = new FunctionCallMatchError(fakeSpy, false, [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (type as any).name + ", " + JSON.stringify(exactValue) + "].");
+        .toBe("function not to be called with [Any " + (type as INameable).name +
+              ", " + JSON.stringify(exactValue) + "].");
    }
 
    @TestCase(Number, "test")

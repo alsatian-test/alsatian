@@ -1,5 +1,6 @@
 import { Any, Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
+import { INameable } from "../../../core/_interfaces";
 
 export class ToHaveBeenCalledWithTests {
 
@@ -1349,7 +1350,8 @@ export class ToHaveBeenCalledWithTests {
       some.function(42, argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any, Any(type)))
-   .toThrowError(FunctionCallMatchError, `Expected function to be called with [Anything, Any ${(type as any).name}].`);
+        .toThrowError(FunctionCallMatchError,
+          `Expected function to be called with [Anything, Any ${(type as INameable).name}].`);
    }
 
    @TestCase(0, Number)
@@ -1426,7 +1428,7 @@ export class ToHaveBeenCalledWithTests {
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), Any))
         .toThrowError(
             FunctionCallMatchError,
-            `Expected function to be called with [Any ${(type as any).name}, Anything].`);
+            `Expected function to be called with [Any ${(type as INameable).name}, Anything].`);
    }
 
    @TestCase(0, Number)
@@ -1501,7 +1503,8 @@ export class ToHaveBeenCalledWithTests {
       some.function(42, argument);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(42, Any(type)))
-        .toThrowError(FunctionCallMatchError, `Expected function to be called with [42, Any ${(type as any).name}].`);
+        .toThrowError(FunctionCallMatchError,
+          `Expected function to be called with [42, Any ${(type as INameable).name}].`);
    }
 
    @TestCase(0, Number)
@@ -1576,7 +1579,8 @@ export class ToHaveBeenCalledWithTests {
       some.function(argument, 42);
 
       Expect(() => Expect(some.function).toHaveBeenCalledWith(Any(type), 42))
-        .toThrowError(FunctionCallMatchError, `Expected function to be called with [Any ${(type as any).name}, 42].`);
+        .toThrowError(FunctionCallMatchError,
+          `Expected function to be called with [Any ${(type as INameable).name}, 42].`);
    }
 
    @TestCase(0)

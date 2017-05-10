@@ -1,5 +1,5 @@
 import { ArgumentStringifier } from "../stringification";
-import { ITester } from "../_interfaces";
+import { ITester, INameable } from "../_interfaces";
 
 function replacer(key: string, value: any) {
     if (typeof value === "function") {
@@ -26,7 +26,7 @@ export class TypeMatcher<ExpectedType extends object> {
       this._type = type;
 
       this._testers.push({
-         stringify: () => `Any ${(this.type as any).name}`,
+         stringify: () => `Any ${(this.type as INameable).name}`,
          test: (value: any) => {
             if ((type as any) === String) {
                return typeof value === "string" || value instanceof this._type;

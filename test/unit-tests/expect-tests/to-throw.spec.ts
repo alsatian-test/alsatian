@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { INameable } from "../../../core/_interfaces";
 
 export class ToThrowTests {
 
@@ -114,7 +115,7 @@ export class ToThrowTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.actual)
-        .toBe(`${(actualErrorType as any).name} error was thrown with message "${actualErrorMessage}".`);
+        .toBe(`${(actualErrorType as INameable).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @Test()

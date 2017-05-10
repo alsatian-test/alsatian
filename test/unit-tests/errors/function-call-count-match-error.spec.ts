@@ -3,6 +3,7 @@ import { FunctionCallCountMatchError } from "../../../core/errors/function-call-
 import { SpyCallCountType } from "../../../core/matchers";
 import { FunctionSpyBuilder } from "../../builders/function-spy-builder";
 import { SpyCallBuilder } from "../../builders/spy-call-builder";
+import { INameable } from "../../../core/_interfaces";
 
 export class FunctionCallCountMatchErrorTests {
 
@@ -544,7 +545,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (type as any).name + "] 1 time.");
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -564,7 +565,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function to be called " +
-              "with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "] 1 time.");
+              "with [Any " + (typeOne as INameable).name + ", Any " + (typeTwo as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -581,7 +582,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (type as any).name + "] 1 time.");
+        .toBe("Expected function not to be called with [Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -601,7 +602,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function not to be called " +
-              "with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "] 1 time.");
+              "with [Any " + (typeOne as INameable).name + ", Any " + (typeTwo as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -618,7 +619,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (type as any).name + "] greater than 1 time.");
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + "] greater than 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -638,7 +639,8 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function to be called " +
-              "with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "] greater than 1 time.");
+              "with [Any " + (typeOne as INameable).name + ", Any " +
+              (typeTwo as INameable).name + "] greater than 1 time.");
    }
 
    @TestCase(Number)
@@ -655,7 +657,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (type as any).name + "] less than 1 time.");
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + "] less than 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -675,7 +677,8 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function to be called " +
-              "with [Any " + (typeOne as any).name + ", Any " + (typeTwo as any).name + "] less than 1 time.");
+              "with [Any " + (typeOne as INameable).name + ", Any " +
+              (typeTwo as INameable).name + "] less than 1 time.");
    }
 
    @TestCase(Number)
@@ -691,7 +694,8 @@ export class FunctionCallCountMatchErrorTests {
                                                                 SpyCallCountType.Exactly,
                                                                 [ Any(type) ]);
 
-      Expect(functionCallError.expected).toBe("function to be called with [Any " + (type as any).name +  "] 1 time.");
+      Expect(functionCallError.expected)
+        .toBe("function to be called with [Any " + (type as INameable).name +  "] 1 time.");
    }
 
    @TestCase(Number, Array)
@@ -710,7 +714,8 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}] 1 time.`);
+        .toBe(`function to be called with [Any ${
+          (typeOne as INameable).name }, Any ${(typeTwo as INameable).name}] 1 time.`);
    }
 
    @TestCase(Number)
@@ -727,7 +732,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function not to be called with [Any ${(type as any).name}] 1 time.`);
+        .toBe(`function not to be called with [Any ${(type as INameable).name}] 1 time.`);
    }
 
    @TestCase(Number, Array)
@@ -746,7 +751,8 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(typeOne), Any(typeTwo) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function not to be called with [Any ${(typeOne as any).name}, Any ${(typeTwo as any).name}] 1 time.`);
+        .toBe(`function not to be called with [Any ${
+          (typeOne as INameable).name }, Any ${(typeTwo as INameable).name}] 1 time.`);
    }
 
    @TestCase(Number)
@@ -763,7 +769,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Anything, Any " + (type as any).name + "] 1 time.");
+        .toBe("Expected function to be called with [Anything, Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -781,7 +787,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any, Any(type) ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Anything, Any " + (type as any).name + "] 1 time.");
+        .toBe("Expected function not to be called with [Anything, Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -799,7 +805,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Anything, Any " + (type as any).name + "] 1 time.");
+        .toBe("function to be called with [Anything, Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -817,7 +823,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Anything, Any " + (type as any).name + "] 1 time.");
+        .toBe("function not to be called with [Anything, Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number)
@@ -834,7 +840,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function to be called with [Any " + (type as any).name + ", Anything] 1 time.");
+        .toBe("Expected function to be called with [Any " + (type as INameable).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -852,7 +858,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), Any ]);
 
       Expect(functionCallError.message)
-        .toBe("Expected function not to be called with [Any " + (type as any).name + ", Anything] 1 time.");
+        .toBe("Expected function not to be called with [Any " + (type as INameable).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -870,7 +876,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), Any ]);
 
       Expect(functionCallError.expected)
-        .toBe("function to be called with [Any " + (type as any).name + ", Anything] 1 time.");
+        .toBe("function to be called with [Any " + (type as INameable).name + ", Anything] 1 time.");
    }
 
    @TestCase(Number)
@@ -888,7 +894,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), Any ]);
 
       Expect(functionCallError.expected)
-        .toBe("function not to be called with [Any " + (type as any).name + ", Anything] 1 time.");
+        .toBe("function not to be called with [Any " + (type as INameable).name + ", Anything] 1 time.");
    }
 
    @TestCase("test")
@@ -1044,7 +1050,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function to be called " +
-              "with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "] 1 time.");
+              "with [" + JSON.stringify(exactValue) + ", Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -1064,7 +1070,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe("Expected function not to be called " +
-              "with [" + JSON.stringify(exactValue) + ", Any " + (type as any).name + "] 1 time.");
+              "with [" + JSON.stringify(exactValue) + ", Any " + (type as INameable).name + "] 1 time.");
    }
 
    @TestCase(Number, "test")
@@ -1083,7 +1089,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}] 1 time.`);
+        .toBe(`function to be called with [${JSON.stringify(exactValue)}, Any ${(type as INameable).name}] 1 time.`);
    }
 
    @TestCase(Number, "test")
@@ -1102,7 +1108,8 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ exactValue, Any(type) ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function not to be called with [${JSON.stringify(exactValue)}, Any ${(type as any).name}] 1 time.`);
+        .toBe(`function not to be called with [${
+          JSON.stringify(exactValue) }, Any ${(type as INameable).name}] 1 time.`);
    }
 
    @TestCase(Number, "test")
@@ -1122,7 +1129,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe(`Expected function to be called ` +
-              `with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}] 1 time.`);
+              `with [Any ${(type as INameable).name}, ${JSON.stringify(exactValue)}] 1 time.`);
    }
 
    @TestCase(Number, "test")
@@ -1142,7 +1149,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(functionCallError.message)
         .toBe(`Expected function not to be called ` +
-              `with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}] 1 time.`);
+              `with [Any ${(type as INameable).name}, ${JSON.stringify(exactValue)}] 1 time.`);
    }
 
    @TestCase(Number, "test")
@@ -1161,7 +1168,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}] 1 time.`);
+        .toBe(`function to be called with [Any ${(type as INameable).name}, ${JSON.stringify(exactValue)}] 1 time.`);
    }
 
    @TestCase(Number, "test")
@@ -1180,6 +1187,7 @@ export class FunctionCallCountMatchErrorTests {
                                                                 [ Any(type), exactValue ]);
 
       Expect(functionCallError.expected)
-        .toBe(`function not to be called with [Any ${(type as any).name}, ${JSON.stringify(exactValue)}] 1 time.`);
+        .toBe(`function not to be called with [Any ${
+          (type as INameable).name }, ${JSON.stringify(exactValue)}] 1 time.`);
    }
 }
