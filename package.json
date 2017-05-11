@@ -18,6 +18,9 @@
   "bin": {
     "alsatian": "./cli/alsatian-cli.js"
   },
+  "engines" : { 
+    "node" : ">=4.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
