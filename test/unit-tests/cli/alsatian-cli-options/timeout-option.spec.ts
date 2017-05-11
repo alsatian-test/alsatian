@@ -16,7 +16,7 @@ export class TimeoutOptionTests {
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
-   public timeoutSetIfValid(timeout: string) {
+   public timeoutSetIfValid(timeout: number) {
       const options = new AlsatianCliOptions([ "--timeout", timeout.toString() ]);
 
       Expect(options.timeout).toBe(timeout);
@@ -25,7 +25,7 @@ export class TimeoutOptionTests {
    @TestCase(1)
    @TestCase(2)
    @TestCase(42)
-   public timeoutSetIfValidWithShorthand(timeout: string) {
+   public timeoutSetIfValidWithShorthand(timeout: number) {
       const options = new AlsatianCliOptions([ "-t", timeout.toString() ]);
 
       Expect(options.timeout).toBe(timeout);

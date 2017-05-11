@@ -1,5 +1,14 @@
 import { MatchError } from "./errors";
-import { Matcher } from "./matchers";
+import { 
+    ArrayMatcher,
+    FunctionMatcher,
+    Matcher,
+    NumberMatcher,
+    ObjectMatcher,
+    PropertyMatcher,
+    StringMatcher
+} from "./matchers";
+import { FunctionSpy, PropertySpy } from "./spying";
 
 /**
  * Enables actual vs expected comparisons
@@ -9,7 +18,14 @@ export interface IExpect {
      * Allows checking of test outcomes
      * @param actualValue - the value or function under test
      */
-    (actualValue: any): Matcher;
+    <T>(actualValue: Array<T>): ArrayMatcher<T>;
+    (actualValue: FunctionSpy | Function): FunctionMatcher;
+    (actualValue: number): NumberMatcher;
+    (actualValue: object): ObjectMatcher;
+    <T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
+    (actualValue: string): StringMatcher;
+    <T>(actualValue: T): Matcher<T>;
+    <T>(actualValue: T): Matcher<T>
 
     /**
      * Fails the test with the given message
@@ -18,7 +34,14 @@ export interface IExpect {
     fail(message: string): void;
 }
 
-function ExpectFunction(actualValue: any) {
+function ExpectFunction<T>(actualValue: Array<T>): ArrayMatcher<T>;
+function ExpectFunction(actualValue: FunctionSpy | Function): FunctionMatcher;
+function ExpectFunction(actualValue: number): NumberMatcher;
+function ExpectFunction(actualValue: object): ObjectMatcher;
+function ExpectFunction<T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
+function ExpectFunction(actualValue: string): StringMatcher;
+function ExpectFunction<T>(actualValue: T): Matcher<T>;
+function ExpectFunction<T>(actualValue: T): Matcher<T> {
    return new Matcher(actualValue);
 }
 
@@ -26,9 +49,9 @@ function fail(message: string) {
     throw new MatchError(message);
 }
 
-const EXPECT = (ExpectFunction as IExpect);
+const EXPECT = ExpectFunction as IExpect;
 EXPECT.fail = fail;
 
 export {
-    EXPECT as Expect
+    ExpectFunction as Expect
 };
