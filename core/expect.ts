@@ -24,16 +24,9 @@ import {
    FunctionSpyMatcher
 } from "./matchers";
 
-function ExpectFunction(actualValue: any) {
-   return new Matcher(actualValue);
-}
-
-function fail(message: string) {
-    throw new MatchError(message);
-}
-
-(ExpectFunction as IExpect).fail = fail;
-
+/**
+ * Enables actual vs expected comparisons
+ */
 export interface IExpect {
     /**
      * Allows checking of test outcomes
@@ -48,7 +41,16 @@ export interface IExpect {
     fail(message: string): void;
 }
 
+function ExpectFunction(actualValue: any) {
+   return new Matcher(actualValue);
+}
+
+function fail(message: string) {
+    throw new MatchError(message);
+}
+
 const EXPECT = (ExpectFunction as IExpect);
+EXPECT.fail = fail;
 
 export {
     EXPECT as Expect
