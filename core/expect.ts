@@ -304,7 +304,7 @@ export class Matcher {
        }
 
        if (threwRightError !== this.shouldMatch) {
-          throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+          throw new ErrorMatchError(actualError, this.shouldMatch, errorType as any, errorMessage);
        }
    }
 
