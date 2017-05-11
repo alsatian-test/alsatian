@@ -4,7 +4,7 @@ import { TestSet } from "../../core/test-set";
 
 export class TestSetBuilder {
 
-   private _testSet: TestSet = <TestSet> {};
+   private _testSet: TestSet = {} as TestSet;
 
    private _testFixtures: Array<ITestFixture> = [];
 
@@ -24,7 +24,7 @@ export class TestSetBuilder {
       return this;
    }
 
-   public build (): TestSet {
+   public build(): TestSet {
       return this._testSet;
    }
 }

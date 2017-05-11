@@ -6,7 +6,7 @@ export class LessThanMatchErrorTests {
    @TestCase(1, 0)
    @TestCase(42, 1)
    public shouldBeLessThanMessage(actualValue: number, upperLimit: number) {
-      let error = new LessThanMatchError(actualValue, upperLimit, true);
+      const error = new LessThanMatchError(actualValue, upperLimit, true);
 
       Expect(error.message).toBe("Expected " + actualValue + " to be less than " + upperLimit + ".");
    }
@@ -15,7 +15,7 @@ export class LessThanMatchErrorTests {
    @TestCase(2, 2)
    @TestCase(1, 42)
    public shouldNotBeLessThanMessage(actualValue: number, upperLimit: number) {
-      let error = new LessThanMatchError(actualValue, upperLimit, false);
+      const error = new LessThanMatchError(actualValue, upperLimit, false);
 
       Expect(error.message).toBe("Expected " + actualValue + " not to be less than " + upperLimit + ".");
    }

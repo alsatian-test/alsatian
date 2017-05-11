@@ -8,23 +8,23 @@ export class TestTimeoutTests {
    @Test()
    public noTimeoutSetToNullTest() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {
+     const testFixtureInstance = {
        noTimeoutTest: () => {}
      };
-     let noTimeoutTest = {
+     const noTimeoutTest = {
        key: "noTimeoutTest"
      };
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ noTimeoutTest ], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].tests[0].timeout).toBe(null);
    }
@@ -34,24 +34,24 @@ export class TestTimeoutTests {
     @TestCase(42)
     public timeoutSetTest(timeoutPeriod: number) {
 
-      let fileRequirer = new FileRequirer();
+      const fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {
+      const testFixtureInstance = {
         timeoutTest: () => {}
       };
-      let timeoutTest = {
+      const timeoutTest = {
         key: "timeoutTest"
       };
       Reflect.defineMetadata(METADATA_KEYS.TESTS, [ timeoutTest ], testFixtureInstance);
       Reflect.defineMetadata(METADATA_KEYS.TIMEOUT, timeoutPeriod, testFixtureInstance, "timeoutTest");
 
-      let testFixtureConstructor = () => testFixtureInstance;
+      const testFixtureConstructor = () => testFixtureInstance;
 
-      let spy = SpyOn(fileRequirer, "require");
+      const spy = SpyOn(fileRequirer, "require");
       spy.andStub();
       spy.andReturn(testFixtureConstructor);
 
-      let testLoader = new TestLoader(fileRequirer);
+      const testLoader = new TestLoader(fileRequirer);
 
       Expect(testLoader.loadTestFixture("test")[0].tests[0].timeout).toBe(timeoutPeriod);
     }

@@ -3,7 +3,7 @@ import { Expect, Test, TestCase, TestFixture } from "../../../core/alsatian-core
 @TestFixture("temporary tests to satisfy TypeScript quirk")
 export class TempTests {
 
-    private _setErrorMessage () {}
+    private _setErrorMessage() {}
 
     @TestCase("contents-match-error", "ContentsMatchError")
     @TestCase("empty-match-error", "EmptyMatchError")
@@ -20,7 +20,7 @@ export class TempTests {
     @TestCase("truthy-match-error", "TruthyMatchError")
     @Test("give all those errors a go without a super")
     public testErrors(error: string, className: string) {
-        let mockMatch: any = {
+        const mockMatch: any = {
             MatchError: () => {}
         };
 

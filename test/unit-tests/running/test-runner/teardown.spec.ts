@@ -1,3 +1,5 @@
+/* tslint:disable:no-unused-expression */
+
 import { AsyncTest,
          Expect,
          FunctionSpy,

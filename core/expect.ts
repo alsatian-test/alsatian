@@ -274,7 +274,7 @@ export class Matcher {
       }
 
       if (threwRightError !== this.shouldMatch) {
-         throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+         throw new ErrorMatchError(actualError, this.shouldMatch, (errorType as any), errorMessage);
       }
    }
 
@@ -304,7 +304,7 @@ export class Matcher {
        }
 
        if (threwRightError !== this.shouldMatch) {
-          throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+          throw new ErrorMatchError(actualError, this.shouldMatch, errorType as any, errorMessage);
        }
    }
 
@@ -390,8 +390,8 @@ export class Matcher {
       }
 
       // get all the property keys for each object
-      let objectAKeys = Object.keys(objectA);
-      let objectBKeys = Object.keys(objectB);
+      const objectAKeys = Object.keys(objectA);
+      const objectBKeys = Object.keys(objectB);
 
       // if they don't have the same amount of properties then clearly not
       if (objectAKeys.length !== objectBKeys.length) {

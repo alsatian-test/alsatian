@@ -19,4 +19,4 @@ export function AsyncTeardownFixture(target: object,
 
     // mark as teardown test method
     Reflect.defineMetadata(TEARDOWN_FIXTURE, teardownFixtureFunctions, target);
-};
+}

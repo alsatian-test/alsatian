@@ -5,15 +5,15 @@ export class AndStubTests {
 
    @Test()
    public originalFunctionNotCalledIfSpyStub() {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new RestorableFunctionSpy(object, "originalFunction");
+      const spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.andStub();
 
@@ -24,15 +24,15 @@ export class AndStubTests {
 
    @Test()
    public originalFunctionNotCalledIfSpyNotStubbed() {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new RestorableFunctionSpy(object, "originalFunction");
+      const spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.call([]);
 

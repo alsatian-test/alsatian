@@ -6,31 +6,29 @@ import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
+import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class FocussedTestTests {
 
    @AsyncTest()
    public async twoUnfocussedTestsBothRun() {
-      let output = new TestOutputStream();
-
-      let testSet = <TestSet> {};
-      (<any> testSet).testFixtures = [];
+      const output = new TestOutputStream();
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
 
-      let testFixtureBuilder = new TestFixtureBuilder()
+      const testFixtureBuilder = new TestFixtureBuilder()
       .withFixture({
          testOne: () => { testOneExecuted = true; },
          testTwo: () => { testTwoExecuted = true; }
       });
 
-      let testOne = new TestBuilder()
+      const testOne = new TestBuilder()
       .withKey("testOne")
       .addTestCase(new TestCaseBuilder().build())
       .build();
 
-      let testTwo = new TestBuilder()
+      const testTwo = new TestBuilder()
       .withKey("testTwo")
       .addTestCase(new TestCaseBuilder().build())
       .build();
@@ -38,9 +36,10 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
       Expect(testOneExecuted).toBe(true);
@@ -49,27 +48,24 @@ export class FocussedTestTests {
 
    @AsyncTest()
    public async firstTestFocussedSecondUnfocussedFirstIsRun() {
-      let output = new TestOutputStream();
-
-      let testSet = <TestSet> {};
-      (<any> testSet).testFixtures = [];
+      const output = new TestOutputStream();
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
 
-      let testFixtureBuilder = new TestFixtureBuilder()
+      const testFixtureBuilder = new TestFixtureBuilder()
       .withFixture({
          testOne: () => { testOneExecuted = true; },
          testTwo: () => { testTwoExecuted = true; }
       });
 
-      let testOne = new TestBuilder()
+      const testOne = new TestBuilder()
       .withKey("testOne")
       .addTestCase(new TestCaseBuilder().build())
       .focussed()
       .build();
 
-      let testTwo = new TestBuilder()
+      const testTwo = new TestBuilder()
       .withKey("testTwo")
       .addTestCase(new TestCaseBuilder().build())
       .build();
@@ -77,9 +73,10 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
       Expect(testOneExecuted).toBe(true);
@@ -88,26 +85,23 @@ export class FocussedTestTests {
 
    @AsyncTest()
    public async secondTestFocussedFirstUnfocussedFirstIsRun() {
-      let output = new TestOutputStream();
-
-      let testSet = <TestSet> {};
-      (<any> testSet).testFixtures = [];
+      const output = new TestOutputStream();
 
       let testOneExecuted = false;
       let testTwoExecuted = false;
 
-      let testFixtureBuilder = new TestFixtureBuilder()
+      const testFixtureBuilder = new TestFixtureBuilder()
       .withFixture({
          testOne: () => { testOneExecuted = true; },
          testTwo: () => { testTwoExecuted = true; }
       });
 
-      let testOne = new TestBuilder()
+      const testOne = new TestBuilder()
       .withKey("testOne")
       .addTestCase(new TestCaseBuilder().build())
       .build();
 
-      let testTwo = new TestBuilder()
+      const testTwo = new TestBuilder()
       .withKey("testTwo")
       .addTestCase(new TestCaseBuilder().build())
       .focussed()
@@ -116,9 +110,10 @@ export class FocussedTestTests {
       testFixtureBuilder.addTest(testOne);
       testFixtureBuilder.addTest(testTwo);
 
-      testSet.testFixtures.push(testFixtureBuilder.build());
+      const fixture = testFixtureBuilder.build();
+      const testSet = new TestSetBuilder().addTestFixture(fixture).build();
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
 
       await testRunner.run(testSet);
       Expect(testOneExecuted).toBe(false);

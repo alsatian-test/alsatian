@@ -19,4 +19,4 @@ export function Teardown(target: object,
 
     // mark as teardown test method
     Reflect.defineMetadata(TEARDOWN, teardownFunctions, target);
-};
+}

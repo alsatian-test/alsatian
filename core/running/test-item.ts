@@ -94,7 +94,7 @@ export class TestItem {
    }
 
    private async _teardown() {
-      let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN,
+      const teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(METADATA_KEYS.TEARDOWN,
                                                                                  this._testFixture.fixture);
 
       if (teardownFunctions) {

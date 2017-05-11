@@ -1,6 +1,7 @@
 import { Any, TypeMatcher } from "../spying";
+import { ISpyCall } from "../_interfaces";
 
-export class SpyCall {
+export class SpyCall implements ISpyCall {
 
    public get args() {
       return this._args;

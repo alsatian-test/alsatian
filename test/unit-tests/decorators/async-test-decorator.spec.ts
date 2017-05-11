@@ -6,13 +6,13 @@ export class AsyncTestDecoratorTests {
 
    @Test()
    public testAddedAsMetaData() {
-      let asyncTestDecorator = AsyncTestDecorator();
+      const asyncTestDecorator = AsyncTestDecorator();
 
-      let testFixture = {};
+      const testFixture = {};
 
       asyncTestDecorator(testFixture, "test", null);
 
-      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+      const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
       Expect(tests).toBeDefined();
       Expect(tests).not.toBeNull();
@@ -20,13 +20,13 @@ export class AsyncTestDecoratorTests {
 
     @Test()
     public testMetaDataMarkedAsAsync() {
-       let asyncTestDecorator = AsyncTestDecorator();
+       const asyncTestDecorator = AsyncTestDecorator();
 
-       let testFixture = {};
+       const testFixture = {};
 
        asyncTestDecorator(testFixture, "test", null);
 
-       let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+       const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
        Expect(tests[0].isAsync).toBe(true);
     }
@@ -35,13 +35,13 @@ export class AsyncTestDecoratorTests {
     @TestCase("another key")
     @TestCase("something-different")
     public testKeyMetaDataAdded(key: string) {
-       let asyncTestDecorator = AsyncTestDecorator();
+       const asyncTestDecorator = AsyncTestDecorator();
 
-       let testFixture = {};
+       const testFixture = {};
 
        asyncTestDecorator(testFixture, key, null);
 
-       let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+       const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
        Expect(tests[0].key).toBe(key);
     }
@@ -50,13 +50,13 @@ export class AsyncTestDecoratorTests {
      @TestCase("Another sort of test")
      @TestCase("Make sure it works")
      public testDescriptionMetaDataAdded(description: string) {
-        let asyncTestDecorator = AsyncTestDecorator(description);
+        const asyncTestDecorator = AsyncTestDecorator(description);
 
-        let testFixture = {};
+        const testFixture = {};
 
         asyncTestDecorator(testFixture, "key", null);
 
-        let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+        const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
         Expect(tests[0].description).toBe(description);
      }
@@ -65,15 +65,15 @@ export class AsyncTestDecoratorTests {
       @TestCase(2)
       @TestCase(42)
       public correctTestCountAdded(testCount: number) {
-         let asyncTestDecorator = AsyncTestDecorator();
+         const asyncTestDecorator = AsyncTestDecorator();
 
-         let testFixture = {};
+         const testFixture = {};
 
          for (let i = 0; i < testCount; i ++) {
            asyncTestDecorator(testFixture, "key " + i, null);
          }
 
-         let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+         const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
          Expect(tests.length).toBe(testCount);
       }
@@ -82,15 +82,15 @@ export class AsyncTestDecoratorTests {
        @TestCase(2)
        @TestCase(42)
        public noDuplicateTestKeysAdded(testCount: number) {
-          let testDecorator = AsyncTestDecorator();
+          const testDecorator = AsyncTestDecorator();
 
-          let testFixture = {};
+          const testFixture = {};
 
           for (let i = 0; i < testCount; i ++) {
             testDecorator(testFixture, "key", null);
           }
 
-          let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+          const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
           Expect(tests.length).toBe(1);
        }

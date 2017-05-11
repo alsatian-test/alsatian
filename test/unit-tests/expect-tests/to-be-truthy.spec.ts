@@ -7,7 +7,7 @@ export class ToBeTruthyTests {
    @TestCase(false)
    @TestCase("")
    public shouldBeTruthyAndIsNotThrows(actualValue: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toBeTruthy())
         .toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " to be truthy.");
@@ -19,7 +19,7 @@ export class ToBeTruthyTests {
    @TestCase(true)
    @TestCase("something")
    public shouldBeTruthyAndIsDoesNotThrow(actualValue: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toBeTruthy()).not.toThrow();
    }
@@ -28,7 +28,7 @@ export class ToBeTruthyTests {
    @TestCase(false)
    @TestCase("")
    public shouldNotBeTruthyMessageAndIsNotDoesNotThrow(actualValue: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toBeTruthy()).not.toThrow();
    }
@@ -39,7 +39,7 @@ export class ToBeTruthyTests {
    @TestCase(true)
    @TestCase("something")
    public shouldNotBeTruthyMessageAndIsThrows(actualValue: any) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toBeTruthy())
         .toThrowError(TruthyMatchError, "Expected " + JSON.stringify(actualValue) + " not to be truthy.");

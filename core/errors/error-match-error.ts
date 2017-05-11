@@ -1,3 +1,4 @@
+import { INameable } from "../_interfaces";
 import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
@@ -10,11 +11,11 @@ export class ErrorMatchError extends MatchError {
 
       this._setErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
 
-      this._actual = `${actualError ? (<any> actualError.constructor).name + " " : ""}` +
+      this._actual = `${actualError ? (actualError.constructor as INameable).name + " " : ""}` +
                      `error was ${!actualError ? "not " : ""}thrown` +
                      `${actualError ? " with message \"" + actualError.message + "\"" : ""}.`;
 
-      this._expected = `${expectedErrorType ? (<any> expectedErrorType).name + " " : ""}` +
+      this._expected = `${expectedErrorType ? (expectedErrorType as INameable).name + " " : ""}` +
                        `error ${!shouldMatch ? "not " : ""}to be thrown` +
                        `${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
@@ -72,7 +73,7 @@ export class ErrorMatchError extends MatchError {
                                           expectedErrorMessage?: string) {
 
       this.message = `Expected an error with message "${expectedErrorMessage}" ` +
-                     `and type ${(<any> expectedErrorType).name} to ${!shouldMatch ? "not " : ""}` +
+                     `and type ${(expectedErrorType as INameable).name} to ${!shouldMatch ? "not " : ""}` +
                      `have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
    }
 
@@ -80,8 +81,8 @@ export class ErrorMatchError extends MatchError {
                                 shouldMatch: boolean,
                                 expectedErrorType?: new (...args: Array<any>) => Error) {
 
-      this.message = `Expected an error of type ${(<any> expectedErrorType).name} ` +
+      this.message = `Expected an error of type ${(expectedErrorType as INameable).name} ` +
                      `to ${!shouldMatch ? "not " : ""}have been thrown, ` +
-                     `but ${shouldMatch ? (<any> actualError).name + " was thrown instead" : "it was"}.`;
+                     `but ${shouldMatch ? (actualError as INameable).name + " was thrown instead" : "it was"}.`;
    }
 }

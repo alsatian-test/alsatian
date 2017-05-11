@@ -17,4 +17,4 @@ export function Setup(target: object, decoratedPropertyKey: string, descriptor?:
 
     // mark as setup test method
     Reflect.defineMetadata(SETUP, setupFunctions, target);
-};
+}

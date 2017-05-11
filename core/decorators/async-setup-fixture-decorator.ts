@@ -19,4 +19,4 @@ export function AsyncSetupFixture(target: object,
 
     // mark as setup test method
     Reflect.defineMetadata(SETUP_FIXTURE, setupFixtureFunctions, target);
-};
+}

@@ -20,19 +20,19 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public async outputsFixtureNameWithPassingTest(description: string) {
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet> {
+      const testSet = {
          testFixtures: []
-      };
+      } as TestSet;
 
-      let test = new TestBuilder()
+      const test = new TestBuilder()
       .withKey("test")
       .addTestCase(new TestCaseBuilder().build())
       .build();
 
-      let testFixture = new TestFixtureBuilder()
+      const testFixture = new TestFixtureBuilder()
       .withFixture({ test: () => { }})
       .withDescription(description)
       .addTest(test)
@@ -40,7 +40,7 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
       Expect(output.push).toHaveBeenCalledWith(FixtureInfoTests._getExpectedFixtureOutput(description));
       Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
@@ -50,19 +50,19 @@ export class FixtureInfoTests {
    @TestCase("SomeFixtureName")
    @TestCase("AnotherFixture")
    public async outputsFixtureNameWithFailingTest(description: string) {
-      let output = new TestOutputStream();
+      const output = new TestOutputStream();
       SpyOn(output, "push");
 
-      let testSet = <TestSet> {
+      const testSet = {
          testFixtures: []
-      };
+      } as TestSet;
 
-      let test = new TestBuilder()
+      const test = new TestBuilder()
       .withKey("test")
       .addTestCase(new TestCaseBuilder().build())
       .build();
 
-      let testFixture = new TestFixtureBuilder()
+      const testFixture = new TestFixtureBuilder()
       .withFixture({
           test: () => {
             throw new MatchError("nothing", "something", "expected nothing to be something.");
@@ -74,7 +74,7 @@ export class FixtureInfoTests {
 
       testSet.testFixtures.push(testFixture);
 
-      let testRunner = new TestRunner(output);
+      const testRunner = new TestRunner(output);
       await testRunner.run(testSet);
 
       testSet.testFixtures.push(testFixture);

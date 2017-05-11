@@ -6,13 +6,13 @@ export class TestDecoratorTests {
 
    @Test()
    public testAddedAsMetaData() {
-      let testDecorator = TestDecorator();
+      const testDecorator = TestDecorator();
 
-      let testFixture = {};
+      const testFixture = {};
 
       testDecorator(testFixture, "test", null);
 
-      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+      const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
       Expect(tests).toBeDefined();
       Expect(tests).not.toBeNull();
@@ -22,13 +22,13 @@ export class TestDecoratorTests {
     @TestCase("another key")
     @TestCase("something-different")
     public testKeyMetaDataAdded(key: string) {
-       let testDecorator = TestDecorator();
+       const testDecorator = TestDecorator();
 
-       let testFixture = {};
+       const testFixture = {};
 
        testDecorator(testFixture, key, null);
 
-       let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+       const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
        Expect(tests[0].key).toBe(key);
     }
@@ -37,15 +37,15 @@ export class TestDecoratorTests {
       @TestCase(2)
       @TestCase(42)
       public correctTestCountAdded(testCount: number) {
-         let testDecorator = TestDecorator();
+         const testDecorator = TestDecorator();
 
-         let testFixture = {};
+         const testFixture = {};
 
          for (let i = 0; i < testCount; i ++) {
            testDecorator(testFixture, "key " + i, null);
          }
 
-         let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+         const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
          Expect(tests.length).toBe(testCount);
       }
@@ -54,15 +54,15 @@ export class TestDecoratorTests {
        @TestCase(2)
        @TestCase(42)
        public noDuplicateTestKeysAdded(testCount: number) {
-          let testDecorator = TestDecorator();
+          const testDecorator = TestDecorator();
 
-          let testFixture = {};
+          const testFixture = {};
 
           for (let i = 0; i < testCount; i ++) {
             testDecorator(testFixture, "key", null);
           }
 
-          let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+          const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
           Expect(tests.length).toBe(1);
        }

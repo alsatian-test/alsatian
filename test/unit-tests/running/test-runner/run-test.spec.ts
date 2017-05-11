@@ -54,7 +54,7 @@ export class RunTestTests {
 
         const testRunner = new TestRunner(outputStream);
 
-        let spyContainer = {
+        const spyContainer = {
             onCompleteCB: (testCompleted: ITestCompleteEvent) => {
                 testCompletedValue = testCompleted;
             }
@@ -93,7 +93,7 @@ export class RunTestTests {
 
         const testRunner = new TestRunner(outputStream);
 
-        let spyContainer = {
+        const spyContainer = {
             onCompleteCB: (testCompleted: ITestCompleteEvent) => {
                 testCompletedValue = testCompleted;
             }
@@ -126,7 +126,7 @@ export class RunTestTests {
 
         const testRunner = new TestRunner(outputStream);
 
-        let spyContainer = {
+        const spyContainer = {
             onCompleteCB1: (testCompleted: ITestCompleteEvent) => {
                 testCompletedValue1 = testCompleted;
             },

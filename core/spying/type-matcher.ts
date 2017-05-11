@@ -1,9 +1,5 @@
 import { ArgumentStringifier } from "../stringification";
-
-type Tester = {
-   test: (value: any) => boolean;
-   stringify: () => string;
-};
+import { ITester, INameable } from "../_interfaces";
 
 function replacer(key: string, value: any) {
     if (typeof value === "function") {
@@ -13,11 +9,11 @@ function replacer(key: string, value: any) {
     return value;
 }
 
-export class TypeMatcher<ExpectedType extends Object> {
+export class TypeMatcher<ExpectedType extends object> {
 
    private _argumentStringifier = new ArgumentStringifier();
-   private _testers: Array<Tester> = [];
-   private _type: new (...args: Array<any>) => Object;
+   private _testers: Array<ITester> = [];
+   private _type: new (...args: Array<any>) => object;
    public get type() {
       return this._type;
    }
@@ -30,15 +26,15 @@ export class TypeMatcher<ExpectedType extends Object> {
       this._type = type;
 
       this._testers.push({
-         stringify: () => `Any ${(this.type as any).name}`,
+         stringify: () => `Any ${(this.type as INameable).name}`,
          test: (value: any) => {
-            if ((<any> type) === String) {
+            if ((type as any) === String) {
                return typeof value === "string" || value instanceof this._type;
             }
-            else if ((<any> type) === Number) {
+            else if ((type as any) === Number) {
                return typeof value === "number" || value instanceof this._type;
             }
-            else if ((<any> type) === Boolean) {
+            else if ((type as any) === Boolean) {
                return typeof value === "boolean" || value instanceof this._type;
             }
             else {
@@ -56,10 +52,11 @@ export class TypeMatcher<ExpectedType extends Object> {
       return this._testers.map(tester => tester.stringify()).join(" and ");
    }
 
+   /* tslint:disable:unified-signatures */
    public thatMatches(key: string, value: any): this;
    public thatMatches(properties: object): this;
    public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
-   public thatMatches(first: string | Object | ((argument: ExpectedType) => boolean), second?: any): this {
+   public thatMatches(first: string | object | ((argument: ExpectedType) => boolean), second?: any): this {
       if (null === first || undefined === first ) {
          throw new TypeError("thatMatches requires none-null or non-undefined argument");
       }
@@ -78,6 +75,7 @@ export class TypeMatcher<ExpectedType extends Object> {
 
       throw new Error("Invalid arguments");
    }
+   /* tslint:enable:unified-signatures */
 
    private _matchesKeyAndValue(key: string, value: any): this {
       this._testers.push({
