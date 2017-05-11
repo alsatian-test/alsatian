@@ -1,4 +1,4 @@
-import { Expect, Matcher } from "./expect";
+import { Expect } from "./expect";
 import { FileRequirer } from "./file-requirer";
 import { GlobHelper } from "./glob-helper";
 import { TestFixture } from "./test-fixture";
@@ -10,7 +10,6 @@ export {
     Expect,
     FileRequirer,
     GlobHelper,
-    Matcher,
     TestFixture,
     TestLoader,
     TestOutputStream,

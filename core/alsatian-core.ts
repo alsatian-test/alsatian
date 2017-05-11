@@ -1,9 +1,12 @@
 import {
    Expect,
-   Matcher,
    TestOutputStream,
    TestSet
 } from "./";
+
+import {
+   Matcher
+} from "./matchers";
 
 import {
    AsyncSetup,
