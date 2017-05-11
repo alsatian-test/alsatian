@@ -3,6 +3,7 @@ import { ISetupTeardownMetadata } from "./_interfaces";
 import { SETUP } from "./_metadata-keys";
 
 export function Setup(target: object, decoratedPropertyKey: string, descriptor?: TypedPropertyDescriptor<() => any>) {
+    descriptor = undefined; // Unused
 
     let setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(SETUP, target);
 

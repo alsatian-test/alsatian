@@ -5,6 +5,7 @@ import { SETUP } from "./_metadata-keys";
 export function AsyncSetup(target: object,
                            decoratedPropertyKey: string,
                            descriptor?: TypedPropertyDescriptor<() => any>) {
+   descriptor = undefined; // Unused
 
     let setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(SETUP, target);
 

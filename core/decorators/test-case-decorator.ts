@@ -3,6 +3,7 @@ import { TEST_CASES, TESTS } from "./_metadata-keys";
 
 export function TestCase(...testCaseArguments: Array<any>) {
   return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
+    descriptor = undefined; // Unused
 
     // check if this has been registered as a test already
     let tests: Array<any> = Reflect.getMetadata(TESTS, target);

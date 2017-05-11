@@ -31,7 +31,7 @@ export class TestRunner {
         }
     }
 
-    public async run(testSet: TestSet, timeout?: number) {
+    public async run(testSet: TestSet, timeout?: number | null) {
 
         const testPlan = new TestPlan(testSet);
         if (testPlan.testItems.length === 0) {

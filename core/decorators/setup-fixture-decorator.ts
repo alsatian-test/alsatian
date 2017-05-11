@@ -5,6 +5,7 @@ import { SETUP_FIXTURE } from "./_metadata-keys";
 export function SetupFixture(target: object,
                              decoratedPropertyKey: string,
                              descriptor?: TypedPropertyDescriptor<() => any>) {
+    descriptor = undefined; // Unused
 
     let setupFixtureFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(SETUP_FIXTURE, target);
 

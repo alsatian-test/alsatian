@@ -6,6 +6,7 @@ export function AsyncTest(description?: string) {
    return (target: object,
            propertyKey: string,
            descriptor?: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>) => {
+      descriptor = undefined; // Unused
 
       // check if this has been registered as a test already
       let tests: Array<any> = Reflect.getMetadata(TESTS, target);

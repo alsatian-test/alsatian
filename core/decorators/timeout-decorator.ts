@@ -7,6 +7,7 @@ export function Timeout(timeoutInMs: number) {
   }
 
   return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
+    descriptor = undefined; // Unused
 
     Reflect.defineMetadata(TIMEOUT, timeoutInMs, target, propertyKey);
   };

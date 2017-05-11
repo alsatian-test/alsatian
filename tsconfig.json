@@ -1,9 +1,9 @@
 {
+   "extends": "./tsconfig.base.json",
    "compilerOptions": {
       "target": "es5",
       "module": "commonjs",
       "moduleResolution": "node",
-      "noImplicitAny": true,
       "declaration": true,
       "sourceMap": true,
       "preserveConstEnums": true,

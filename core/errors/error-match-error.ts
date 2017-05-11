@@ -3,7 +3,7 @@ import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
 
-   public constructor(actualError: Error,
+   public constructor(actualError: Error | undefined | null,
                       shouldMatch: boolean,
                       expectedErrorType?: new (...args: Array<any>) => Error,
                       expectedErrorMessage?: string) {
@@ -20,7 +20,7 @@ export class ErrorMatchError extends MatchError {
                        `${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
 
-   private _setErrorMessage(actualError: Error,
+   private _setErrorMessage(actualError: Error | undefined | null,
                             shouldMatch: boolean,
                             expectedErrorType?: new (...args: Array<any>) => Error,
                             expectedErrorMessage?: string) {
@@ -38,7 +38,7 @@ export class ErrorMatchError extends MatchError {
       }
    }
 
-   private _setWrongSpecificErrorMessage(actualError: Error,
+   private _setWrongSpecificErrorMessage(actualError: Error | undefined | null,
                                          shouldMatch: boolean,
                                          expectedErrorType?: new (...args: Array<any>) => Error,
                                          expectedErrorMessage?: string) {
@@ -77,7 +77,7 @@ export class ErrorMatchError extends MatchError {
                      `have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
    }
 
-   private _setWrongTypeMessage(actualError: Error,
+   private _setWrongTypeMessage(actualError: Error | undefined | null,
                                 shouldMatch: boolean,
                                 expectedErrorType?: new (...args: Array<any>) => Error) {
 
