@@ -2,12 +2,13 @@ import { FunctionMatcher, FunctionSpyMatcher } from "./";
 import { ErrorMatchError, FunctionCallMatchError } from "../errors";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
 
-export class FunctionWithArgumentsMatcher extends FunctionMatcher {    
+export class FunctionWithArgumentsMatcher<T, S> extends FunctionMatcher {    
 
    /**
     * Checks that a spy has been called with the specified arguments
     * @param expectedArguments - a list of arguments that the spy should have been called with
     */
+   public toHaveBeenCalledWith(arg1: S): FunctionSpyMatcher;
    public toHaveBeenCalledWith(...expectedArguments: Array<any>): FunctionSpyMatcher {
       if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
          throw new TypeError(

@@ -2,6 +2,7 @@ import { ArrayMatcher } from "./array-matcher";
 import { FunctionMatcher } from "./function-matcher";
 import { FunctionSpyCallCountMatcher } from "./function-spy-call-count-matcher";
 import { FunctionSpyMatcher } from "./function-spy-matcher";
+import { FunctionWithArgumentsMatcher } from "./function-with-arguments-matcher";
 import { Matcher } from "./matcher";
 import { NumberMatcher } from "./number-matcher";
 import { ObjectMatcher } from "./object-matcher";
@@ -14,10 +15,11 @@ export {
    FunctionMatcher,
    FunctionSpyCallCountMatcher,
    FunctionSpyMatcher,
+   FunctionWithArgumentsMatcher,
    Matcher,
    NumberMatcher,
    ObjectMatcher,
    PropertyMatcher,
    SpyCallCountType,
    StringMatcher
-}
+};
