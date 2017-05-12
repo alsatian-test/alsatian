@@ -89,7 +89,10 @@ export class ToHaveBeenCalledTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenCalled())
+      const EXPECT = Expect(() => {});
+     (EXPECT as any).actualValue = actualValue;
+
+      Expect(() => EXPECT.toHaveBeenCalled())
         .toThrowError(
             TypeError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -107,7 +110,10 @@ export class ToHaveBeenCalledTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenCalled())
+      const EXPECT = Expect(() => {});
+     (EXPECT as any).actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toHaveBeenCalled())
         .toThrowError(
             TypeError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");

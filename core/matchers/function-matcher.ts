@@ -150,7 +150,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
       return new FunctionSpyMatcher(this.actualValue, expectedArguments);
    }
 
-   private _isFunctionSpyOrSpiedOnFunction(value: any) {
+   protected _isFunctionSpyOrSpiedOnFunction(value: any) {
       return value instanceof FunctionSpy || (value instanceof Function && value.calls !== undefined);
    }
 }

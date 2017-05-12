@@ -1,6 +1,6 @@
 import { Expect, Matcher, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 
-class ExtendedExpect extends Matcher {
+class ExtendedExpect<T> extends Matcher<T> {
     public get exposedActualValue() {
         return this.actualValue;
     }

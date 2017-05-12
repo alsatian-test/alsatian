@@ -29,8 +29,4 @@ export class FunctionWithArgumentsMatcher extends FunctionMatcher {
 
       return new FunctionSpyMatcher(this.actualValue, expectedArguments);
    }
-
-   private _isFunctionSpyOrSpiedOnFunction(value: any) {
-      return value instanceof FunctionSpy || (value instanceof Function && value.calls !== undefined);
-   }
 }

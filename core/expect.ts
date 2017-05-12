@@ -21,8 +21,8 @@ export interface IExpect {
     <T>(actualValue: Array<T>): ArrayMatcher<T>;
     (actualValue: FunctionSpy | Function): FunctionMatcher;
     (actualValue: number): NumberMatcher;
-    (actualValue: object): ObjectMatcher;
     <T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
+    (actualValue: object): ObjectMatcher;
     (actualValue: string): StringMatcher;
     <T>(actualValue: T): Matcher<T>;
     <T>(actualValue: T): Matcher<T>
