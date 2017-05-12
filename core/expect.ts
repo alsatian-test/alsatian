@@ -34,13 +34,6 @@ export interface IExpect {
     fail(message: string): void;
 }
 
-function ExpectFunction<T>(actualValue: Array<T>): ArrayMatcher<T>;
-function ExpectFunction(actualValue: FunctionSpy | Function): FunctionMatcher;
-function ExpectFunction(actualValue: number): NumberMatcher;
-function ExpectFunction(actualValue: object): ObjectMatcher;
-function ExpectFunction<T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
-function ExpectFunction(actualValue: string): StringMatcher;
-function ExpectFunction<T>(actualValue: T): Matcher<T>;
 function ExpectFunction<T>(actualValue: T): Matcher<T> {
    return new Matcher(actualValue);
 }
@@ -53,5 +46,5 @@ const EXPECT = ExpectFunction as IExpect;
 EXPECT.fail = fail;
 
 export {
-    ExpectFunction as Expect
+    EXPECT as Expect
 };
