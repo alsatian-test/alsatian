@@ -103,7 +103,7 @@
   },
   "dependencies": {
     "@types/glob": "^5.0.30",
-    "@types/node": ">=0.0.2",
+    "@types/node": ">=7.0.18",
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
     "reflect-metadata": "^0.1.3",
