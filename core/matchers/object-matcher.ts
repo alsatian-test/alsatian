@@ -1,7 +1,7 @@
-import { Matcher } from "./";
 import { EmptyMatchError } from "../errors";
+import { Matcher } from "./";
 
-export class ObjectMatcher extends Matcher<object> {    
+export class ObjectMatcher extends Matcher<object> {
 
    /**
     * Checks that an array is empty, a string is empty, or an object literal has no properties
@@ -12,7 +12,7 @@ export class ObjectMatcher extends Matcher<object> {
       }
 
       if (this.actualValue.constructor !== Object) {
-         throw new TypeError("toBeEmpty requires value passed in to Expect to be an object literal.");         
+         throw new TypeError("toBeEmpty requires value passed in to Expect to be an object literal.");
       }
 
       if ((Object.keys(this.actualValue).length === 0) !== this.shouldMatch) {

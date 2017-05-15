@@ -1,5 +1,5 @@
-import { Matcher } from "./";
 import { ContentsMatchError, EmptyMatchError } from "../errors";
+import { Matcher } from "./";
 
 export class ArrayMatcher<T> extends Matcher<Array<T>> {
 

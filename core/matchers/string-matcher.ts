@@ -1,8 +1,8 @@
-import { Matcher } from "./";
 import { ContentsMatchError, EmptyMatchError, RegexMatchError } from "../errors";
+import { Matcher } from "./";
 
 export class StringMatcher extends Matcher<string> {
-    
+
    /**
     * Checks that a value conforms to a regular expression
     * @param regex - the regular expression that the actual value should match
@@ -51,7 +51,7 @@ export class StringMatcher extends Matcher<string> {
       if (typeof this.actualValue !== "string" || Array.isArray(this.actualValue)) {
          throw new TypeError("toBeEmpty requires value passed in to Expect to be an array, string or object literal");
       }
-      
+
       if ((this.actualValue.length === 0) !== this.shouldMatch) {
          throw new EmptyMatchError(this.actualValue, this.shouldMatch);
       }

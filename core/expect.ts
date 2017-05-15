@@ -1,5 +1,5 @@
 import { MatchError } from "./errors";
-import { 
+import {
     ArrayMatcher,
     FunctionMatcher,
     FunctionSpyMatcher,
@@ -26,7 +26,7 @@ export interface IExpect {
     (actualValue: object): ObjectMatcher;
     (actualValue: string): StringMatcher;
     <T>(actualValue: T): Matcher<T>;
-    <T>(actualValue: T): Matcher<T>
+    <T>(actualValue: T): Matcher<T>;
 
     /**
      * Fails the test with the given message

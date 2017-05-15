@@ -1,7 +1,7 @@
-import { Matcher } from "./";
 import { GreaterThanMatchError, LessThanMatchError } from "../errors";
+import { Matcher } from "./";
 
-export class NumberMatcher extends Matcher<number> {    
+export class NumberMatcher extends Matcher<number> {
 
    /**
     * Checks that a number is less than a given limit

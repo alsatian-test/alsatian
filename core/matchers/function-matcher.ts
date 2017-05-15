@@ -1,8 +1,8 @@
-import { FunctionSpyMatcher, Matcher } from "./";
 import { ErrorMatchError, FunctionCallMatchError } from "../errors";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
+import { FunctionSpyMatcher, Matcher } from "./";
 
-export class FunctionMatcher extends Matcher<FunctionSpy | any> {    
+export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 
    /**
     * Checks that a function throws an error when executed

@@ -170,7 +170,7 @@ export class ToContainTests {
       Expect(contentsError).not.toBeNull();
       Expect(contentsError.expected).toBe(expectedContent);
    }
-   
+
    @TestCase("", "something")
    @TestCase("something", "another thing")
    public shoulContainExpectedValueSetToStringExpectedContent(container: string, expectedContent: string) {

@@ -1,6 +1,6 @@
-import { Matcher } from "./";
 import { PropertySetMatchError } from "../errors";
 import { PropertySpy } from "../spying";
+import { Matcher } from "./";
 
 export class PropertyMatcher<PropertyType> extends Matcher<PropertySpy<PropertyType>> {
 

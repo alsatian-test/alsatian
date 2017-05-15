@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase, TestFixture, FocusTests } from "../../../core/alsatian-core";
+import { Expect, FocusTests, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 
 @FocusTests
 @TestFixture("correct matchers returned for tests")
@@ -20,6 +20,6 @@ export class ExpectTypeTests {
     @TestCase(new Error("something strange"))
     @Test("unknown type gets no special type functionality")
     public anyDoesNotGetSpecialFunctions(actual: any) {
-        Expect((Expect(actual) as any)["toMatch"]).not.toBeDefined();
+        Expect((Expect(actual as string).toMatch)).not.toBeDefined();
     }
 }

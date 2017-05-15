@@ -90,7 +90,7 @@ export class ToHaveBeenCalledTests {
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
       const EXPECT = Expect(() => {});
-     (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any).actualValue = actualValue;
 
       Expect(() => EXPECT.toHaveBeenCalled())
         .toThrowError(
@@ -111,7 +111,7 @@ export class ToHaveBeenCalledTests {
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
       const EXPECT = Expect(() => {});
-     (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any).actualValue = actualValue;
 
       Expect(() => EXPECT.not.toHaveBeenCalled())
         .toThrowError(

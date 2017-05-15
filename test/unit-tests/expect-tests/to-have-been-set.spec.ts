@@ -95,7 +95,7 @@ export class ToHaveBeenSetTests {
 
       const propertySpy = SpyOnProperty(some, "property");
       const EXPECT = Expect(propertySpy);
-     (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any).actualValue = actualValue;
 
       Expect(() => EXPECT.toHaveBeenSet())
         .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
@@ -119,7 +119,7 @@ export class ToHaveBeenSetTests {
 
       const propertySpy = SpyOnProperty(some, "property");
       const EXPECT = Expect(propertySpy);
-     (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any).actualValue = actualValue;
 
       Expect(() => EXPECT.not.toHaveBeenSet())
         .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
