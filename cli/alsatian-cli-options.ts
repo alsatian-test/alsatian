@@ -73,7 +73,8 @@ export class AlsatianCliOptions {
          const argumentIndex = this._getArgumentIndexFromArgumentList(args, "timeout", "t");
 
          // filter out the timeout argument and its value
-         return args.filter((_, index) => {
+         return args.filter((value, index) => {
+            value = ""; // Unused
             return index !== argumentIndex && index !== argumentIndex + 1;
          });
       }
@@ -88,7 +89,8 @@ export class AlsatianCliOptions {
       this._tap = (argumentIndex !== -1);
 
       // filter out the tap argument and return the other args
-      return args.filter((_, index) => {
+      return args.filter((value, index) => {
+        value = ""; // Unused
         return index !== argumentIndex;
       });
    }
@@ -100,7 +102,8 @@ export class AlsatianCliOptions {
 
          this._versionRequested = true;
 
-         return args.filter((_, index) => {
+         return args.filter((value, index) => {
+            value = ""; // Unused
             return index !== versionRequestedIndex;
          });
       }
@@ -115,7 +118,8 @@ export class AlsatianCliOptions {
 
          this._helpRequested = true;
 
-         return args.filter((_, index) => {
+         return args.filter((value, index) => {
+            value = ""; // Unused
             return index !== helpRequestedIndex;
          });
       }
