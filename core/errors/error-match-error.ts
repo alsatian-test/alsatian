@@ -1,9 +1,10 @@
 import { INameable } from "../_interfaces";
+import { ErrorUndefOrNull } from "./";
 import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
 
-   public constructor(actualError: Error | undefined | null,
+   public constructor(actualError: ErrorUndefOrNull,
                       shouldMatch: boolean,
                       expectedErrorType?: new (...args: Array<any>) => Error,
                       expectedErrorMessage?: string) {
@@ -20,7 +21,7 @@ export class ErrorMatchError extends MatchError {
                        `${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
 
-   private _setErrorMessage(actualError: Error | undefined | null,
+   private _setErrorMessage(actualError: ErrorUndefOrNull,
                             shouldMatch: boolean,
                             expectedErrorType?: new (...args: Array<any>) => Error,
                             expectedErrorMessage?: string) {
@@ -38,7 +39,7 @@ export class ErrorMatchError extends MatchError {
       }
    }
 
-   private _setWrongSpecificErrorMessage(actualError: Error | undefined | null,
+   private _setWrongSpecificErrorMessage(actualError: ErrorUndefOrNull,
                                          shouldMatch: boolean,
                                          expectedErrorType?: new (...args: Array<any>) => Error,
                                          expectedErrorMessage?: string) {
@@ -77,7 +78,7 @@ export class ErrorMatchError extends MatchError {
                      `have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
    }
 
-   private _setWrongTypeMessage(actualError: Error | undefined | null,
+   private _setWrongTypeMessage(actualError: ErrorUndefOrNull,
                                 shouldMatch: boolean,
                                 expectedErrorType?: new (...args: Array<any>) => Error) {
 
