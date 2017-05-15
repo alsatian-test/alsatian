@@ -214,7 +214,7 @@ export class Matcher {
          throw new TypeError("toThrow requires value passed in to Expect to be a function.");
       }
 
-      let errorThrown: ErrorUndefOrNull = undefined;
+      let errorThrown: ErrorUndefOrNull;
 
       try {
          this._actualValue();
@@ -234,7 +234,7 @@ export class Matcher {
           throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
        }
 
-       let errorThrown: ErrorUndefOrNull = undefined;
+       let errorThrown: ErrorUndefOrNull;
 
        try {
           await this._actualValue();
