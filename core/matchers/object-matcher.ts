@@ -1,5 +1,5 @@
 import { EmptyMatchError } from "../errors";
-import { Matcher } from "./";
+import { Matcher } from "./matcher";
 
 export class ObjectMatcher extends Matcher<object> {
 

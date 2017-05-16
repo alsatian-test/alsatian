@@ -1,5 +1,5 @@
 import { GreaterThanMatchError, LessThanMatchError } from "../errors";
-import { Matcher } from "./";
+import { Matcher } from "./matcher";
 
 export class NumberMatcher extends Matcher<number> {
 

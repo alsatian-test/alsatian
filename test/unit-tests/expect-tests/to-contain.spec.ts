@@ -234,7 +234,7 @@ export class ToContainTests {
    @TestCase({ an: "object"})
    public checkingNonStringOrArraysContainShouldThrow(container: any) {
       const EXPECT = Expect([]);
-      (EXPECT as any).actualValue = container;
+      (EXPECT as any)._actualValue = container;
 
       Expect(() => EXPECT.toContain("something"))
         .toThrowError(
@@ -251,7 +251,7 @@ export class ToContainTests {
    @TestCase({ an: "object"})
    public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
       const EXPECT = Expect([]);
-      (EXPECT as any).actualValue = container;
+      (EXPECT as any)._actualValue = container;
 
       Expect(() => EXPECT.not.toContain("something"))
         .toThrowError(

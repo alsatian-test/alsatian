@@ -43,7 +43,7 @@ export class ToBeEmptyTests {
    @TestCase(undefined)
    public emptyShouldThrowTypeErrorForNullTypes(value: any) {
       const EXPECT = Expect("");
-      (EXPECT as any).actualValue = value;
+      (EXPECT as any)._actualValue = value;
 
       Expect(() => EXPECT.toBeEmpty())
          .toThrowError(TypeError, "toBeEmpty requires value passed in to Expect not to be null or undefined");
@@ -58,7 +58,7 @@ export class ToBeEmptyTests {
    @TestCase(new DummyClass())
    public emptyShouldThrowTypeErrorForInvalidTypes(value: any) {
       const EXPECT = Expect("");
-      (EXPECT as any).actualValue = value;
+      (EXPECT as any)._actualValue = value;
 
       Expect(() => EXPECT.toBeEmpty())
          .toThrowError(TypeError, this._typeErrorMessage);

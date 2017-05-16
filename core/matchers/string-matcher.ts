@@ -1,5 +1,5 @@
 import { ContentsMatchError, EmptyMatchError, RegexMatchError } from "../errors";
-import { Matcher } from "./";
+import { Matcher } from "./matcher";
 
 export class StringMatcher extends Matcher<string> {
 

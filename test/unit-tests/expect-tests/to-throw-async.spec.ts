@@ -84,7 +84,7 @@ export class ToThrowAsyncTests {
    @AsyncTest("Test toThrowAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionThrowsShouldThrow(actualValue: any) {
       const EXPECT = Expect(() => {});
-      (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any)._actualValue = actualValue;
 
       await Expect(async () => {
          await EXPECT.toThrowAsync();
@@ -105,7 +105,7 @@ export class ToThrowAsyncTests {
    @AsyncTest("Test not.toThrowAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionDoesNotThrowShouldThrow(actualValue: any) {
       const EXPECT = Expect(() => {});
-      (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any)._actualValue = actualValue;
 
       await Expect(async () => {
          await EXPECT.not.toThrowAsync();
@@ -198,7 +198,7 @@ export class ToThrowAsyncTests {
    @AsyncTest("Test toThrowErrorAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionForToThrowErrorAcyncDoesThrow(actualValue: any) {
       const EXPECT = Expect(() => {});
-      (EXPECT as any).actualValue = actualValue;
+      (EXPECT as any)._actualValue = actualValue;
 
       await Expect(async () => {
          await EXPECT

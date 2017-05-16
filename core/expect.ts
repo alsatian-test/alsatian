@@ -35,8 +35,22 @@ export interface IExpect {
     fail(message: string): void;
 }
 
+class MixedMatcher extends Matcher<any> {
+
+}
+
+applyMixins(MixedMatcher, [
+    ArrayMatcher,
+    FunctionMatcher,
+    FunctionSpyMatcher,
+    NumberMatcher,
+    ObjectMatcher,
+    PropertyMatcher,
+    StringMatcher
+]);
+
 function ExpectFunction<T>(actualValue: T): Matcher<T> {
-   return new Matcher(actualValue);
+   return new MixedMatcher(actualValue);
 }
 
 function fail(message: string) {
@@ -49,3 +63,11 @@ EXPECT.fail = fail;
 export {
     EXPECT as Expect
 };
+
+function applyMixins(derivedCtor: any, baseCtors: Array<any>) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}

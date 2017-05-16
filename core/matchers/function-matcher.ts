@@ -1,6 +1,7 @@
 import { ErrorMatchError, FunctionCallMatchError } from "../errors";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
-import { FunctionSpyMatcher, Matcher } from "./";
+import { FunctionSpyMatcher } from "./";
+import { Matcher } from "./matcher";
 
 export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 
