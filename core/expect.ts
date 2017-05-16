@@ -26,7 +26,6 @@ export interface IExpect {
     (actualValue: object): ObjectMatcher;
     (actualValue: string): StringMatcher;
     <T>(actualValue: T): Matcher<T>;
-    <T>(actualValue: T): Matcher<T>;
 
     /**
      * Fails the test with the given message
@@ -39,7 +38,8 @@ class MixedMatcher extends Matcher<any> {
 
 }
 
-applyMixins(MixedMatcher, [
+applyMixins(
+    MixedMatcher,
     ArrayMatcher,
     FunctionMatcher,
     FunctionSpyMatcher,
@@ -47,7 +47,7 @@ applyMixins(MixedMatcher, [
     ObjectMatcher,
     PropertyMatcher,
     StringMatcher
-]);
+);
 
 function ExpectFunction<T>(actualValue: T): Matcher<T> {
    return new MixedMatcher(actualValue);
@@ -64,7 +64,7 @@ export {
     EXPECT as Expect
 };
 
-function applyMixins(derivedCtor: any, baseCtors: Array<any>) {
+function applyMixins(derivedCtor: any, ...baseCtors: Array<any>) {
     baseCtors.forEach(baseCtor => {
         Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
             derivedCtor.prototype[name] = baseCtor.prototype[name];
