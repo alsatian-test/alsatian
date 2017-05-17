@@ -1,11 +1,12 @@
 import "reflect-metadata";
 import { ISetupTeardownMetadata } from "./_interfaces";
 import { TEARDOWN } from "./_metadata-keys";
+import { Unused } from "../unused";
 
 export function Teardown(target: object,
                          decoratedPropertyKey: string,
                          descriptor?: TypedPropertyDescriptor<() => any>) {
-    descriptor = undefined; // Unused
+    Unused(descriptor);
 
     let teardownFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(TEARDOWN, target);
 

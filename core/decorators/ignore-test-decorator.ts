@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import { IGNORE, IGNORE_REASON } from "./_metadata-keys";
+import { Unused } from "../unused";
 
 export function IgnoreTest(reason?: string) {
     return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
-        descriptor = undefined; // Unused
+        Unused(descriptor);
 
         // mark test method as ignored
         Reflect.defineMetadata(IGNORE, true, target, propertyKey);

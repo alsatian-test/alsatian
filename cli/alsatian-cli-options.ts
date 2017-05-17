@@ -2,6 +2,7 @@ import { DuplicateCliArgumentError } from "./errors/duplicate-cli-argument-error
 import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error";
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
+import { Unused } from "../core/unused";
 
 export class AlsatianCliOptions {
 
@@ -74,7 +75,7 @@ export class AlsatianCliOptions {
 
          // filter out the timeout argument and its value
          return args.filter((value, index) => {
-            value = ""; // Unused
+            Unused(value);
             return index !== argumentIndex && index !== argumentIndex + 1;
          });
       }
@@ -90,7 +91,7 @@ export class AlsatianCliOptions {
 
       // filter out the tap argument and return the other args
       return args.filter((value, index) => {
-        value = ""; // Unused
+        Unused(value);
         return index !== argumentIndex;
       });
    }
@@ -103,7 +104,7 @@ export class AlsatianCliOptions {
          this._versionRequested = true;
 
          return args.filter((value, index) => {
-            value = ""; // Unused
+            Unused(value);
             return index !== versionRequestedIndex;
          });
       }
@@ -119,7 +120,7 @@ export class AlsatianCliOptions {
          this._helpRequested = true;
 
          return args.filter((value, index) => {
-            value = ""; // Unused
+            Unused(value);
             return index !== helpRequestedIndex;
          });
       }
