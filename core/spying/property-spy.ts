@@ -2,8 +2,8 @@ import { SpyCall } from "./spy-call";
 
 export class PropertySpy<PropertyType> {
 
-   private _originialGetter: () => PropertyType;
-   private _originialSetter: (value: PropertyType) => void;
+   private _originialGetter: () => PropertyType | undefined;
+   private _originialSetter: (value: PropertyType) => void | undefined;
    private _value: PropertyType;
    private _descriptorTarget: any;
    private _getter: () => PropertyType;
@@ -36,7 +36,7 @@ export class PropertySpy<PropertyType> {
          throw new TypeError(`${propertyName} is not a property.`);
       }
 
-      // store the original setters and getters
+      // store the original setters and getters, which maybe undefined
       this._originialGetter = propertyDescriptor.get;
       this._originialSetter = propertyDescriptor.set;
 
