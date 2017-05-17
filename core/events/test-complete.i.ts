@@ -7,7 +7,7 @@ export interface  ITestCompleteEvent {
     test: ITest;
     testFixture: ITestFixture;
     outcome: TestOutcome;
-    error: Error;
+    error?: Error;
 }
 
 export type IOnTestCompleteCBFunction = (testCompleted: ITestCompleteEvent) => void;
