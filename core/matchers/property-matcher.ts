@@ -4,10 +4,6 @@ import { Matcher } from "./matcher";
 
 export class PropertyMatcher<PropertyType> extends Matcher<PropertySpy<PropertyType>> {
 
-    public constructor(actualValue: PropertySpy<PropertyType>) {
-        super(actualValue);
-    }
-
    /**
     * Checks that a property spy has been set
     */
