@@ -1,11 +1,11 @@
 import { MatchError } from "./errors";
 import {
-    ArrayMatcher,
+    ContainerMatcher,
+    EmptyMatcher,
     FunctionMatcher,
     FunctionSpyMatcher,
     Matcher,
     NumberMatcher,
-    ObjectMatcher,
     PropertyMatcher,
     StringMatcher
 } from "./matchers";
@@ -19,11 +19,11 @@ export interface IExpect {
      * Allows checking of test outcomes
      * @param actualValue - the value or function under test
      */
-    <T>(actualValue: Array<T>): ArrayMatcher<T>;
+    <T>(actualValue: Array<T>): ContainerMatcher<Array<T>, T>;
     (actualValue: FunctionSpy | Function): FunctionMatcher;
     (actualValue: number): NumberMatcher;
     <T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
-    (actualValue: object): ObjectMatcher;
+    (actualValue: object): EmptyMatcher<object>;
     (actualValue: string): StringMatcher;
     <T>(actualValue: T): Matcher<T>;
 
@@ -40,11 +40,11 @@ class MixedMatcher extends Matcher<any> {
 
 applyMixins(
     MixedMatcher,
-    ArrayMatcher,
+    ContainerMatcher,
+    EmptyMatcher,
     FunctionMatcher,
     FunctionSpyMatcher,
     NumberMatcher,
-    ObjectMatcher,
     PropertyMatcher,
     StringMatcher
 );

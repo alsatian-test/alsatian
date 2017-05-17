@@ -11,7 +11,15 @@ export class EmptyMatcher<T> extends Matcher<T> {
          throw new TypeError("toBeEmpty requires value passed in to Expect not to be null or undefined");
       }
 
-      if (((this.actualValue as any).length === 0) !== this.shouldMatch) {
+      if ( typeof this.actualValue !== "string"
+        && !Array.isArray(this.actualValue)
+        && this.actualValue.constructor !== Object) {
+          throw new TypeError("toBeEmpty requires value passed in to Expect to be an array, string or object literal");
+      }
+
+      const contents = (this.actualValue as any).length ? this.actualValue : Object.keys(this.actualValue);
+
+      if (((contents as any).length === 0) !== this.shouldMatch) {
          throw new EmptyMatchError(this.actualValue, this.shouldMatch);
       }
    }

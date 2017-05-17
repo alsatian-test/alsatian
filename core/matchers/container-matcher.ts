@@ -9,6 +9,14 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<C
     */
    public toContain(expectedContent: ContentType) {
 
+      if (this.actualValue instanceof Array === false && typeof this.actualValue !== "string") {
+         throw new TypeError("toContain must only be used to check whether strings or arrays contain given contents.");
+      }
+
+      if (typeof this.actualValue === "string" && typeof expectedContent !== "string") {
+         throw new TypeError("toContain cannot check whether a string contains a non string value.");
+      }
+
       if ((this.actualValue as any).indexOf(expectedContent) === -1 === this.shouldMatch) {
          throw new ContentsMatchError(this.actualValue, expectedContent, this.shouldMatch);
       }
