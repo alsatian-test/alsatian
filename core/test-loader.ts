@@ -33,7 +33,7 @@ export class TestLoader {
       return testFixtures;
    }
 
-   private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture {
+   private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture | null {
       // get test fixture metadata or create new metadata
       // to support not requiring the TestFixture decorator.
       // This functionality will be removed in 2.0.0 where
