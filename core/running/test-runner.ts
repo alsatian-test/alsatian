@@ -1,17 +1,13 @@
 import "reflect-metadata";
-import { ITest, ITestFixture } from "../_interfaces";
-import { MatchError,
-         METADATA_KEYS,
+import { METADATA_KEYS,
          TestCaseResult,
          TestFixtureResults,
          TestOutputStream,
          TestResults,
          TestSet,
-         TestSetResults,
-         TestTimeoutError } from "../alsatian-core";
+         TestSetResults } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
-import { IOnTestCompleteCBFunction, ITestCompleteEvent } from "../events";
-import { TestItem } from "./test-item";
+import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
 
@@ -65,7 +61,7 @@ export class TestRunner {
     private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
         let currentTestFixtureResults: TestFixtureResults;
         let currentTestResults: TestResults;
-        let errorOccurredRunningTest: Error;
+        let errorOccurredRunningTest: Error | undefined;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
 
@@ -95,7 +91,7 @@ export class TestRunner {
             try {
                 await testItem.run(testSetRunInfo.timeout);
                 result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments);
-                errorOccurredRunningTest = null;
+                errorOccurredRunningTest = undefined;
             }
             catch (error) {
                 result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments, error);
