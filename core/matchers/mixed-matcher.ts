@@ -7,6 +7,9 @@ import { NumberMatcher } from "./number-matcher";
 import { PropertyMatcher } from "./property-matcher";
 import { StringMatcher } from "./string-matcher";
 
+/**
+ * Mixin version of all matchers to allow any function to be used at runtime
+ */
 export class MixedMatcher extends Matcher<any> {
 
 }

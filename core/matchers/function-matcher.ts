@@ -3,6 +3,9 @@ import { Any, FunctionSpy, TypeMatcher } from "../spying";
 import { FunctionSpyMatcher } from "./";
 import { Matcher } from "./matcher";
 
+/**
+ * Checks whether functions have performed as expected
+ */
 export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 
    /**

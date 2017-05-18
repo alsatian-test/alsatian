@@ -2,7 +2,7 @@ import { MatchError } from "./errors";
 import { IExpect } from "./expect.i";
 import { Matcher, MixedMatcher } from "./matchers";
 
-function ExpectFunction<T>(actualValue: T): Matcher<T> {
+function ExpectFunction<ActualType>(actualValue: ActualType): Matcher<ActualType> {
    return new MixedMatcher(actualValue);
 }
 

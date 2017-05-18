@@ -2,6 +2,9 @@ import { PropertySetMatchError } from "../errors";
 import { PropertySpy } from "../spying";
 import { Matcher } from "./matcher";
 
+/**
+ * Checks whether properties have performed as expected
+ */
 export class PropertyMatcher<PropertyType> extends Matcher<PropertySpy<PropertyType>> {
 
    /**

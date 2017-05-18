@@ -1,6 +1,9 @@
 import { ContentsMatchError, EmptyMatchError } from "../errors";
 import { EmptyMatcher } from "./empty-matcher";
 
+/**
+ * Compares container types e.g. string and Array
+ */
 export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<ContainerType> {
 
    /**

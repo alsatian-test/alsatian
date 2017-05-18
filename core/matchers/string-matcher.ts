@@ -1,6 +1,9 @@
 import { ContentsMatchError, EmptyMatchError, RegexMatchError } from "../errors";
 import { ContainerMatcher } from "./container-matcher";
 
+/**
+ * Compares strings
+ */
 export class StringMatcher extends ContainerMatcher<string, string> {
 
    /**

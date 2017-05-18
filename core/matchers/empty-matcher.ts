@@ -1,6 +1,9 @@
 import { ContentsMatchError, EmptyMatchError } from "../errors";
 import { Matcher } from "./matcher";
 
+/**
+ * Compares types that can be empty e.g. string, object and Array
+ */
 export class EmptyMatcher<T> extends Matcher<T> {
 
    /**
