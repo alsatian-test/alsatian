@@ -1,10 +1,9 @@
 import { INameable } from "../_interfaces";
-import { ErrorOrNull } from "./";
 import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
 
-   public constructor(actualError: ErrorOrNull,
+   public constructor(actualError: Error | null,
                       shouldMatch: boolean,
                       expectedErrorType?: new (...args: Array<any>) => Error,
                       expectedErrorMessage?: string) {
@@ -21,7 +20,7 @@ export class ErrorMatchError extends MatchError {
                        `${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
 
-   private _setErrorMessage(actualError: ErrorOrNull,
+   private _setErrorMessage(actualError: Error | null,
                             shouldMatch: boolean,
                             expectedErrorType?: new (...args: Array<any>) => Error,
                             expectedErrorMessage?: string) {
@@ -39,7 +38,7 @@ export class ErrorMatchError extends MatchError {
       }
    }
 
-   private _setWrongSpecificErrorMessage(actualError: ErrorOrNull,
+   private _setWrongSpecificErrorMessage(actualError: Error | null,
                                          shouldMatch: boolean,
                                          expectedErrorType?: new (...args: Array<any>) => Error,
                                          expectedErrorMessage?: string) {
@@ -78,7 +77,7 @@ export class ErrorMatchError extends MatchError {
                      `have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
    }
 
-   private _setWrongTypeMessage(actualError: ErrorOrNull,
+   private _setWrongTypeMessage(actualError: Error | null,
                                 shouldMatch: boolean,
                                 expectedErrorType?: new (...args: Array<any>) => Error) {
 

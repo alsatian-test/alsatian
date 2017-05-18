@@ -4,7 +4,6 @@ import {
    EqualMatchError,
    ErrorMatchError,
    ExactMatchError,
-   ErrorOrNull,
    FunctionCallMatchError,
    GreaterThanMatchError,
    LessThanMatchError,
@@ -214,7 +213,7 @@ export class Matcher {
          throw new TypeError("toThrow requires value passed in to Expect to be a function.");
       }
 
-      let errorThrown: ErrorOrNull = null;
+      let errorThrown: Error | null = null;
 
       try {
          this._actualValue();
@@ -234,7 +233,7 @@ export class Matcher {
           throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
        }
 
-       let errorThrown: ErrorOrNull = null;
+       let errorThrown: Error | null = null;
 
        try {
           await this._actualValue();
@@ -260,7 +259,7 @@ export class Matcher {
       }
 
       let threwRightError = false;
-      let actualError: ErrorOrNull = null;
+      let actualError: Error | null = null;
 
       try {
          this._actualValue();
@@ -290,7 +289,7 @@ export class Matcher {
        }
 
        let threwRightError = false;
-       let actualError: ErrorOrNull = null;
+       let actualError: Error | null = null;
 
        try {
           await this._actualValue();

@@ -7,7 +7,7 @@ import {
    TestCase,
    TestCaseResult,
    TestOutputStream } from "../../../core/alsatian-core";
-import { EqualMatchError, ErrorOrNull, MatchError } from "../../../core/errors";
+import { EqualMatchError, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 
@@ -284,7 +284,7 @@ export class EmitResultTests {
 
    @TestCase(undefined)
    @TestCase(null)
-   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: ErrorOrNull) {
+   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: Error | null) {
        const testOutput = new TestOutputStream();
        SpyOn(testOutput, "push");
 

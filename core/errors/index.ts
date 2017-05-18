@@ -13,8 +13,6 @@ import { RegexMatchError } from "./regex-match-error";
 import { TestTimeoutError } from "./test-timeout-error";
 import { TruthyMatchError } from "./truthy-match-error";
 
-export type ErrorOrNull = Error | null;
-
 export {
     MatchError,
     ExactMatchError,

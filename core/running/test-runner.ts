@@ -6,7 +6,6 @@ import { METADATA_KEYS,
          TestResults,
          TestSet,
          TestSetResults } from "../alsatian-core";
-import { ErrorOrNull } from "../errors";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
@@ -62,7 +61,7 @@ export class TestRunner {
     private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
         let currentTestFixtureResults: TestFixtureResults;
         let currentTestResults: TestResults;
-        let errorOccurredRunningTest: ErrorOrNull;
+        let errorOccurredRunningTest: Error | null;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
 
