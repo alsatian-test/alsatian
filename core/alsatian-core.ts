@@ -1,5 +1,6 @@
 import {
    Expect,
+   IExpect,
    TestOutputStream,
    TestSet
 } from "./";
