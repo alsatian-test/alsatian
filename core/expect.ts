@@ -5,6 +5,7 @@ import {
     FunctionMatcher,
     FunctionSpyMatcher,
     Matcher,
+    MixedMatcher,
     NumberMatcher,
     PropertyMatcher,
     StringMatcher
@@ -34,21 +35,6 @@ export interface IExpect {
     fail(message: string): void;
 }
 
-class MixedMatcher extends Matcher<any> {
-
-}
-
-applyMixins(
-    MixedMatcher,
-    ContainerMatcher,
-    EmptyMatcher,
-    FunctionMatcher,
-    FunctionSpyMatcher,
-    NumberMatcher,
-    PropertyMatcher,
-    StringMatcher
-);
-
 function ExpectFunction<T>(actualValue: T): Matcher<T> {
    return new MixedMatcher(actualValue);
 }
@@ -63,11 +49,3 @@ EXPECT.fail = fail;
 export {
     EXPECT as Expect
 };
-
-function applyMixins(derivedCtor: any, ...baseCtors: Array<any>) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            derivedCtor.prototype[name] = baseCtor.prototype[name];
-        });
-    });
-}

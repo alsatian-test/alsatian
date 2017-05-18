@@ -1,6 +1,6 @@
-import { Expect, Matcher, Test } from "../../../core/alsatian-core";
+import { Expect, MixedMatcher, Test } from "../../../core/alsatian-core";
 
-class MatcherExtension extends Matcher {
+class MatcherExtension extends MixedMatcher {
     public isSomething() {
         return this.actualValue === "something";
     }
@@ -10,9 +10,9 @@ const extendedExpect = (value: any) => new MatcherExtension(value);
 
 export class ExtendingExpectTests {
 
-    @Test("extension is a matcher")
-    public extensionIsMatcher() {
-        Expect(extendedExpect(42) instanceof Matcher).toBe(true);
+    @Test("extension is a mixed matcher")
+    public extensionIsMixedMatcher() {
+        Expect(extendedExpect(42) instanceof MixedMatcher).toBe(true);
     }
 
     @Test("extension has new function")
