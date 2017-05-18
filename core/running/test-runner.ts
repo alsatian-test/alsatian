@@ -59,8 +59,8 @@ export class TestRunner {
     }
 
     private async _runTests(testSetRunInfo: TestSetRunInfo, results: TestSetResults) {
-        let currentTestFixtureResults: TestFixtureResults;
-        let currentTestResults: TestResults;
+        let currentTestFixtureResults: TestFixtureResults | undefined;
+        let currentTestResults: TestResults | undefined;
         let errorOccurredRunningTest: Error | null;
 
         for (const testItem of testSetRunInfo.testPlan.testItems) {
@@ -82,35 +82,37 @@ export class TestRunner {
             }
 
             // if new test
-            if (!previousTestItem || previousTestItem.test !== testItem.test) {
+            if (currentTestFixtureResults && (!previousTestItem || previousTestItem.test !== testItem.test)) {
                 currentTestResults = currentTestFixtureResults.addTestResult(testItem.test);
             }
 
-            let result: TestCaseResult;
+            if (currentTestResults) {
+                let result: TestCaseResult;
 
-            try {
-                await testItem.run(testSetRunInfo.timeout);
-                result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments);
-                errorOccurredRunningTest = null;
-            }
-            catch (error) {
-                result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments, error);
-                errorOccurredRunningTest = error;
-            }
+                try {
+                    await testItem.run(testSetRunInfo.timeout);
+                    result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments);
+                    errorOccurredRunningTest = null;
+                }
+                catch (error) {
+                    result = currentTestResults.addTestCaseResult(testItem.testCase.caseArguments, error);
+                    errorOccurredRunningTest = error;
+                }
 
-            // emit onComplete event
-            this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-                onTestCompleteCB({
-                    error: errorOccurredRunningTest,
-                    outcome: result.outcome,
-                    test: testItem.test,
-                    testCase: testItem.testCase,
-                    testFixture: testItem.testFixture,
-                    testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
+                // emit onComplete event
+                this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+                    onTestCompleteCB({
+                        error: errorOccurredRunningTest,
+                        outcome: result.outcome,
+                        test: testItem.test,
+                        testCase: testItem.testCase,
+                        testFixture: testItem.testFixture,
+                        testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
+                    });
                 });
-            });
 
-            this._outputStream.emitResult(testItemIndex + 1, result);
+                this._outputStream.emitResult(testItemIndex + 1, result);
+            }
         }
 
         // teardown the last test fixture
