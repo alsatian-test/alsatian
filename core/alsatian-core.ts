@@ -73,6 +73,7 @@ export {
    ContainerMatcher,
    EmptyMatcher,
    Expect,
+   IExpect,
    FocusTest,
    FocusTests,
    FunctionMatcher,
