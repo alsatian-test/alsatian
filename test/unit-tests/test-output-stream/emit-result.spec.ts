@@ -1,7 +1,15 @@
 import { ITest } from "../../../core/_interfaces";
-import { Expect, SpyOn, Test, TestCase, TestCaseResult, TestOutputStream} from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
+import {
+   Expect,
+   SpyOn,
+   SpyOnProperty,
+   Test,
+   TestCase,
+   TestCaseResult,
+   TestOutputStream } from "../../../core/alsatian-core";
+import { EqualMatchError, ErrorUndefOrNull, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
+import { TestOutcome } from "../../../core/results/test-outcome";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
     return  ` ---\n`
@@ -25,6 +33,18 @@ const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => 
         " ...\n"
     );
 };
+
+function _getUnhandledErrorMessageNoStack(): string {
+    return (
+        " ---\n" +
+        "   message: \"The test threw an unhandled error.\"\n" +
+        "   severity: fail\n" +
+        "   data:\n" +
+        "     got: an unhandled error\n" +
+        "     expect: no unhandled errors to be thrown\n" +
+        " ...\n"
+    );
+}
 
 export class EmitResultTests {
 
@@ -256,6 +276,24 @@ export class EmitResultTests {
        const testCaseResult = new TestCaseResult(test, [], error);
 
        const expected = _getUnhandledErrorMessage(stack);
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: ErrorUndefOrNull) {
+       const testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       const test: ITest = new TestBuilder().build();
+
+       const testCaseResult = new TestCaseResult(test, [], error);
+       SpyOnProperty(testCaseResult, "outcome").andCallGetter(() => TestOutcome.Error);
+
+       const expected = _getUnhandledErrorMessageNoStack();
 
        testOutput.emitResult(1, testCaseResult);
 

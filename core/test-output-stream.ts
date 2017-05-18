@@ -1,6 +1,6 @@
 import { Readable as ReadableStream } from "stream";
 import { ITest, ITestFixture } from "./_interfaces";
-import { MatchError } from "./errors";
+import { ErrorUndefOrNull, MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 
 export class TestOutputStream extends ReadableStream {
@@ -62,7 +62,7 @@ export class TestOutputStream extends ReadableStream {
       this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
    }
 
-   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
+   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: ErrorUndefOrNull): void {
       const description = this._getTestDescription(test, testCaseArguments);
 
       this._writeOut(`not ok ${testId} ${description}\n`);
@@ -117,12 +117,12 @@ export class TestOutputStream extends ReadableStream {
 
    }
 
-   private _writeUnhandledErrorOutput(error: Error): void {
+   private _writeUnhandledErrorOutput(error: ErrorUndefOrNull): void {
 
        this._writeFailure("The test threw an unhandled error.",
                           "an unhandled error",
                           "no unhandled errors to be thrown",
-                          error.stack);
+                          error instanceof Error ? error.stack : undefined);
 
    }
 
