@@ -7,7 +7,7 @@ import {
    TestCase,
    TestCaseResult,
    TestOutputStream } from "../../../core/alsatian-core";
-import { EqualMatchError, ErrorUndefOrNull, MatchError } from "../../../core/errors";
+import { EqualMatchError, ErrorOrNull, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 
@@ -57,7 +57,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(testId, testCaseResult);
 
@@ -76,7 +76,7 @@ export class EmitResultTests {
       const test: ITest = new TestBuilder()
       .withDescription(description).build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -97,7 +97,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, testCaseArguments, undefined);
+      const testCaseResult = new TestCaseResult(test, testCaseArguments);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -113,7 +113,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -146,7 +146,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().ignored().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -164,7 +164,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().ignored(reason).build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -284,7 +284,7 @@ export class EmitResultTests {
 
    @TestCase(undefined)
    @TestCase(null)
-   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: ErrorUndefOrNull) {
+   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: ErrorOrNull) {
        const testOutput = new TestOutputStream();
        SpyOn(testOutput, "push");
 

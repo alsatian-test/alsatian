@@ -1,14 +1,14 @@
 import { ITest } from "../_interfaces/test.i";
-import { ErrorUndefOrNull, MatchError } from "../errors";
+import { ErrorOrNull, MatchError } from "../errors";
 import { TestOutcome } from "./test-outcome";
 
 export class TestCaseResult {
 
     private _test: ITest;
     private _arguments: Array<any>;
-    private _error: ErrorUndefOrNull;
+    private _error: ErrorOrNull;
 
-    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
+    public constructor(test: ITest, testCaseArguments: Array<any>, error: ErrorOrNull = null) {
         this._test = test;
         this._arguments = testCaseArguments;
         this._error = error;
@@ -38,7 +38,7 @@ export class TestCaseResult {
         return this._arguments;
     }
 
-    public get error(): ErrorUndefOrNull {
+    public get error(): ErrorOrNull {
         return this._error;
     }
 

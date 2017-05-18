@@ -13,7 +13,7 @@ import { RegexMatchError } from "./regex-match-error";
 import { TestTimeoutError } from "./test-timeout-error";
 import { TruthyMatchError } from "./truthy-match-error";
 
-export type ErrorUndefOrNull = Error | undefined | null;
+export type ErrorOrNull = Error | null;
 
 export {
     MatchError,

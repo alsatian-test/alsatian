@@ -4,7 +4,7 @@ import {
    EqualMatchError,
    ErrorMatchError,
    ExactMatchError,
-   ErrorUndefOrNull,
+   ErrorOrNull,
    FunctionCallMatchError,
    GreaterThanMatchError,
    LessThanMatchError,
@@ -214,7 +214,7 @@ export class Matcher {
          throw new TypeError("toThrow requires value passed in to Expect to be a function.");
       }
 
-      let errorThrown: ErrorUndefOrNull;
+      let errorThrown: ErrorOrNull = null;
 
       try {
          this._actualValue();
@@ -223,7 +223,7 @@ export class Matcher {
          errorThrown = error;
       }
 
-      if (errorThrown === undefined === this.shouldMatch) {
+      if (errorThrown === null === this.shouldMatch) {
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
    }
@@ -234,7 +234,7 @@ export class Matcher {
           throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
        }
 
-       let errorThrown: ErrorUndefOrNull;
+       let errorThrown: ErrorOrNull = null;
 
        try {
           await this._actualValue();
@@ -243,7 +243,7 @@ export class Matcher {
           errorThrown = error;
        }
 
-       if (errorThrown === undefined === this.shouldMatch) {
+       if (errorThrown === null === this.shouldMatch) {
           throw new ErrorMatchError(errorThrown, this.shouldMatch);
        }
    }
@@ -260,7 +260,7 @@ export class Matcher {
       }
 
       let threwRightError = false;
-      let actualError: ErrorUndefOrNull = null;
+      let actualError: ErrorOrNull = null;
 
       try {
          this._actualValue();
@@ -290,7 +290,7 @@ export class Matcher {
        }
 
        let threwRightError = false;
-       let actualError: ErrorUndefOrNull = null;
+       let actualError: ErrorOrNull = null;
 
        try {
           await this._actualValue();

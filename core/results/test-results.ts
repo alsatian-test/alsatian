@@ -1,4 +1,5 @@
 import { ITest } from "../_interfaces/test.i";
+import { ErrorOrNull } from "../errors";
 import { TestCaseResult } from "./test-case-result";
 import { TestOutcome } from "./test-outcome";
 
@@ -30,7 +31,7 @@ export class TestResults {
       return TestOutcome.Skip;
    }
 
-   public addTestCaseResult(args: Array<any>, error?: Error): TestCaseResult {
+   public addTestCaseResult(args: Array<any>, error: ErrorOrNull = null): TestCaseResult {
       const testCaseResult = new TestCaseResult(this._test, args, error);
       this._testCaseResults.push(testCaseResult);
       return testCaseResult;
