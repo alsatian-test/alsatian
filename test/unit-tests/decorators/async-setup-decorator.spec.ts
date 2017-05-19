@@ -9,7 +9,7 @@ export class AsyncSetupDecoratorTests {
 
       const testFixture = {};
 
-      AsyncSetup(testFixture, "test", null);
+      AsyncSetup(testFixture, "test");
 
       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
@@ -24,7 +24,7 @@ export class AsyncSetupDecoratorTests {
 
        const testFixture = {};
 
-       AsyncSetup(testFixture, key, null);
+       AsyncSetup(testFixture, key);
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
@@ -38,7 +38,7 @@ export class AsyncSetupDecoratorTests {
 
        const testFixture = {};
 
-       AsyncSetup(testFixture, key, null);
+       AsyncSetup(testFixture, key);
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
 
@@ -53,7 +53,7 @@ export class AsyncSetupDecoratorTests {
        const testFixture = {};
 
        for (let i = 0; i < setupFunctionCount; i ++) {
-         AsyncSetup(testFixture, "key " + i, null);
+         AsyncSetup(testFixture, "key " + i);
        }
 
        const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);

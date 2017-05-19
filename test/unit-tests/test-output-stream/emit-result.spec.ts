@@ -1,7 +1,15 @@
 import { ITest } from "../../../core/_interfaces";
-import { Expect, SpyOn, Test, TestCase, TestCaseResult, TestOutputStream} from "../../../core/alsatian-core";
+import {
+   Expect,
+   SpyOn,
+   SpyOnProperty,
+   Test,
+   TestCase,
+   TestCaseResult,
+   TestOutputStream } from "../../../core/alsatian-core";
 import { EqualMatchError, MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
+import { TestOutcome } from "../../../core/results/test-outcome";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
     return  ` ---\n`
@@ -26,6 +34,18 @@ const _getUnhandledErrorMessage: (stack: string) => string = (stack: string) => 
     );
 };
 
+function _getUnhandledErrorMessageNoStack(): string {
+    return (
+        " ---\n" +
+        "   message: \"The test threw an unhandled error.\"\n" +
+        "   severity: fail\n" +
+        "   data:\n" +
+        "     got: an unhandled error\n" +
+        "     expect: no unhandled errors to be thrown\n" +
+        " ...\n"
+    );
+}
+
 export class EmitResultTests {
 
    @TestCase(1)
@@ -37,7 +57,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(testId, testCaseResult);
 
@@ -56,7 +76,7 @@ export class EmitResultTests {
       const test: ITest = new TestBuilder()
       .withDescription(description).build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -77,7 +97,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, testCaseArguments, undefined);
+      const testCaseResult = new TestCaseResult(test, testCaseArguments);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -93,7 +113,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -126,7 +146,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().ignored().build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -144,7 +164,7 @@ export class EmitResultTests {
 
       const test: ITest = new TestBuilder().ignored(reason).build();
 
-      const testCaseResult = new TestCaseResult(test, [], undefined);
+      const testCaseResult = new TestCaseResult(test, []);
 
       testOutput.emitResult(1, testCaseResult);
 
@@ -256,6 +276,24 @@ export class EmitResultTests {
        const testCaseResult = new TestCaseResult(test, [], error);
 
        const expected = _getUnhandledErrorMessage(stack);
+
+       testOutput.emitResult(1, testCaseResult);
+
+       Expect(testOutput.push).toHaveBeenCalledWith(expected);
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   public shouldEmitCorrectUnhandledErrorWithUndefOrNullError(error: Error | null) {
+       const testOutput = new TestOutputStream();
+       SpyOn(testOutput, "push");
+
+       const test: ITest = new TestBuilder().build();
+
+       const testCaseResult = new TestCaseResult(test, [], error);
+       SpyOnProperty(testCaseResult, "outcome").andCallGetter(() => TestOutcome.Error);
+
+       const expected = _getUnhandledErrorMessageNoStack();
 
        testOutput.emitResult(1, testCaseResult);
 

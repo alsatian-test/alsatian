@@ -2,6 +2,7 @@ import { DuplicateCliArgumentError } from "./errors/duplicate-cli-argument-error
 import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error";
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
+import { Unused } from "../core/unused";
 
 export class AlsatianCliOptions {
 
@@ -10,8 +11,8 @@ export class AlsatianCliOptions {
       return this._fileGlobs;
    }
 
-   private _timeout: number = null;
-   public get timeout(): number {
+   private _timeout: number | null = null;
+   public get timeout(): number | null {
       return this._timeout;
    }
 
@@ -74,6 +75,7 @@ export class AlsatianCliOptions {
 
          // filter out the timeout argument and its value
          return args.filter((value, index) => {
+            Unused(value);
             return index !== argumentIndex && index !== argumentIndex + 1;
          });
       }
@@ -89,6 +91,7 @@ export class AlsatianCliOptions {
 
       // filter out the tap argument and return the other args
       return args.filter((value, index) => {
+        Unused(value);
         return index !== argumentIndex;
       });
    }
@@ -101,6 +104,7 @@ export class AlsatianCliOptions {
          this._versionRequested = true;
 
          return args.filter((value, index) => {
+            Unused(value);
             return index !== versionRequestedIndex;
          });
       }
@@ -116,6 +120,7 @@ export class AlsatianCliOptions {
          this._helpRequested = true;
 
          return args.filter((value, index) => {
+            Unused(value);
             return index !== helpRequestedIndex;
          });
       }
@@ -127,8 +132,8 @@ export class AlsatianCliOptions {
                                              argumentName: string,
                                              argumentShorthand?: string): number {
 
-      const matchingArguments = args.filter((value, index) => value === "--" + argumentName
-                                                           || value === "-" + argumentShorthand);
+      const matchingArguments = args.filter((value) => value === "--" + argumentName
+                                                    || value === "-" + argumentShorthand);
 
       if (matchingArguments.length === 0) {
          return -1;
@@ -142,7 +147,7 @@ export class AlsatianCliOptions {
 
    private _getArgumentValueFromArgumentList(args: Array<string>,
                                              argumentName: string,
-                                             argumentShorthand?: string): string {
+                                             argumentShorthand?: string): string | null {
       const argumentIndex = this._getArgumentIndexFromArgumentList(args, argumentName, argumentShorthand);
 
       if (argumentIndex === -1) {

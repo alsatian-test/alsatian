@@ -62,7 +62,7 @@ export class TestOutputStream extends ReadableStream {
       this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
    }
 
-   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
+   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error | null): void {
       const description = this._getTestDescription(test, testCaseArguments);
 
       this._writeOut(`not ok ${testId} ${description}\n`);
@@ -117,12 +117,12 @@ export class TestOutputStream extends ReadableStream {
 
    }
 
-   private _writeUnhandledErrorOutput(error: Error): void {
+   private _writeUnhandledErrorOutput(error: Error | null): void {
 
        this._writeFailure("The test threw an unhandled error.",
                           "an unhandled error",
                           "no unhandled errors to be thrown",
-                          error.stack);
+                          error instanceof Error ? error.stack : undefined);
 
    }
 

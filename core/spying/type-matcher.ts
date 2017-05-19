@@ -1,7 +1,9 @@
 import { ArgumentStringifier } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
+import { Unused } from "../unused";
 
 function replacer(key: string, value: any) {
+    Unused(key);
     if (typeof value === "function") {
         return value.toString();
     }

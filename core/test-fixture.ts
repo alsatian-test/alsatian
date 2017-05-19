@@ -16,7 +16,7 @@ export class TestFixture implements ITestFixture {
     constructor(description: string) {
         this.focussed = false;
         this.ignored = false;
-        this.ignoreReason = undefined;
+        this.ignoreReason = "";
         this.fixture = {};
         this.description = description;
     }

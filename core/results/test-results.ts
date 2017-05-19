@@ -30,7 +30,7 @@ export class TestResults {
       return TestOutcome.Skip;
    }
 
-   public addTestCaseResult(args: Array<any>, error?: Error): TestCaseResult {
+   public addTestCaseResult(args: Array<any>, error: Error | null = null): TestCaseResult {
       const testCaseResult = new TestCaseResult(this._test, args, error);
       this._testCaseResults.push(testCaseResult);
       return testCaseResult;

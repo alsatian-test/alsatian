@@ -6,9 +6,9 @@ export class TestCaseResult {
 
     private _test: ITest;
     private _arguments: Array<any>;
-    private _error: Error;
+    private _error: Error | null;
 
-    public constructor(test: ITest, testCaseArguments: Array<any>, error?: Error) {
+    public constructor(test: ITest, testCaseArguments: Array<any>, error: Error | null = null) {
         this._test = test;
         this._arguments = testCaseArguments;
         this._error = error;
@@ -38,7 +38,7 @@ export class TestCaseResult {
         return this._arguments;
     }
 
-    public get error(): Error {
+    public get error(): Error | null {
         return this._error;
     }
 
