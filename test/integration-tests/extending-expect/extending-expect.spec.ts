@@ -13,13 +13,9 @@ interface IExtendedExpect extends IExpect {
 }
 
 const ExtendedExpectFunction = (value: any) => new MatcherExtension(value);
-const ExtendedExpect = ExtendExpect<IExtendedExpect>(ExtendedExpectFunction);
+const ExtendedExpect = buildExpect<IExtendedExpect>(ExtendedExpectFunction);
 
-function ExtendExpect<S extends IExpect>(expectFunction: (actualValue: any) => MixedMatcher): S {    
-    const ExtendedExpect = expectFunction as S;
-    ExtendedExpect.fail = Expect.fail;
-    return ExtendedExpect;
-}
+
 
 export class ExtendingExpectTests {
 
