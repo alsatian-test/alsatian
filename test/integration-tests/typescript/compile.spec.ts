@@ -17,8 +17,8 @@ export class TypeScriptCompilerTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       return new Promise<void>((resolve, reject) => {
          result.on("close", (code: number) => {

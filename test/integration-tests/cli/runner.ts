@@ -18,8 +18,8 @@ export class CliIntegrationTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       const expectedOutput = FileSystem
                               .readFileSync(`./test/integration-tests/expected-output/` +
@@ -49,8 +49,8 @@ export class CliIntegrationTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       const expectedOutput = FileSystem
                             .readFileSync(`./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`)
