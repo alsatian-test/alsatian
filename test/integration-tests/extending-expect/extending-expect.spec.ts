@@ -1,4 +1,4 @@
-import { Expect, IExpect, MatchError, MixedMatcher, NumberMatcher, Test, buildExpect } from "../../../core/alsatian-core";
+import { buildExpect, Expect, IExpect, MatchError, MixedMatcher, NumberMatcher, Test } from "../../../core/alsatian-core";
 
 class MatcherExtension extends MixedMatcher {
     public toBeTheAnswer() {
