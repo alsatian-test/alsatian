@@ -15,8 +15,6 @@ interface IExtendedExpect extends IExpect {
 const ExtendedExpectFunction = (value: any) => new MatcherExtension(value);
 const ExtendedExpect = buildExpect<IExtendedExpect>(ExtendedExpectFunction);
 
-
-
 export class ExtendingExpectTests {
 
     @Test("extension is a mixed matcher")
