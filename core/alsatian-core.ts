@@ -6,6 +6,10 @@ import {
 } from "./";
 
 import {
+    buildExpect
+} from "./expect";
+
+import {
     ContainerMatcher,
     EmptyMatcher,
     FunctionMatcher,
@@ -70,6 +74,7 @@ export {
    AsyncTeardown,
    AsyncTeardownFixture,
    AsyncTest,
+   buildExpect,
    ContainerMatcher,
    EmptyMatcher,
    Expect,
