@@ -12,8 +12,7 @@ interface IExtendedExpect extends IExpect {
     (test: number): MatcherExtension & NumberMatcher;
 }
 
-const ExtendedExpectFunction = (value: any) => new MatcherExtension(value);
-const ExtendedExpect = buildExpect<IExtendedExpect>(ExtendedExpectFunction);
+const ExtendedExpect = buildExpect<IExtendedExpect>(MatcherExtension);
 
 export class ExtendingExpectTests {
 
