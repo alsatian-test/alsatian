@@ -1,12 +1,12 @@
 import {
-   Expect,
-   IExpect,
    TestOutputStream,
    TestSet
 } from "./";
 
 import {
-    buildExpect
+    buildExpect,
+    Expect,
+    IExpect,
 } from "./expect";
 
 import {
