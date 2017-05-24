@@ -1,4 +1,4 @@
-import { IExpect } from "../";
+import { IExpect } from "./expect.i";
 import { MixedMatcher } from "../matchers";
 import { fail } from "./fail";
 

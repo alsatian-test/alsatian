@@ -7,7 +7,7 @@ function ExpectFunction<ActualType>(actualValue: ActualType): Matcher<ActualType
    return new MixedMatcher(actualValue);
 }
 
-const Expect = buildExpect(ExpectFunction);
+const Expect = buildExpect<IExpect>(ExpectFunction);
 
 export {
     Expect
