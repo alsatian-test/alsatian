@@ -1,7 +1,7 @@
-import { MatchError } from "./errors";
+import { MatchError } from "../errors";
 import { IExpect } from "./expect.i";
-import { Matcher, MixedMatcher } from "./matchers";
-import { buildExpect } from "./expect/build-expect";
+import { Matcher, MixedMatcher } from "../matchers";
+import { buildExpect } from "./build-expect";
 
 function ExpectFunction<ActualType>(actualValue: ActualType): Matcher<ActualType> {
    return new MixedMatcher(actualValue);

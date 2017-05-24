@@ -7,8 +7,8 @@ import {
     NumberMatcher,
     PropertyMatcher,
     StringMatcher
-} from "./matchers";
-import { FunctionSpy, PropertySpy } from "./spying";
+} from "../matchers";
+import { FunctionSpy, PropertySpy } from "../spying";
 
 /**
  * Enables actual vs expected comparisons
