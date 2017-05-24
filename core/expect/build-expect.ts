@@ -9,7 +9,7 @@ export function buildExpect<ExpectType extends IExpect>(matcherFunction: Matcher
 export function buildExpect<ExpectType extends IExpect>(matcherConstructor: MatcherConstructor): ExpectType;
 export function buildExpect<ExpectType extends IExpect>(expectFunction: MatcherFunction
                                                                       | MatcherConstructor): ExpectType {
-    const EXPECT = ((actualValue: any) => new (expectFunction as any)(actualValue)) as ExpectType;
+    const EXPECT = ((actualValue: any) => new (expectFunction as MatcherConstructor)(actualValue)) as ExpectType;
     EXPECT.fail = fail;
     return EXPECT;
 }
