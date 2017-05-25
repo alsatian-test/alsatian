@@ -92,16 +92,16 @@ export class Matcher<T> {
       }
 
       // get all the property keys for each object
-      let objectAKeys = Object.keys(objectA);
-      let objectBKeys = Object.keys(objectB);
+      const OBJECT_A_KEYS = Object.keys(objectA);
+      const OBJECT_B_KEYS = Object.keys(objectB);
 
       // if they don't have the same amount of properties then clearly not
-      if (objectAKeys.length !== objectBKeys.length) {
+      if (OBJECT_A_KEYS.length !== OBJECT_B_KEYS.length) {
          return false;
       }
 
       // check all the properties of each object
-      for (const objectAKey of objectAKeys) {
+      for (const objectAKey of OBJECT_A_KEYS) {
 
          // if the property values are not the same
          if (objectA[objectAKey] !== objectB[objectAKey]) {
