@@ -6,7 +6,7 @@ export class ToContainTests {
    @TestCase([], 1)
    @TestCase([ 1, 2 ], 42)
    public shouldContainArrayItemAndDoesNotThrows<T>(actualValue: Array<T>, expectedContent: T) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toContain(expectedContent))
         .toThrowError(
@@ -28,7 +28,7 @@ export class ToContainTests {
    @TestCase([ 1 ], 1)
    @TestCase([ 1, 42 ], 42)
    public shouldContainArrayItemAndDoesDoesNotThrow<T>(actualValue: Array<T>, expectedContent: T) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.toContain(expectedContent)).not.toThrow();
    }
@@ -44,7 +44,7 @@ export class ToContainTests {
    @TestCase([], 1)
    @TestCase([ 1, 2 ], 42)
    public shouldNotContainArrayItemAndDoesNotDoesNotThrow<T>(actualValue: Array<T>, expectedContent: T) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toContain(expectedContent)).not.toThrow();
    }
@@ -60,7 +60,7 @@ export class ToContainTests {
    @TestCase([ 1 ], 1)
    @TestCase([ 1, 42 ], 42)
    public shouldNotContainArrayItemAndDoesThrows<T>(actualValue: Array<T>, expectedContent: T) {
-      let expect = Expect(actualValue);
+      const expect = Expect(actualValue);
 
       Expect(() => expect.not.toContain(expectedContent))
         .toThrowError(
