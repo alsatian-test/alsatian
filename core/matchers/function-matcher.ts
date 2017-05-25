@@ -77,7 +77,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
       }
 
       if (threwRightError !== this.shouldMatch) {
-         throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+         throw new ErrorMatchError(actualError, this.shouldMatch, errorType, errorMessage);
       }
    }
 
@@ -107,7 +107,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
        }
 
        if (threwRightError !== this.shouldMatch) {
-          throw new ErrorMatchError(actualError, this.shouldMatch, (<any> errorType), errorMessage);
+          throw new ErrorMatchError(actualError, this.shouldMatch, errorType, errorMessage);
        }
    }
 
