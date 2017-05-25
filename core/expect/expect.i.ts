@@ -19,7 +19,7 @@ export interface IExpect {
      * @param actualValue - the value or function under test
      */
     <T>(actualValue: Array<T>): ContainerMatcher<Array<T>, T>;
-    (actualValue: FunctionSpy | Function): FunctionMatcher;
+    (actualValue: FunctionSpy | ((...args: Array<any>) => any)): FunctionMatcher;
     (actualValue: number): NumberMatcher;
     <T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
     (actualValue: object): EmptyMatcher<object>;
