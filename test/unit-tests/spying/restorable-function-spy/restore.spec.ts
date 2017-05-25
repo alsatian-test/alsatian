@@ -5,13 +5,13 @@ export class RestoreTests {
 
   @Test()
   public targetsFunctionIsNoLongerASpyWhenCalledFromSpy() {
-    let object = {
+    const object = {
       originalFunction: () => {}
     };
 
-    let originalFunction = object.originalFunction;
+    const originalFunction = object.originalFunction;
 
-    let spy = SpyOn(object, "originalFunction");
+    const spy = SpyOn(object, "originalFunction");
 
     Expect(object.originalFunction).not.toBe(originalFunction);
 
@@ -22,11 +22,11 @@ export class RestoreTests {
 
     @Test()
     public targetsFunctionIsNoLongerASpyWhenCalledFromFunction() {
-      let object = {
+      const object = {
         originalFunction: () => {}
       };
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
       SpyOn(object, "originalFunction");
 
@@ -39,11 +39,11 @@ export class RestoreTests {
 
   @Test()
   public targetsOriginalFunctionIsCalledAfterRestoreIsCalled() {
-    let object: any = { };
+    const object: any = { };
     object.originalFunction = () => {};
-    let originalSpy = SpyOn(object, "originalFunction");
+    const originalSpy = SpyOn(object, "originalFunction");
 
-    let secondSpy = SpyOn(object, "originalFunction");
+    const secondSpy = SpyOn(object, "originalFunction");
 
     object.originalFunction.restore();
     object.originalFunction();

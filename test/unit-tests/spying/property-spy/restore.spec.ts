@@ -22,11 +22,11 @@ export class RestoreTests {
 
    @Test()
    public targetsPropertyIsGetterNoLongerASpyWhenCalledFromProperty() {
-      let object = {
+      const object = {
          get originalProperty(): any { return null; }
       };
 
-      let originalPropertyGetter =  Object.getOwnPropertyDescriptor(object, "originalProperty").get;
+      const originalPropertyGetter =  Object.getOwnPropertyDescriptor(object, "originalProperty").get;
 
       const spy = new PropertySpy(object, "originalProperty");
 

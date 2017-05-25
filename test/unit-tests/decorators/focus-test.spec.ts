@@ -9,7 +9,7 @@ export class FocusTestDecoratorTests {
     @TestCase("something-different")
     public focusTestKeyMetaDataAddedToCorrectKey(key: string) {
 
-       let testFixture = {};
+       const testFixture = {};
 
        FocusTestDecorator(testFixture, key, null);
 

@@ -8,8 +8,8 @@ export class IgnoreTestDecoratorTests {
     @TestCase("another key")
     @TestCase("something-different")
     public ignoreTestKeyMetaDataAddedToCorrectKey(key: string) {
-        let ignoreTestDecorator = IgnoreTestDecorator();
-        let testFixture = {};
+        const ignoreTestDecorator = IgnoreTestDecorator();
+        const testFixture = {};
 
         ignoreTestDecorator(testFixture, key, null);
 
@@ -20,10 +20,10 @@ export class IgnoreTestDecoratorTests {
     @TestCase("another reason for it being ignored")
     @TestCase("bla bla bla")
     public ignoreTestCorrectReasonAdded(reason: string) {
-        let key = "testKey";
+        const key = "testKey";
 
-        let ignoreTestDecorator = IgnoreTestDecorator(reason);
-        let testFixture = {};
+        const ignoreTestDecorator = IgnoreTestDecorator(reason);
+        const testFixture = {};
 
         ignoreTestDecorator(testFixture, key, null);
 

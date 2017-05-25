@@ -6,7 +6,7 @@ export class GreaterThanMatchErrorTests {
    @TestCase(0, 1)
    @TestCase(1, 42)
    public shouldBeGreaterThanMessage(actualValue: number, lowerLimit: number) {
-      let error = new GreaterThanMatchError(actualValue, lowerLimit, true);
+      const error = new GreaterThanMatchError(actualValue, lowerLimit, true);
 
       Expect(error.message).toBe("Expected " + actualValue + " to be greater than " + lowerLimit + ".");
    }
@@ -15,7 +15,7 @@ export class GreaterThanMatchErrorTests {
    @TestCase(2, 2)
    @TestCase(42, 1)
    public shouldNotBeGreaterThanMessage(actualValue: number, lowerLimit: number) {
-      let error = new GreaterThanMatchError(actualValue, lowerLimit, false);
+      const error = new GreaterThanMatchError(actualValue, lowerLimit, false);
 
       Expect(error.message).toBe("Expected " + actualValue + " not to be greater than " + lowerLimit + ".");
    }

@@ -1,4 +1,5 @@
 import { SpyCall } from "../spying";
+import { ISpyCall } from "../_interfaces";
 
 export class FunctionSpy {
 
@@ -6,14 +7,14 @@ export class FunctionSpy {
    protected hasReturnValue: boolean;
    protected isStubbed: boolean;
    protected context: any;
-   private _fakeFunction: Function;
+   private _fakeFunction: () => any;
 
-   private _calls: Array<SpyCall> = [];
+   private _calls: Array<ISpyCall> = [];
    public get calls() {
       return this._calls;
    }
 
-   public callsWithArguments(... args: Array<any>): Array<SpyCall> {
+   public callsWithArguments(... args: Array<any>): Array<ISpyCall> {
       return this.calls.filter(call => call.allArgumentsMatch.apply(call, args));
    }
 
@@ -39,7 +40,7 @@ export class FunctionSpy {
       this.hasReturnValue = true;
    }
 
-   public andCall(fakeFunction: Function) {
+   public andCall(fakeFunction: () => any) {
       this.isStubbed = true;
       this._fakeFunction = fakeFunction;
    }

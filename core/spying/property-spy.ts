@@ -2,12 +2,12 @@ import { SpyCall } from "./spy-call";
 
 export class PropertySpy<PropertyType> {
 
-   private _originialGetter: () => PropertyType;
-   private _originialSetter: (value: PropertyType) => void;
+   private _originialGetter: () => PropertyType | undefined;
+   private _originialSetter: (value: PropertyType) => void | undefined;
    private _value: PropertyType;
    private _descriptorTarget: any;
-   private _getter: () => PropertyType;
-   private _setter: (value: PropertyType) => void;
+   private _getter: () => PropertyType | undefined;
+   private _setter: (value: PropertyType) => void | undefined;
    private _returnValue: boolean;
    private _propertyName: string;
    private _getCalls: Array<SpyCall> = [];
@@ -36,9 +36,9 @@ export class PropertySpy<PropertyType> {
          throw new TypeError(`${propertyName} is not a property.`);
       }
 
-      // store the original setters and getters
-      this._originialGetter = propertyDescriptor.get;
-      this._originialSetter = propertyDescriptor.set;
+      // store the original setters and getters, which maybe undefined
+      this._originialGetter = propertyDescriptor.get as () => PropertyType | undefined;
+      this._originialSetter = propertyDescriptor.set as (v: PropertyType) => void | undefined;
 
       this._getter = this._originialGetter;
       this._setter = this._originialSetter;

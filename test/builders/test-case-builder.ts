@@ -27,7 +27,7 @@ export class TestCaseBuilder {
     return this;
   }
 
-  public build (): ITestCase {
+  public build(): ITestCase {
     return this._testCase;
   }
 }

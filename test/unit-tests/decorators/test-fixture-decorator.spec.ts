@@ -10,11 +10,11 @@ export class TestFixtureDecoratorTests {
     public metaDataIsSet() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        class TestFixtureClass { }
 
-        testFixtureDecorator(testFixtureConstructor);
+        testFixtureDecorator(TestFixtureClass);
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor);
+        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
 
         Expect(testFixtureMetadata).toBeDefined();
         Expect(testFixtureMetadata).not.toBeNull();
@@ -24,11 +24,11 @@ export class TestFixtureDecoratorTests {
     public metaDataIsTestFixture() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = () => {};
+        class TestFixtureClass { }
 
-        testFixtureDecorator(testFixtureConstructor);
+        testFixtureDecorator(TestFixtureClass);
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor);
+        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
 
         Expect(testFixtureMetadata instanceof TestFixtureMetadata).toBe(true);
     }
@@ -39,28 +39,30 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionSet(testFixtureDescription: string) {
         const testFixtureDecorator = TestFixtureDecorator(testFixtureDescription);
 
-        const testFixtureConstructor = () => {};
+        class TestFixtureClass { }
 
-        testFixtureDecorator(testFixtureConstructor);
+        testFixtureDecorator(TestFixtureClass);
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor);
+        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
 
         Expect(testFixtureMetadata.description).toBe(testFixtureDescription);
     }
 
-    @TestCase("Class")
-    @TestCase("TestFixture")
-    @TestCase("MegaHyperAwesomeTests")
-    public testFixtureMetadataDescriptionDefaultsToConstructorName(testFixtureClassName: string) {
+    @Test()
+    public testFixtureMetadataDescriptionDefaultsToClassName() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        const testFixtureConstructor = <Function> { };
-        (<any> testFixtureConstructor).name = testFixtureClassName;
+        class TestFixture { }
+        testFixtureDecorator(TestFixture);
 
-        testFixtureDecorator(testFixtureConstructor);
+        class SomeOtherTestFixture { }
+        testFixtureDecorator(SomeOtherTestFixture);
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor);
+        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixture);
+        const someOtherTestFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, SomeOtherTestFixture);
 
-        Expect(testFixtureMetadata.description).toBe(testFixtureClassName);
+        Expect(testFixtureMetadata.description).toBe("TestFixture");
+        Expect(someOtherTestFixtureMetadata.description).toBe("SomeOtherTestFixture");
     }
+
 }

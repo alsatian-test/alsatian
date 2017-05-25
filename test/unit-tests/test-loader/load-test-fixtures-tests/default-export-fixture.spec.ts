@@ -8,18 +8,18 @@ export class DefaultExportFixtureTests {
    @Test()
    public ignoredShouldBeFalseByDefault() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {};
+     const testFixtureInstance = {};
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(false);
    }
@@ -27,20 +27,20 @@ export class DefaultExportFixtureTests {
    @Test()
    public ignoredShouldBeTrueIfMetadataSet() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {};
+     const testFixtureInstance = {};
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureConstructor);
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
    }
@@ -48,18 +48,18 @@ export class DefaultExportFixtureTests {
    @Test()
    public focussedShouldBeFalseByDefault() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {};
+     const testFixtureInstance = {};
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(false);
    }
@@ -67,20 +67,20 @@ export class DefaultExportFixtureTests {
    @Test()
    public focussedShouldBeTrueIfMetadataSet() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {};
+     const testFixtureInstance = {};
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
      Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureConstructor);
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(true);
    }
@@ -88,17 +88,17 @@ export class DefaultExportFixtureTests {
    @Test()
    public noTestsReturnsEmptyArray() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {};
+     const testFixtureInstance = {};
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test").length).toBe(0);
    }

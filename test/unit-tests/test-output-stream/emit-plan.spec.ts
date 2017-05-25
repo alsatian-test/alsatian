@@ -11,7 +11,7 @@ export class EmitPlanTests {
     @TestCase(200)
     @TestCase(250)
     public shouldEmitCorrectTestPlan(testCount: number) {
-        let testOutput = new TestOutputStream();
+        const testOutput = new TestOutputStream();
         SpyOn(testOutput, "push");
 
         testOutput.emitPlan(testCount);

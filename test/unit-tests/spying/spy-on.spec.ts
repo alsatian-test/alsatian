@@ -4,11 +4,11 @@ export class SpyOnTests {
 
    @Test()
    public functionIsReplacedWithSpy() {
-      let object = {
+      const object = {
          function: () => {}
       };
 
-      let originalFunction = object.function;
+      const originalFunction = object.function;
 
       SpyOn(object, "function");
 
@@ -17,14 +17,14 @@ export class SpyOnTests {
 
    @Test()
    public functionStillWorks() {
-      let object = {
+      const object = {
          function: () => {
             object.functionCalled = true;
          },
          functionCalled: false
       };
 
-      let originalFunction = object.function;
+      const originalFunction = object.function;
 
       SpyOn(object, "function");
       object.function();
@@ -34,27 +34,27 @@ export class SpyOnTests {
 
    @Test()
    public callsPropertyIsSetOnFunction() {
-      let object = {
+      const object = {
          function: () => {}
       };
 
-      let originalFunction = object.function;
+      const originalFunction = object.function;
 
       SpyOn(object, "function");
 
-      Expect((<any> object.function).calls).toBeDefined();
-      Expect((<any> object.function).calls).not.toBeNull();
+      Expect((object.function as any).calls).toBeDefined();
+      Expect((object.function as any).calls).not.toBeNull();
    }
 
    @Test()
    public spyShouldBeReturned() {
-      let object = {
+      const object = {
          function: () => {}
       };
 
-      let originalFunction = object.function;
+      const originalFunction = object.function;
 
-      let spy = SpyOn(object, "function");
+      const spy = SpyOn(object, "function");
 
       Expect(spy).toBeDefined();
       Expect(spy).not.toBeNull();
@@ -65,7 +65,7 @@ export class SpyOnTests {
    @TestCase("number", 42)
    @TestCase("string", "something")
    public spyingOnNonFunctionShouldThrowError(propertyName: string, propertyValue: any) {
-      let object: { [propertyName: string]: any } = { };
+      const object: { [propertyName: string]: any } = { };
 
       object[propertyName] = propertyValue;
 

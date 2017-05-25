@@ -1,5 +1,6 @@
 import { AsyncTest, Expect, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { INameable } from "../../../core/_interfaces";
 
 export class ToThrowAsyncTests {
    // Asynchronous throw
@@ -148,7 +149,7 @@ export class ToThrowAsyncTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.actual)
-         .toBe(`${(<any> actualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+         .toBe(`${(actualErrorType as INameable).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @AsyncTest("Test not.toThrowAsync error are caught and error is ErrorMatchError")

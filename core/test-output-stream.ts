@@ -24,16 +24,14 @@ export class TestOutputStream extends ReadableStream {
    }
 
    public emitResult(testId: number, result: TestCaseResult): void {
-      let outcome = result.outcome;
-      let test = result.test;
-      let testCaseArguments = result.arguments;
+      const outcome = result.outcome;
+      const test = result.test;
+      const testCaseArguments = result.arguments;
 
       if (outcome === TestOutcome.Pass) {
          this._emitPass(testId, test, testCaseArguments);
       } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
-         let error = result.error;
-
-         this._emitFail(testId, test, testCaseArguments, error);
+         this._emitFail(testId, test, testCaseArguments, result.error);
       } else if (outcome === TestOutcome.Skip) {
          this._emitSkip(testId, test, testCaseArguments);
       } else {
@@ -46,13 +44,13 @@ export class TestOutputStream extends ReadableStream {
    }
 
    private _emitPass(testId: number, test: ITest, testCaseArguments: Array<any>): void {
-      let description = this._getTestDescription(test, testCaseArguments);
+      const description = this._getTestDescription(test, testCaseArguments);
 
       this._writeOut(`ok ${testId} ${description}\n`);
    }
 
    private _emitSkip(testId: number, test: ITest, testCaseArguments: Array<any>): void {
-      let description = this._getTestDescription(test, testCaseArguments);
+      const description = this._getTestDescription(test, testCaseArguments);
 
       // we only want to use the reason if it's not undefined
       let reasonString = "";
@@ -64,8 +62,8 @@ export class TestOutputStream extends ReadableStream {
       this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
    }
 
-   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error): void {
-      let description = this._getTestDescription(test, testCaseArguments);
+   private _emitFail(testId: number, test: ITest, testCaseArguments: Array<any>, error: Error | null): void {
+      const description = this._getTestDescription(test, testCaseArguments);
 
       this._writeOut(`not ok ${testId} ${description}\n`);
 
@@ -111,20 +109,20 @@ export class TestOutputStream extends ReadableStream {
 
    private _writeMatchErrorOutput(error: MatchError): void {
 
-       let sanitisedMessage = error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-       let sanitisedActual = JSON.stringify(error.actual);
-       let sanitisedExpected = JSON.stringify(error.expected);
+       const sanitisedMessage = error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+       const sanitisedActual = JSON.stringify(error.actual);
+       const sanitisedExpected = JSON.stringify(error.expected);
 
        this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
 
    }
 
-   private _writeUnhandledErrorOutput(error: Error): void {
+   private _writeUnhandledErrorOutput(error: Error | null): void {
 
        this._writeFailure("The test threw an unhandled error.",
                           "an unhandled error",
                           "no unhandled errors to be thrown",
-                          error.stack);
+                          error instanceof Error ? error.stack : undefined);
 
    }
 

@@ -12,19 +12,19 @@ export class ReturnTests {
    @TestCase("")
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy();
+      const spy = new FunctionSpy();
 
       spy.andReturn(expectedReturnValue);
 
-      let actualReturnValue = spy.call([]);
+      const actualReturnValue = spy.call([]);
 
       Expect(actualReturnValue).toBe(expectedReturnValue);
    }
