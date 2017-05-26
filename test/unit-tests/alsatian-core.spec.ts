@@ -98,4 +98,10 @@ export class AlsatianCoreTests {
       Expect(Alsatian.Any).toBeDefined();
       Expect(Alsatian.Any).not.toBeNull();
    }
+
+   @Test()
+   public restorableFunctionSpyShouldBeExposed() {
+      Expect(Alsatian.RestorableFunctionSpy).toBeDefined();
+      Expect(Alsatian.RestorableFunctionSpy).not.toBeNull();
+   }
 }

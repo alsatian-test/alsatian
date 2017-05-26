@@ -28,6 +28,7 @@ import {
 import {
    Any,
    FunctionSpy,
+   RestorableFunctionSpy,
    SpyOn,
    SpyOnProperty
 } from "./spying";
@@ -67,6 +68,7 @@ export {
    Setup,
    SetupFixture,
    FunctionSpy,
+   RestorableFunctionSpy,
    SpyOn,
    SpyOnProperty,
    Teardown,
