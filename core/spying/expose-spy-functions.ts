@@ -1,7 +1,7 @@
 import { FunctionSpy } from "./function-spy";
 import { ISpiedFunction } from "./spied-function.i";
 
-export function exposeSpyFunctions(spiedFunction: ISpiedFunction, functionSpy: FunctionSpy) {
+export function exposeSpyFunctions<ArgumentType, ReturnType>(spiedFunction: ISpiedFunction<ArgumentType, ReturnType>, functionSpy: FunctionSpy) {
 
       // expose spy's calls on function
       (spiedFunction as any).calls = functionSpy.calls;

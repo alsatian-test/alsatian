@@ -57,7 +57,7 @@ export class CallTests {
 
       const innerSpy = createFunctionSpy();
 
-      spy.andCall(innerSpy as any);
+      spy.andCall(innerSpy);
 
       const actualReturnValue = spy();
 
