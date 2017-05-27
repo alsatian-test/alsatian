@@ -27,6 +27,7 @@ import {
 
 import {
    Any,
+   createFunctionSpy,
    FunctionSpy,
    SpyOn,
    SpyOnProperty
@@ -66,6 +67,7 @@ export {
    Matcher,
    Setup,
    SetupFixture,
+   createFunctionSpy,
    FunctionSpy,
    SpyOn,
    SpyOnProperty,
