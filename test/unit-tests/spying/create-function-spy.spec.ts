@@ -1,4 +1,4 @@
-import { Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { createFunctionSpy } from "../../../core/spying/create-function-spy";
 
 export class CallTests {
@@ -15,7 +15,7 @@ export class CallTests {
 
       const spy = createFunctionSpy();
 
-      spy.call.apply(spy, args);
+      spy(args);
 
       Expect(spy.calls[0].args).toEqual(args);
    }
@@ -31,7 +31,7 @@ export class CallTests {
       const spy = createFunctionSpy();
 
       for (let i = 0; i < callCount; i++) {
-         spy.call.apply(spy, []);
+         spy();
       }
 
       Expect(spy.calls.length).toBe(callCount);
@@ -58,7 +58,7 @@ export class CallTests {
 
       spy.andReturn(expectedReturnValue);
 
-      const actualReturnValue = spy.call.apply(spy, []);
+      const actualReturnValue = spy();
 
       Expect(actualReturnValue).toBe(expectedReturnValue);
    }

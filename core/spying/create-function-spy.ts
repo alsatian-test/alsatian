@@ -1,7 +1,8 @@
 import { FunctionSpy } from "./function-spy";
 import { exposeSpyFunctions } from "./expose-spy-functions";
+import { ISpiedFunction } from "./spied-function.i";
 
-export function createFunctionSpy(): (...args: Array<any>) => any | FunctionSpy {
+export function createFunctionSpy(): ISpiedFunction {
       const functionSpy = new FunctionSpy();
 
       const spiedFunction = functionSpy.call.bind(functionSpy);
