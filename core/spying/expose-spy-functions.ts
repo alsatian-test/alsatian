@@ -1,13 +1,14 @@
 import { FunctionSpy } from "./function-spy";
+import { ISpiedFunction } from "./spied-function.i";
 
-export function exposeSpyFunctions(spiedFunction: (...args: Array<any>) => any, functionSpy: FunctionSpy) {
+export function exposeSpyFunctions(spiedFunction: ISpiedFunction, functionSpy: FunctionSpy) {
 
       // expose spy's calls on function
       (spiedFunction as any).calls = functionSpy.calls;
 
       // expose spy's callsWithArguments on function
-      (spiedFunction as any).callsWithArguments = functionSpy.callsWithArguments;
+      spiedFunction.callsWithArguments = functionSpy.callsWithArguments;
 
       // expose spy's andReturn on function
-      (spiedFunction as any).andReturn = functionSpy.andReturn.bind(functionSpy);
+      spiedFunction.andReturn = functionSpy.andReturn.bind(functionSpy);
 }
