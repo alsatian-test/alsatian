@@ -11,4 +11,7 @@ export function exposeSpyFunctions(spiedFunction: ISpiedFunction, functionSpy: F
 
       // expose spy's andReturn on function
       spiedFunction.andReturn = functionSpy.andReturn.bind(functionSpy);
+
+      // expose spy's andCall on function
+      spiedFunction.andCall = functionSpy.andCall.bind(functionSpy);
 }

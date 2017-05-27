@@ -9,9 +9,6 @@ export class CallTests {
    @TestCase("one", 2)
    @TestCase({ some: "thing" }, [])
    public argumentsRecorded(...args: Array<any>) {
-      const object = {
-         originalFunction: () => {}
-      };
 
       const spy = createFunctionSpy();
 
@@ -24,9 +21,6 @@ export class CallTests {
    @TestCase(1)
    @TestCase(42)
    public callAddedForEachCall(callCount: number) {
-      const object = {
-         originalFunction: () => {}
-      };
 
       const spy = createFunctionSpy();
 
@@ -46,17 +40,43 @@ export class CallTests {
    @TestCase("")
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
-      const object = {
-         originalFunction: () => {}
-      };
-
-      SpyOn(object, "originalFunction");
-
-      const originalFunction = object.originalFunction;
 
       const spy = createFunctionSpy();
 
       spy.andReturn(expectedReturnValue);
+
+      const actualReturnValue = spy();
+
+      Expect(actualReturnValue).toBe(expectedReturnValue);
+   }
+
+   @Test()
+   public givenFunctionIsCalled() {
+
+      const spy = createFunctionSpy();
+
+      const innerSpy = createFunctionSpy();
+
+      spy.andCall(innerSpy as any);
+
+      const actualReturnValue = spy();
+
+      Expect(innerSpy).toHaveBeenCalled();
+   }
+
+   @TestCase(undefined)
+   @TestCase(null)
+   @TestCase(0)
+   @TestCase(42)
+   @TestCase(4.2)
+   @TestCase(-4.2)
+   @TestCase("")
+   @TestCase("something")
+   public givenFunctionReturnValueIsReturned(expectedReturnValue: any) {
+
+      const spy = createFunctionSpy();
+
+      spy.andCall(() => expectedReturnValue);
 
       const actualReturnValue = spy();
 
