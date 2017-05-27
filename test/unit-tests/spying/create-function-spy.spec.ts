@@ -15,7 +15,7 @@ export class CallTests {
 
       const spy = createFunctionSpy();
 
-      spy(args);
+      spy.apply(this, args);
 
       Expect(spy.calls[0].args).toEqual(args);
    }
