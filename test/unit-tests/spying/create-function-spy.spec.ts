@@ -3,12 +3,12 @@ import { createFunctionSpy } from "../../../core/spying/create-function-spy";
 
 export class CallTests {
 
-   @TestCase([])
-   @TestCase([ 1 ])
-   @TestCase([ 1, 2 ])
-   @TestCase([ "one", 2 ])
-   @TestCase([ { some: "thing" }, [] ])
-   public argumentsRecorded(args: Array<any>) {
+   @TestCase()
+   @TestCase(1)
+   @TestCase(1, 2)
+   @TestCase("one", 2)
+   @TestCase({ some: "thing" }, [])
+   public argumentsRecorded(...args: Array<any>) {
       const object = {
          originalFunction: () => {}
       };
