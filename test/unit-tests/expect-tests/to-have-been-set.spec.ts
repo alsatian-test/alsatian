@@ -89,7 +89,15 @@ export class ToHaveBeenSetTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasBeenSetShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenSet())
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+      const EXPECT = Expect(propertySpy);
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.toHaveBeenSet())
         .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
 
@@ -105,7 +113,15 @@ export class ToHaveBeenSetTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasNotBeenSetShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenSet())
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+      const EXPECT = Expect(propertySpy);
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toHaveBeenSet())
         .toThrowError(TypeError, "toHaveBeenSet requires value passed in to Expect to be a PropertySpy.");
    }
 
