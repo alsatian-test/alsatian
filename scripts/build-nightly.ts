@@ -25,7 +25,7 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
     function addLeadingZeros(originalNumber: number, minimumIntegerLength: number) {
         const diff = Math.ceil(minimumIntegerLength - Math.log10(originalNumber) - 1);
 
-        if (diff > 0) {
+        if (diff + 1 > 0) {
             return new Array(diff).join("0") + originalNumber.toString();
         }
 
