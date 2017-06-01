@@ -17,7 +17,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
          throw new TypeError("toThrow requires value passed in to Expect to be a function.");
       }
 
-      let errorThrown: Error;
+      let errorThrown: Error | null = null;
 
       try {
          this.actualValue();
@@ -26,7 +26,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
          errorThrown = error;
       }
 
-      if (errorThrown === undefined === this.shouldMatch) {
+      if (errorThrown === null === this.shouldMatch) {
          throw new ErrorMatchError(errorThrown, this.shouldMatch);
       }
    }
@@ -37,7 +37,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
           throw new TypeError("toThrowAsync requires value passed in to Expect to be a function.");
        }
 
-       let errorThrown: Error;
+       let errorThrown: Error | null = null;
 
        try {
           await this.actualValue();
@@ -46,7 +46,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
           errorThrown = error;
        }
 
-       if (errorThrown === undefined === this.shouldMatch) {
+       if (errorThrown === null === this.shouldMatch) {
           throw new ErrorMatchError(errorThrown, this.shouldMatch);
        }
    }
@@ -63,7 +63,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
       }
 
       let threwRightError = false;
-      let actualError: Error;
+      let actualError: Error | null = null;
 
       try {
          this.actualValue();
@@ -93,7 +93,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
        }
 
        let threwRightError = false;
-       let actualError: Error;
+       let actualError: Error | null = null;
 
        try {
           await this.actualValue();

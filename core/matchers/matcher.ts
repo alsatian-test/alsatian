@@ -1,6 +1,5 @@
 import {
    EqualMatchError,
-   ErrorMatchError,
    ExactMatchError,
    TruthyMatchError
 } from "../errors";

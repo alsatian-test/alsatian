@@ -1,4 +1,4 @@
-import { ContentsMatchError, EmptyMatchError, RegexMatchError } from "../errors";
+import { RegexMatchError } from "../errors";
 import { ContainerMatcher } from "./container-matcher";
 
 /**
