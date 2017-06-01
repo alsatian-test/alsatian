@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import { GitProcess } from "dugite";
 import { writeFile } from "fs";
 import { padNumber } from "./pad-number";
@@ -22,7 +22,9 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
 
         writeFile("../package.json", packageJson, () => {   
             process.stdout.write("publishing " + packageJson.version + "\n");         
-            exec("npm publish --tag next");
+            const npmPublishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
+            npmPublishProcess.stdout.pipe(process.stdout);
+            npmPublishProcess.stderr.pipe(process.stderr);
         });
     }
 });
