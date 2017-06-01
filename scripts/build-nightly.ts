@@ -1,6 +1,5 @@
-// check if latest commit is less than a day ago
-// git log -1 --pretty=format:"%cd"
 import { GitProcess } from "dugite";
+import { padNumber } from "./pad-number";
 
 GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
     const lastCommitDate = new Date(x.stdout);
@@ -15,21 +14,11 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
 
         // update version {{version}}-YYYYMMDD
         const packageJson = getPackageJson()
-        packageJson.version += now.getFullYear() + addLeadingZeros(now.getMonth() + 1, 2) + addLeadingZeros(now.getDate(), 2);
+        packageJson.version += now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
         savePackageJson(packageJson);
 
         // publish
         // npm publish --tag next
-    }
-
-    function addLeadingZeros(originalNumber: number, minimumIntegerLength: number) {
-        const diff = Math.ceil(minimumIntegerLength - Math.log10(originalNumber) - 1) + 1;
-
-        if (diff > 0) {
-            return new Array(diff).join("0") + originalNumber.toString();
-        }
-
-        return originalNumber.toString();
     }
 
     function getPackageJson(): { version: string } {
