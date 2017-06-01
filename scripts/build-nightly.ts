@@ -20,7 +20,7 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
 
         process.stdout.write("updated package version to: " + packageJson.version + "\n");
 
-        writeFile("../package.json", packageJson, () => {   
+        writeFile("./package.json", JSON.stringify(packageJson, null, 3), () => {   
             process.stdout.write("publishing " + packageJson.version + "\n");         
             const npmPublishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
             npmPublishProcess.stdout.pipe(process.stdout);
