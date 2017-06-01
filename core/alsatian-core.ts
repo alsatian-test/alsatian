@@ -1,9 +1,25 @@
 import {
-   Expect,
-   Matcher,
    TestOutputStream,
    TestSet
 } from "./";
+
+import {
+    buildExpect,
+    Expect,
+    IExpect,
+} from "./expect";
+
+import {
+    ContainerMatcher,
+    EmptyMatcher,
+    FunctionMatcher,
+    FunctionSpyMatcher,
+    Matcher,
+    MixedMatcher,
+    NumberMatcher,
+    PropertyMatcher,
+    StringMatcher
+} from "./matchers";
 
 import {
    AsyncSetup,
@@ -59,33 +75,43 @@ export {
    AsyncTeardown,
    AsyncTeardownFixture,
    AsyncTest,
+   buildExpect,
+   ContainerMatcher,
+   EmptyMatcher,
    Expect,
+   IExpect,
    FocusTest,
    FocusTests,
+   FunctionMatcher,
+   FunctionSpyMatcher,
    IgnoreTest,
    IgnoreTests,
    Matcher,
+   MatchError,
+   METADATA_KEYS,
+   MixedMatcher,
+   NumberMatcher,
+   PropertyMatcher,
    Setup,
    SetupFixture,
    FunctionSpy,
    RestorableFunctionSpy,
    SpyOn,
    SpyOnProperty,
+   StringMatcher,
    Teardown,
    TeardownFixture,
    Test,
    TestCase,
-   TestRunner,
-   TestSet,
-   Timeout,
-   TestSetResults,
-   TestOutcome,
-   METADATA_KEYS,
-   TestFixture,
-   TestOutputStream,
-   MatchError,
-   TestFixtureResults,
-   TestResults,
    TestCaseResult,
-   TestTimeoutError
+   TestFixture,
+   TestFixtureResults,
+   TestOutcome,
+   TestOutputStream,
+   TestResults,
+   TestRunner,
+   TestSetResults,
+   TestSet,
+   TestTimeoutError,
+   Timeout
 };
