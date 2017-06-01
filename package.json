@@ -24,6 +24,7 @@
     "clean": "npm run clean-git && npm run clean-compiled",
     "clean-compiled": "rimraf **/*.js **/*.js.map **/*.d.ts",
     "clean-git": "git clean -X -d -f",
+    "publish-nightly": "npm run build && node ./scripts/build-nightly && npm publish",
     "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
     "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",

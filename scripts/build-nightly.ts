@@ -12,19 +12,22 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
 
     if (now.getTime() - lastCommitDate.getTime() > ONE_DAY_IN_MILLISECONDS) {
         process.stdout.write("nothing new to publish today\n");
+        process.exit(1);
     }
     else {
 
         const packageJson = getPackageJson();
         packageJson.version = packageJson.version.split("-")[0] + "-" + now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
 
-        process.stdout.write("updated package version to: " + packageJson.version + "\n");
-
-        writeFile("./package.json", JSON.stringify(packageJson, null, 3), () => {   
-            process.stdout.write("publishing " + packageJson.version + "\n");         
-            const npmPublishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
-            npmPublishProcess.stdout.pipe(process.stdout);
-            npmPublishProcess.stderr.pipe(process.stderr);
+        writeFile("./package.json", JSON.stringify(packageJson, null, 3), (error) => {   
+            if (error) {
+                process.stderr.write("publish preparation failed: " + error.message);
+                process.exit(1);
+            }
+            else {
+                process.stdout.write(packageJson.version + " ready to publish\n");         
+                process.exit(0);
+            }
         });
     }
 });
