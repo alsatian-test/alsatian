@@ -1,5 +1,8 @@
+import { exec } from "child_process";
 import { GitProcess } from "dugite";
+import { writeFile } from "fs";
 import { padNumber } from "./pad-number";
+import { getPackageJson } from "./get-package-json";
 
 GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
     const lastCommitDate = new Date(x.stdout);
@@ -8,23 +11,18 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
     const ONE_DAY_IN_MILLISECONDS = 86400000;
 
     if (now.getTime() - lastCommitDate.getTime() > ONE_DAY_IN_MILLISECONDS) {
-        process.stdout.write("nothing new to publish today");
+        process.stdout.write("nothing new to publish today\n");
     }
     else {
 
-        // update version {{version}}-YYYYMMDD
-        const packageJson = getPackageJson()
-        packageJson.version += now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
-        savePackageJson(packageJson);
+        const packageJson = getPackageJson();
+        packageJson.version = packageJson.version.split("-")[0] + "-" + now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
 
-        // publish
-        // npm publish --tag next
-    }
+        process.stdout.write("updated package version to: " + packageJson.version + "\n");
 
-    function getPackageJson(): { version: string } {
-        return null;
-    }
-
-    function savePackageJson(packageJson: { version: string }) {
+        writeFile("../package.json", packageJson, () => {   
+            process.stdout.write("publishing " + packageJson.version + "\n");         
+            exec("npm publish --tag next");
+        });
     }
 });
