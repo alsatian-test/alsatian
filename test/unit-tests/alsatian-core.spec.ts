@@ -93,9 +93,15 @@ export class AlsatianCoreTests {
       Expect(Alsatian.AsyncTeardownFixture).not.toBeNull();
    }
 
-   @Test()
+   @Test("Any should be exposed")
    public anyShouldBeExposed() {
       Expect(Alsatian.Any).toBeDefined();
       Expect(Alsatian.Any).not.toBeNull();
+   }
+
+   @Test("createFunctionSpy should be exposed")
+   public createFunctionSpyShouldBeExposed() {
+      Expect(Alsatian.createFunctionSpy).toBeDefined();
+      Expect(Alsatian.createFunctionSpy).not.toBeNull();
    }
 }
