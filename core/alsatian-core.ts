@@ -43,6 +43,7 @@ import {
 
 import {
    Any,
+   createFunctionSpy,
    FunctionSpy,
    RestorableFunctionSpy,
    SpyOn,
@@ -96,6 +97,7 @@ export {
    SetupFixture,
    FunctionSpy,
    RestorableFunctionSpy,
+   createFunctionSpy,
    SpyOn,
    SpyOnProperty,
    StringMatcher,
