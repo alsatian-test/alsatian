@@ -45,6 +45,7 @@ import {
    Any,
    createFunctionSpy,
    FunctionSpy,
+   RestorableFunctionSpy,
    SpyOn,
    SpyOnProperty
 } from "./spying";
@@ -94,8 +95,9 @@ export {
    PropertyMatcher,
    Setup,
    SetupFixture,
-   createFunctionSpy,
    FunctionSpy,
+   RestorableFunctionSpy,
+   createFunctionSpy,
    SpyOn,
    SpyOnProperty,
    StringMatcher,
