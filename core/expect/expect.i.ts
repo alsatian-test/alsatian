@@ -2,7 +2,6 @@ import {
     ContainerMatcher,
     EmptyMatcher,
     FunctionMatcher,
-    FunctionSpyMatcher,
     Matcher,
     NumberMatcher,
     PropertyMatcher,

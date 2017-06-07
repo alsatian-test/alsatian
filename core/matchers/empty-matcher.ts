@@ -1,4 +1,4 @@
-import { ContentsMatchError, EmptyMatchError } from "../errors";
+import { EmptyMatchError } from "../errors";
 import { Matcher } from "./matcher";
 
 /**
