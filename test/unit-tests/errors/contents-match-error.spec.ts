@@ -8,7 +8,7 @@ export class ContentsMatchErrorTests {
    @TestCase("", "something")
    @TestCase("something", "another thing")
    public shouldMatchMessage(container: any, expectedContent: any) {
-      let error = new ContentsMatchError(container, expectedContent, true);
+      const error = new ContentsMatchError(container, expectedContent, true);
 
       Expect(error.message)
         .toBe(`Expected ${JSON.stringify(container).replace(",", ", ")} ` +
@@ -20,7 +20,7 @@ export class ContentsMatchErrorTests {
    @TestCase("something", "something")
    @TestCase("something", "thing")
    public shouldNotMatchMessage(container: any, expectedContent: any) {
-      let error = new ContentsMatchError(container, expectedContent, false);
+      const error = new ContentsMatchError(container, expectedContent, false);
 
       Expect(error.message)
         .toBe(`Expected ${JSON.stringify(container).replace(",", ", ")} ` +

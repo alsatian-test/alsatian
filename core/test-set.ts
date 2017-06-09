@@ -34,15 +34,16 @@ export class TestSet {
        this._globHelper = globHelper;
    }
 
-   public addTestsFromFiles (testFileLocation: string): void
-   public addTestsFromFiles (testFileLocations: Array<string>): void
-   public addTestsFromFiles (testsFileLocations: string | Array<string>) {
+   public addTestsFromFiles(testsFileLocations: string | Array<string>) {
+      let locationArray: Array<string>;
 
       if (typeof testsFileLocations === "string") {
-         testsFileLocations = [ <string> testsFileLocations ];
+          locationArray = [ testsFileLocations ];
+      } else {
+          locationArray = testsFileLocations;
       }
 
-      this._loadTestFixtures(<Array<string>> testsFileLocations);
+      this._loadTestFixtures(locationArray);
    }
 
    private _loadTestFixtures(testFileLocations: Array<string>) {
@@ -51,7 +52,7 @@ export class TestSet {
          testFileLocation = path.join(process.cwd(), testFileLocation);
 
          if (this._globHelper.isGlob(testFileLocation)) {
-            let physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
+            const physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
 
             physicalTestFileLocations.forEach(physicalTestFileLocation => {
                this._testFixtures = this.testFixtures.concat(

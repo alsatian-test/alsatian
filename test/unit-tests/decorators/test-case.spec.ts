@@ -6,13 +6,13 @@ export class TestCaseDecoratorTests {
 
   @Test()
   public testAddedAsMetaData() {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     testCaseDecorator(testFixture, "test", null);
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+    const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
     Expect(tests).toBeDefined();
     Expect(tests).not.toBeNull();
@@ -22,13 +22,13 @@ export class TestCaseDecoratorTests {
   @TestCase("another key")
   @TestCase("something-different")
   public testKeyMetaDataAdded(key: string) {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     testCaseDecorator(testFixture, key, null);
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+    const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
     Expect(tests[0].key).toBe(key);
   }
@@ -37,15 +37,15 @@ export class TestCaseDecoratorTests {
   @TestCase(2)
   @TestCase(42)
   public correctTestCountAdded(testCount: number) {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     for (let i = 0; i < testCount; i ++) {
       testCaseDecorator(testFixture, "key " + i, null);
     }
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+    const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
     Expect(tests.length).toBe(testCount);
   }
@@ -54,28 +54,28 @@ export class TestCaseDecoratorTests {
   @TestCase(2)
   @TestCase(42)
   public noDuplicateTestKeysAdded(testCount: number) {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     for (let i = 0; i < testCount; i ++) {
       testCaseDecorator(testFixture, "key", null);
     }
 
-    let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
+    const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
     Expect(tests.length).toBe(1);
   }
 
   @Test()
   public testCasesAddedAsMetaData() {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     testCaseDecorator(testFixture, "test", null);
 
-    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "test");
+    const testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "test");
 
     Expect(testCases).toBeDefined();
     Expect(testCases).not.toBeNull();
@@ -85,13 +85,13 @@ export class TestCaseDecoratorTests {
   @TestCase([ 1, 2, 3 ])
   @TestCase([ "this", "that", "the other" ])
   public testCaseArgumentsMetaDataAdded(expectedArguments: Array<any>) {
-    let testCaseDecorator = TestCaseDecorator.apply(TestCaseDecorator, expectedArguments);
+    const testCaseDecorator = TestCaseDecorator.apply(TestCaseDecorator, expectedArguments);
 
-    let testFixture = {};
+    const testFixture = {};
 
     testCaseDecorator(testFixture, "key", null);
 
-    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
+    const testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
 
     Expect(testCases[0].caseArguments).toEqual(expectedArguments);
   }
@@ -100,13 +100,13 @@ export class TestCaseDecoratorTests {
   @TestCase("another key")
   @TestCase("something-different")
   public testCaseKeyMetaDataAddedWithCorrectKey(key: string) {
-    let testCaseDecorator = TestCaseDecorator();
+    const testCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     testCaseDecorator(testFixture, key, null);
 
-    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, key);
+    const testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, key);
 
     Expect(testCases).toBeDefined();
     Expect(testCases).not.toBeNull();
@@ -117,18 +117,18 @@ export class TestCaseDecoratorTests {
   @TestCase(42)
   public testCaseArgumentsAlwaysAddedAsFirstIndex(testCount: number) {
 
-    let dummyTestCaseDecorator = TestCaseDecorator();
+    const dummyTestCaseDecorator = TestCaseDecorator();
 
-    let testFixture = {};
+    const testFixture = {};
 
     for (let i = 0; i < testCount; i ++) {
       dummyTestCaseDecorator(testFixture, "key " + i, null);
     }
 
-    let args = [ 1, 2, 3 ];
+    const args = [ 1, 2, 3 ];
     TestCaseDecorator.apply(TestCaseDecorator, args)(testFixture, "key", null);
 
-    let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
+    const testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture, "key");
 
     Expect(testCases[0].caseArguments).toEqual(args);
   }

@@ -8,9 +8,9 @@ export class TimeoutDecoratorTests {
    @TestCase(2)
    @TestCase(42)
    public testTimeoutMetaDataAdded(timeout: number) {
-      let timeoutDecorator = TimeoutDecorator(timeout);
+      const timeoutDecorator = TimeoutDecorator(timeout);
 
-      let testFixture = {};
+      const testFixture = {};
 
       timeoutDecorator(testFixture, "test", null);
 

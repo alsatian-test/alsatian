@@ -6,15 +6,15 @@ export class LoadTestTests {
 
    @Test()
    public noTestsAtLocationGivesNoTestFixtures() {
-      let testLoader = new TestLoader(null);
-      let testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+      const testLoader = new TestLoader(null);
+      const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
       testLoaderSpy.andReturn([]);
       testLoaderSpy.andStub();
 
-      let globHelper = new GlobHelper();
+      const globHelper = new GlobHelper();
       SpyOn(globHelper, "isGlob").andReturn(false);
 
-      let testSet = new TestSet(testLoader, globHelper);
+      const testSet = new TestSet(testLoader, globHelper);
 
       testSet.addTestsFromFiles("no-tests");
 

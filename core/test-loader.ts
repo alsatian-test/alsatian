@@ -7,13 +7,13 @@ export class TestLoader {
    public constructor(private _fileRequirer: FileRequirer) { }
 
    public loadTestFixture(filePath: string): Array<ITestFixture> {
-      let testFixureModule = this._fileRequirer.require(filePath);
-      let testFixtureKeys = Object.keys(testFixureModule);
-      let testFixtures: Array<ITestFixture> = [];
+      const testFixureModule = this._fileRequirer.require(filePath);
+      const testFixtureKeys = Object.keys(testFixureModule);
+      const testFixtures: Array<ITestFixture> = [];
 
       // if the default export is class constructor
       if (typeof testFixureModule === "function") {
-         let testFixture = this._loadTestFixture(testFixureModule, testFixureModule.name);
+         const testFixture = this._loadTestFixture(testFixureModule, testFixureModule.name);
          if (testFixture !== null) {
             testFixtures.push(testFixture);
          }
@@ -22,7 +22,7 @@ export class TestLoader {
       else {
          testFixtureKeys.forEach(testFixtureKey => {
             if (typeof testFixureModule[testFixtureKey] === "function") {
-               let testFixture = this._loadTestFixture(testFixureModule[testFixtureKey], testFixtureKey);
+               const testFixture = this._loadTestFixture(testFixureModule[testFixtureKey], testFixtureKey);
                if (testFixture !== null) {
                   testFixtures.push(testFixture);
                }
@@ -33,7 +33,7 @@ export class TestLoader {
       return testFixtures;
    }
 
-   private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture {
+   private _loadTestFixture(testFixtureConstructor: any, defaultFixtureDescription: string): ITestFixture | null {
       // get test fixture metadata or create new metadata
       // to support not requiring the TestFixture decorator.
       // This functionality will be removed in 2.0.0 where
@@ -54,7 +54,7 @@ export class TestLoader {
       testFixture.fixture = new testFixtureConstructor();
 
       // find all the tests on this test fixture
-      let tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture.fixture);
+      const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture.fixture);
 
       testFixture.focussed = false;
 
@@ -95,7 +95,7 @@ export class TestLoader {
             test.description = test.key;
          }
 
-         let testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture.fixture, test.key);
+         const testCases = Reflect.getMetadata(METADATA_KEYS.TEST_CASES, testFixture.fixture, test.key);
          test.testCases = [];
 
          if (!testCases) {

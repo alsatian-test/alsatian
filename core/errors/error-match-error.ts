@@ -1,8 +1,9 @@
+import { INameable } from "../_interfaces";
 import { MatchError } from "./match-error";
 
 export class ErrorMatchError extends MatchError {
 
-   public constructor(actualError: Error,
+   public constructor(actualError: Error | null,
                       shouldMatch: boolean,
                       expectedErrorType?: new (...args: Array<any>) => Error,
                       expectedErrorMessage?: string) {
@@ -10,16 +11,16 @@ export class ErrorMatchError extends MatchError {
 
       this._setErrorMessage(actualError, shouldMatch, expectedErrorType, expectedErrorMessage);
 
-      this._actual = `${actualError ? (<any> actualError.constructor).name + " " : ""}` +
+      this._actual = `${actualError ? (actualError.constructor as INameable).name + " " : ""}` +
                      `error was ${!actualError ? "not " : ""}thrown` +
                      `${actualError ? " with message \"" + actualError.message + "\"" : ""}.`;
 
-      this._expected = `${expectedErrorType ? (<any> expectedErrorType).name + " " : ""}` +
+      this._expected = `${expectedErrorType ? (expectedErrorType as INameable).name + " " : ""}` +
                        `error ${!shouldMatch ? "not " : ""}to be thrown` +
                        `${expectedErrorMessage ? " with message \"" + expectedErrorMessage + "\"" : ""}.`;
    }
 
-   private _setErrorMessage(actualError: Error,
+   private _setErrorMessage(actualError: Error | null,
                             shouldMatch: boolean,
                             expectedErrorType?: new (...args: Array<any>) => Error,
                             expectedErrorMessage?: string) {
@@ -37,7 +38,7 @@ export class ErrorMatchError extends MatchError {
       }
    }
 
-   private _setWrongSpecificErrorMessage(actualError: Error,
+   private _setWrongSpecificErrorMessage(actualError: Error | null,
                                          shouldMatch: boolean,
                                          expectedErrorType?: new (...args: Array<any>) => Error,
                                          expectedErrorMessage?: string) {
@@ -72,16 +73,16 @@ export class ErrorMatchError extends MatchError {
                                           expectedErrorMessage?: string) {
 
       this.message = `Expected an error with message "${expectedErrorMessage}" ` +
-                     `and type ${(<any> expectedErrorType).name} to ${!shouldMatch ? "not " : ""}` +
+                     `and type ${(expectedErrorType as INameable).name} to ${!shouldMatch ? "not " : ""}` +
                      `have been thrown, but it was${!shouldMatch ? "" : "n't"}.`;
    }
 
-   private _setWrongTypeMessage(actualError: Error,
+   private _setWrongTypeMessage(actualError: Error | null,
                                 shouldMatch: boolean,
                                 expectedErrorType?: new (...args: Array<any>) => Error) {
 
-      this.message = `Expected an error of type ${(<any> expectedErrorType).name} ` +
+      this.message = `Expected an error of type ${(expectedErrorType as INameable).name} ` +
                      `to ${!shouldMatch ? "not " : ""}have been thrown, ` +
-                     `but ${shouldMatch ? (<any> actualError).name + " was thrown instead" : "it was"}.`;
+                     `but ${shouldMatch ? (actualError as INameable).name + " was thrown instead" : "it was"}.`;
    }
 }
