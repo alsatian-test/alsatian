@@ -10,9 +10,13 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
 
     const ONE_DAY_IN_MILLISECONDS = 86400000;
 
-    if (now.getTime() - lastCommitDate.getTime() > ONE_DAY_IN_MILLISECONDS) {
+    if (process.env.TRAVIS_JOB_NUMBER && process.env.TRAVIS_JOB_NUMBER.split(".")[1] !== "-1") {
+        process.stdout.write("nothing to do here, publishing is handled on another job\n");
+        process.exit(0);
+    }
+    else if (now.getTime() - lastCommitDate.getTime() > ONE_DAY_IN_MILLISECONDS) {
         process.stdout.write("nothing new to publish today\n");
-        process.exit(1);
+        process.exit(0);
     }
     else {
 
