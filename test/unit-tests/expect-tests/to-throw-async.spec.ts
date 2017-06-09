@@ -1,5 +1,6 @@
 import { AsyncTest, Expect, TestCase } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { INameable } from "../../../core/_interfaces";
 
 export class ToThrowAsyncTests {
    // Asynchronous throw
@@ -83,8 +84,11 @@ export class ToThrowAsyncTests {
    @TestCase([ "an", "array" ])
    @AsyncTest("Test toThrowAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionThrowsShouldThrow(actualValue: any) {
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
       await Expect(async () => {
-         await Expect(actualValue).toThrowAsync();
+         await EXPECT.toThrowAsync();
       }).toThrowErrorAsync(TypeError, "toThrowAsync requires value passed in to Expect to be a function.");
    }
 
@@ -101,8 +105,11 @@ export class ToThrowAsyncTests {
    @TestCase([ "an", "array" ])
    @AsyncTest("Test not.toThrowAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionDoesNotThrowShouldThrow(actualValue: any) {
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
       await Expect(async () => {
-         await Expect(actualValue).not.toThrowAsync();
+         await EXPECT.not.toThrowAsync();
       }).toThrowErrorAsync(TypeError, "toThrowAsync requires value passed in to Expect to be a function.");
    }
 
@@ -142,7 +149,7 @@ export class ToThrowAsyncTests {
       Expect(errorMatchError).toBeDefined();
       Expect(errorMatchError).not.toBeNull();
       Expect(errorMatchError.actual)
-         .toBe(`${(<any> actualErrorType).name} error was thrown with message "${actualErrorMessage}".`);
+         .toBe(`${(actualErrorType as INameable).name} error was thrown with message "${actualErrorMessage}".`);
    }
 
    @AsyncTest("Test not.toThrowAsync error are caught and error is ErrorMatchError")
@@ -191,8 +198,11 @@ export class ToThrowAsyncTests {
    @TestCase([ "an", "array" ])
    @AsyncTest("Test toThrowErrorAsync throws a TypeError when it should")
    public async asyncCheckingWhetherNonFunctionForToThrowErrorAcyncDoesThrow(actualValue: any) {
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
       await Expect(async () => {
-         await Expect(actualValue)
+         await EXPECT
             .toThrowErrorAsync(TypeError, "toThrowAsync requires value passed to Expect to be a function.");
       }).toThrowAsync();
    }

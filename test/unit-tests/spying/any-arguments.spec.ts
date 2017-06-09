@@ -16,7 +16,7 @@ export class AnyArgumentsTests {
    @TestCase(Array)
    @TestCase(Object)
    @TestCase(Error)
-   public anyReturnsTypeMatcher(type: new (...args: Array<any>) => Object) {
+   public anyReturnsTypeMatcher(type: new (...args: Array<any>) => object) {
       Expect(Any(type) instanceof TypeMatcher).toBe(true);
    }
 }

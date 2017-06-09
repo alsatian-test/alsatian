@@ -59,11 +59,11 @@ export class SpyOnPropertyTests {
 
    @Test()
    public spyShouldBeReturned() {
-      let object = { };
+      const object = { };
 
       Object.defineProperty(object, "property", { get: () => {}, configurable: true });
 
-      let spy = SpyOnProperty(object, "property");
+      const spy = SpyOnProperty(object, "property");
 
       Expect(spy).toBeDefined();
       Expect(spy).not.toBeNull();
@@ -73,7 +73,7 @@ export class SpyOnPropertyTests {
    @TestCase("proper tea")
    @TestCase("anotherProperty")
    public spyingOnNonPropertyShouldThrowError(propertyName: string) {
-      let object: { [propertyName: string]: any } = { };
+      const object: { [propertyName: string]: any } = { };
 
       Expect(() => SpyOnProperty(object, propertyName)).toThrowError(TypeError, `${propertyName} is not a property.`);
    }
@@ -82,7 +82,7 @@ export class SpyOnPropertyTests {
    @TestCase("proper tea")
    @TestCase("anotherProperty")
    public spyingOnPropertyShouldNotThrowError(propertyName: string) {
-      let object: { [propertyName: string]: any } = { };
+      const object: { [propertyName: string]: any } = { };
 
       Object.defineProperty(object, propertyName, { get: () => {}, configurable: true });
 

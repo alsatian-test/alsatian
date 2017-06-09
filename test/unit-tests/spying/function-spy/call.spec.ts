@@ -9,11 +9,11 @@ export class CallTests {
    @TestCase([ "one", 2 ])
    @TestCase([ { some: "thing" }, [] ])
    public argumentsRecorded(args: Array<any>) {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
-      let spy = new FunctionSpy();
+      const spy = new FunctionSpy();
 
       spy.call.apply(spy, args);
 
@@ -24,11 +24,11 @@ export class CallTests {
    @TestCase(1)
    @TestCase(42)
    public callAddedForEachCall(callCount: number) {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
-      let spy = new FunctionSpy();
+      const spy = new FunctionSpy();
 
       for (let i = 0; i < callCount; i++) {
          spy.call.apply(spy, []);
@@ -46,19 +46,19 @@ export class CallTests {
    @TestCase("")
    @TestCase("something")
    public givenReturnValueIsReturned(expectedReturnValue: any) {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new FunctionSpy();
+      const spy = new FunctionSpy();
 
       spy.andReturn(expectedReturnValue);
 
-      let actualReturnValue = spy.call.apply(spy, []);
+      const actualReturnValue = spy.call.apply(spy, []);
 
       Expect(actualReturnValue).toBe(expectedReturnValue);
    }

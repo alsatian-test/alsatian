@@ -35,7 +35,7 @@ export class TestFixtureBuilder {
   }
 
   public withTestCount(testCount: number): TestFixtureBuilder {
-    let testBuilder = new TestBuilder();
+    const testBuilder = new TestBuilder();
 
     for (let i = 0; i < testCount; i++) {
       this._testFixture.tests.push(testBuilder.build());
@@ -49,7 +49,7 @@ export class TestFixtureBuilder {
       return this;
   }
 
-  public build (): ITestFixture {
+  public build(): ITestFixture {
     return this._testFixture;
   }
 }

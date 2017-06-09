@@ -12,7 +12,7 @@ export class ToEqualTests {
    @TestCase("")
    @TestCase("something")
    public identicalSimpleTypesDontThrow(value: any) {
-      let expect = Expect(value);
+      const expect = Expect(value);
 
       Expect(() => expect.toEqual(value)).not.toThrow();
    }
@@ -26,14 +26,14 @@ export class ToEqualTests {
    @TestCase("", "")
    @TestCase("something", "something")
    public matchingSimpleTypesDontThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).not.toThrow();
    }
 
    @Test()
-   public differentValuesThrowsExactMatchError () {
-      let expect = Expect(1);
+   public differentValuesThrowsExactMatchError() {
+      const expect = Expect(1);
 
       Expect(() => expect.toEqual(2)).toThrowError(EqualMatchError, "Expected 1 to be equal to 2.");
    }
@@ -43,7 +43,7 @@ export class ToEqualTests {
    @TestCase(0, 42)
    @TestCase(42, 0)
    public differentSimpleValuesToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }
@@ -53,7 +53,7 @@ export class ToEqualTests {
    @TestCase(0, 42)
    @TestCase(42, 0)
    public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected))
         .toThrowError(
@@ -64,7 +64,7 @@ export class ToEqualTests {
    @TestCase(undefined, null)
    @TestCase(null, undefined)
    public nullAndUndefinedNotToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).not.toThrow();
    }
@@ -72,7 +72,7 @@ export class ToEqualTests {
    @TestCase(42, "something")
    @TestCase("something", 42)
    public differentSimpleTypesToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }
@@ -84,7 +84,7 @@ export class ToEqualTests {
    @TestCase([ 1, 2, 3 ])
    @TestCase([ { with: "something" }, { and: "something", else: "!"} ])
    public identicalComplexTypesDontThrow(value: any) {
-      let expect = Expect(value);
+      const expect = Expect(value);
 
       Expect(() => expect.toEqual(value)).not.toThrow();
    }
@@ -98,7 +98,7 @@ export class ToEqualTests {
    @TestCase([ { with: "something" }, { and: "something", else: "!"} ],
              [ { with: "something" }, { and: "something", else: "!"} ])
    public matchingComplexTypesNotThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).not.toThrow();
    }
@@ -108,7 +108,7 @@ export class ToEqualTests {
    @TestCase([], [ 1, 2, 3 ])
    @TestCase([ 1, 2, 3 ], [])
    public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected))
         .toThrowError(
@@ -124,7 +124,7 @@ export class ToEqualTests {
    @TestCase([ ], { with: "something" })
    @TestCase([ 1, 2, 3 ], { })
    public differentComplexTypesToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }
@@ -132,7 +132,7 @@ export class ToEqualTests {
    @TestCase({ with: { something: "deep" } }, [ 1, 2, 3 ])
    @TestCase([ {this: "that" } ], { with: "something" })
    public differentDeepComplexTypesToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }
@@ -140,7 +140,7 @@ export class ToEqualTests {
    @TestCase({ with: { something: "deep" } }, { with: { something: "different" } })
    @TestCase([ {this: "that" } ], [ {this: "and that" }])
    public differentDeepComplexToThrow(expected: any, actual: any) {
-      let expect = Expect(actual);
+      const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
    }

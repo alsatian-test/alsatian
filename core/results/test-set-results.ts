@@ -28,7 +28,7 @@ export class TestSetResults {
    }
 
    public addTestFixtureResult(testFixture: ITestFixture): TestFixtureResults {
-      let testFixtureResult = new TestFixtureResults(testFixture);
+      const testFixtureResult = new TestFixtureResults(testFixture);
       this._testFixtureResults.push(testFixtureResult);
       return testFixtureResult;
    }

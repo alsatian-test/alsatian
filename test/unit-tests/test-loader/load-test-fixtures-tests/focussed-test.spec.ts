@@ -8,23 +8,23 @@ export class FocussedTestTests {
    @Test()
    public singleUnfocussedTest() {
 
-     let fileRequirer = new FileRequirer();
+     const fileRequirer = new FileRequirer();
 
-     let testFixtureInstance = {
+     const testFixtureInstance = {
        unfocussedTest: () => {}
      };
-     let unfocussedTest = {
+     const unfocussedTest = {
        key: "unfocussedTest"
      };
      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unfocussedTest ], testFixtureInstance);
 
-     let testFixtureConstructor = () => testFixtureInstance;
+     const testFixtureConstructor = () => testFixtureInstance;
 
-     let spy = SpyOn(fileRequirer, "require");
+     const spy = SpyOn(fileRequirer, "require");
      spy.andStub();
      spy.andReturn(testFixtureConstructor);
 
-     let testLoader = new TestLoader(fileRequirer);
+     const testLoader = new TestLoader(fileRequirer);
 
      Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(false);
    }
@@ -32,24 +32,24 @@ export class FocussedTestTests {
     @Test()
     public singleFocussedTest() {
 
-      let fileRequirer = new FileRequirer();
+      const fileRequirer = new FileRequirer();
 
-      let testFixtureInstance = {
+      const testFixtureInstance = {
         focussedTest: () => {}
       };
-      let unfocussedTest = {
+      const unfocussedTest = {
         key: "focussedTest"
       };
       Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unfocussedTest ], testFixtureInstance);
       Reflect.defineMetadata(METADATA_KEYS.FOCUS, true, testFixtureInstance, "focussedTest");
 
-      let testFixtureConstructor = () => testFixtureInstance;
+      const testFixtureConstructor = () => testFixtureInstance;
 
-      let spy = SpyOn(fileRequirer, "require");
+      const spy = SpyOn(fileRequirer, "require");
       spy.andStub();
       spy.andReturn(testFixtureConstructor);
 
-      let testLoader = new TestLoader(fileRequirer);
+      const testLoader = new TestLoader(fileRequirer);
 
       Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(true);
     }

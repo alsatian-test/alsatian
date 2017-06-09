@@ -1,3 +1,5 @@
+/* tslint:disable:no-unused-expression */
+
 import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 
@@ -5,7 +7,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionCalledPasses() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -18,7 +20,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledFails() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -29,7 +31,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledFailsWithCorrectError() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -41,7 +43,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionNotCalledPassesWhenShouldNotCall() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -52,7 +54,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionThrowsErrorFailsWhenShouldNotThrow() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -65,7 +67,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public functionThrowsErrorFailsWithCorrectError() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -89,7 +91,10 @@ export class ToHaveBeenCalledTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenCalled())
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.toHaveBeenCalled())
         .toThrowError(
             TypeError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -107,7 +112,10 @@ export class ToHaveBeenCalledTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenCalled())
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toHaveBeenCalled())
         .toThrowError(
             TypeError,
             "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -115,7 +123,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public actualValueAndShouldMatchShouldBeSetToFunctionWasNotCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -137,7 +145,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public actualValueAndShouldNotMatchShouldBeSetToFunctionWasCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -161,7 +169,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public expectedValueAndShouldMatchShouldBeSetToFunctionToBeCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -183,7 +191,7 @@ export class ToHaveBeenCalledTests {
 
    @Test()
    public expectedValueAndShouldNotMatchShouldBeSetToFunctionNotToBeCalled() {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -209,7 +217,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesDoesNotThrow(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -226,7 +234,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 1)
    public spyCalledCorrectAmountOfTimesThrowsCorrectError(expectedCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -254,7 +262,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorExpectedValue(
                                                     expectedCallCount: number,
                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -290,7 +298,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledCorrectAmountOfTimesThrowsCorrectErrorActualValue(
                                                     expectedCallCount: number,
                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -324,7 +332,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 1)
    public spyNotCalledCorrectAmountOfTimesDoesNotThrow(expectedCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -341,7 +349,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectError(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -367,7 +375,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorExpectedValue(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -401,7 +409,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2)
    @TestCase(42)
    public spyCalledCorrectAmountOfTimesButShouldNotThrowsCorrectErrorActualValue(callCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -435,7 +443,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 42)
    @TestCase(42, 50)
    public spyCalledGreaterThanMinimumTimesDoesNotThrow(minimumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -452,7 +460,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 1)
    @TestCase(42, 13)
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectError(minimumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -484,7 +492,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorExpectedValue(
                                                             minimumCallCount: number,
                                                             actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -520,7 +528,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledNotGreaterThanMinimumTimesThrowsCorrectErrorActualValue(
                                                             minimumCallCount: number,
                                                             actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -553,7 +561,7 @@ export class ToHaveBeenCalledTests {
    @TestCase(2, 1)
    @TestCase(42, 13)
    public spyNotCalledLessThanMaximumTimesDoesNotThrow(maximumCallCount: number, actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -572,7 +580,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectError(
                                                         maximumCallCount: number,
                                                         actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -604,7 +612,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorExpectedValue(
                                                                     maximumCallCount: number,
                                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 
@@ -640,7 +648,7 @@ export class ToHaveBeenCalledTests {
    public spyCalledGreaterThanMaximumTimesButShouldNotThrowsCorrectErrorActualValue(
                                                                     maximumCallCount: number,
                                                                     actualCallCount: number) {
-      let some = {
+      const some = {
          function: () => {}
       };
 

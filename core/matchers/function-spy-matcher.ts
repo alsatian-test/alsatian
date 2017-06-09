@@ -5,7 +5,7 @@ import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
 export class FunctionSpyMatcher {
 
    private _spy: FunctionSpy;
-   private _expectedArguments: Array<any> = null;
+   private _expectedArguments: Array<any> | null = null;
 
    public constructor(spy: FunctionSpy, expectedArguments?: Array<any>) {
       if (spy === null || spy === undefined) {

@@ -5,15 +5,15 @@ export class AndCallTests {
 
    @Test()
    public originalFunctionNotCalledIfSpyFaked() {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new RestorableFunctionSpy(object, "originalFunction");
+      const spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.andCall(() => {});
 
@@ -29,7 +29,7 @@ export class AndCallTests {
    @TestCase({ an: "object" })
    @TestCase([ "an", "array" ])
    public spyShoulReturnCorrectValue(returnValue: any) {
-      let someObject = {
+      const someObject = {
          func: () => {}
       };
 
@@ -42,15 +42,15 @@ export class AndCallTests {
 
    @Test()
    public originalFunctionNotCalledIfSpyNotFaked() {
-      let object = {
+      const object = {
          originalFunction: () => {}
       };
 
       SpyOn(object, "originalFunction");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new RestorableFunctionSpy(object, "originalFunction");
+      const spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.call([]);
 
@@ -59,20 +59,20 @@ export class AndCallTests {
 
    @TestCase(() => {})
    @TestCase(() => 1 + 1)
-   public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: Function) {
-      let object = {
+   public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
+      const object = {
          originalFunction: () => {}
       };
 
-      let fake = {
+      const fake = {
          function: fakeFunction
       };
 
       SpyOn(fake, "function");
 
-      let originalFunction = object.originalFunction;
+      const originalFunction = object.originalFunction;
 
-      let spy = new RestorableFunctionSpy(object, "originalFunction");
+      const spy = new RestorableFunctionSpy(object, "originalFunction");
 
       spy.call([]);
 

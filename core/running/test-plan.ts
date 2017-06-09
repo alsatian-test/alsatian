@@ -15,7 +15,7 @@ export class TestPlan {
        return;
     }
 
-    let testFixtures = testSet.testFixtures;
+    const testFixtures = testSet.testFixtures;
 
     // are there any tests or test fixtures focussed
     const focussedTestsOrTestFixtures = testFixtures

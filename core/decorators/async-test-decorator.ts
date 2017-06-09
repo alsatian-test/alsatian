@@ -1,11 +1,13 @@
 import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
+import { Unused } from "../unused";
 
 export function AsyncTest(description?: string) {
 
    return (target: object,
            propertyKey: string,
            descriptor?: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>) => {
+      Unused(descriptor);
 
       // check if this has been registered as a test already
       let tests: Array<any> = Reflect.getMetadata(TESTS, target);

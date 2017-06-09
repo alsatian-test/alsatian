@@ -15,23 +15,23 @@ export class ToBeDefinedTests {
    @TestCase([ 1 ])
    @TestCase([ 1, 2 ])
    public definedShouldNotThrowError(value: any) {
-      let expect = Expect(value);
+      const expect = Expect(value);
 
       Expect(() => expect.toBeDefined()).not.toThrow();
    }
 
    @Test()
    public definedShouldThrowErrorForUndefined() {
-      let expect = Expect(undefined);
+      const expect = Expect(undefined);
 
       Expect(() => expect.toBeDefined()).toThrow();
    }
 
    @Test()
    public definedShouldThrowCorrectErrorWithCorrectMessageForUndefined() {
-      let expect = Expect(undefined);
+      const expect = Expect(undefined);
 
-      let expectedErrorMessage = "Expected undefined not to be undefined.";
+      const expectedErrorMessage = "Expected undefined not to be undefined.";
 
       Expect(() => expect.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
@@ -48,16 +48,16 @@ export class ToBeDefinedTests {
    @TestCase([ 1 ])
    @TestCase([ 1, 2 ])
    public notDefinedShouldThrowError(value: any) {
-      let expect = Expect(value);
+      const expect = Expect(value);
 
-      let expectedErrorMessage = "Expected " + JSON.stringify(value).replace(",", ", ") + " to be undefined.";
+      const expectedErrorMessage = "Expected " + JSON.stringify(value).replace(",", ", ") + " to be undefined.";
 
       Expect(() => expect.not.toBeDefined()).toThrowError(ExactMatchError, expectedErrorMessage);
    }
 
    @Test()
    public notDefinedShouldNotThrowErrorForUndefined() {
-      let expect = Expect(undefined);
+      const expect = Expect(undefined);
 
       Expect(() => expect.not.toBeDefined()).not.toThrow();
    }

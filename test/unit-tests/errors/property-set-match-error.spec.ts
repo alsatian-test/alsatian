@@ -69,7 +69,7 @@ export class PropertySetMatchErrorTests {
 
       fakePropertySpy.setCalls.push({ args: [] });
 
-      let error = new PropertySetMatchError(fakePropertySpy, true);
+      const error = new PropertySetMatchError(fakePropertySpy, true);
 
       Expect(error.actual).toBe("property was not set.");
    }
@@ -80,7 +80,7 @@ export class PropertySetMatchErrorTests {
 
       fakePropertySpy.setCalls.push({ args: [] });
 
-      let error = new PropertySetMatchError(fakePropertySpy, false);
+      const error = new PropertySetMatchError(fakePropertySpy, false);
 
       Expect(error.actual).toBe("property was set.");
    }
@@ -91,7 +91,7 @@ export class PropertySetMatchErrorTests {
 
       fakePropertySpy.setCalls.push({ args: [] });
 
-      let error = new PropertySetMatchError(fakePropertySpy, true);
+      const error = new PropertySetMatchError(fakePropertySpy, true);
 
       Expect(error.expected).toBe("property to be set.");
    }
@@ -102,7 +102,7 @@ export class PropertySetMatchErrorTests {
 
       fakePropertySpy.setCalls.push({ args: [] });
 
-      let error = new PropertySetMatchError(fakePropertySpy, false);
+      const error = new PropertySetMatchError(fakePropertySpy, false);
 
       Expect(error.expected).toBe("property not to be set.");
    }
@@ -119,7 +119,7 @@ export class PropertySetMatchErrorTests {
          fakePropertySpy.setCalls.push({ args: [ value ] });
       });
 
-      let error = new PropertySetMatchError(fakePropertySpy, true, 42);
+      const error = new PropertySetMatchError(fakePropertySpy, true, 42);
 
       Expect(error.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
@@ -136,7 +136,7 @@ export class PropertySetMatchErrorTests {
          fakePropertySpy.setCalls.push({ args: [ value ] });
       });
 
-      let error = new PropertySetMatchError(fakePropertySpy, false, 42);
+      const error = new PropertySetMatchError(fakePropertySpy, false, 42);
 
       Expect(error.actual).toBe("property was set to " + values.map(value => JSON.stringify(value)).join(", ") + ".");
    }
@@ -155,7 +155,7 @@ export class PropertySetMatchErrorTests {
    public expectedValueAndShouldMatchShouldBeSetToPropertyToBeSetToValue(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };
 
-      let error = new PropertySetMatchError(fakePropertySpy, true, value);
+      const error = new PropertySetMatchError(fakePropertySpy, true, value);
 
       Expect(error.expected).toBe("property to be set to " + JSON.stringify(value) + ".");
    }
@@ -174,7 +174,7 @@ export class PropertySetMatchErrorTests {
    public expectedValueAndShouldNotMatchShouldBeSetToPropertyNotToBeSetToValue(value: any) {
       const fakePropertySpy: any = { setCalls: [ ] };
 
-      let error = new PropertySetMatchError(fakePropertySpy, false, value);
+      const error = new PropertySetMatchError(fakePropertySpy, false, value);
 
       Expect(error.expected).toBe("property not to be set to " + JSON.stringify(value) + ".");
    }

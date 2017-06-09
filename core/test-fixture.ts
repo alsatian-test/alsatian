@@ -13,10 +13,10 @@ export class TestFixture implements ITestFixture {
       return this._tests;
    }
 
-    constructor (description: string) {
+    constructor(description: string) {
         this.focussed = false;
         this.ignored = false;
-        this.ignoreReason = undefined;
+        this.ignoreReason = "";
         this.fixture = {};
         this.description = description;
     }
