@@ -1,7 +1,6 @@
 import { Expect, FocusTests, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
 import { padNumber } from "../../../scripts/pad-number";
 
-@FocusTests
 @TestFixture("padding numbers")
 export class PadNumberTests {
 
