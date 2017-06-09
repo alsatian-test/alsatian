@@ -18,8 +18,8 @@
   "bin": {
     "alsatian": "./cli/alsatian-cli.js"
   },
-  "engines" : { 
-    "node" : ">=4.0.0"
+  "engines": {
+    "node": ">=4.0.0"
   },
   "scripts": {
     "build": "tsc",

@@ -51,4 +51,12 @@ export class PadNumberTests {
     public doubleDecimalPaddedCorrectly(numberOfZeros: number, expectedOutput: string) {
         Expect(padNumber(42.42, numberOfZeros)).toBe(expectedOutput);
     }
+
+    @TestCase(11, "00000000001")
+    @TestCase(12, "000000000001")
+    @TestCase(13, "0000000000001")
+    @Test("numbers correctly padded that exceed the cached zeros")
+    public numbersCorrectlyPaddedOverCache(numberOfZeros: number, expectedOutput: string) {
+        Expect(padNumber(1, numberOfZeros)).toBe(expectedOutput);
+    }
 }
