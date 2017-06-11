@@ -30,8 +30,18 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(x => {
                 process.exit(1);
             }
             else {
+
                 process.stdout.write(packageJson.version + " ready to publish\n");
-                process.exit(0);
+
+                const publishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
+
+                publishProcess.on("close", (code, signal) => {
+                    process.stdout.write(packageJson.version + " publishedh\n");
+                    process.exit(0);
+                });
+
+                publishProcess.stdout.pipe(process.stdout);
+                publishProcess.stderr.pipe(process.stderr);
             }
         });
     }

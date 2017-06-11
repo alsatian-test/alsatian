@@ -27,7 +27,7 @@
     "clean": "npm run clean-core && npm run clean-cli",
     "clean-core": "rimraf core/**/*.js core/**/*.js.map core/**/*.d.ts",
     "clean-cli": "rimraf cli/**/*.js cli/**/*.js.map cli/**/*.d.ts",
-    "publish-nightly": "npm run build && node ./scripts/build-nightly && npm publish --tag next",
+    "publish-nightly": "npm run build && node ./scripts/build-nightly",
     "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
     "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
