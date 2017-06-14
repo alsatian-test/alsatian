@@ -25,9 +25,14 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(async result => {
                               now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
         
         try {
+            process.stdout.write("updating package.json");
             await writeFileAsync("./package.json", JSON.stringify(packageJson, null, 3));
+            process.stdout.write(`updated package.json version to ${packageJson.version}\n`);
+
             if (process.env.NPM_AUTH_TOKEN) {
+                process.stdout.write("building .npmrc\n");
                 await writeFileAsync("./.npmrc", "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n");
+                process.stdout.write("built .npmrc\n");
             }
             process.stdout.write(packageJson.version + " ready to publish\n");
             await npmPublish();
