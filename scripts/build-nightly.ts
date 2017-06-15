@@ -10,7 +10,7 @@ GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(async result => {
 
     const ONE_DAY_IN_MILLISECONDS = 86400000;
 
-    if (process.env.TRAVIS_JOB_NUMBER && process.env.TRAVIS_JOB_NUMBER.split(".")[1] !== "-1") {
+    if (process.env.TRAVIS_JOB_NUMBER && process.env.TRAVIS_JOB_NUMBER.split(".")[1] !== "1") {
         process.stdout.write("nothing to do here, publishing is handled on another job\n");
         process.exit(0);
     }
