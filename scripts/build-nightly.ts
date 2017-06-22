@@ -44,7 +44,7 @@ else {
             }
             catch (error) {
                 process.stderr.write("publish failed: " + error.message);
-                process.exit(1);            
+                process.exit(1);
             }
         }
     });
