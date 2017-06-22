@@ -9,7 +9,7 @@ if (process.env.TRAVIS_JOB_NUMBER && process.env.TRAVIS_JOB_NUMBER.split(".")[1]
 }
 else {
     // tslint:disable-next-line
-    require("dugite").GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then((response: any) => {
+    require("dugite").GitProcess.exec([ "log", "-1", "--format=%cd"], "./").then(async (response: any) => {
         const lastCommitDate = new Date(response.stdout);
         const now = new Date();
 
@@ -23,28 +23,57 @@ else {
 
             const packageJson = getPackageJson();
             packageJson.version = packageJson.version.split("-")[0] + "-" +
-                            now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
+                                now.getFullYear() + padNumber(now.getMonth() + 1, 2) + padNumber(now.getDate(), 2);
 
-            writeFile("./package.json", JSON.stringify(packageJson, null, 3), (error) => {
-                if (error) {
-                    process.stderr.write("publish preparation failed: " + error.message);
-                    process.exit(1);
+            try {
+                process.stdout.write("updating package.json");
+                await writeFileAsync("./package.json", JSON.stringify(packageJson, null, 3));
+                process.stdout.write(`updated package.json version to ${packageJson.version}\n`);
+
+                if (process.env.NPM_AUTH_TOKEN) {
+                    process.stdout.write("building .npmrc\n");
+                    await writeFileAsync("./.npmrc", "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n");
+                    process.stdout.write("built .npmrc\n");
                 }
-                else {
 
-                    process.stdout.write(packageJson.version + " ready to publish\n");
+                process.stdout.write(packageJson.version + " ready to publish\n");
+                await npmPublish();
+                process.stdout.write(packageJson.version + " publishedh\n");
 
-                    const publishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
-
-                    publishProcess.on("close", (code, signal) => {
-                        process.stdout.write(packageJson.version + " publishedh\n");
-                        process.exit(0);
-                    });
-
-                    publishProcess.stdout.pipe(process.stdout);
-                    publishProcess.stderr.pipe(process.stderr);
-                }
-            });
+                process.exit(0);
+            }
+            catch (error) {
+                process.stderr.write("publish failed: " + error.message);
+                process.exit(1);            
+            }
         }
+    });
+}
+
+async function writeFileAsync(fileLocation: string, fileContents: string) {
+    return new Promise((resolve, reject) => {
+        writeFile(fileLocation, fileContents, (error: Error) => {
+
+            if (error) {
+                return reject(error);
+            }
+
+            resolve();
+        });
+    });
+}
+
+async function npmPublish() {
+
+    return new Promise((resolve, reject) => {
+
+        const publishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
+
+        publishProcess.on("close", (code, signal) => {
+            resolve();
+        });
+
+        publishProcess.stdout.pipe(process.stdout);
+        publishProcess.stderr.pipe(process.stderr);
     });
 }
