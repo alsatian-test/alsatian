@@ -1,4 +1,3 @@
-import { MatchError } from "../errors";
 import { Matcher, MixedMatcher } from "../matchers";
 import { buildExpect } from "./build-expect";
 import { IExpect } from "./expect.i";

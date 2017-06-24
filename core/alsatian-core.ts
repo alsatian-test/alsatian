@@ -43,7 +43,9 @@ import {
 
 import {
    Any,
+   createFunctionSpy,
    FunctionSpy,
+   RestorableFunctionSpy,
    SpyOn,
    SpyOnProperty
 } from "./spying";
@@ -82,7 +84,6 @@ export {
    FocusTest,
    FocusTests,
    FunctionMatcher,
-   FunctionSpy,
    FunctionSpyMatcher,
    IgnoreTest,
    IgnoreTests,
@@ -94,6 +95,9 @@ export {
    PropertyMatcher,
    Setup,
    SetupFixture,
+   FunctionSpy,
+   RestorableFunctionSpy,
+   createFunctionSpy,
    SpyOn,
    SpyOnProperty,
    StringMatcher,
