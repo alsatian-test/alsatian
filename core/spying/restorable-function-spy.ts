@@ -1,4 +1,5 @@
 import { FunctionSpy } from "../spying";
+import { exposeSpyFunctions } from "./expose-spy-functions";
 
 export class RestorableFunctionSpy extends FunctionSpy {
 
@@ -18,11 +19,7 @@ export class RestorableFunctionSpy extends FunctionSpy {
 
       target[functionName] = this.call.bind(this);
 
-      // expose spy's calls on function
-      target[functionName].calls = this.calls;
-
-      // expose spy's callsWithArguments on function
-      target[functionName].callsWithArguments = this.callsWithArguments;
+      exposeSpyFunctions(target[functionName], this);
 
       // expose spy's restore function
       target[functionName].restore = this.restore.bind(this);

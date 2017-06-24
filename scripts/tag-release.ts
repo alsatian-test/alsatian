@@ -1,4 +1,6 @@
-import * as ChildProcess from "child_process";
-const packageJson = require("../package.json"); // tslint:disable-line:no-var-requires
+import { exec } from "child_process";
+import { getPackageJson } from "./get-package-json";
 
-ChildProcess.exec(`git tag -a ${packageJson.version} -m "Release ${packageJson.version}"`);
+const packageJson = getPackageJson();
+
+exec(`git tag -a ${packageJson.version} -m "Release ${packageJson.version}"`);

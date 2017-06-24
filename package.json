@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "2.0.0-20170526",
+  "version": "2.1.0",
   "description": "TypeScript and JavaScript testing framework for beautiful and readable tests",
   "author": "James Richford <=> (=)",
   "contributors": [
@@ -18,16 +18,17 @@
   "bin": {
     "alsatian": "./cli/alsatian-cli.js"
   },
-  "engines" : { 
-    "node" : ">=4.0.0"
+  "engines": {
+    "node": ">=4.0.0"
   },
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "npm run clean-git && npm run clean-compiled",
-    "clean-compiled": "rimraf **/*.js **/*.js.map **/*.d.ts",
-    "clean-git": "git clean -X -d -f",
-    "prepublish": "in-publish && npm run clean && npm install && npm test && npm run build-publish || not-in-publish",
+    "clean": "npm run clean-core && npm run clean-cli",
+    "clean-core": "rimraf core/**/*.js core/**/*.js.map core/**/*.d.ts",
+    "clean-cli": "rimraf cli/**/*.js cli/**/*.js.map cli/**/*.d.ts",
+    "publish-nightly": "npm run build && node ./scripts/build-nightly",
+    "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
     "postpublish": "node ./scripts/tag-release",
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
@@ -92,8 +93,8 @@
     "babel-preset-es2015": "^6.18.0",
     "codeclimate-test-reporter": "^0.5.0",
     "coveralls": "^2.11.9",
+    "dugite": "^1.29.0",
     "gulp": "^3.9.1",
-    "in-publish": "^2.0.0",
     "install-self": "^1.0.0-beta.7",
     "mock-require": "^2.0.1",
     "nyc": "^10.0.0",
