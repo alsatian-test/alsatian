@@ -2,7 +2,7 @@ import { Any, TypeMatcher } from "../spying";
 
 export function stringify(data: any) {
     if (data instanceof Array) {
-        return stringifyArray(data)
+        return stringifyArray(data);
     }
 
     if (data === Any) {
@@ -17,5 +17,5 @@ export function stringify(data: any) {
 }
 
 function stringifyArray(array: Array<any>): string {
-    return `[${array.map(this._stringify).join(", ")}]`;
+    return `[${array.map(stringify).join(", ")}]`;
 }
