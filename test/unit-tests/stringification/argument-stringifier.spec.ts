@@ -9,12 +9,18 @@ export class ArgumentStringifierTests {
     @TestCase(1)
     @TestCase(42)
     @TestCase(null)
-    @TestCase(undefined)
     @Test("normally returns JSONified version of value")
     public jsonifiedNormalValues(value: any) {
         const argumentStringifier = new ArgumentStringifier();
 
         Expect(argumentStringifier.stringify(value)).toBe(JSON.stringify(value));
+    }
+
+    @Test("undefined is stringified")
+    public undefinedStringified() {
+        const argumentStringifier = new ArgumentStringifier();
+
+        Expect(argumentStringifier.stringify(undefined)).toBe("undefined");
     }
 
     @Test(`Any returns "Anything"`)

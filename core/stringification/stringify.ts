@@ -8,12 +8,25 @@ export function stringify(data: any) {
     if (data === Any) {
         return "Anything";
     }
-    else if (data instanceof TypeMatcher) {
+
+    if (data instanceof TypeMatcher) {
         return data.stringify();
     }
-    else {
-        return JSON.stringify(data);
+
+    if (data instanceof Function) {
+        if (data.name) {
+            return data.name;
+        }
+
+        return "anonymous function";
     }
+
+    if (data === undefined) {
+        return "undefined";
+    }
+
+    return JSON.stringify(data);
+
 }
 
 function stringifyArray(array: Array<any>): string {
