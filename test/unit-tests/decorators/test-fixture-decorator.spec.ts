@@ -52,16 +52,16 @@ export class TestFixtureDecoratorTests {
     public testFixtureMetadataDescriptionDefaultsToClassName() {
         const testFixtureDecorator = TestFixtureDecorator();
 
-        class TestFixture { }
-        testFixtureDecorator(TestFixture);
+        class ExampleTestFixture { }
+        testFixtureDecorator(ExampleTestFixture);
 
         class SomeOtherTestFixture { }
         testFixtureDecorator(SomeOtherTestFixture);
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixture);
+        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, ExampleTestFixture);
         const someOtherTestFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, SomeOtherTestFixture);
 
-        Expect(testFixtureMetadata.description).toBe("TestFixture");
+        Expect(testFixtureMetadata.description).toBe("ExampleTestFixture");
         Expect(someOtherTestFixtureMetadata.description).toBe("SomeOtherTestFixture");
     }
 
