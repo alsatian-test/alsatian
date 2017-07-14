@@ -61,7 +61,7 @@ export class TestFixtureDecoratorTests {
         const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, ExampleTestFixture);
         const someOtherTestFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, SomeOtherTestFixture);
 
-        Expect(testFixtureMetadata.description).toBe("TestFixture");
+        Expect(testFixtureMetadata.description).toBe("ExampleTestFixture");
         Expect(someOtherTestFixtureMetadata.description).toBe("SomeOtherTestFixture");
     }
 
