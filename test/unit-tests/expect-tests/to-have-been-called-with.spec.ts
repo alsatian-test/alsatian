@@ -87,7 +87,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase([], [1])
@@ -115,7 +115,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase(["argument", 1], [1, "argument"])
