@@ -115,7 +115,10 @@ export class ToThrowErrorTests {
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionThrowsErrorShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toThrowError(Error, ""))
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.toThrowError(Error, ""))
             .toThrowError(TypeError, "toThrowError requires value passed in to Expect to be a function.");
    }
 
@@ -131,7 +134,10 @@ export class ToThrowErrorTests {
    @TestCase([])
    @TestCase([ "an", "array" ])
    public checkingWhetherNonFunctionDoesNotThrowErrorShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toThrowError(Error, ""))
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toThrowError(Error, ""))
             .toThrowError(TypeError, "toThrowError requires value passed in to Expect to be a function.");
    }
 

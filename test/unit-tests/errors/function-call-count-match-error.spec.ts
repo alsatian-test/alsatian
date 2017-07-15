@@ -4,6 +4,7 @@ import { SpyCallCountType } from "../../../core/matchers";
 import { FunctionSpyBuilder } from "../../builders/function-spy-builder";
 import { SpyCallBuilder } from "../../builders/spy-call-builder";
 import { INameable } from "../../../core/_interfaces";
+import { stringify } from "../../../core/stringification";
 
 export class FunctionCallCountMatchErrorTests {
 
@@ -240,7 +241,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(error.actual)
         .toBe("function was called " +
-              "with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") +
+              "with " + actualArgumentsList.map(stringify).join(", ") +
               " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
@@ -261,7 +262,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(error.actual)
         .toBe("function was called " +
-              "with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") +
+              "with " + actualArgumentsList.map(stringify).join(", ") +
               " " +  actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
@@ -282,7 +283,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(error.actual)
         .toBe("function was called " +
-              "with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") +
+              "with " + actualArgumentsList.map(stringify).join(", ") +
               " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 
@@ -303,7 +304,7 @@ export class FunctionCallCountMatchErrorTests {
 
       Expect(error.actual)
         .toBe("function was called " +
-              "with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") +
+              "with " + actualArgumentsList.map(stringify).join(", ") +
               " " + actualArgumentsList.length + " time" + (actualArgumentsList.length !== 1 ? "s" : "") + ".");
    }
 

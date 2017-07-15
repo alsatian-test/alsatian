@@ -1,6 +1,7 @@
 import { Any, Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 import { INameable } from "../../../core/_interfaces";
+import { stringify } from "../../../core/stringification";
 
 export class ToHaveBeenCalledWithTests {
 
@@ -86,7 +87,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase([], [1])
@@ -114,7 +115,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase(["argument", 1], [1, "argument"])
@@ -278,7 +279,10 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenCalledWith())
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.toHaveBeenCalledWith())
         .toThrowError(
             TypeError,
             "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -296,7 +300,10 @@ export class ToHaveBeenCalledWithTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenCalledWith())
+      const EXPECT = Expect(() => {});
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toHaveBeenCalledWith())
         .toThrowError(
             TypeError,
             "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function.");
@@ -331,7 +338,7 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
       Expect(functionError.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(args => stringify(args)).join(", ") + ".");
    }
 
    @TestCase([[]])
@@ -365,7 +372,7 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
       Expect(functionError.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(args => stringify(args)).join(", ") + ".");
    }
 
    @TestCase([])

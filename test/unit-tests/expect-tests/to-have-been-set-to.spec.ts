@@ -1,5 +1,6 @@
 import { Expect, FocusTests, SpyOnProperty, Test, TestCase } from "../../../core/alsatian-core";
 import { PropertySetMatchError } from "../../../core/errors";
+import { stringify } from "../../../core/stringification";
 
 export class ToHaveBeenSetToTests {
 
@@ -81,7 +82,7 @@ export class ToHaveBeenSetToTests {
       some.property = actualValue;
 
       Expect(() => Expect(propertySpy).toHaveBeenSetTo(expectedValue))
-        .toThrowError(PropertySetMatchError, `Expected property to be set to ${JSON.stringify(expectedValue)}.`);
+        .toThrowError(PropertySetMatchError, `Expected property to be set to ${stringify(expectedValue)}.`);
    }
 
    @Test()
@@ -128,7 +129,7 @@ export class ToHaveBeenSetToTests {
       some.property = expectedValue;
 
       Expect(() => Expect(propertySpy).not.toHaveBeenSetTo(expectedValue))
-        .toThrowError(PropertySetMatchError, `Expected property not to be set to ${JSON.stringify(expectedValue)}.`);
+        .toThrowError(PropertySetMatchError, `Expected property not to be set to ${stringify(expectedValue)}.`);
    }
 
    @TestCase("1", 1)
@@ -176,7 +177,15 @@ export class ToHaveBeenSetToTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasBeenSetToAValueShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).toHaveBeenSetTo("something"))
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+      const EXPECT = Expect(propertySpy);
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.toHaveBeenSetTo("something"))
         .toThrowError(TypeError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
    }
 
@@ -192,7 +201,15 @@ export class ToHaveBeenSetToTests {
    @TestCase(() => {})
    @TestCase((thisCouldBe: any) => "function")
    public checkingWhetherNonPropertySpyHasNotBeenSetToAValueShouldThrow(actualValue: any) {
-      Expect(() => Expect(actualValue).not.toHaveBeenSetTo("something"))
+      const some = {
+         set property(value: any) {}
+      };
+
+      const propertySpy = SpyOnProperty(some, "property");
+      const EXPECT = Expect(propertySpy);
+      (EXPECT as any)._actualValue = actualValue;
+
+      Expect(() => EXPECT.not.toHaveBeenSetTo("something"))
         .toThrowError(TypeError, "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy.");
    }
 
@@ -288,7 +305,7 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expected).toBe("property to be set to " + JSON.stringify(expectedValue) + ".");
+      Expect(propertyError.expected).toBe("property to be set to " + stringify(expectedValue) + ".");
    }
 
    @TestCase(undefined)
@@ -322,6 +339,6 @@ export class ToHaveBeenSetToTests {
 
       Expect(propertyError).toBeDefined();
       Expect(propertyError).not.toBeNull();
-      Expect(propertyError.expected).toBe("property not to be set to " + JSON.stringify(expectedValue) + ".");
+      Expect(propertyError.expected).toBe("property not to be set to " + stringify(expectedValue) + ".");
    }
 }

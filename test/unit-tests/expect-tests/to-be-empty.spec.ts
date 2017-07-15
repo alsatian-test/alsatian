@@ -11,7 +11,7 @@ export class ToBeEmptyTests {
    @TestCase([])
    @TestCase([1])
    @TestCase([1, 2])
-   public emptyShouldNotThrowTypeErrorForArrays(value: any) {
+   public emptyShouldNotThrowTypeErrorForArrays(value: Array<any>) {
       const expect = Expect(value);
 
       Expect(() => expect.toBeEmpty())
@@ -21,7 +21,7 @@ export class ToBeEmptyTests {
 
    @TestCase("")
    @TestCase("string")
-   public emptyShouldNotThrowTypeErrorForStrings(value: any) {
+   public emptyShouldNotThrowTypeErrorForStrings(value: string) {
       const expect = Expect(value);
 
       Expect(() => expect.toBeEmpty())
@@ -31,7 +31,7 @@ export class ToBeEmptyTests {
 
    @TestCase({})
    @TestCase({ a: true })
-   public emptyShouldNotThrowTypeErrorForObjectLiterals(value: any) {
+   public emptyShouldNotThrowTypeErrorForObjectLiterals(value: object) {
       const expect = Expect(value);
 
       Expect(() => expect.toBeEmpty())
@@ -42,9 +42,10 @@ export class ToBeEmptyTests {
    @TestCase(null)
    @TestCase(undefined)
    public emptyShouldThrowTypeErrorForNullTypes(value: any) {
-      const expect = Expect(value);
+      const EXPECT = Expect("");
+      (EXPECT as any)._actualValue = value;
 
-      Expect(() => expect.toBeEmpty())
+      Expect(() => EXPECT.toBeEmpty())
          .toThrowError(TypeError, "toBeEmpty requires value passed in to Expect not to be null or undefined");
    }
 
@@ -56,9 +57,10 @@ export class ToBeEmptyTests {
    @TestCase(new Error())
    @TestCase(new DummyClass())
    public emptyShouldThrowTypeErrorForInvalidTypes(value: any) {
-      const expect = Expect(value);
+      const EXPECT = Expect("");
+      (EXPECT as any)._actualValue = value;
 
-      Expect(() => expect.toBeEmpty())
+      Expect(() => EXPECT.toBeEmpty())
          .toThrowError(TypeError, this._typeErrorMessage);
    }
 
