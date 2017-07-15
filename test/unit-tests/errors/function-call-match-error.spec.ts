@@ -3,6 +3,7 @@ import { FunctionCallMatchError } from "../../../core/errors/function-call-match
 import { FunctionSpyBuilder } from "../../builders/function-spy-builder";
 import { SpyCallBuilder } from "../../builders/spy-call-builder";
 import { INameable } from "../../../core/_interfaces";
+import { stringify } from "../../../core/stringification";
 
 export class FunctionCallMatchErrorTests {
 
@@ -115,7 +116,7 @@ export class FunctionCallMatchErrorTests {
       const error = new FunctionCallMatchError(fakeFunction, true, []);
 
       Expect(error.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(stringify).join(", ") + ".");
    }
 
    @TestCase([[]])
@@ -134,7 +135,7 @@ export class FunctionCallMatchErrorTests {
       const error = new FunctionCallMatchError(fakeFunction, false, []);
 
       Expect(error.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(stringify).join(", ") + ".");
    }
 
    @TestCase([])

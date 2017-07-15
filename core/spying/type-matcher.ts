@@ -1,21 +1,10 @@
-import { ArgumentStringifier } from "../stringification";
+import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
-import { Unused } from "../unused";
-
-function replacer(key: string, value: any) {
-    Unused(key);
-    if (typeof value === "function") {
-        return value.toString();
-    }
-
-    return value;
-}
 
 export class TypeMatcher<ExpectedType extends object> {
 
-   private _argumentStringifier = new ArgumentStringifier();
    private _testers: Array<ITester> = [];
-   private _type: new (...args: Array<any>) => object;
+   private _type: new (...args: Array<any>) => ExpectedType;
    public get type() {
       return this._type;
    }
@@ -50,7 +39,7 @@ export class TypeMatcher<ExpectedType extends object> {
       return this._testers.every(tester => tester.test(value));
    }
 
-   public stringify() {
+   public stringify(): string {
       return this._testers.map(tester => tester.stringify()).join(" and ");
    }
 
@@ -81,7 +70,7 @@ export class TypeMatcher<ExpectedType extends object> {
 
    private _matchesKeyAndValue(key: string, value: any): this {
       this._testers.push({
-         stringify: () => `with property '${key}' equal to '${this._argumentStringifier.stringify(value)}'`,
+         stringify: () => `with property '${key}' equal to '${stringify(value)}'`,
          test: (v: any) => {
             if (Object.getOwnPropertyNames(v).indexOf(key) < 0) {
                return false;
@@ -109,7 +98,7 @@ export class TypeMatcher<ExpectedType extends object> {
       }
 
       this._testers.push({
-         stringify: () => `matches '${JSON.stringify(properties, replacer)}'`,
+         stringify: () => `matches '${stringify(properties)}'`,
          test: (v: any) => {
             const targetKeys = Object.getOwnPropertyNames(v);
             return Object.getOwnPropertyNames(properties).every(key => {

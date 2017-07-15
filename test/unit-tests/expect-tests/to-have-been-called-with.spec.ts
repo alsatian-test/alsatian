@@ -1,6 +1,7 @@
 import { Any, Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { FunctionCallCountMatchError, FunctionCallMatchError } from "../../../core/errors";
 import { INameable } from "../../../core/_interfaces";
+import { stringify } from "../../../core/stringification";
 
 export class ToHaveBeenCalledWithTests {
 
@@ -86,7 +87,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase([], [1])
@@ -114,7 +115,7 @@ export class ToHaveBeenCalledWithTests {
       })
       .toThrowError(
           FunctionCallMatchError,
-          `Expected function to be called with [${expectedArguments.map(arg => JSON.stringify(arg)).join(", ")}].`);
+          `Expected function to be called with [${expectedArguments.map(arg => stringify(arg)).join(", ")}].`);
    }
 
    @TestCase(["argument", 1], [1, "argument"])
@@ -337,7 +338,7 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
       Expect(functionError.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(args => stringify(args)).join(", ") + ".");
    }
 
    @TestCase([[]])
@@ -371,7 +372,7 @@ export class ToHaveBeenCalledWithTests {
       Expect(functionError).toBeDefined();
       Expect(functionError).not.toBeNull();
       Expect(functionError.actual)
-        .toBe("function was called with " + actualArgumentsList.map(args => JSON.stringify(args)).join(", ") + ".");
+        .toBe("function was called with " + actualArgumentsList.map(args => stringify(args)).join(", ") + ".");
    }
 
    @TestCase([])

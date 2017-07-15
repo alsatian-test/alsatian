@@ -1,4 +1,5 @@
 import { MatchError } from "./match-error";
+import { stringify } from "../stringification";
 
 export class PropertySetMatchError extends MatchError {
 
@@ -6,7 +7,7 @@ export class PropertySetMatchError extends MatchError {
 
     super(
     `Expected property ${!shouldMatch ? "not " : ""}to be set` +
-    `${arguments.length === 3 ? " to " + JSON.stringify(value) + "" : ""}.`);
+    `${arguments.length === 3 ? " to " + stringify(value) + "" : ""}.`);
 
     const setCalls = actualValue.setCalls;
 
@@ -15,10 +16,10 @@ export class PropertySetMatchError extends MatchError {
     `set${arguments.length === 3 && setCalls.length ? " to " + this._stringifyArguments(setCalls) : ""}.`;
 
     this._expected =
-    `property ${!shouldMatch ? "not " : ""}to be set${arguments.length === 3 ? " to " + JSON.stringify(value) : ""}.`;
+    `property ${!shouldMatch ? "not " : ""}to be set${arguments.length === 3 ? " to " + stringify(value) : ""}.`;
   }
 
   private _stringifyArguments(setCalls: any): string {
-    return setCalls.map((call: any) => JSON.stringify(call.args[0])).join(", ");
+    return setCalls.map((call: any) => stringify(call.args[0])).join(", ");
   }
 }

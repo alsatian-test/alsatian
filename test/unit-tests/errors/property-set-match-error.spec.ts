@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { PropertySetMatchError } from "../../../core/errors/property-set-match-error";
+import { stringify } from "../../../core/stringification";
 
 export class PropertySetMatchErrorTests {
 
@@ -40,7 +41,7 @@ export class PropertySetMatchErrorTests {
 
       const error = new PropertySetMatchError(fakePropertySpy, true, value);
 
-      Expect(error.message).toBe(`Expected property to be set to ${JSON.stringify(value)}.`);
+      Expect(error.message).toBe(`Expected property to be set to ${stringify(value)}.`);
    }
 
    @TestCase(undefined)
@@ -60,7 +61,7 @@ export class PropertySetMatchErrorTests {
 
       const error = new PropertySetMatchError(fakePropertySpy, false, value);
 
-      Expect(error.message).toBe(`Expected property not to be set to ${JSON.stringify(value)}.`);
+      Expect(error.message).toBe(`Expected property not to be set to ${stringify(value)}.`);
    }
 
    @Test()
@@ -157,7 +158,7 @@ export class PropertySetMatchErrorTests {
 
       const error = new PropertySetMatchError(fakePropertySpy, true, value);
 
-      Expect(error.expected).toBe("property to be set to " + JSON.stringify(value) + ".");
+      Expect(error.expected).toBe("property to be set to " + stringify(value) + ".");
    }
 
    @TestCase(undefined)
@@ -176,6 +177,6 @@ export class PropertySetMatchErrorTests {
 
       const error = new PropertySetMatchError(fakePropertySpy, false, value);
 
-      Expect(error.expected).toBe("property not to be set to " + JSON.stringify(value) + ".");
+      Expect(error.expected).toBe("property not to be set to " + stringify(value) + ".");
    }
 }
