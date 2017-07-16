@@ -69,9 +69,7 @@ async function npmPublish() {
 
         const publishProcess = spawn("npm", [ "publish", "--tag", "next" ]);
 
-        publishProcess.on("close", (code, signal) => {
-            resolve();
-        });
+        publishProcess.on("close", (code) => resolve());
 
         publishProcess.stdout.pipe(process.stdout);
         publishProcess.stderr.pipe(process.stderr);
