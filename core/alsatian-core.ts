@@ -37,6 +37,7 @@ import {
    TeardownFixture,
    Test,
    TestCase,
+   TestCases,
    TestFixture,
    Timeout
 } from "./decorators";
@@ -105,6 +106,7 @@ export {
    TeardownFixture,
    Test,
    TestCase,
+   TestCases,
    TestCaseResult,
    TestFixture,
    TestFixtureResults,

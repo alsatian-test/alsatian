@@ -39,5 +39,5 @@ export function TestCase(...testCaseArguments: Array<any>) {
 
     // update the list of test cases
     Reflect.defineMetadata(TEST_CASES, testCases, target, propertyKey);
-};
+  };
 }

@@ -24,9 +24,10 @@
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "npm run clean-core && npm run clean-cli",
+    "clean": "npm run clean-core && npm run clean-cli && npm run clean-test",
     "clean-core": "rimraf core/**/*.js core/**/*.js.map core/**/*.d.ts",
     "clean-cli": "rimraf cli/**/*.js cli/**/*.js.map cli/**/*.d.ts",
+    "clean-test": "rimraf test/**/*.js test/**/*.js.map test/**/*.d.ts",
     "publish-nightly": "npm run build && node ./scripts/build-nightly",
     "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
     "postpublish": "node ./scripts/tag-release",

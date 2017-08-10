@@ -12,6 +12,7 @@ import { SetupFixture } from "./setup-fixture-decorator";
 import { Teardown } from "./teardown-decorator";
 import { TeardownFixture } from "./teardown-fixture-decorator";
 import { TestCase } from "./test-case-decorator";
+import { TestCases } from "./test-cases-decorator";
 import { Test } from "./test-decorator";
 import { TestFixture } from "./test-fixture-decorator";
 import { Timeout } from "./timeout-decorator";
@@ -33,5 +34,6 @@ export {
     TestFixture,
     Test,
     TestCase,
+    TestCases,
     Timeout
 };
