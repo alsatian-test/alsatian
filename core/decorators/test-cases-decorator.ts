@@ -23,10 +23,6 @@ function GetTestCases(
 export function TestCases(
   caseArguments: (() => IterableIterator<any> | Array<Array<any>>) | IterableIterator<any> | Array<Array<any>>):
   (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => void {
-  // tslint:disable-next-line:no-console
-  // console.log(arguments);
-  // throw new Error(JSON.stringify((caseArguments as IterableIterator<any>).next()));
-
   return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
     Unused(descriptor);
 
@@ -48,8 +44,6 @@ export function TestCases(
     }
 
     const testCases = GetTestCases(caseArguments).reduce((acc, val) => {
-      // tslint:disable-next-line:no-console
-      // console.log("val", val);
       // add the test case to the list
       return [...acc, {
         caseArguments: val
