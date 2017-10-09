@@ -7,14 +7,14 @@ export class TestLoader {
    public constructor(private _fileRequirer: FileRequirer) { }
 
    public loadTestFixture(filePath: string): Array<ITestFixture> {
-      let testFixureModule;
+      let testFixureModule: any;
       
       try {
-			testFixureModule = this._fileRequirer.require(filePath);
-        } catch (e) {
-			process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
-			process.stderr.write(e.stack);
-		}
+         testFixureModule = this._fileRequirer.require(filePath);
+      } catch (e) {
+         process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
+         process.stderr.write(e.stack);
+      }
       
       const testFixtureKeys = Object.keys(testFixureModule);
       const testFixtures: Array<ITestFixture> = [];
