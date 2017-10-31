@@ -16,7 +16,7 @@ ok 4 AddNumbers ( 1.5, 2.5, 4 )
 ok 5 AddStrings ( "Hello", " world!", "Hello world!" )
 ok 6 AddStrings ( "Far", "away", "Faraway" )
 ok 7 AddObjectProperty ( {"a":1}, {"a":2}, 3 )
-ok 8 AddArray ( [1,2], [3,4], 10 )
+ok 8 AddArray ( [1, 2], [3, 4], 10 )
 # FIXTURE setup tests
 ok 9 simple setup
 ok 10 simple async setup

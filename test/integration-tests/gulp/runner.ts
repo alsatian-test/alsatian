@@ -14,8 +14,8 @@ export class GulpIntegrationTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       const expectedOutput = FileSystem
                                 .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
@@ -38,8 +38,8 @@ export class GulpIntegrationTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       const expectedOutput = FileSystem
                                 .readFileSync("./test/integration-tests/expected-output/expectations/to-throw.txt")
@@ -65,8 +65,8 @@ export class GulpIntegrationTests {
 
       let consoleOutput = "";
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+      result.stdout.on("data", (data: string) => consoleOutput += data);
+      result.stderr.on("data", (data: string) => consoleOutput += data);
 
       const expectedOutput = FileSystem
                             .readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt")

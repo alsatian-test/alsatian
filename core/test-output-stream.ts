@@ -2,6 +2,7 @@ import { Readable as ReadableStream } from "stream";
 import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
+import { stringify } from "./stringification";
 
 export class TestOutputStream extends ReadableStream {
 
@@ -81,37 +82,17 @@ export class TestOutputStream extends ReadableStream {
       }
 
       const formattedArguments = testCaseArguments
-         .map(argument => this._getArgumentDescription(argument))
+         .map(stringify)
          .join(", ");
 
       return `${test.description} ( ${formattedArguments} )`;
    }
 
-   private _getArgumentDescription(argument: any): string {
-
-      const jsonArgument = JSON.stringify(argument);
-
-      // if the argument can be expresed as JSON return that
-      if (jsonArgument) {
-         return JSON.stringify(argument);
-      }
-      // otherwise if it's a function return it's name
-      else if (argument && argument.name) {
-         return argument.name;
-      }
-      else if (argument instanceof Function) {
-         return "anonymous function";
-      }
-
-      // otherwise must be undefined
-      return "undefined";
-   }
-
    private _writeMatchErrorOutput(error: MatchError): void {
 
        const sanitisedMessage = error.message.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-       const sanitisedActual = JSON.stringify(error.actual);
-       const sanitisedExpected = JSON.stringify(error.expected);
+       const sanitisedActual = stringify(error.actual);
+       const sanitisedExpected = stringify(error.expected);
 
        this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
 

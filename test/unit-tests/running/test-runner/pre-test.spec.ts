@@ -183,8 +183,7 @@ export class PreTestTests {
          fixtures.push(testFixtureBuilder.build());
       }
 
-      const testFixtureBuilder = new TestFixtureBuilder();
-      fixtures.push(testFixtureBuilder.build());
+      fixtures.push(new TestFixtureBuilder().build());
 
       const testSet = new TestSetBuilder().withTestFixtures(fixtures).build();
 
