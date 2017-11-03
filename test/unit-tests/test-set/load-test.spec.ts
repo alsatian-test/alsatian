@@ -22,8 +22,8 @@ export class LoadTestTests {
       Expect(testSet.testFixtures.length).toBe(0);
    }
 
-   @TestCase("C:/test/spec.js")
-   @TestCase("D:/another/spec.somewhere.js")
+   @TestCase("/test/spec.js")
+   @TestCase("/another/spec.somewhere.js")
    @Test("absolute paths are resolved")
    public absolutePathsAreResolved(path: string) {
       const testLoader = new TestLoader(null);
@@ -38,7 +38,7 @@ export class LoadTestTests {
 
       testSet.addTestsFromFiles(path);
 
-      Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(path.replace(/\//g, sep));
+      Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
    }
 
    @TestCase("./spec.js")
@@ -61,8 +61,8 @@ export class LoadTestTests {
       Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
    }
 
-   @TestCase("C:/*/spec.js")
-   @TestCase("D:/another/**/*.spec.somewhere.js")
+   @TestCase("/*/spec.js")
+   @TestCase("/another/**/*.spec.somewhere.js")
    @Test("absolute globs are resolved")
    public absoluteGlobsAreResolved(path: string) {
       const testLoader = new TestLoader(null);
@@ -77,7 +77,7 @@ export class LoadTestTests {
 
       testSet.addTestsFromFiles(path);
 
-      Expect(globHelper.resolve).toHaveBeenCalledWith(path.replace(/\//g, sep));
+      Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
    }
 
    @TestCase("./*.js")
