@@ -1,10 +1,10 @@
 import { TapBark } from "tap-bark";
 import { TestSet, TestRunner } from "alsatian";
 
-async function runTypeScriptTests () {
+async function runTypeScriptTests() {
     try {
         const testSet = TestSet.create();
-        testSet.addTestsFromFiles('./test/integration-tests/test-sets/**/*.spec.ts');
+        testSet.addTestsFromFiles("./test/integration-tests/test-sets/**/*.spec.ts");
 
         const testRunner = new TestRunner();
 
@@ -17,8 +17,8 @@ async function runTypeScriptTests () {
         // if we got this far then everything ran fine! :)
         process.exit(0);
     }
-    catch(error) {
-        console.error(error);
+    catch (error) {
+        process.stderr.write(error);
         process.exit(1);
     }
 }
