@@ -163,15 +163,15 @@ export class ToEqualTests {
       const expect = Expect(actual);
 
       Expect(() => expect.toEqual(expected)).toThrow();
-   }   
+   }
 
    @TestCase(Any(Number), "something", "Expected \"something\" to be equal to Any Number.")
    @TestCase(Any(String), 42, "Expected 42 to be equal to Any String.")
    @TestCase(Any(Object).thatMatches("property", 42),
              { property: "something", anotherProperty: 42},
-             `Expected {"property":"something","anotherProperty":42} ` + 
+             `Expected {"property":"something","anotherProperty":42} ` +
              `to be equal to Any Object and with property 'property' equal to '42'.`)
-   @TestCase(Any(Object).thatMatches({ "anotherProperty": "something" }),
+   @TestCase(Any(Object).thatMatches({ anotherProperty: "something" }),
              { property: "something", anotherProperty: 42},
              `Expected {"property":"something","anotherProperty":42} ` +
              `to be equal to Any Object and matches '{"anotherProperty":"something"}'.`)
