@@ -59,6 +59,12 @@ export class AlsatianCliOptions {
     return args.filter(value => this._fileGlobs.indexOf(value) === -1);
   }
 
+  private _isInvalidTimeoutValue(timeoutValue: string) {
+    const timeout = parseInt(timeoutValue, 10);
+
+    return isNaN(timeout) || timeout < 1 || timeout.toString() !== timeoutValue;
+  }
+
   private _extractTimeout(args: Array<string>) {
     const timeoutValue = this._getArgumentValueFromArgumentList(
       args,
@@ -67,15 +73,11 @@ export class AlsatianCliOptions {
     );
 
     if (timeoutValue !== null) {
-      const timeout = parseInt(timeoutValue, 10);
-
-      if (
-        isNaN(timeout) ||
-        timeout < 1 ||
-        timeout.toString() !== timeoutValue
-      ) {
+      if (this._isInvalidTimeoutValue(timeoutValue)) {
         throw new InvalidTimeoutValueError(timeoutValue);
       }
+
+      const timeout = parseInt(timeoutValue, 10);
 
       this._timeout = timeout;
 

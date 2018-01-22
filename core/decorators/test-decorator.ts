@@ -13,7 +13,7 @@ export function Test(description?: string) {
 
     // check if this has been registered as a test already
     markPropertyAsTest(propertyKey, target);
-    
+
     // get tests
     const tests: Array<any> = Reflect.getMetadata(TESTS, target);
 

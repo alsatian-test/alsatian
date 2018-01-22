@@ -12,10 +12,7 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
    * @param expectedContent - the string or array item that the value should contain
    */
   public toContain(expectedContent: ContentType) {
-    if (
-      this.actualValue instanceof Array === false &&
-      typeof this.actualValue !== "string"
-    ) {
+    if (this._isValidContainer(this.actualValue)) {
       throw new TypeError(
         "toContain must only be used to check whether strings or arrays contain given contents."
       );
@@ -40,5 +37,9 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
         this.shouldMatch
       );
     }
+  }
+
+  private _isValidContainer(value: ContainerType) {
+    return value instanceof Array === false && typeof value !== "string";
   }
 }

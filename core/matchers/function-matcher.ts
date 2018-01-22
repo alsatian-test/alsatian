@@ -157,22 +157,9 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     }
 
     if (
-      (this.actualValue.calls.filter((call: any) => {
-        return (
-          call.args.length === expectedArguments.length && // the call has the same amount of arguments
-          call.args.filter((arg: any, index: number) => {
-            const expectedArgument = expectedArguments[index];
-            return (
-              arg === expectedArgument ||
-              expectedArgument === Any ||
-              (expectedArgument instanceof TypeMatcher &&
-                expectedArgument.test(arg))
-            );
-          }).length === expectedArguments.length
-        ); // and all call arguments match expected arguments
-      }).length ===
-        0) ===
-      this.shouldMatch
+      this.actualValue.calls.some((call: any) =>
+        this._callArgumentsMatch(call, expectedArguments)
+      ) !== this.shouldMatch
     ) {
       throw new FunctionCallMatchError(
         this.actualValue,
@@ -182,6 +169,22 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     }
 
     return new FunctionSpyMatcher(this.actualValue, expectedArguments);
+  }
+
+  private _callArgumentsMatch(call: any, expectedArguments: Array<any>) {
+    if (call.args.length !== expectedArguments.length) {
+      return false;
+    }
+
+    return call.args.every((arg: any, index: number) => {
+      const expectedArgument = expectedArguments[index];
+
+      return (
+        arg === expectedArgument ||
+        expectedArgument === Any ||
+        (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg))
+      );
+    });
   }
 
   private _isFunctionSpyOrSpiedOnFunction(value: any) {
