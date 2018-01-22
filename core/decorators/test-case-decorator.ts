@@ -1,6 +1,7 @@
 import "reflect-metadata";
-import { TEST_CASES, TESTS } from "./_metadata-keys";
+import { TEST_CASES } from "./_metadata-keys";
 import { Unused } from "../unused";
+import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function TestCase(...testCaseArguments: Array<any>) {
   return (
@@ -10,24 +11,7 @@ export function TestCase(...testCaseArguments: Array<any>) {
   ) => {
     Unused(descriptor);
 
-    // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TESTS, target);
-
-    // if there are no tests registered yet then register it
-    if (!tests) {
-      tests = [
-        {
-          key: propertyKey
-        }
-      ];
-      Reflect.defineMetadata(TESTS, tests, target);
-    } else if (tests.filter(test => test.key === propertyKey).length === 0) {
-      // otherwise add it to the register
-      tests.push({
-        key: propertyKey
-      });
-      Reflect.defineMetadata(TESTS, tests, target);
-    }
+    markPropertyAsTest(propertyKey, target);
 
     // check if there are test cases already associated with this test
     let testCases: Array<any> = Reflect.getMetadata(

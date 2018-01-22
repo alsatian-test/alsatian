@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
 import { Unused } from "../unused";
+import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function AsyncTest(description?: string) {
   return (
@@ -11,21 +12,10 @@ export function AsyncTest(description?: string) {
     Unused(descriptor);
 
     // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TESTS, target);
-
-    // if there are no tests registered yet then register it
-    if (!tests) {
-      tests = [
-        {
-          key: propertyKey
-        }
-      ];
-    } else if (tests.filter(test => test.key === propertyKey).length === 0) {
-      // otherwise add it to the register if it's not already there
-      tests.push({
-        key: propertyKey
-      });
-    }
+    markPropertyAsTest(propertyKey, target);
+    
+    // get tests
+    const tests: Array<any> = Reflect.getMetadata(TESTS, target);
 
     // mark it as async and add the description
     const testDefinition = tests.filter(test => test.key === propertyKey)[0];
