@@ -1,138 +1,149 @@
-import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  FunctionSpy,
+  SpyOn,
+  Test,
+  TestCase
+} from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
 
 export class AndCallGetterTests {
+  @Test()
+  public originalGetterCalled() {
+    const testObject: any = {};
 
-   @Test()
-   public originalGetterCalled() {
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-      const testObject: any = { };
+    SpyOn(propertyDescriptor, "get");
 
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      SpyOn(propertyDescriptor, "get");
+    const propertySpy = new PropertySpy(testObject, "property");
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    const property = testObject.property;
 
-      const propertySpy = new PropertySpy(testObject, "property");
+    Expect(propertyDescriptor.get).toHaveBeenCalled();
+  }
 
-      const property = testObject.property;
+  @Test()
+  public originalGetterNotCalledIfGetterOverloaded() {
+    const testObject: any = {};
 
-      Expect(propertyDescriptor.get).toHaveBeenCalled();
-   }
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-   @Test()
-   public originalGetterNotCalledIfGetterOverloaded() {
+    SpyOn(propertyDescriptor, "get");
 
-      const testObject: any = { };
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
+    const propertySpy = new PropertySpy(testObject, "property").andCallGetter(
+      () => undefined
+    );
 
-      SpyOn(propertyDescriptor, "get");
+    const property = testObject.property;
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    Expect(propertyDescriptor.get).not.toHaveBeenCalled();
+  }
 
-      const propertySpy = new PropertySpy(testObject, "property").andCallGetter(() => undefined);
+  @Test()
+  public propertySpyIsReturned() {
+    const testObject: any = {};
 
-      const property = testObject.property;
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-      Expect(propertyDescriptor.get).not.toHaveBeenCalled();
-   }
+    SpyOn(propertyDescriptor, "get");
 
-   @Test()
-   public propertySpyIsReturned() {
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const testObject: any = { };
+    const propertySpy = new PropertySpy(testObject, "property");
 
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
+    Expect(propertySpy.andCallGetter(() => undefined)).toBe(propertySpy);
+  }
 
-      SpyOn(propertyDescriptor, "get");
+  @TestCase(null)
+  @TestCase(undefined)
+  @TestCase(42)
+  @TestCase("something")
+  @TestCase({ an: "object" })
+  @TestCase(["an", "array"])
+  public newValueIsReturned(value: any) {
+    const testObject: any = {};
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-      const propertySpy = new PropertySpy(testObject, "property");
+    SpyOn(propertyDescriptor, "get");
 
-      Expect(propertySpy.andCallGetter(() => undefined)).toBe(propertySpy);
-   }
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-   @TestCase(null)
-   @TestCase(undefined)
-   @TestCase(42)
-   @TestCase("something")
-   @TestCase({ an: "object" })
-   @TestCase([ "an", "array" ])
-   public newValueIsReturned(value: any) {
+    new PropertySpy(testObject, "property").andCallGetter(() => value);
 
-      const testObject: any = { };
+    Expect(testObject.property).toBe(value);
+  }
 
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
+  @TestCase(null, ["an", "array"])
+  @TestCase(undefined, { an: "object" })
+  @TestCase(42, "something")
+  @TestCase("something", 42)
+  @TestCase({ an: "object" }, undefined)
+  @TestCase(["an", "array"], null)
+  public andCallGetterValueIsReturnedWhenReturnValueIsCalledPreviously(
+    getterValue: any,
+    andReturnValue: any
+  ) {
+    const testObject: any = {};
 
-      SpyOn(propertyDescriptor, "get");
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    SpyOn(propertyDescriptor, "get");
 
-      new PropertySpy(testObject, "property").andCallGetter(() => value);
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      Expect(testObject.property).toBe(value);
-   }
+    new PropertySpy(testObject, "property")
+      .andReturnValue(andReturnValue)
+      .andCallGetter(() => getterValue);
 
-   @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { an: "object" })
-   @TestCase(42, "something")
-   @TestCase("something", 42)
-   @TestCase({ an: "object" }, undefined)
-   @TestCase([ "an", "array" ], null)
-   public andCallGetterValueIsReturnedWhenReturnValueIsCalledPreviously(getterValue: any, andReturnValue: any) {
+    Expect(testObject.property).toBe(getterValue);
+  }
 
-      const testObject: any = { };
+  @TestCase(null, ["an", "array"])
+  @TestCase(undefined, { an: "object" })
+  @TestCase(42, "something")
+  @TestCase("something", 42)
+  @TestCase({ an: "object" }, undefined)
+  @TestCase(["an", "array"], null)
+  public andReturnValueValueIsReturnedWhenReturnValueIsCalledAfter(
+    getterValue: any,
+    andReturnValue: any
+  ) {
+    const testObject: any = {};
 
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => {}
+    };
 
-      SpyOn(propertyDescriptor, "get");
+    SpyOn(propertyDescriptor, "get");
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      new PropertySpy(testObject, "property").andReturnValue(andReturnValue).andCallGetter(() => getterValue);
+    new PropertySpy(testObject, "property")
+      .andCallGetter(() => getterValue)
+      .andReturnValue(andReturnValue);
 
-      Expect(testObject.property).toBe(getterValue);
-   }
-
-   @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { an: "object" })
-   @TestCase(42, "something")
-   @TestCase("something", 42)
-   @TestCase({ an: "object" }, undefined)
-   @TestCase([ "an", "array" ], null)
-   public andReturnValueValueIsReturnedWhenReturnValueIsCalledAfter(getterValue: any, andReturnValue: any) {
-
-      const testObject: any = { };
-
-      const propertyDescriptor = {
-          configurable: true,
-          get: () => {}
-      };
-
-      SpyOn(propertyDescriptor, "get");
-
-      Object.defineProperty(testObject, "property", propertyDescriptor);
-
-      new PropertySpy(testObject, "property").andCallGetter(() => getterValue).andReturnValue(andReturnValue);
-
-      Expect(testObject.property).toBe(andReturnValue);
-   }
+    Expect(testObject.property).toBe(andReturnValue);
+  }
 }

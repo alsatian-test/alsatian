@@ -1,7 +1,6 @@
 import { Constructor } from "../../core/_interfaces";
 
 export class ClassBuilder {
-
   private name: string;
 
   public ClassBuilder() {
@@ -14,7 +13,7 @@ export class ClassBuilder {
   }
 
   public build(): Constructor {
-    class BuiltClass { }
+    class BuiltClass {}
 
     Object.defineProperty(BuiltClass, "name", {
       enumerable: false,
@@ -25,5 +24,4 @@ export class ClassBuilder {
 
     return BuiltClass;
   }
-
 }

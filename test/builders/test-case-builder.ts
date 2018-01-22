@@ -1,7 +1,6 @@
 import { ITestCase } from "../../core/_interfaces/test-case.i";
 
 export class TestCaseBuilder {
-
   private _testCase: ITestCase;
 
   public constructor() {

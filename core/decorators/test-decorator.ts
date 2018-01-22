@@ -3,7 +3,11 @@ import { TESTS } from "./_metadata-keys";
 import { Unused } from "../unused";
 
 export function Test(description?: string) {
-  return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
+  return (
+    target: object,
+    propertyKey: string,
+    descriptor?: TypedPropertyDescriptor<any>
+  ) => {
     Unused(descriptor);
 
     // check if this has been registered as a test already
@@ -11,14 +15,15 @@ export function Test(description?: string) {
 
     // if there are no tests registered yet then register it
     if (!tests) {
-      tests = [ {
-         key: propertyKey
-      } ];
-    }
-    // otherwise add it to the register
-    else if (tests.filter(test => test.key === propertyKey).length === 0) {
-      tests.push( {
-         key: propertyKey
+      tests = [
+        {
+          key: propertyKey
+        }
+      ];
+    } else if (tests.filter(test => test.key === propertyKey).length === 0) {
+      // otherwise add it to the register
+      tests.push({
+        key: propertyKey
       });
     }
 

@@ -11,15 +11,15 @@ import { SpyCallCountType } from "./spy-call-count-type";
 import { StringMatcher } from "./string-matcher";
 
 export {
-   ContainerMatcher,
-   EmptyMatcher,
-   FunctionMatcher,
-   FunctionSpyCallCountMatcher,
-   FunctionSpyMatcher,
-   Matcher,
-   MixedMatcher,
-   NumberMatcher,
-   PropertyMatcher,
-   SpyCallCountType,
-   StringMatcher
+  ContainerMatcher,
+  EmptyMatcher,
+  FunctionMatcher,
+  FunctionSpyCallCountMatcher,
+  FunctionSpyMatcher,
+  Matcher,
+  MixedMatcher,
+  NumberMatcher,
+  PropertyMatcher,
+  SpyCallCountType,
+  StringMatcher
 };

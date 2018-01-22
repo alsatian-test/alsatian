@@ -1,6 +1,6 @@
-import { IOnTestCompleteCBFunction, ITestCompleteEvent } from "./test-complete.i";
+import {
+  IOnTestCompleteCBFunction,
+  ITestCompleteEvent
+} from "./test-complete.i";
 
-export {
-    ITestCompleteEvent,
-    IOnTestCompleteCBFunction
-};
+export { ITestCompleteEvent, IOnTestCompleteCBFunction };
