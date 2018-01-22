@@ -21,9 +21,8 @@ export class FunctionSpyMatcher {
 
    public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {
 
-      if (expectedCallCount < 1) {
-         throw new TypeError("expectedCallCount must be greater than 0.");
-      }
+
+    this._validateCallCount(expectedCallCount, "expectedCallCount");
 
       if (this._expectedArguments
        && this._getArgumentsMatching(this._expectedArguments).length !== expectedCallCount) {
@@ -44,9 +43,7 @@ export class FunctionSpyMatcher {
 
    public anythingBut(unexpectedCallCount: number): FunctionSpyCallCountMatcher {
 
-      if (unexpectedCallCount < 1) {
-         throw new TypeError("unexpectedCallCount must be greater than 0.");
-      }
+    this._validateCallCount(unexpectedCallCount, "unexpectedCallCount");
 
       if (this._expectedArguments
        && this._getArgumentsMatching(this._expectedArguments).length === unexpectedCallCount) {
@@ -67,9 +64,7 @@ export class FunctionSpyMatcher {
 
    public greaterThan(minimumCallCount: number): FunctionSpyCallCountMatcher {
 
-      if (minimumCallCount < 1) {
-         throw new TypeError("minimumCallCount must be greater than 0.");
-      }
+    this._validateCallCount(minimumCallCount, "minimumCallCount");
 
       if (this._expectedArguments
        && this._getArgumentsMatching(this._expectedArguments).length <= minimumCallCount) {
@@ -90,9 +85,7 @@ export class FunctionSpyMatcher {
 
    public lessThan(maximumCallCount: number): FunctionSpyCallCountMatcher {
 
-      if (maximumCallCount < 1) {
-         throw new TypeError("maximumCallCount must be greater than 0.");
-      }
+      this._validateCallCount(maximumCallCount, "maximumCallCount");
 
       if (this._expectedArguments
       && this._getArgumentsMatching(this._expectedArguments).length >= maximumCallCount) {
@@ -113,5 +106,11 @@ export class FunctionSpyMatcher {
 
    private _getArgumentsMatching(expectedArguments: Array<any>) {
        return this._spy.callsWithArguments.apply(this._spy, expectedArguments);
+   }
+
+   private _validateCallCount(callCount: number, callCountName: string) {
+    if (callCount < 1) {
+        throw new TypeError(`${callCountName} must be greater than 0.`);
+     }
    }
 }
