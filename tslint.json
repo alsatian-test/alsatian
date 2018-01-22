@@ -8,10 +8,12 @@
      "trailing-comma": false,
      "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
      "ordered-imports": false,
-     "object-literal-sort-keys": false
+     "object-literal-sort-keys": false,
+    "prettier": true
   },
   "jsRules": {
   },
   "rulesDirectory": [
+    "tslint-plugin-prettier" 
   ]
 }

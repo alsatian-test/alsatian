@@ -1,4 +1,4 @@
 export interface ITester {
-    test: (value: any) => boolean;
-    stringify: () => string;
+  test: (value: any) => boolean;
+  stringify: () => string;
 }

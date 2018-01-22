@@ -33,7 +33,9 @@
     "review": "npm run review-code & npm run review-tests",
     "review-code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
     "review-tests": "tslint --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
-    "fix-linting-issues": "tslint --fix \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./node_modules/**/*.ts\"",
+    "fix-linting-issues": "npm run fix-code-linting-issues & npm run fix-tests-linting-issues",
+    "fix-code-linting-issues": "tslint --fix \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
+    "fix-tests-linting-issues": "tslint --fix --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "pretest": "npm run build",
     "test": "npm run review && npm run check-coverage && npm run integration-tests",
     "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
@@ -98,9 +100,11 @@
     "install-self": "^1.0.0-beta.7",
     "mock-require": "^2.0.1",
     "nyc": "^10.0.0",
+    "prettier": "^1.10.2",
     "rimraf": "^2.5.4",
     "selenium-webdriver": "^3.0.1",
     "tslint": "^5.0.0",
+    "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.0.3"
   },
   "dependencies": {

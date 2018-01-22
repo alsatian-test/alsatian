@@ -17,21 +17,21 @@ import { TestFixture } from "./test-fixture-decorator";
 import { Timeout } from "./timeout-decorator";
 
 export {
-    AsyncSetup,
-    AsyncSetupFixture,
-    AsyncTeardown,
-    AsyncTeardownFixture,
-    AsyncTest,
-    FocusTest,
-    FocusTests,
-    IgnoreTest,
-    IgnoreTests,
-    Setup,
-    SetupFixture,
-    Teardown,
-    TeardownFixture,
-    TestFixture,
-    Test,
-    TestCase,
-    Timeout
+  AsyncSetup,
+  AsyncSetupFixture,
+  AsyncTeardown,
+  AsyncTeardownFixture,
+  AsyncTest,
+  FocusTest,
+  FocusTests,
+  IgnoreTest,
+  IgnoreTests,
+  Setup,
+  SetupFixture,
+  Teardown,
+  TeardownFixture,
+  TestFixture,
+  Test,
+  TestCase,
+  Timeout
 };

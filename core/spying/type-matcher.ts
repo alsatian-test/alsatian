@@ -3,125 +3,133 @@ import { ITester, INameable } from "../_interfaces";
 import { Unused } from "../unused";
 
 function replacer(key: string, value: any) {
-    Unused(key);
-    if (typeof value === "function") {
-        return value.toString();
-    }
+  Unused(key);
+  if (typeof value === "function") {
+    return value.toString();
+  }
 
-    return value;
+  return value;
 }
 
 export class TypeMatcher<ExpectedType extends object> {
+  private _argumentStringifier = new ArgumentStringifier();
+  private _testers: Array<ITester> = [];
+  private _type: new (...args: Array<any>) => object;
+  public get type() {
+    return this._type;
+  }
 
-   private _argumentStringifier = new ArgumentStringifier();
-   private _testers: Array<ITester> = [];
-   private _type: new (...args: Array<any>) => object;
-   public get type() {
-      return this._type;
-   }
+  public constructor(type: new (...args: Array<any>) => ExpectedType) {
+    if (type === null || type === undefined) {
+      throw new TypeError("type must not be null or undefined");
+    }
 
-   public constructor(type: new (...args: Array<any>) => ExpectedType) {
-      if (type === null || type === undefined) {
-         throw new TypeError("type must not be null or undefined");
+    this._type = type;
+
+    this._testers.push({
+      stringify: () => `Any ${(this.type as INameable).name}`,
+      test: (value: any) => {
+        if ((type as any) === String) {
+          return typeof value === "string" || value instanceof this._type;
+        } else if ((type as any) === Number) {
+          return typeof value === "number" || value instanceof this._type;
+        } else if ((type as any) === Boolean) {
+          return typeof value === "boolean" || value instanceof this._type;
+        } else {
+          return value instanceof this._type;
+        }
       }
+    });
+  }
 
-      this._type = type;
+  public test(value: any) {
+    return this._testers.every(tester => tester.test(value));
+  }
 
-      this._testers.push({
-         stringify: () => `Any ${(this.type as INameable).name}`,
-         test: (value: any) => {
-            if ((type as any) === String) {
-               return typeof value === "string" || value instanceof this._type;
-            }
-            else if ((type as any) === Number) {
-               return typeof value === "number" || value instanceof this._type;
-            }
-            else if ((type as any) === Boolean) {
-               return typeof value === "boolean" || value instanceof this._type;
-            }
-            else {
-               return value instanceof this._type;
-            }
-         }
-      });
-   }
+  public stringify() {
+    return this._testers.map(tester => tester.stringify()).join(" and ");
+  }
 
-   public test(value: any) {
-      return this._testers.every(tester => tester.test(value));
-   }
+  /* tslint:disable:unified-signatures */
+  public thatMatches(key: string, value: any): this;
+  public thatMatches(properties: object): this;
+  public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
+  public thatMatches(
+    first: string | object | ((argument: ExpectedType) => boolean),
+    second?: any
+  ): this {
+    if (null === first || undefined === first) {
+      throw new TypeError(
+        "thatMatches requires none-null or non-undefined argument"
+      );
+    }
 
-   public stringify() {
-      return this._testers.map(tester => tester.stringify()).join(" and ");
-   }
+    if (typeof first === "string") {
+      return this._matchesKeyAndValue(first, second);
+    }
 
-   /* tslint:disable:unified-signatures */
-   public thatMatches(key: string, value: any): this;
-   public thatMatches(properties: object): this;
-   public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
-   public thatMatches(first: string | object | ((argument: ExpectedType) => boolean), second?: any): this {
-      if (null === first || undefined === first ) {
-         throw new TypeError("thatMatches requires none-null or non-undefined argument");
+    if (typeof first === "function") {
+      return this._matchesDelegate(first);
+    }
+
+    if (typeof first === "object") {
+      return this._matchesObjectLiteral(first);
+    }
+
+    throw new Error("Invalid arguments");
+  }
+  /* tslint:enable:unified-signatures */
+
+  private _matchesKeyAndValue(key: string, value: any): this {
+    this._testers.push({
+      stringify: () =>
+        `with property '${key}' equal to '${this._argumentStringifier.stringify(
+          value
+        )}'`,
+      test: (v: any) => {
+        if (Object.getOwnPropertyNames(v).indexOf(key) < 0) {
+          return false;
+        }
+
+        return v[key] === value;
       }
+    });
 
-      if (typeof first === "string") {
-         return this._matchesKeyAndValue(first, second);
+    return this;
+  }
+
+  private _matchesDelegate(
+    delegate: (argument: ExpectedType) => boolean
+  ): this {
+    this._testers.push({
+      stringify: () => `matches '${delegate.toString()}'`,
+      test: (v: any) => delegate(v)
+    });
+
+    return this;
+  }
+
+  private _matchesObjectLiteral(properties: object): this {
+    if (properties.constructor !== Object) {
+      throw new TypeError(
+        "thatMatches requires value passed in to be an object literal"
+      );
+    }
+
+    this._testers.push({
+      stringify: () => `matches '${JSON.stringify(properties, replacer)}'`,
+      test: (v: any) => {
+        const targetKeys = Object.getOwnPropertyNames(v);
+        return Object.getOwnPropertyNames(properties).every(key => {
+          if (targetKeys.indexOf(key) < 0) {
+            return false;
+          }
+
+          return v[key] === (properties as any)[key];
+        });
       }
+    });
 
-      if (typeof first === "function") {
-         return this._matchesDelegate(first);
-      }
-
-      if (typeof first === "object") {
-         return this._matchesObjectLiteral(first);
-      }
-
-      throw new Error("Invalid arguments");
-   }
-   /* tslint:enable:unified-signatures */
-
-   private _matchesKeyAndValue(key: string, value: any): this {
-      this._testers.push({
-         stringify: () => `with property '${key}' equal to '${this._argumentStringifier.stringify(value)}'`,
-         test: (v: any) => {
-            if (Object.getOwnPropertyNames(v).indexOf(key) < 0) {
-               return false;
-            }
-
-            return v[key] === value;
-         }
-      });
-
-      return this;
-   }
-
-   private _matchesDelegate(delegate: (argument: ExpectedType) => boolean): this {
-      this._testers.push({
-         stringify: () => `matches '${delegate.toString()}'`,
-         test: (v: any) => delegate(v)
-      });
-
-      return this;
-   }
-
-   private _matchesObjectLiteral(properties: object): this {
-      if (properties.constructor !== Object) {
-         throw new TypeError("thatMatches requires value passed in to be an object literal");
-      }
-
-      this._testers.push({
-         stringify: () => `matches '${JSON.stringify(properties, replacer)}'`,
-         test: (v: any) => {
-            const targetKeys = Object.getOwnPropertyNames(v);
-            return Object.getOwnPropertyNames(properties).every(key => {
-               if (targetKeys.indexOf(key) < 0) {
-                  return false;
-               }
-
-               return v[key] === (properties as any)[key];
-            });
-         }
-      });
-
-      return this;
-   }
+    return this;
+  }
 }

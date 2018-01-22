@@ -1,68 +1,90 @@
 import "reflect-metadata";
 import { TestFixture as TestFixtureMetadata } from "../../../core/";
-import { Expect, METADATA_KEYS, SpyOnProperty, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  SpyOnProperty,
+  Test,
+  TestCase,
+  TestFixture
+} from "../../../core/alsatian-core";
 import { TestFixture as TestFixtureDecorator } from "../../../core/decorators/test-fixture-decorator";
 
 @TestFixture("Test Fixture Decorator Tests")
 export class TestFixtureDecoratorTests {
+  @Test()
+  public metaDataIsSet() {
+    const testFixtureDecorator = TestFixtureDecorator();
 
-    @Test()
-    public metaDataIsSet() {
-        const testFixtureDecorator = TestFixtureDecorator();
+    class TestFixtureClass {}
 
-        class TestFixtureClass { }
+    testFixtureDecorator(TestFixtureClass);
 
-        testFixtureDecorator(TestFixtureClass);
+    const testFixtureMetadata = Reflect.getMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      TestFixtureClass
+    );
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
+    Expect(testFixtureMetadata).toBeDefined();
+    Expect(testFixtureMetadata).not.toBeNull();
+  }
 
-        Expect(testFixtureMetadata).toBeDefined();
-        Expect(testFixtureMetadata).not.toBeNull();
-    }
+  @Test()
+  public metaDataIsTestFixture() {
+    const testFixtureDecorator = TestFixtureDecorator();
 
-    @Test()
-    public metaDataIsTestFixture() {
-        const testFixtureDecorator = TestFixtureDecorator();
+    class TestFixtureClass {}
 
-        class TestFixtureClass { }
+    testFixtureDecorator(TestFixtureClass);
 
-        testFixtureDecorator(TestFixtureClass);
+    const testFixtureMetadata = Reflect.getMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      TestFixtureClass
+    );
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
+    Expect(testFixtureMetadata instanceof TestFixtureMetadata).toBe(true);
+  }
 
-        Expect(testFixtureMetadata instanceof TestFixtureMetadata).toBe(true);
-    }
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public testFixtureMetadataDescriptionSet(testFixtureDescription: string) {
+    const testFixtureDecorator = TestFixtureDecorator(testFixtureDescription);
 
-    @TestCase("something")
-    @TestCase("wow, this is super!")
-    @TestCase("Mega Hyper AWESOME test...")
-    public testFixtureMetadataDescriptionSet(testFixtureDescription: string) {
-        const testFixtureDecorator = TestFixtureDecorator(testFixtureDescription);
+    class TestFixtureClass {}
 
-        class TestFixtureClass { }
+    testFixtureDecorator(TestFixtureClass);
 
-        testFixtureDecorator(TestFixtureClass);
+    const testFixtureMetadata = Reflect.getMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      TestFixtureClass
+    );
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixtureClass);
+    Expect(testFixtureMetadata.description).toBe(testFixtureDescription);
+  }
 
-        Expect(testFixtureMetadata.description).toBe(testFixtureDescription);
-    }
+  @Test()
+  public testFixtureMetadataDescriptionDefaultsToClassName() {
+    const testFixtureDecorator = TestFixtureDecorator();
 
-    @Test()
-    public testFixtureMetadataDescriptionDefaultsToClassName() {
-        const testFixtureDecorator = TestFixtureDecorator();
+    class SimpleTestFixture {}
+    testFixtureDecorator(SimpleTestFixture);
 
-        class TestFixture { }
-        testFixtureDecorator(TestFixture);
+    class SomeOtherTestFixture {}
+    testFixtureDecorator(SomeOtherTestFixture);
 
-        class SomeOtherTestFixture { }
-        testFixtureDecorator(SomeOtherTestFixture);
+    const testFixtureMetadata = Reflect.getMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      TestFixture
+    );
+    const someOtherTestFixtureMetadata = Reflect.getMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      SomeOtherTestFixture
+    );
 
-        const testFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, TestFixture);
-        const someOtherTestFixtureMetadata = Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, SomeOtherTestFixture);
-
-        Expect(testFixtureMetadata.description).toBe("TestFixture");
-        Expect(someOtherTestFixtureMetadata.description).toBe("SomeOtherTestFixture");
-    }
-
+    Expect(testFixtureMetadata.description).toBe("SimpleTestFixture");
+    Expect(someOtherTestFixtureMetadata.description).toBe(
+      "SomeOtherTestFixture"
+    );
+  }
 }

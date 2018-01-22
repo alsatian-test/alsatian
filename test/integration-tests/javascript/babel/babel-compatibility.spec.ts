@@ -4,76 +4,75 @@ import * as path from "path";
 import { AsyncTest, Expect, Timeout } from "../../../../core/alsatian-core";
 
 export class BabelIntegrationTests {
+  @AsyncTest()
+  @Timeout(5000)
+  public toBeExpectations() {
+    const result = child.exec(
+      "alsatian ./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap"
+    );
 
-   @AsyncTest()
-   @Timeout(5000)
-   public toBeExpectations() {
+    let consoleOutput = "";
 
-      const result = child
-                .exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap");
+    result.stdout.on("data", data => (consoleOutput += data));
+    result.stderr.on("data", data => (consoleOutput += data));
 
-      let consoleOutput = "";
+    const expectedOutput = FileSystem.readFileSync(
+      "./test/integration-tests/expected-output/expectations/to-be.txt"
+    ).toString();
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
-
-      const expectedOutput = FileSystem
-                                .readFileSync("./test/integration-tests/expected-output/expectations/to-be.txt")
-                                .toString();
-
-      return new Promise<void>((resolve, reject) => {
-         result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
-            resolve();
-         });
+    return new Promise<void>((resolve, reject) => {
+      result.on("close", (code: number) => {
+        Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+        resolve();
       });
-   }
+    });
+  }
 
-   @AsyncTest()
-   @Timeout(5000)
-   public toThrowExpectations() {
+  @AsyncTest()
+  @Timeout(5000)
+  public toThrowExpectations() {
+    const result = child.exec(
+      "alsatian ./test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap"
+    );
 
-      const result = child
-                .exec("alsatian ./test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap");
+    let consoleOutput = "";
 
-      let consoleOutput = "";
+    result.stdout.on("data", data => (consoleOutput += data));
+    result.stderr.on("data", data => (consoleOutput += data));
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+    const expectedOutput = FileSystem.readFileSync(
+      "./test/integration-tests/expected-output/expectations/to-throw.txt"
+    ).toString();
 
-      const expectedOutput = FileSystem
-                                .readFileSync("./test/integration-tests/expected-output/expectations/to-throw.txt")
-                                .toString();
-
-      return new Promise<void>((resolve, reject) => {
-         result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
-            resolve();
-         });
+    return new Promise<void>((resolve, reject) => {
+      result.on("close", (code: number) => {
+        Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+        resolve();
       });
-   }
+    });
+  }
 
-   @AsyncTest()
-   @Timeout(5000)
-   public asyncTest() {
+  @AsyncTest()
+  @Timeout(5000)
+  public asyncTest() {
+    const result = child.exec(
+      'alsatian "./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js" --tap'
+    );
 
-      const result = child
-                    .exec("alsatian \"./test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js\" --tap");
+    let consoleOutput = "";
 
-      let consoleOutput = "";
+    result.stdout.on("data", data => (consoleOutput += data));
+    result.stderr.on("data", data => (consoleOutput += data));
 
-      result.stdout.on("data", (data) => consoleOutput += data);
-      result.stderr.on("data", (data) => consoleOutput += data);
+    const expectedOutput = FileSystem.readFileSync(
+      "./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt"
+    ).toString();
 
-      const expectedOutput = FileSystem
-                            .readFileSync("./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt")
-                            .toString();
-
-      return new Promise<void>((resolve, reject) => {
-         result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
-            resolve();
-         });
+    return new Promise<void>((resolve, reject) => {
+      result.on("close", (code: number) => {
+        Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+        resolve();
       });
-   }
+    });
+  }
 }

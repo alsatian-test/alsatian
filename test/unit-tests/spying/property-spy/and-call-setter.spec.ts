@@ -1,143 +1,172 @@
-import { Expect, FunctionSpy, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  FunctionSpy,
+  SpyOn,
+  Test,
+  TestCase
+} from "../../../../core/alsatian-core";
 import { PropertySpy } from "../../../../core/spying";
 
 export class AndCallSetterTests {
+  @Test()
+  public originalSetterCalled() {
+    const testObject: any = {};
 
-   @Test()
-   public originalSetterCalled() {
+    const propertyDescriptor = {
+      set: (value: any) => {
+        testObject._secretValue = value;
+      },
+      configurable: true
+    };
 
-      const testObject: any = { };
+    SpyOn(propertyDescriptor, "set");
 
-      const propertyDescriptor = { set: (value: any) => { testObject._secretValue = value; }, configurable: true };
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      SpyOn(propertyDescriptor, "set");
+    const propertySpy = new PropertySpy(testObject, "property");
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    testObject.property = "something";
 
-      const propertySpy = new PropertySpy(testObject, "property");
+    Expect(propertyDescriptor.set).toHaveBeenCalled();
+  }
 
-      testObject.property = "something";
+  @Test()
+  public originalSetterNotCalledIfSetterOverloaded() {
+    const testObject: any = {};
 
-      Expect(propertyDescriptor.set).toHaveBeenCalled();
-   }
+    const propertyDescriptor = {
+      set: (value: any) => {
+        testObject._secretValue = value;
+      },
+      configurable: true
+    };
 
-   @Test()
-   public originalSetterNotCalledIfSetterOverloaded() {
+    SpyOn(propertyDescriptor, "set");
 
-      const testObject: any = { };
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const propertyDescriptor = { set: (value: any) => { testObject._secretValue = value; }, configurable: true };
+    const propertySpy = new PropertySpy(testObject, "property").andCallSetter(
+      () => {}
+    );
 
-      SpyOn(propertyDescriptor, "set");
+    testObject.property = "something";
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    Expect(propertyDescriptor.set).not.toHaveBeenCalled();
+  }
 
-      const propertySpy = new PropertySpy(testObject, "property").andCallSetter(() => {});
+  @Test()
+  public propertySpyIsReturned() {
+    const testObject: any = {};
 
-      testObject.property = "something";
+    const propertyDescriptor = {
+      set: (value: any) => {
+        testObject._secretValue = value;
+      },
+      configurable: true
+    };
 
-      Expect(propertyDescriptor.set).not.toHaveBeenCalled();
-   }
+    SpyOn(propertyDescriptor, "set");
 
-   @Test()
-   public propertySpyIsReturned() {
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      const testObject: any = { };
+    const propertySpy = new PropertySpy(testObject, "property");
 
-      const propertyDescriptor = { set: (value: any) => { testObject._secretValue = value; }, configurable: true };
+    Expect(propertySpy.andCallSetter(() => {})).toBe(propertySpy);
+  }
 
-      SpyOn(propertyDescriptor, "set");
+  @TestCase(null)
+  @TestCase(undefined)
+  @TestCase(42)
+  @TestCase("something")
+  @TestCase({ an: "object" })
+  @TestCase(["an", "array"])
+  public newValueIsSet(expectedValue: any) {
+    const testObject: any = {};
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => testObject._secretValue,
+      set: (value: any) => {}
+    };
 
-      const propertySpy = new PropertySpy(testObject, "property");
+    SpyOn(propertyDescriptor, "set");
 
-      Expect(propertySpy.andCallSetter(() => {})).toBe(propertySpy);
-   }
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-   @TestCase(null)
-   @TestCase(undefined)
-   @TestCase(42)
-   @TestCase("something")
-   @TestCase({ an: "object" })
-   @TestCase([ "an", "array" ])
-   public newValueIsSet(expectedValue: any) {
+    const propertySpy = new PropertySpy(testObject, "property").andCallSetter(
+      (value: any) => {
+        testObject._secretValue = value;
+      }
+    );
 
-      const testObject: any = { };
+    testObject.property = expectedValue;
 
-      const propertyDescriptor = {
-        configurable: true,
-        get: () => testObject._secretValue,
-        set: (value: any) => {}
-      };
+    Expect(testObject.property).toBe(expectedValue);
+  }
 
-      SpyOn(propertyDescriptor, "set");
+  @TestCase(null, ["an", "array"])
+  @TestCase(undefined, { an: "object" })
+  @TestCase(42, "something")
+  @TestCase("something", 42)
+  @TestCase({ an: "object" }, undefined)
+  @TestCase(["an", "array"], null)
+  public andCallSetterValueIsReturnedWhenReturnValueIsCalledPreviously(
+    setterValue: any,
+    andReturnValue: any
+  ) {
+    const testObject: any = {};
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => testObject._secretValue,
+      set: (value: any) => {}
+    };
 
-      const propertySpy = new PropertySpy(testObject, "property")
-                                .andCallSetter((value: any) => { testObject._secretValue = value; });
+    SpyOn(propertyDescriptor, "set");
 
-      testObject.property = expectedValue;
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      Expect(testObject.property).toBe(expectedValue);
-   }
+    const propertySpy = new PropertySpy(testObject, "property")
+      .andReturnValue(andReturnValue)
+      .andCallSetter((value: any) => {
+        testObject._secretValue = value;
+      });
 
-   @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { an: "object" })
-   @TestCase(42, "something")
-   @TestCase("something", 42)
-   @TestCase({ an: "object" }, undefined)
-   @TestCase([ "an", "array" ], null)
-   public andCallSetterValueIsReturnedWhenReturnValueIsCalledPreviously(setterValue: any, andReturnValue: any) {
+    testObject.property = setterValue;
 
-      const testObject: any = { };
+    Expect(testObject.property).toBe(setterValue);
+  }
 
-      const propertyDescriptor = {
-        configurable: true,
-        get: () => testObject._secretValue,
-        set: (value: any) => {}
-      };
+  @TestCase(null, ["an", "array"])
+  @TestCase(undefined, { an: "object" })
+  @TestCase(42, "something")
+  @TestCase("something", 42)
+  @TestCase({ an: "object" }, undefined)
+  @TestCase(["an", "array"], null)
+  public andReturnValueValueIsReturnedWhenReturnValueIsCalledAfter(
+    setterValue: any,
+    andReturnValue: any
+  ) {
+    const testObject: any = {};
 
-      SpyOn(propertyDescriptor, "set");
+    const propertyDescriptor = {
+      configurable: true,
+      get: () => testObject._secretValue,
+      set: (value: any) => {}
+    };
 
-      Object.defineProperty(testObject, "property", propertyDescriptor);
+    SpyOn(propertyDescriptor, "set");
 
-      const propertySpy = new PropertySpy(testObject, "property")
-                                .andReturnValue(andReturnValue)
-                                .andCallSetter((value: any) => { testObject._secretValue = value; });
+    Object.defineProperty(testObject, "property", propertyDescriptor);
 
-      testObject.property = setterValue;
+    const propertySpy = new PropertySpy(testObject, "property")
+      .andCallSetter((value: any) => {
+        testObject._secretValue = value;
+      })
+      .andReturnValue(andReturnValue);
 
-      Expect(testObject.property).toBe(setterValue);
-   }
+    testObject.property = setterValue;
 
-   @TestCase(null, [ "an", "array" ])
-   @TestCase(undefined, { an: "object" })
-   @TestCase(42, "something")
-   @TestCase("something", 42)
-   @TestCase({ an: "object" }, undefined)
-   @TestCase([ "an", "array" ], null)
-   public andReturnValueValueIsReturnedWhenReturnValueIsCalledAfter(setterValue: any, andReturnValue: any) {
-
-      const testObject: any = { };
-
-      const propertyDescriptor = {
-        configurable: true,
-        get: () => testObject._secretValue,
-        set: (value: any) => {}
-      };
-
-      SpyOn(propertyDescriptor, "set");
-
-      Object.defineProperty(testObject, "property", propertyDescriptor);
-
-      const propertySpy = new PropertySpy(testObject, "property")
-        .andCallSetter((value: any) => { testObject._secretValue = value; })
-        .andReturnValue(andReturnValue);
-
-      testObject.property = setterValue;
-
-      Expect(testObject.property).toBe(andReturnValue);
-   }
+    Expect(testObject.property).toBe(andReturnValue);
+  }
 }
