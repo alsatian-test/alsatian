@@ -1,6 +1,6 @@
 export enum TestOutcome {
-   Error,
-   Fail,
-   Pass,
-   Skip
+  Error,
+  Fail,
+  Pass,
+  Skip
 }

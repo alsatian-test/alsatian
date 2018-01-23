@@ -7,11 +7,11 @@ import { ITester } from "./tester.i";
 import { ISpyCall } from "./spy-call.i";
 
 export {
-    ITestCase,
-    ITestFixture,
-    ITest,
-    INameable,
-    Constructor,
-    ITester,
-    ISpyCall
+  ITestCase,
+  ITestFixture,
+  ITest,
+  INameable,
+  Constructor,
+  ITester,
+  ISpyCall
 };

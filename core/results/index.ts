@@ -5,9 +5,9 @@ import { TestResults } from "./test-results";
 import { TestSetResults } from "./test-set-results";
 
 export {
-    TestCaseResult,
-    TestFixtureResults,
-    TestOutcome,
-    TestResults,
-    TestSetResults
+  TestCaseResult,
+  TestFixtureResults,
+  TestOutcome,
+  TestResults,
+  TestSetResults
 };

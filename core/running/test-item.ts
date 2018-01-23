@@ -4,56 +4,54 @@ import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
+  private _testCase: ITestCase;
+  public get testCase() {
+    return this._testCase;
+  }
 
-   private _testCase: ITestCase;
-   public get testCase() {
-      return this._testCase;
-   }
+  private _test: ITest;
+  public get test() {
+    return this._test;
+  }
 
-   private _test: ITest;
-   public get test() {
-      return this._test;
-   }
+  private _testFixture: ITestFixture;
+  public get testFixture() {
+    return this._testFixture;
+  }
 
-   private _testFixture: ITestFixture;
-   public get testFixture() {
-      return this._testFixture;
-   }
+  public constructor(
+    testFixture: ITestFixture,
+    test: ITest,
+    testCase: ITestCase
+  ) {
+    if (testFixture === null || testFixture === undefined) {
+      throw new TypeError("testFixture must not be null or undefined.");
+    }
 
-   public constructor(testFixture: ITestFixture, test: ITest, testCase: ITestCase) {
+    if (test === null || test === undefined) {
+      throw new TypeError("test must not be null or undefined.");
+    }
 
-       if (testFixture === null || testFixture === undefined) {
-           throw new TypeError("testFixture must not be null or undefined.");
-       }
+    if (testCase === null || testCase === undefined) {
+      throw new TypeError("testCase must not be null or undefined.");
+    }
 
-       if (test === null || test === undefined) {
-           throw new TypeError("test must not be null or undefined.");
-       }
+    this._testFixture = testFixture;
+    this._test = test;
+    this._testCase = testCase;
+  }
 
-       if (testCase === null || testCase === undefined) {
-           throw new TypeError("testCase must not be null or undefined.");
-       }
-
-       this._testFixture = testFixture;
-       this._test = test;
-       this._testCase = testCase;
-   }
-
-   public async run(timeout: number) {
-
-      if (this._test.ignored) {
-         return;
-      }
-      else {
-         await this._setup();
-         try {
-            await this._runTest(this._test.timeout || timeout);
-            await this._teardown();
-         }
-         catch (error) {
-            await this._teardown();
-            throw error;
-         }
+  public async run(timeout: number) {
+    if (this._test.ignored) {
+      return;
+    } else {
+      await this._setup();
+      try {
+        await this._runTest(this._test.timeout || timeout);
+        await this._teardown();
+      } catch (error) {
+        await this._teardown();
+        throw error;
       }
    }
 
