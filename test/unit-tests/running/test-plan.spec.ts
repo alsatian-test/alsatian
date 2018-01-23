@@ -5,243 +5,250 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../builders/test-set-builder";
 
 export class TestPlanTests {
+  @TestCase(1, 1, 1)
+  @TestCase(2, 1, 1)
+  @TestCase(1, 2, 1)
+  @TestCase(2, 2, 1)
+  @TestCase(1, 1, 2)
+  @TestCase(2, 1, 2)
+  @TestCase(1, 2, 2)
+  @TestCase(2, 2, 2)
+  public correctNumberOfTestItemsAdded(
+    testFixtureCount: number,
+    testCount: number,
+    testCaseCount: number
+  ) {
+    const testSetBuilder = new TestSetBuilder();
 
-   @TestCase(1, 1, 1)
-   @TestCase(2, 1, 1)
-   @TestCase(1, 2, 1)
-   @TestCase(2, 2, 1)
-   @TestCase(1, 1, 2)
-   @TestCase(2, 1, 2)
-   @TestCase(1, 2, 2)
-   @TestCase(2, 2, 2)
-   public correctNumberOfTestItemsAdded(testFixtureCount: number, testCount: number, testCaseCount: number) {
+    for (let i = 0; i < testFixtureCount; i++) {
+      const testFixtureBuilder = new TestFixtureBuilder();
 
-      const testSetBuilder = new TestSetBuilder();
-
-      for (let i = 0; i < testFixtureCount; i++) {
-
-         const testFixtureBuilder = new TestFixtureBuilder();
-
-         for (let j = 0; j < testCount; j++) {
-            const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
-            testFixtureBuilder.addTest(test);
-         }
-
-         testSetBuilder.addTestFixture(testFixtureBuilder.build());
+      for (let j = 0; j < testCount; j++) {
+        const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
+        testFixtureBuilder.addTest(test);
       }
-      const testSet = testSetBuilder.build();
 
-      const testPlan = new TestPlan(testSet);
+      testSetBuilder.addTestFixture(testFixtureBuilder.build());
+    }
+    const testSet = testSetBuilder.build();
 
-      Expect(testPlan.testItems.length).toBe(testFixtureCount * testCount * testCaseCount);
-   }
+    const testPlan = new TestPlan(testSet);
 
-   @TestCase(1, 1, 1)
-   @TestCase(2, 1, 1)
-   @TestCase(1, 2, 1)
-   @TestCase(2, 2, 1)
-   @TestCase(1, 1, 2)
-   @TestCase(2, 1, 2)
-   @TestCase(1, 2, 2)
-   @TestCase(2, 2, 2)
-   public allTestFixturesAddedToTestItems(testFixtureCount: number, testCount: number, testCaseCount: number) {
+    Expect(testPlan.testItems.length).toBe(
+      testFixtureCount * testCount * testCaseCount
+    );
+  }
 
-      const testSetBuilder = new TestSetBuilder();
+  @TestCase(1, 1, 1)
+  @TestCase(2, 1, 1)
+  @TestCase(1, 2, 1)
+  @TestCase(2, 2, 1)
+  @TestCase(1, 1, 2)
+  @TestCase(2, 1, 2)
+  @TestCase(1, 2, 2)
+  @TestCase(2, 2, 2)
+  public allTestFixturesAddedToTestItems(
+    testFixtureCount: number,
+    testCount: number,
+    testCaseCount: number
+  ) {
+    const testSetBuilder = new TestSetBuilder();
 
-      for (let i = 0; i < testFixtureCount; i++) {
+    for (let i = 0; i < testFixtureCount; i++) {
+      const testFixtureBuilder = new TestFixtureBuilder();
 
-         const testFixtureBuilder = new TestFixtureBuilder();
-
-         for (let j = 0; j < testCount; j++) {
-            const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
-            testFixtureBuilder.addTest(test);
-         }
-
-         testSetBuilder.addTestFixture(testFixtureBuilder.build());
+      for (let j = 0; j < testCount; j++) {
+        const test = new TestBuilder().withTestCaseCount(testCaseCount).build();
+        testFixtureBuilder.addTest(test);
       }
-      const testSet = testSetBuilder.build();
 
-      const testPlan = new TestPlan(testSet);
+      testSetBuilder.addTestFixture(testFixtureBuilder.build());
+    }
+    const testSet = testSetBuilder.build();
 
-      testSet.testFixtures.forEach(testFixture => {
-         testFixture.tests.forEach(test => {
-            test.testCases.forEach(testCase => {
-               Expect(testPlan.testItems.filter(testItem => testItem.test === test
-                                                         && testItem.testCase === testCase).length).toBe(1);
-            });
-         });
+    const testPlan = new TestPlan(testSet);
+
+    testSet.testFixtures.forEach(testFixture => {
+      testFixture.tests.forEach(test => {
+        test.testCases.forEach(testCase => {
+          Expect(
+            testPlan.testItems.filter(
+              testItem =>
+                testItem.test === test && testItem.testCase === testCase
+            ).length
+          ).toBe(1);
+        });
       });
-   }
+    });
+  }
 
-   @Test()
-   public onlyFocussedFirstTestAddedToTestItems() {
+  @Test()
+  public onlyFocussedFirstTestAddedToTestItems() {
+    const testFixtureBuilder = new TestFixtureBuilder();
 
-      const testFixtureBuilder = new TestFixtureBuilder();
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    firstTest.focussed = true;
 
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
-      firstTest.focussed = true;
+    testFixtureBuilder.addTest(firstTest);
 
-      testFixtureBuilder.addTest(firstTest);
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
 
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
+    testFixtureBuilder.addTest(secondTest);
 
-      testFixtureBuilder.addTest(secondTest);
+    const testSet = new TestSetBuilder()
+      .addTestFixture(testFixtureBuilder.build())
+      .build();
 
-      const testSet = new TestSetBuilder().addTestFixture(testFixtureBuilder.build()).build();
+    const testPlan = new TestPlan(testSet);
 
-      const testPlan = new TestPlan(testSet);
+    Expect(testPlan.testItems.length).toBe(1);
+    Expect(testPlan.testItems[0].test).toBe(firstTest);
+    Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
+  }
 
-      Expect(testPlan.testItems.length).toBe(1);
-      Expect(testPlan.testItems[0].test).toBe(firstTest);
-      Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
-   }
+  @Test()
+  public onlyFocussedSecondTestAddedToTestItems() {
+    const testFixtureBuilder = new TestFixtureBuilder();
 
-   @Test()
-   public onlyFocussedSecondTestAddedToTestItems() {
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
 
-      const testFixtureBuilder = new TestFixtureBuilder();
+    testFixtureBuilder.addTest(firstTest);
 
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
+    secondTest.focussed = true;
 
-      testFixtureBuilder.addTest(firstTest);
+    testFixtureBuilder.addTest(secondTest);
 
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
-      secondTest.focussed = true;
+    const testSet = new TestSetBuilder()
+      .addTestFixture(testFixtureBuilder.build())
+      .build();
 
-      testFixtureBuilder.addTest(secondTest);
+    const testPlan = new TestPlan(testSet);
 
-      const testSet = new TestSetBuilder().addTestFixture(testFixtureBuilder.build()).build();
+    Expect(testPlan.testItems.length).toBe(1);
+    Expect(testPlan.testItems[0].test).toBe(secondTest);
+    Expect(testPlan.testItems[0].testCase).toBe(secondTest.testCases[0]);
+  }
 
-      const testPlan = new TestPlan(testSet);
+  @Test()
+  public onlyFocussedFirstTestFixtureAddedToTestItems() {
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
 
-      Expect(testPlan.testItems.length).toBe(1);
-      Expect(testPlan.testItems[0].test).toBe(secondTest);
-      Expect(testPlan.testItems[0].testCase).toBe(secondTest.testCases[0]);
-   }
+    const firstTestFixture = new TestFixtureBuilder()
+      .addTest(firstTest)
+      .addTest(secondTest)
+      .build();
 
-   @Test()
-   public onlyFocussedFirstTestFixtureAddedToTestItems() {
+    firstTestFixture.focussed = true;
 
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTestFixture = new TestFixtureBuilder()
+      .addTest(new TestBuilder().build())
+      .addTest(new TestBuilder().build())
+      .build();
 
-      const firstTestFixture = new TestFixtureBuilder()
-                                    .addTest(firstTest)
-                                    .addTest(secondTest)
-                                    .build();
+    const testSet = new TestSetBuilder()
+      .addTestFixture(firstTestFixture)
+      .addTestFixture(secondTestFixture)
+      .build();
 
-      firstTestFixture.focussed = true;
+    const testPlan = new TestPlan(testSet);
 
-      const secondTestFixture = new TestFixtureBuilder()
-                                    .addTest(new TestBuilder().build())
-                                    .addTest(new TestBuilder().build())
-                                    .build();
+    Expect(testPlan.testItems.length).toBe(2);
+    Expect(testPlan.testItems[0].test).toBe(firstTest);
+    Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
+    Expect(testPlan.testItems[1].test).toBe(secondTest);
+    Expect(testPlan.testItems[1].testCase).toBe(secondTest.testCases[0]);
+  }
 
-      const testSet = new TestSetBuilder()
-                           .addTestFixture(firstTestFixture)
-                           .addTestFixture(secondTestFixture)
-                           .build();
+  @Test()
+  public onlyFocussedSecondTestFixtureAddedToTestItems() {
+    const firstTestFixture = new TestFixtureBuilder()
+      .addTest(new TestBuilder().build())
+      .addTest(new TestBuilder().build())
+      .build();
 
-      const testPlan = new TestPlan(testSet);
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
 
-      Expect(testPlan.testItems.length).toBe(2);
-      Expect(testPlan.testItems[0].test).toBe(firstTest);
-      Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
-      Expect(testPlan.testItems[1].test).toBe(secondTest);
-      Expect(testPlan.testItems[1].testCase).toBe(secondTest.testCases[0]);
-   }
+    const secondTestFixture = new TestFixtureBuilder()
+      .addTest(firstTest)
+      .addTest(secondTest)
+      .build();
 
-   @Test()
-   public onlyFocussedSecondTestFixtureAddedToTestItems() {
+    secondTestFixture.focussed = true;
 
-      const firstTestFixture = new TestFixtureBuilder()
-                                    .addTest(new TestBuilder().build())
-                                    .addTest(new TestBuilder().build())
-                                    .build();
+    const testSet = new TestSetBuilder()
+      .addTestFixture(firstTestFixture)
+      .addTestFixture(secondTestFixture)
+      .build();
 
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
+    const testPlan = new TestPlan(testSet);
 
-      const secondTestFixture = new TestFixtureBuilder()
-                                    .addTest(firstTest)
-                                    .addTest(secondTest)
-                                    .build();
+    Expect(testPlan.testItems.length).toBe(2);
+    Expect(testPlan.testItems[0].test).toBe(firstTest);
+    Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
+    Expect(testPlan.testItems[1].test).toBe(secondTest);
+    Expect(testPlan.testItems[1].testCase).toBe(secondTest.testCases[0]);
+  }
 
-      secondTestFixture.focussed = true;
+  @Test()
+  public onlyFirstFocussedTestInSecondTestFixtureAddedToTestItems() {
+    const firstTestFixture = new TestFixtureBuilder()
+      .addTest(new TestBuilder().build())
+      .addTest(new TestBuilder().build())
+      .build();
 
-      const testSet = new TestSetBuilder()
-                           .addTestFixture(firstTestFixture)
-                           .addTestFixture(secondTestFixture)
-                           .build();
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
 
-      const testPlan = new TestPlan(testSet);
+    const secondTestFixture = new TestFixtureBuilder()
+      .addTest(firstTest)
+      .addTest(secondTest)
+      .build();
 
-      Expect(testPlan.testItems.length).toBe(2);
-      Expect(testPlan.testItems[0].test).toBe(firstTest);
-      Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
-      Expect(testPlan.testItems[1].test).toBe(secondTest);
-      Expect(testPlan.testItems[1].testCase).toBe(secondTest.testCases[0]);
-   }
+    secondTestFixture.focussed = true;
+    firstTest.focussed = true;
 
-   @Test()
-   public onlyFirstFocussedTestInSecondTestFixtureAddedToTestItems() {
+    const testSet = new TestSetBuilder()
+      .addTestFixture(firstTestFixture)
+      .addTestFixture(secondTestFixture)
+      .build();
 
-      const firstTestFixture = new TestFixtureBuilder()
-                                    .addTest(new TestBuilder().build())
-                                    .addTest(new TestBuilder().build())
-                                    .build();
+    const testPlan = new TestPlan(testSet);
 
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
+    Expect(testPlan.testItems.length).toBe(1);
+    Expect(testPlan.testItems[0].test).toBe(firstTest);
+    Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
+  }
 
-      const secondTestFixture = new TestFixtureBuilder()
-                                    .addTest(firstTest)
-                                    .addTest(secondTest)
-                                    .build();
+  @Test()
+  public onlySecondFocussedTestInSecondTestFixtureAddedToTestItems() {
+    const firstTestFixture = new TestFixtureBuilder()
+      .addTest(new TestBuilder().build())
+      .addTest(new TestBuilder().build())
+      .build();
 
-      secondTestFixture.focussed = true;
-      firstTest.focussed = true;
+    const firstTest = new TestBuilder().withTestCaseCount(1).build();
+    const secondTest = new TestBuilder().withTestCaseCount(1).build();
 
-      const testSet = new TestSetBuilder()
-                           .addTestFixture(firstTestFixture)
-                           .addTestFixture(secondTestFixture)
-                           .build();
+    const secondTestFixture = new TestFixtureBuilder()
+      .addTest(firstTest)
+      .addTest(secondTest)
+      .build();
 
-      const testPlan = new TestPlan(testSet);
+    secondTestFixture.focussed = true;
+    secondTest.focussed = true;
 
-      Expect(testPlan.testItems.length).toBe(1);
-      Expect(testPlan.testItems[0].test).toBe(firstTest);
-      Expect(testPlan.testItems[0].testCase).toBe(firstTest.testCases[0]);
-   }
+    const testSet = new TestSetBuilder()
+      .addTestFixture(firstTestFixture)
+      .addTestFixture(secondTestFixture)
+      .build();
 
-   @Test()
-   public onlySecondFocussedTestInSecondTestFixtureAddedToTestItems() {
+    const testPlan = new TestPlan(testSet);
 
-      const firstTestFixture = new TestFixtureBuilder()
-                                    .addTest(new TestBuilder().build())
-                                    .addTest(new TestBuilder().build())
-                                    .build();
-
-      const firstTest = new TestBuilder().withTestCaseCount(1).build();
-      const secondTest = new TestBuilder().withTestCaseCount(1).build();
-
-      const secondTestFixture = new TestFixtureBuilder()
-                                    .addTest(firstTest)
-                                    .addTest(secondTest)
-                                    .build();
-
-      secondTestFixture.focussed = true;
-      secondTest.focussed = true;
-
-      const testSet = new TestSetBuilder()
-                           .addTestFixture(firstTestFixture)
-                           .addTestFixture(secondTestFixture)
-                           .build();
-
-      const testPlan = new TestPlan(testSet);
-
-      Expect(testPlan.testItems.length).toBe(1);
-      Expect(testPlan.testItems[0].test).toBe(secondTest);
-      Expect(testPlan.testItems[0].testCase).toBe(secondTest.testCases[0]);
-   }
+    Expect(testPlan.testItems.length).toBe(1);
+    Expect(testPlan.testItems[0].test).toBe(secondTest);
+    Expect(testPlan.testItems[0].testCase).toBe(secondTest.testCases[0]);
+  }
 }

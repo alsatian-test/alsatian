@@ -19,7 +19,6 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 @TestFixture("Load Tests")
 export class LoadTestTests {
-
    private _originalStdErr: (message: string) => boolean;
    private _originalExit: (code: number) => never;
 
@@ -40,153 +39,205 @@ export class LoadTestTests {
 
    @Test()
    public ignoredShouldBeFalseByDefault() {
+    const fileRequirer = new FileRequirer();
+     
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const fileRequirer = new FileRequirer();
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-     const testFixtureSet = {
-        testFixture: () => testFixtureInstance
-     };
+    const testLoader = new TestLoader(fileRequirer);
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+    Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(false);
+  }
 
-     const testLoader = new TestLoader(fileRequirer);
+  @Test()
+  public ignoredShouldBeTrueIfMetadataSet() {
+    const fileRequirer = new FileRequirer();
 
-     Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(false);
-   }
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-   @Test()
-   public ignoredShouldBeTrueIfMetadataSet() {
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-     const fileRequirer = new FileRequirer();
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureSet.testFixture
+    );
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-     const testFixtureSet = {
-         testFixture: () => testFixtureInstance
-     };
+    const testLoader = new TestLoader(fileRequirer);
 
-     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
+    Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
+  }
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+  @TestCase("first reason")
+  @TestCase("the second, and the last")
+  public ignoreReasonShouldBeSetFromMetadata(reason: string) {
+    const fileRequirer = new FileRequirer();
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
-   }
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-   @TestCase("first reason")
-   @TestCase("the second, and the last")
-   public ignoreReasonShouldBeSetFromMetadata(reason: string) {
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureSet.testFixture
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE_REASON,
+      reason,
+      testFixtureSet.testFixture
+    );
 
-     const fileRequirer = new FileRequirer();
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testLoader = new TestLoader(fileRequirer);
 
-     const testFixtureSet = {
-         testFixture: () => testFixtureInstance
-     };
+    Expect(testLoader.loadTestFixture("test")[0].ignoreReason).toBe(reason);
+  }
 
-     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureSet.testFixture);
-     Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureSet.testFixture);
+  @Test()
+  public focussedShouldBeFalseByDefault() {
+    const fileRequirer = new FileRequirer();
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-     Expect(testLoader.loadTestFixture("test")[0].ignoreReason).toBe(reason);
-   }
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-   @Test()
-   public focussedShouldBeFalseByDefault() {
+    const testLoader = new TestLoader(fileRequirer);
 
-     const fileRequirer = new FileRequirer();
+    Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(false);
+  }
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+  @Test()
+  public focussedShouldBeTrueIfMetadataSet() {
+    const fileRequirer = new FileRequirer();
 
-     const testFixtureSet = {
-        testFixture: () => testFixtureInstance
-     };
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-     const testLoader = new TestLoader(fileRequirer);
+    Reflect.defineMetadata(
+      METADATA_KEYS.FOCUS,
+      true,
+      testFixtureSet.testFixture
+    );
 
-     Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(false);
-   }
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-   @Test()
-   public focussedShouldBeTrueIfMetadataSet() {
+    const testLoader = new TestLoader(fileRequirer);
 
-     const fileRequirer = new FileRequirer();
+    Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(true);
+  }
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+  @Test()
+  public noTestsReturnsEmptyArray() {
+    const fileRequirer = new FileRequirer();
 
-     const testFixtureSet = {
-         testFixture: () => testFixtureInstance
-     };
+    const testFixtureInstance = {};
 
-     Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureSet.testFixture);
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testLoader = new TestLoader(fileRequirer);
 
-     Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(true);
-   }
+    Expect(testLoader.loadTestFixture("test").length).toBe(0);
+  }
 
-   @Test()
-   public noTestsReturnsEmptyArray() {
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public descriptionShouldBeSetWhenNotConstructor(propertyName: string) {
+    const fileRequirer = new FileRequirer();
 
-     const fileRequirer = new FileRequirer();
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const testFixtureInstance = {};
+    const testFixtureSet: { [propertyName: string]: () => any } = {};
 
-     const testFixtureSet = {
-         testFixture: () => testFixtureInstance
-     };
+    testFixtureSet[propertyName] = () => testFixtureInstance;
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureSet);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testLoader = new TestLoader(fileRequirer);
+    Expect(testLoader.loadTestFixture("test")[0].description).toBe(
+      propertyName
+    );
+  }
 
-     Expect(testLoader.loadTestFixture("test").length).toBe(0);
-   }
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public descriptionShouldBeSetToConstructorNameWhenConstructor(
+    constructorName: string
+  ) {
+    const fileRequirer = new FileRequirer();
 
-   @TestCase("something")
-   @TestCase("wow, this is super!")
-   @TestCase("Mega Hyper AWESOME test...")
-   public descriptionShouldBeSetWhenNotConstructor(propertyName: string) {
-       const fileRequirer = new FileRequirer();
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-       const testFixtureInstance = {};
-       Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testFixtureSet = () => testFixtureInstance;
+    SpyOnProperty(testFixtureSet, "name").andReturnValue(constructorName);
 
-       const testFixtureSet: { [propertyName: string]: () => any } = {};
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
 
-       testFixtureSet[propertyName] = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-       const spy = SpyOn(fileRequirer, "require");
-       spy.andStub();
-       spy.andReturn(testFixtureSet);
+    Expect(testLoader.loadTestFixture("test")[0].description).toBe(
+      constructorName
+    );
+  }
+
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public descriptionShouldBeSetWhenMetadataOnDefault(
+    testFixtureDescription: string
+  ) {
+    const fileRequirer = new FileRequirer();
+
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
        const testLoader = new TestLoader(fileRequirer);
        Expect(testLoader.loadTestFixture("test")[0].description).toBe(propertyName);
@@ -361,3 +412,145 @@ export class LoadTestTests {
        Expect(process.exit).toHaveBeenCalledWith(1);
    }
  }
+    const testFixtureSet = () => testFixtureInstance;
+
+    const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
+    Reflect.defineMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      testFixtureMetadata,
+      testFixtureSet
+    );
+
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
+
+    const testLoader = new TestLoader(fileRequirer);
+
+    Expect(testLoader.loadTestFixture("test")[0].description).toBe(
+      testFixtureDescription
+    );
+  }
+
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public descriptionShouldBeSetWhenMetadataOnExportedMember(
+    testFixtureDescription: string
+  ) {
+    const fileRequirer = new FileRequirer();
+
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+    const testFixtureSet = {
+      testFixture: () => testFixtureInstance
+    };
+
+    const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
+    Reflect.defineMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      testFixtureMetadata,
+      testFixtureSet.testFixture
+    );
+
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
+
+    const testLoader = new TestLoader(fileRequirer);
+
+    Expect(testLoader.loadTestFixture("test")[0].description).toBe(
+      testFixtureDescription
+    );
+  }
+
+  public shouldIgnoreTestsIfFixtureIgnored() {
+    const fileRequirer = new FileRequirer();
+
+    const testOne = new TestBuilder()
+      .withKey("testOne")
+      .addTestCase(new TestCaseBuilder().build())
+      .build();
+
+    const testTwo = new TestBuilder()
+      .withKey("testTwo")
+      .addTestCase(new TestCaseBuilder().build())
+      .build();
+
+    const fixture = new TestFixtureBuilder()
+      .addTest(testOne)
+      .addTest(testTwo)
+      .build();
+
+    const testFixtureSet = {
+      testFixture: () => fixture
+    };
+
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureSet.testFixture
+    );
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
+
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
+
+    const testLoader = new TestLoader(fileRequirer);
+
+    const loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
+
+    Expect(loadedFixture.tests[0].ignored).toBe(true);
+    Expect(loadedFixture.tests[1].ignored).toBe(true);
+  }
+
+  @TestCase("first test ignore reason")
+  @TestCase("another one!")
+  public shouldIgnoreTestsWithReasonIfFixtureIgnored(reason: string) {
+    const fileRequirer = new FileRequirer();
+
+    const testOne = new TestBuilder()
+      .withKey("testOne")
+      .addTestCase(new TestCaseBuilder().build())
+      .build();
+
+    const testTwo = new TestBuilder()
+      .withKey("testTwo")
+      .addTestCase(new TestCaseBuilder().build())
+      .build();
+
+    const fixture = new TestFixtureBuilder()
+      .addTest(testOne)
+      .addTest(testTwo)
+      .build();
+
+    const testFixtureSet = {
+      testFixture: () => fixture
+    };
+
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureSet.testFixture
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE_REASON,
+      reason,
+      testFixtureSet.testFixture
+    );
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
+
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
+
+    const testLoader = new TestLoader(fileRequirer);
+
+    const loadedFixture = testLoader.loadTestFixture("")[0]; // get the first (only) loaded fixture
+
+    Expect(loadedFixture.tests[0].ignoreReason).toBe(reason);
+    Expect(loadedFixture.tests[1].ignoreReason).toBe(reason);
+  }
+}

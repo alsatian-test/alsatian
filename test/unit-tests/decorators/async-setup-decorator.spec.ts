@@ -1,63 +1,75 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  Test,
+  TestCase
+} from "../../../core/alsatian-core";
 import { AsyncSetup } from "../../../core/decorators/async-setup-decorator";
 
 export class AsyncSetupDecoratorTests {
+  @Test()
+  public setupFunctionAddedAsMetaData() {
+    const testFixture = {};
 
-   @Test()
-   public setupFunctionAddedAsMetaData() {
+    AsyncSetup(testFixture, "test");
 
-      const testFixture = {};
+    const setupFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP,
+      testFixture
+    );
 
-      AsyncSetup(testFixture, "test");
+    Expect(setupFunctions).toBeDefined();
+    Expect(setupFunctions).not.toBeNull();
+  }
 
-      const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  public setupFunctionKeyMetaDataAdded(key: string) {
+    const testFixture = {};
 
-      Expect(setupFunctions).toBeDefined();
-      Expect(setupFunctions).not.toBeNull();
-   }
+    AsyncSetup(testFixture, key);
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    public setupFunctionKeyMetaDataAdded(key: string) {
+    const setupFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP,
+      testFixture
+    );
 
-       const testFixture = {};
+    Expect(setupFunctions[0].propertyKey).toBe(key);
+  }
 
-       AsyncSetup(testFixture, key);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  public setupFunctionIsAsyncMetaDataAdded(key: string) {
+    const testFixture = {};
 
-       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
+    AsyncSetup(testFixture, key);
 
-       Expect(setupFunctions[0].propertyKey).toBe(key);
+    const setupFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP,
+      testFixture
+    );
+
+    Expect(setupFunctions[0].isAsync).toBe(true);
+  }
+
+  @TestCase(1)
+  @TestCase(2)
+  @TestCase(42)
+  public correctTestCountAdded(setupFunctionCount: number) {
+    const testFixture = {};
+
+    for (let i = 0; i < setupFunctionCount; i++) {
+      AsyncSetup(testFixture, "key " + i);
     }
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    public setupFunctionIsAsyncMetaDataAdded(key: string) {
+    const setupFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP,
+      testFixture
+    );
 
-       const testFixture = {};
-
-       AsyncSetup(testFixture, key);
-
-       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
-
-       Expect(setupFunctions[0].isAsync).toBe(true);
-    }
-
-    @TestCase(1)
-    @TestCase(2)
-    @TestCase(42)
-    public correctTestCountAdded(setupFunctionCount: number) {
-
-       const testFixture = {};
-
-       for (let i = 0; i < setupFunctionCount; i ++) {
-         AsyncSetup(testFixture, "key " + i);
-       }
-
-       const setupFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP, testFixture);
-
-       Expect(setupFunctions.length).toBe(setupFunctionCount);
-    }
+    Expect(setupFunctions.length).toBe(setupFunctionCount);
+  }
 }
