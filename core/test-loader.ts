@@ -20,7 +20,7 @@ export class TestLoader {
 
       const testFixtureKeys = Object.keys(testFixtureModule);
       const testFixtures: Array<ITestFixture> = [];
-      
+
       const loadFixture = (constructor: any, description: string) => {
          const testFixture = this._loadTestFixture(constructor, description);
          if (testFixture !== null) {

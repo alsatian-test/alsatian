@@ -49,7 +49,7 @@ export class Matcher<T> {
    public toEqual(expectedValue: any) {
 
       const valueMatch = expectedValue instanceof TypeMatcher ?
-                         expectedValue.test(this._actualValue) :                         
+                         expectedValue.test(this._actualValue) :
                          // exclude the double equals in this case from review as this is what we want to do
                          expectedValue == this._actualValue; // tslint:disable-line:triple-equals
 
