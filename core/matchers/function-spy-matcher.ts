@@ -24,11 +24,7 @@ export class FunctionSpyMatcher {
 
     this._validateCallCount(expectedCallCount, "expectedCallCount");
 
-      if (this._matchingArguments() !== expectedCallCount) {
-         
-        this._throwCallCountErrorWithArguments(expectedCallCount, SpyCallCountType.Exactly, true);
-      }
-      else if (this._totalCalls() !== expectedCallCount) {
+      if (this._matchingCallsCount() !== expectedCallCount) {
         this._throwCallCountError(expectedCallCount, SpyCallCountType.Exactly, true);
       }
 
@@ -39,11 +35,7 @@ export class FunctionSpyMatcher {
 
     this._validateCallCount(unexpectedCallCount, "unexpectedCallCount");
 
-      if (this._matchingArguments() === unexpectedCallCount) {
-         
-        this._throwCallCountErrorWithArguments(unexpectedCallCount, SpyCallCountType.Exactly, false);
-      }
-      else if (this._totalCalls() === unexpectedCallCount) {
+      if (this._matchingCallsCount() === unexpectedCallCount) {
         this._throwCallCountError(unexpectedCallCount, SpyCallCountType.Exactly, false);
       }
 
@@ -54,10 +46,7 @@ export class FunctionSpyMatcher {
 
     this._validateCallCount(minimumCallCount, "minimumCallCount");
 
-      if (this._matchingArguments() <= minimumCallCount) {          
-         this._throwCallCountErrorWithArguments(minimumCallCount, SpyCallCountType.GreaterThan, true);
-      }
-      else if (this._totalCalls() <= minimumCallCount) {
+      if (this._matchingCallsCount() <= minimumCallCount) {
         this._throwCallCountError(minimumCallCount, SpyCallCountType.GreaterThan, true);
       }
 
@@ -68,10 +57,7 @@ export class FunctionSpyMatcher {
 
       this._validateCallCount(maximumCallCount, "maximumCallCount");
 
-      if (this._matchingArguments() >= maximumCallCount) {
-         this._throwCallCountErrorWithArguments(maximumCallCount, SpyCallCountType.LessThan, true);
-      }
-      else if (this._totalCalls() >= maximumCallCount) {
+      if (this._matchingCallsCount() >= maximumCallCount) {
           this._throwCallCountError(maximumCallCount, SpyCallCountType.LessThan, true);
       }
 
@@ -84,6 +70,14 @@ export class FunctionSpyMatcher {
      }
    }
 
+   private _matchingCallsCount() {
+       if (this._expectedArguments === null) {
+           return this._spy.calls.length;
+       }
+       
+       return this._matchingArguments();
+   }
+
    private _matchingArguments() {
        if (this._expectedArguments === null) {
            return;
@@ -92,25 +86,12 @@ export class FunctionSpyMatcher {
        return this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length;
    }
 
-   private _totalCalls() {
-       return this._spy.calls.length;
-   }
-
    private _throwCallCountError(callCount: number, callCountType: SpyCallCountType, shouldMatch: boolean) {
     throw new FunctionCallCountMatchError(
         this._spy,
         shouldMatch,
         callCount,
-        callCountType
-    );
-   }
-
-   private _throwCallCountErrorWithArguments(callCount: number, callCountType: SpyCallCountType, shouldMatch: boolean) {
-    throw new FunctionCallCountMatchError(
-        this._spy,
-        shouldMatch,
-        callCount,
-        callCountType,
+        callCountType,        
         this._expectedArguments
     );
    }
