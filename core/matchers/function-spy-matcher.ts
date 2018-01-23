@@ -19,38 +19,27 @@ export class FunctionSpyMatcher {
       this._spy = spy;
    }
 
-   public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {
-
-    this._validateCallCount(expectedCallCount, "expectedCallCount");
-    
-    this._throwCallCountError(count => count !== expectedCallCount, expectedCallCount, SpyCallCountType.Exactly, true);
-
-    return new FunctionSpyCallCountMatcher();
+   public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {    
+    return this._checkCallCount(count => count !== expectedCallCount, expectedCallCount, "expectedCallCount", SpyCallCountType.Exactly, true);
    }
 
    public anythingBut(unexpectedCallCount: number): FunctionSpyCallCountMatcher {
-
-    this._validateCallCount(unexpectedCallCount, "unexpectedCallCount");
-
-    this._throwCallCountError(count => count === unexpectedCallCount, unexpectedCallCount, SpyCallCountType.Exactly, false);
-
-    return new FunctionSpyCallCountMatcher();
+    return this._checkCallCount(count => count === unexpectedCallCount, unexpectedCallCount, "unexpectedCallCount", SpyCallCountType.Exactly, false);
    }
 
    public greaterThan(minimumCallCount: number): FunctionSpyCallCountMatcher {
-
-    this._validateCallCount(minimumCallCount, "minimumCallCount");
-
-    this._throwCallCountError(count => count <= minimumCallCount, minimumCallCount, SpyCallCountType.GreaterThan, true);
-
-    return new FunctionSpyCallCountMatcher();
+    return this._checkCallCount(count => count <= minimumCallCount, minimumCallCount, "minimumCallCount", SpyCallCountType.GreaterThan, true);
    }
 
    public lessThan(maximumCallCount: number): FunctionSpyCallCountMatcher {
+      return this._checkCallCount(count => count >= maximumCallCount, maximumCallCount, "maximumCallCount", SpyCallCountType.LessThan, true);
+   }
 
-      this._validateCallCount(maximumCallCount, "maximumCallCount");
+   private _checkCallCount(countIsNotCorrect: (count: number) => boolean, callCount: number, callCountName: string, callCountType: SpyCallCountType, shouldMatch: boolean) {
+       
+      this._validateCallCount(callCount, callCountName);
 
-      this._throwCallCountError(count => count >= maximumCallCount, maximumCallCount, SpyCallCountType.LessThan, true);
+      this._throwCallCountError(countIsNotCorrect, callCount, callCountType, shouldMatch);
 
       return new FunctionSpyCallCountMatcher();
    }
