@@ -227,6 +227,37 @@ export class LoadTestTests {
       constructorName
     );
   }
+  
+  @TestCase("something")
+  @TestCase("wow, this is super!")
+  @TestCase("Mega Hyper AWESOME test...")
+  public descriptionShouldBeSetWhenMetadataOnDefault(
+    testFixtureDescription: string
+  ) {
+    const fileRequirer = new FileRequirer();
+
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+
+    const testFixtureSet = () => testFixtureInstance;
+
+    const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
+    Reflect.defineMetadata(
+      METADATA_KEYS.TEST_FIXTURE,
+      testFixtureMetadata,
+      testFixtureSet
+    );
+
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureSet);
+
+    const testLoader = new TestLoader(fileRequirer);
+
+    Expect(testLoader.loadTestFixture("test")[0].description).toBe(
+      testFixtureDescription
+    );
+  }
 
   @TestCase("something")
   @TestCase("wow, this is super!")
