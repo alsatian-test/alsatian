@@ -26,10 +26,10 @@ export class FunctionSpyMatcher {
 
       if (this._matchingArguments() !== expectedCallCount) {
          
-        this._throwCallCountError(expectedCallCount, SpyCallCountType.Exactly, true);
+        this._throwCallCountErrorWithArguments(expectedCallCount, SpyCallCountType.Exactly, true);
       }
-      else if (this._spy.calls.length !== expectedCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, expectedCallCount, SpyCallCountType.Exactly);
+      else if (this._totalCalls() !== expectedCallCount) {
+        this._throwCallCountError(expectedCallCount, SpyCallCountType.Exactly, true);
       }
 
       return new FunctionSpyCallCountMatcher();
@@ -41,10 +41,10 @@ export class FunctionSpyMatcher {
 
       if (this._matchingArguments() === unexpectedCallCount) {
          
-        this._throwCallCountError(unexpectedCallCount, SpyCallCountType.Exactly, false);
+        this._throwCallCountErrorWithArguments(unexpectedCallCount, SpyCallCountType.Exactly, false);
       }
-      else if (this._spy.calls.length === unexpectedCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, false, unexpectedCallCount, SpyCallCountType.Exactly);
+      else if (this._totalCalls() === unexpectedCallCount) {
+        this._throwCallCountError(unexpectedCallCount, SpyCallCountType.Exactly, false);
       }
 
       return new FunctionSpyCallCountMatcher();
@@ -55,10 +55,10 @@ export class FunctionSpyMatcher {
     this._validateCallCount(minimumCallCount, "minimumCallCount");
 
       if (this._matchingArguments() <= minimumCallCount) {          
-         this._throwCallCountError(minimumCallCount, SpyCallCountType.GreaterThan, true);
+         this._throwCallCountErrorWithArguments(minimumCallCount, SpyCallCountType.GreaterThan, true);
       }
-      else if (this._spy.calls.length <= minimumCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, minimumCallCount, SpyCallCountType.GreaterThan);
+      else if (this._totalCalls() <= minimumCallCount) {
+        this._throwCallCountError(minimumCallCount, SpyCallCountType.GreaterThan, true);
       }
 
       return new FunctionSpyCallCountMatcher();
@@ -69,10 +69,10 @@ export class FunctionSpyMatcher {
       this._validateCallCount(maximumCallCount, "maximumCallCount");
 
       if (this._matchingArguments() >= maximumCallCount) {
-         this._throwCallCountError(maximumCallCount, SpyCallCountType.LessThan, true);
+         this._throwCallCountErrorWithArguments(maximumCallCount, SpyCallCountType.LessThan, true);
       }
-      else if (this._spy.calls.length >= maximumCallCount) {
-         throw new FunctionCallCountMatchError(this._spy, true, maximumCallCount, SpyCallCountType.LessThan);
+      else if (this._totalCalls() >= maximumCallCount) {
+          this._throwCallCountError(maximumCallCount, SpyCallCountType.LessThan, true);
       }
 
       return new FunctionSpyCallCountMatcher();
@@ -92,7 +92,20 @@ export class FunctionSpyMatcher {
        return this._spy.callsWithArguments.apply(this._spy, this._expectedArguments).length;
    }
 
+   private _totalCalls() {
+       return this._spy.calls.length;
+   }
+
    private _throwCallCountError(callCount: number, callCountType: SpyCallCountType, shouldMatch: boolean) {
+    throw new FunctionCallCountMatchError(
+        this._spy,
+        shouldMatch,
+        callCount,
+        callCountType
+    );
+   }
+
+   private _throwCallCountErrorWithArguments(callCount: number, callCountType: SpyCallCountType, shouldMatch: boolean) {
     throw new FunctionCallCountMatchError(
         this._spy,
         shouldMatch,
