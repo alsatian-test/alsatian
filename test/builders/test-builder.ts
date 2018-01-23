@@ -3,7 +3,6 @@ import { ITest } from "../../core/_interfaces/test.i";
 import { TestCaseBuilder } from "./test-case-builder";
 
 export class TestBuilder {
-
   private _test: ITest;
 
   public constructor() {
@@ -14,7 +13,7 @@ export class TestBuilder {
       ignored: false,
       isAsync: false,
       key: "testFunction",
-      testCases: [ ],
+      testCases: [],
       timeout: null
     };
   }
@@ -30,8 +29,8 @@ export class TestBuilder {
   }
 
   public withDescription(description: string): TestBuilder {
-      this._test.description = description;
-      return this;
+    this._test.description = description;
+    return this;
   }
 
   public addTestCase(testCase: ITestCase): TestBuilder {
@@ -53,14 +52,14 @@ export class TestBuilder {
   }
 
   public ignored(reason?: string): TestBuilder {
-      this._test.ignored = true;
-      this._test.ignoreReason = reason;
-      return this;
+    this._test.ignored = true;
+    this._test.ignoreReason = reason;
+    return this;
   }
 
   public focussed(): TestBuilder {
-      this._test.focussed = true;
-      return this;
+    this._test.focussed = true;
+    return this;
   }
 
   public build(): ITest {

@@ -1,63 +1,75 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, Test, TestCase } from "../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  Test,
+  TestCase
+} from "../../../core/alsatian-core";
 import { Teardown } from "../../../core/decorators/teardown-decorator";
 
 export class TeardownDecoratorTests {
+  @Test()
+  public teardownFunctionAddedAsMetaData() {
+    const testFixture = {};
 
-   @Test()
-   public teardownFunctionAddedAsMetaData() {
+    Teardown(testFixture, "test", null);
 
-      const testFixture = {};
+    const teardownFunctions = Reflect.getMetadata(
+      METADATA_KEYS.TEARDOWN,
+      testFixture
+    );
 
-      Teardown(testFixture, "test", null);
+    Expect(teardownFunctions).toBeDefined();
+    Expect(teardownFunctions).not.toBeNull();
+  }
 
-      const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  public teardownFunctionMetaDataAdded(key: string) {
+    const testFixture = {};
 
-      Expect(teardownFunctions).toBeDefined();
-      Expect(teardownFunctions).not.toBeNull();
-   }
+    Teardown(testFixture, key, null);
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    public teardownFunctionMetaDataAdded(key: string) {
+    const teardownFunctions = Reflect.getMetadata(
+      METADATA_KEYS.TEARDOWN,
+      testFixture
+    );
 
-       const testFixture = {};
+    Expect(teardownFunctions[0].propertyKey).toBe(key);
+  }
 
-       Teardown(testFixture, key, null);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  public teardownFunctionIsAsyncMetaDataAdded(key: string) {
+    const testFixture = {};
 
-       const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
+    Teardown(testFixture, key, null);
 
-       Expect(teardownFunctions[0].propertyKey).toBe(key);
+    const teardownFunctions = Reflect.getMetadata(
+      METADATA_KEYS.TEARDOWN,
+      testFixture
+    );
+
+    Expect(teardownFunctions[0].isAsync).toBe(false);
+  }
+
+  @TestCase(1)
+  @TestCase(2)
+  @TestCase(42)
+  public correctTestCountAdded(teardownFunctionCount: number) {
+    const testFixture = {};
+
+    for (let i = 0; i < teardownFunctionCount; i++) {
+      Teardown(testFixture, "key " + i, null);
     }
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    public teardownFunctionIsAsyncMetaDataAdded(key: string) {
+    const teardownFunctions = Reflect.getMetadata(
+      METADATA_KEYS.TEARDOWN,
+      testFixture
+    );
 
-       const testFixture = {};
-
-       Teardown(testFixture, key, null);
-
-       const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
-
-       Expect(teardownFunctions[0].isAsync).toBe(false);
-    }
-
-    @TestCase(1)
-    @TestCase(2)
-    @TestCase(42)
-    public correctTestCountAdded(teardownFunctionCount: number) {
-
-       const testFixture = {};
-
-       for (let i = 0; i < teardownFunctionCount; i ++) {
-         Teardown(testFixture, "key " + i, null);
-       }
-
-       const teardownFunctions = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, testFixture);
-
-       Expect(teardownFunctions.length).toBe(teardownFunctionCount);
-    }
+    Expect(teardownFunctions.length).toBe(teardownFunctionCount);
+  }
 }

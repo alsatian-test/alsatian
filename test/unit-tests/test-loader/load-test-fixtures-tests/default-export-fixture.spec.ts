@@ -1,105 +1,104 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, SpyOn, Test } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  SpyOn,
+  Test
+} from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 export class DefaultExportFixtureTests {
+  @Test()
+  public ignoredShouldBeFalseByDefault() {
+    const fileRequirer = new FileRequirer();
 
-   @Test()
-   public ignoredShouldBeFalseByDefault() {
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const fileRequirer = new FileRequirer();
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const testFixtureConstructor = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+    Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(false);
+  }
 
-     const testLoader = new TestLoader(fileRequirer);
+  @Test()
+  public ignoredShouldBeTrueIfMetadataSet() {
+    const fileRequirer = new FileRequirer();
 
-     Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(false);
-   }
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-   @Test()
-   public ignoredShouldBeTrueIfMetadataSet() {
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     const fileRequirer = new FileRequirer();
+    Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureConstructor);
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const testFixtureConstructor = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-     Reflect.defineMetadata(METADATA_KEYS.IGNORE, true,  testFixtureConstructor);
+    Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
+  }
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+  @Test()
+  public focussedShouldBeFalseByDefault() {
+    const fileRequirer = new FileRequirer();
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     Expect(testLoader.loadTestFixture("test")[0].ignored).toBe(true);
-   }
+    const testFixtureConstructor = () => testFixtureInstance;
 
-   @Test()
-   public focussedShouldBeFalseByDefault() {
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const fileRequirer = new FileRequirer();
+    const testLoader = new TestLoader(fileRequirer);
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(false);
+  }
 
-     const testFixtureConstructor = () => testFixtureInstance;
+  @Test()
+  public focussedShouldBeTrueIfMetadataSet() {
+    const fileRequirer = new FileRequirer();
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-     const testLoader = new TestLoader(fileRequirer);
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(false);
-   }
+    Reflect.defineMetadata(METADATA_KEYS.FOCUS, true, testFixtureConstructor);
 
-   @Test()
-   public focussedShouldBeTrueIfMetadataSet() {
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const fileRequirer = new FileRequirer();
+    const testLoader = new TestLoader(fileRequirer);
 
-     const testFixtureInstance = {};
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(true);
+  }
 
-     const testFixtureConstructor = () => testFixtureInstance;
+  @Test()
+  public noTestsReturnsEmptyArray() {
+    const fileRequirer = new FileRequirer();
 
-     Reflect.defineMetadata(METADATA_KEYS.FOCUS, true,  testFixtureConstructor);
+    const testFixtureInstance = {};
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     const testLoader = new TestLoader(fileRequirer);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     Expect(testLoader.loadTestFixture("test")[0].focussed).toBe(true);
-   }
+    const testLoader = new TestLoader(fileRequirer);
 
-   @Test()
-   public noTestsReturnsEmptyArray() {
-
-     const fileRequirer = new FileRequirer();
-
-     const testFixtureInstance = {};
-
-     const testFixtureConstructor = () => testFixtureInstance;
-
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
-
-     const testLoader = new TestLoader(fileRequirer);
-
-     Expect(testLoader.loadTestFixture("test").length).toBe(0);
-   }
- }
+    Expect(testLoader.loadTestFixture("test").length).toBe(0);
+  }
+}

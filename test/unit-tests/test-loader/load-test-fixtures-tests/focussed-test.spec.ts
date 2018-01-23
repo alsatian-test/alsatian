@@ -1,56 +1,71 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, SpyOn, Test } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  SpyOn,
+  Test
+} from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 export class FocussedTestTests {
+  @Test()
+  public singleUnfocussedTest() {
+    const fileRequirer = new FileRequirer();
 
-   @Test()
-   public singleUnfocussedTest() {
+    const testFixtureInstance = {
+      unfocussedTest: () => {}
+    };
+    const unfocussedTest = {
+      key: "unfocussedTest"
+    };
+    Reflect.defineMetadata(
+      METADATA_KEYS.TESTS,
+      [unfocussedTest],
+      testFixtureInstance
+    );
 
-     const fileRequirer = new FileRequirer();
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     const testFixtureInstance = {
-       unfocussedTest: () => {}
-     };
-     const unfocussedTest = {
-       key: "unfocussedTest"
-     };
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unfocussedTest ], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const testFixtureConstructor = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+    Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(false);
+  }
 
-     const testLoader = new TestLoader(fileRequirer);
+  @Test()
+  public singleFocussedTest() {
+    const fileRequirer = new FileRequirer();
 
-     Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(false);
-   }
+    const testFixtureInstance = {
+      focussedTest: () => {}
+    };
+    const unfocussedTest = {
+      key: "focussedTest"
+    };
+    Reflect.defineMetadata(
+      METADATA_KEYS.TESTS,
+      [unfocussedTest],
+      testFixtureInstance
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.FOCUS,
+      true,
+      testFixtureInstance,
+      "focussedTest"
+    );
 
-    @Test()
-    public singleFocussedTest() {
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const fileRequirer = new FileRequirer();
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-      const testFixtureInstance = {
-        focussedTest: () => {}
-      };
-      const unfocussedTest = {
-        key: "focussedTest"
-      };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unfocussedTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.FOCUS, true, testFixtureInstance, "focussedTest");
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureConstructor = () => testFixtureInstance;
-
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureConstructor);
-
-      const testLoader = new TestLoader(fileRequirer);
-
-      Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(true);
-    }
- }
+    Expect(testLoader.loadTestFixture("test")[0].tests[0].focussed).toBe(true);
+  }
+}
