@@ -63,58 +63,53 @@ export class TestItem {
       }, timeout);
 
       if (this._test.isAsync) {
-        this._testFixture.fixture[this._test.key]
-          .apply(this._testFixture.fixture, this._testCase.caseArguments)
+        this._execute()
           .then(resolve)
           .catch(reject);
       } else {
-        this._testFixture.fixture[this._test.key].apply(
-          this._testFixture.fixture,
-          this._testCase.caseArguments
-        );
+        this._execute();
         resolve();
       }
     });
   }
 
+  private _execute() {
+    return this._testFixture.fixture[this._test.key].apply(
+      this._testFixture.fixture,
+      this._testCase.caseArguments
+    );
+  }
+
   private async _setup() {
-    const setupFunctions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
-      METADATA_KEYS.SETUP,
+    await this._runFunctionsByMetaDataKey(METADATA_KEYS.SETUP);
+  }
+
+  private async _teardown() {
+    await this._runFunctionsByMetaDataKey(METADATA_KEYS.TEARDOWN);
+  }
+
+  private async _runFunctionsByMetaDataKey(metadataKey: string) {
+    const functions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
+      metadataKey,
       this._testFixture.fixture
     );
 
-    if (setupFunctions) {
-      for (const setupFunction of setupFunctions) {
-        if (setupFunction.isAsync) {
-          await this._testFixture.fixture[setupFunction.propertyKey].call(
-            this._testFixture.fixture
-          );
-        } else {
-          this._testFixture.fixture[setupFunction.propertyKey].call(
-            this._testFixture.fixture
-          );
-        }
+    if (functions) {
+      for (const func of functions) {
+        await this._runFunctionFromMetadata(func);
       }
     }
   }
 
-  private async _teardown() {
-    const teardownFunctions: Array<
-      ISetupTeardownMetadata
-    > = Reflect.getMetadata(METADATA_KEYS.TEARDOWN, this._testFixture.fixture);
-
-    if (teardownFunctions) {
-      for (const teardownFunction of teardownFunctions) {
-        if (teardownFunction.isAsync) {
-          await this._testFixture.fixture[teardownFunction.propertyKey].call(
-            this._testFixture.fixture
-          );
-        } else {
-          this._testFixture.fixture[teardownFunction.propertyKey].call(
-            this._testFixture.fixture
-          );
-        }
-      }
+  private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
+    if (funcMetadata.isAsync) {
+      await this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
+    } else {
+      this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
     }
   }
 }
