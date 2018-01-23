@@ -11,7 +11,7 @@ export class TestLoader {
     try {
       testFixtureModule = this._fileRequirer.require(filePath);
     } catch (e) {
-      process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
+      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n`);
       process.stderr.write(e.stack);
       process.exit(1);
       return;
@@ -34,9 +34,7 @@ export class TestLoader {
       // otherwise there are multiple exports and we must handle all of them
       testFixtureKeys
         .filter(key => typeof testFixtureModule[key] === "function")
-        .forEach(functionKey =>
-          loadFixture(testFixtureModule[functionKey], functionKey)
-        );
+        .forEach(key => loadFixture(testFixtureModule[key], key));
     }
 
     return testFixtures;

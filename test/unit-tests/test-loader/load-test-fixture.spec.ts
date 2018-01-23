@@ -227,7 +227,7 @@ export class LoadTestTests {
       constructorName
     );
   }
-  
+
   @TestCase("something")
   @TestCase("wow, this is super!")
   @TestCase("Mega Hyper AWESOME test...")
