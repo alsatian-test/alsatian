@@ -1,6 +1,16 @@
 import "reflect-metadata";
 import { TestFixture as TestFixtureMetadata } from "../../../core/";
-import { Expect, METADATA_KEYS, SpyOn, SpyOnProperty, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import {
+    Expect,
+    METADATA_KEYS,
+    SpyOn,
+    SpyOnProperty,
+    Test,
+    TestCase,
+    TestFixture,
+    Setup,
+    Teardown
+} from "../../../core/alsatian-core";
 import { FileRequirer } from "../../../core/file-requirer";
 import { TestLoader } from "../../../core/test-loader";
 import { TestBuilder } from "../../builders/test-builder";
@@ -9,6 +19,19 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 @TestFixture("Load Tests")
 export class LoadTestTests {
+
+   private _originalStdErr: (message: string) => boolean;
+
+   @Setup
+   private _spyOnProcess() {
+     this._originalStdErr = process.stderr.write;
+     SpyOn(process.stderr, "write").andStub();
+   }
+
+   @Teardown
+   private _resetProcess() {
+     process.stderr.write = this._originalStdErr;
+   }
 
    @Test()
    public ignoredShouldBeFalseByDefault() {
@@ -308,5 +331,27 @@ export class LoadTestTests {
 
        Expect(loadedFixture.tests[0].ignoreReason).toBe(reason);
        Expect(loadedFixture.tests[1].ignoreReason).toBe(reason);
+   }
+
+   @TestCase("/path/", "stack_trace")
+   @TestCase("C:\\some_other\\path", "a-bad-error-trace")
+   public shouldWriteToErrorLogWithCorrectMessage(path: string, stack: string) {
+       const fileRequirer = new FileRequirer();
+
+       const error = new Error("foo");
+       error.stack = stack;
+
+       const spy = SpyOn(fileRequirer, "require");
+       spy.andStub();
+       spy.andCall(() => {
+           throw error;
+       });
+
+       const testLoader = new TestLoader(fileRequirer);
+
+       testLoader.loadTestFixture(path);
+
+       Expect(process.stderr.write).toHaveBeenCalledWith(`ERROR LOADING FILE: ${ path }\n`);
+       Expect(process.stderr.write).toHaveBeenCalledWith(error.stack);
    }
  }
