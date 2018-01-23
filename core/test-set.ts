@@ -49,7 +49,7 @@ export class TestSet {
    private _loadTestFixtures(testFileLocations: Array<string>) {
       testFileLocations.forEach(testFileLocation => {
 
-         testFileLocation = path.join(process.cwd(), testFileLocation);
+         testFileLocation = path.resolve(testFileLocation);
 
          if (this._globHelper.isGlob(testFileLocation)) {
             const physicalTestFileLocations = this._globHelper.resolve(testFileLocation);
