@@ -3,39 +3,40 @@ import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
+  public constructor(private _fileRequirer: FileRequirer) {}
 
-   public constructor(private _fileRequirer: FileRequirer) { }
+  public loadTestFixture(filePath: string): Array<ITestFixture> {
+    let testFixtureModule: any;
 
-   public loadTestFixture(filePath: string): Array<ITestFixture> {
-      let testFixtureModule: any;
+    try {
+      testFixtureModule = this._fileRequirer.require(filePath);
+    } catch (e) {
+      process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
+      process.stderr.write(e.stack);
+      process.exit(1);
+      return;
+    }
 
-      try {
-         testFixtureModule = this._fileRequirer.require(filePath);
-      } catch (e) {
-         process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
-         process.stderr.write(e.stack);
-         process.exit(1);
-         return;
+    const testFixtureKeys = Object.keys(testFixtureModule);
+    const testFixtures: Array<ITestFixture> = [];
+
+    const loadFixture = (constructor: any, description: string) => {
+      const testFixture = this._loadTestFixture(constructor, description);
+      if (testFixture !== null) {
+        testFixtures.push(testFixture);
       }
+    };
 
-      const testFixtureKeys = Object.keys(testFixtureModule);
-      const testFixtures: Array<ITestFixture> = [];
-
-      const loadFixture = (constructor: any, description: string) => {
-         const testFixture = this._loadTestFixture(constructor, description);
-         if (testFixture !== null) {
-            testFixtures.push(testFixture);
-         }
-      };
-
-      if (typeof testFixtureModule === "function") {
-         // if the default export is class constructor
-         loadFixture(testFixtureModule, testFixtureModule.name);
-      } else {
-         // otherwise there are multiple exports and we must handle all of them
-         testFixtureKeys
-            .filter(key => typeof testFixtureModule[key] === "function")
-            .forEach(functionKey => loadFixture(testFixtureModule[functionKey], functionKey));
+    if (typeof testFixtureModule === "function") {
+      // if the default export is class constructor
+      loadFixture(testFixtureModule, testFixtureModule.name);
+    } else {
+      // otherwise there are multiple exports and we must handle all of them
+      testFixtureKeys
+        .filter(key => typeof testFixtureModule[key] === "function")
+        .forEach(functionKey =>
+          loadFixture(testFixtureModule[functionKey], functionKey)
+        );
     }
 
     return testFixtures;

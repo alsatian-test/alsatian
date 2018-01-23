@@ -5,90 +5,106 @@ import { Any, TypeMatcher } from "../spying";
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher<T> {
+  private _actualValue: T;
+  protected get actualValue(): T {
+    return this._actualValue;
+  }
 
-   private _actualValue: T;
-   protected get actualValue(): T {
-       return this._actualValue;
-   }
+  private _shouldMatch: boolean = true;
+  protected get shouldMatch(): boolean {
+    return this._shouldMatch;
+  }
 
-   private _shouldMatch: boolean = true;
-   protected get shouldMatch(): boolean {
-       return this._shouldMatch;
-   }
+  public constructor(actualValue: T) {
+    this._actualValue = actualValue;
+  }
 
-   public constructor(actualValue: T) {
-      this._actualValue = actualValue;
-   }
+  /**
+   * Any subsequent matcher function will be looking for the opposite criteria
+   */
+  public get not(): this {
+    this._shouldMatch = !this.shouldMatch;
+    return this;
+  }
 
-   /**
-    * Any subsequent matcher function will be looking for the opposite criteria
-    */
-   public get not(): this {
-      this._shouldMatch = !this.shouldMatch;
-      return this;
-   }
+  /**
+   * Checks that a value is identical to another
+   * @param expectedValue - the value that will be used to match
+   */
+  public toBe(expectedValue: T) {
+    if ((expectedValue !== this._actualValue) === this.shouldMatch) {
+      throw new ExactMatchError(
+        this._actualValue,
+        expectedValue,
+        this.shouldMatch
+      );
+    }
+  }
 
-   /**
-    * Checks that a value is identical to another
-    * @param expectedValue - the value that will be used to match
-    */
-   public toBe(expectedValue: T) {
-      if (expectedValue !== this._actualValue === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, expectedValue, this.shouldMatch);
+  /**
+   * Checks that a value is equal to another (for objects the function will check for deep equality)
+   * @param expectedValue - the value that will be used to match
+   */
+  public toEqual(expectedValue: any) {
+    const valueMatch =
+      expectedValue instanceof TypeMatcher
+        ? expectedValue.test(this._actualValue)
+        : // exclude the double equals in this case from review as this is what we want to do
+          expectedValue == this._actualValue; // tslint:disable-line:triple-equals
+
+    if (valueMatch !== this.shouldMatch) {
+      if (
+        typeof expectedValue !== "object" ||
+        this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !==
+          this.shouldMatch
+      ) {
+        throw new EqualMatchError(
+          this._actualValue,
+          expectedValue,
+          this.shouldMatch
+        );
       }
-   }
+    }
+  }
 
-   /**
-    * Checks that a value is equal to another (for objects the function will check for deep equality)
-    * @param expectedValue - the value that will be used to match
-    */
-   public toEqual(expectedValue: any) {
+  /**
+   * Checks that a value is not undefined
+   */
+  public toBeDefined() {
+    if ((this._actualValue === undefined) === this.shouldMatch) {
+      throw new ExactMatchError(
+        this._actualValue,
+        undefined,
+        !this.shouldMatch
+      );
+    }
+  }
 
-      const valueMatch = expectedValue instanceof TypeMatcher ?
-                         expectedValue.test(this._actualValue) :
-                         // exclude the double equals in this case from review as this is what we want to do
-                         expectedValue == this._actualValue; // tslint:disable-line:triple-equals
+  /**
+   * Checks that a value is null
+   */
+  public toBeNull() {
+    if ((this._actualValue !== null) === this.shouldMatch) {
+      throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
+    }
+  }
 
-      if (valueMatch !== this.shouldMatch) {
-         if (typeof expectedValue !== "object" ||
-             this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !== this.shouldMatch) {
-            throw new EqualMatchError(this._actualValue, expectedValue, this.shouldMatch);
-         }
-      }
-   }
+  /**
+   * Checks that a value is equivalent to boolean true
+   */
+  public toBeTruthy() {
+    if (
+      (this._actualValue && !this.shouldMatch) ||
+      (!this._actualValue && this.shouldMatch)
+    ) {
+      throw new TruthyMatchError(this._actualValue, this.shouldMatch);
+    }
+  }
 
-   /**
-    * Checks that a value is not undefined
-    */
-   public toBeDefined() {
-      if (this._actualValue === undefined === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, undefined, !this.shouldMatch);
-      }
-   }
-
-   /**
-    * Checks that a value is null
-    */
-   public toBeNull() {
-      if (this._actualValue !== null === this.shouldMatch) {
-         throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
-      }
-   }
-
-   /**
-    * Checks that a value is equivalent to boolean true
-    */
-   public toBeTruthy() {
-      if ((this._actualValue && !this.shouldMatch) || (!this._actualValue && this.shouldMatch)) {
-         throw new TruthyMatchError(this._actualValue, this.shouldMatch);
-      }
-   }
-
-   private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
-
-      // if one object is an array and the other is not then they are not equal
-      if (Array.isArray(objectA) !== Array.isArray(objectB)) {
-         return false;
+  private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
+    // if one object is an array and the other is not then they are not equal
+    if (Array.isArray(objectA) !== Array.isArray(objectB)) {
+      return false;
     }
 
     // get all the property keys for each object
