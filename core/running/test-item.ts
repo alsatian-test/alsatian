@@ -53,55 +53,63 @@ export class TestItem {
         await this._teardown();
         throw error;
       }
-   }
-
-   private async _runTest(timeout: number) {
-        return new Promise<any>((resolve, reject) => {
-
-            setTimeout(() => {
-                reject(new TestTimeoutError(timeout));
-            }, timeout);
-
-            if (this._test.isAsync) {                
-                this._execute().then(resolve).catch(reject);
-            }
-            else {
-                this._execute();
-                resolve();
-            }
-        });
     }
+  }
 
-    private _execute() {
-        return this._testFixture.fixture[this._test.key].apply(this._testFixture.fixture, this._testCase.caseArguments);
+  private async _runTest(timeout: number) {
+    return new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        reject(new TestTimeoutError(timeout));
+      }, timeout);
+
+      if (this._test.isAsync) {
+        this._execute()
+          .then(resolve)
+          .catch(reject);
+      } else {
+        this._execute();
+        resolve();
+      }
+    });
+  }
+
+  private _execute() {
+    return this._testFixture.fixture[this._test.key].apply(
+      this._testFixture.fixture,
+      this._testCase.caseArguments
+    );
+  }
+
+  private async _setup() {
+    await this._runFunctionsByMetaDataKey(METADATA_KEYS.SETUP);
+  }
+
+  private async _teardown() {
+    await this._runFunctionsByMetaDataKey(METADATA_KEYS.TEARDOWN);
+  }
+
+  private async _runFunctionsByMetaDataKey(metadataKey: string) {
+    const functions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
+      metadataKey,
+      this._testFixture.fixture
+    );
+
+    if (functions) {
+      for (const func of functions) {
+        await this._runFunctionFromMetadata(func);
+      }
     }
+  }
 
-   private async _setup() {
-      
-    this._runFunctionsByMetaDataKey(METADATA_KEYS.SETUP);
-   }
-
-   private async _teardown() {
-        this._runFunctionsByMetaDataKey(METADATA_KEYS.TEARDOWN);
-   }
-
-   private async _runFunctionsByMetaDataKey(metadataKey: string) {
-       const functions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(metadataKey, this._testFixture.fixture);
-
-       if (functions) {
-            for (const func of functions) {
-               await this._runFunctionFromMetadata(func);
-           }
-       }
-   }
-
-   private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
-       
+  private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
     if (funcMetadata.isAsync) {
-        await this._testFixture.fixture[funcMetadata.propertyKey].call(this.testFixture.fixture); 
-       }
-       else {
-        this._testFixture.fixture[funcMetadata.propertyKey].call(this.testFixture.fixture); 
-       }
-   }
+      await this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
+    } else {
+      this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
+    }
+  }
 }
