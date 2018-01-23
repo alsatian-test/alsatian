@@ -21,16 +21,21 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 export class LoadTestTests {
 
    private _originalStdErr: (message: string) => boolean;
+   private _originalExit: (code: number) => never;
 
    @Setup
    private _spyOnProcess() {
      this._originalStdErr = process.stderr.write;
      SpyOn(process.stderr, "write").andStub();
+
+     this._originalExit = process.exit;
+     SpyOn(process, "exit").andStub();
    }
 
    @Teardown
    private _resetProcess() {
      process.stderr.write = this._originalStdErr;
+     process.exit = this._originalExit;
    }
 
    @Test()
@@ -353,5 +358,6 @@ export class LoadTestTests {
 
        Expect(process.stderr.write).toHaveBeenCalledWith(`ERROR LOADING FILE: ${ path }\n`);
        Expect(process.stderr.write).toHaveBeenCalledWith(error.stack);
+       Expect(process.exit).toHaveBeenCalledWith(1);
    }
  }

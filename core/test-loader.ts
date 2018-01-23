@@ -14,6 +14,8 @@ export class TestLoader {
       } catch (e) {
          process.stderr.write("ERROR LOADING FILE: " + filePath + "\n");
          process.stderr.write(e.stack);
+         process.exit(1);
+         return;
       }
 
       const testFixtureKeys = Object.keys(testFixureModule);
