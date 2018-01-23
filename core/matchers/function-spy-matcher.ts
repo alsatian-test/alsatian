@@ -78,10 +78,6 @@ export class FunctionSpyMatcher {
       return new FunctionSpyCallCountMatcher();
    }
 
-   private _getArgumentsMatching(expectedArguments: Array<any>) {
-       return this._spy.callsWithArguments.apply(this._spy, expectedArguments);
-   }
-
    private _validateCallCount(callCount: number, callCountName: string) {
     if (callCount < 1) {
         throw new TypeError(`${callCountName} must be greater than 0.`);
