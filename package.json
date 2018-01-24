@@ -1,6 +1,6 @@
 {
   "name": "alsatian",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "TypeScript and JavaScript testing framework for beautiful and readable tests",
   "author": "James Richford <=> (=)",
   "contributors": [
