@@ -4,6 +4,10 @@ import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 import { Unused } from "../core/unused";
 
+function removeItemByIndex(array: Array<any>, index: number) {
+  return array.filter((v, i) => i === index);
+}
+
 export class AlsatianCliOptions {
   private _fileGlobs: Array<string>;
   public get fileGlobs(): Array<string> {
@@ -123,11 +127,8 @@ export class AlsatianCliOptions {
 
     if (versionRequestedIndex > -1) {
       this._versionRequested = true;
-
-      return args.filter((value, index) => {
-        Unused(value);
-        return index !== versionRequestedIndex;
-      });
+      
+      return removeItemByIndex(args, versionRequestedIndex);
     }
 
     return args;
@@ -142,11 +143,8 @@ export class AlsatianCliOptions {
 
     if (helpRequestedIndex > -1) {
       this._helpRequested = true;
-
-      return args.filter((value, index) => {
-        Unused(value);
-        return index !== helpRequestedIndex;
-      });
+      
+      return removeItemByIndex(args, helpRequestedIndex);
     }
 
     return args;
