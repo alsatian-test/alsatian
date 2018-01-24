@@ -127,7 +127,7 @@ export class AlsatianCliOptions {
 
     if (versionRequestedIndex > -1) {
       this._versionRequested = true;
-      
+
       return removeItemByIndex(args, versionRequestedIndex);
     }
 
@@ -143,7 +143,7 @@ export class AlsatianCliOptions {
 
     if (helpRequestedIndex > -1) {
       this._helpRequested = true;
-      
+
       return removeItemByIndex(args, helpRequestedIndex);
     }
 
