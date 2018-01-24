@@ -5,7 +5,7 @@ import { MissingArgumentValueError } from "./errors/missing-argument-value-error
 import { Unused } from "../core/unused";
 
 function removeItemByIndex(array: Array<any>, index: number) {
-  return array.filter((v, i) => i === index);
+  return array.filter((v, i) => i !== index);
 }
 
 export class AlsatianCliOptions {
