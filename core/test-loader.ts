@@ -6,32 +6,35 @@ export class TestLoader {
   public constructor(private _fileRequirer: FileRequirer) {}
 
   public loadTestFixture(filePath: string): Array<ITestFixture> {
-    const testFixureModule = this._fileRequirer.require(filePath);
-    const testFixtureKeys = Object.keys(testFixureModule);
+    let testFixtureModule: any;
+
+    try {
+      testFixtureModule = this._fileRequirer.require(filePath);
+    } catch (e) {
+      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n`);
+      process.stderr.write(e.stack);
+      process.exit(1);
+      return;
+    }
+
+    const testFixtureKeys = Object.keys(testFixtureModule);
     const testFixtures: Array<ITestFixture> = [];
 
-    // if the default export is class constructor
-    if (typeof testFixureModule === "function") {
-      const testFixture = this._loadTestFixture(
-        testFixureModule,
-        testFixureModule.name
-      );
+    const loadFixture = (constructor: any, description: string) => {
+      const testFixture = this._loadTestFixture(constructor, description);
       if (testFixture !== null) {
         testFixtures.push(testFixture);
       }
+    };
+
+    if (typeof testFixtureModule === "function") {
+      // if the default export is class constructor
+      loadFixture(testFixtureModule, testFixtureModule.name);
     } else {
       // otherwise there are multiple exports and we must handle all of them
-      testFixtureKeys.forEach(testFixtureKey => {
-        if (typeof testFixureModule[testFixtureKey] === "function") {
-          const testFixture = this._loadTestFixture(
-            testFixureModule[testFixtureKey],
-            testFixtureKey
-          );
-          if (testFixture !== null) {
-            testFixtures.push(testFixture);
-          }
-        }
-      });
+      testFixtureKeys
+        .filter(key => typeof testFixtureModule[key] === "function")
+        .forEach(key => loadFixture(testFixtureModule[key], key));
     }
 
     return testFixtures;
