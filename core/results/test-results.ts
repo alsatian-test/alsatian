@@ -1,8 +1,10 @@
 import { ITest } from "../_interfaces/test.i";
 import { TestCaseResult } from "./test-case-result";
 import { TestOutcome } from "./test-outcome";
+import { IResultWithOutcome } from "./result-with-outcome.i";
+import { getOverallOutcome } from "./get-overall-outcome";
 
-export class TestResults {
+export class TestResults implements IResultWithOutcome {
   private _testCaseResults: Array<TestCaseResult> = [];
 
   public constructor(private _test: ITest) {}
@@ -12,23 +14,7 @@ export class TestResults {
   }
 
   public get outcome(): TestOutcome {
-    const outcomes = this._testCaseResults.map(
-      testCaseResult => testCaseResult.outcome
-    );
-
-    if (outcomes.indexOf(TestOutcome.Error) !== -1) {
-      return TestOutcome.Error;
-    }
-
-    if (outcomes.indexOf(TestOutcome.Fail) !== -1) {
-      return TestOutcome.Fail;
-    }
-
-    if (outcomes.indexOf(TestOutcome.Pass) !== -1) {
-      return TestOutcome.Pass;
-    }
-
-    return TestOutcome.Skip;
+    return getOverallOutcome(this._testCaseResults);
   }
 
   public addTestCaseResult(
