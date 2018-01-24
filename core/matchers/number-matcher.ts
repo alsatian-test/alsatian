@@ -10,7 +10,7 @@ export class NumberMatcher extends Matcher<number> {
    * @param upperLimit - the number that the number under test should be less than
    */
   public toBeLessThan(upperLimit: number) {
-    this._validateValues(upperLimit);
+    this._validateValues(upperLimit, "toBeLessThan", "upper limit");
 
     if (this.actualValue < upperLimit !== this.shouldMatch) {
       throw new LessThanMatchError(
@@ -26,7 +26,7 @@ export class NumberMatcher extends Matcher<number> {
    * @param lowerLimit - the number that the number under test should be greater than
    */
   public toBeGreaterThan(lowerLimit: number) {
-    this._validateValues(lowerLimit);
+    this._validateValues(lowerLimit, "toBeGreaterThan", "lower limit");
 
     if (this.actualValue > lowerLimit !== this.shouldMatch) {
       throw new GreaterThanMatchError(
@@ -37,15 +37,15 @@ export class NumberMatcher extends Matcher<number> {
     }
   }
 
-  private _validateValues(limit: number) {
+  private _validateValues(limit: number, functionName: string, limitType: string) {
     if (limit === null || limit === undefined) {
       throw new TypeError(
-        "toBeGreaterThan lower limit must not be null or undefined."
+        `${functionName} ${limitType} must not be null or undefined.`
       );
     }
 
     if (typeof this.actualValue !== "number") {
-      throw new TypeError("toBeGreaterThan can only check numbers.");
+      throw new TypeError(`${functionName} can only check numbers.`);
     }
   }
 }
