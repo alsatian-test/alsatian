@@ -1,67 +1,80 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, Test, TestCase, TestFixture } from "../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  Test,
+  TestCase,
+  TestFixture
+} from "../../../core/alsatian-core";
 import { SetupFixture } from "../../../core/decorators/setup-fixture-decorator";
 
 @TestFixture("@SetupFixture decorator tests")
 export class SetupFixtureDecoratorTests {
+  @Test("setup fixture function added to metadata")
+  public setupFixtureFunctionAddedAsMetaData() {
+    const testFixture = {};
 
-   @Test("setup fixture function added to metadata")
-   public setupFixtureFunctionAddedAsMetaData() {
+    SetupFixture(testFixture, "test", null);
 
-      const testFixture = {};
+    const setupFixtureFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP_FIXTURE,
+      testFixture
+    );
 
-      SetupFixture(testFixture, "test", null);
+    Expect(setupFixtureFunctions).toBeDefined();
+    Expect(setupFixtureFunctions).not.toBeNull();
+  }
 
-      const setupFixtureFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP_FIXTURE, testFixture);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  @Test("setup fixture function added to metadata with correct key")
+  public setupFixtureFunctionKeyMetaDataAdded(key: string) {
+    const testFixture = {};
 
-      Expect(setupFixtureFunctions).toBeDefined();
-      Expect(setupFixtureFunctions).not.toBeNull();
-   }
+    SetupFixture(testFixture, key, null);
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    @Test("setup fixture function added to metadata with correct key")
-    public setupFixtureFunctionKeyMetaDataAdded(key: string) {
+    const setupFixtureFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP_FIXTURE,
+      testFixture
+    );
 
-       const testFixture = {};
+    Expect(setupFixtureFunctions[0].propertyKey).toBe(key);
+  }
 
-       SetupFixture(testFixture, key, null);
+  @TestCase("key")
+  @TestCase("another key")
+  @TestCase("something-different")
+  @Test("setup fixture function added to metadata with isAsync = false")
+  public setupFixtureFunctionIsAsyncMetaDataAdded(key: string) {
+    const testFixture = {};
 
-       const setupFixtureFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP_FIXTURE, testFixture);
+    SetupFixture(testFixture, key, null);
 
-       Expect(setupFixtureFunctions[0].propertyKey).toBe(key);
+    const setupFixtureFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP_FIXTURE,
+      testFixture
+    );
+
+    Expect(setupFixtureFunctions[0].isAsync).toBe(false);
+  }
+
+  @TestCase(1)
+  @TestCase(2)
+  @TestCase(42)
+  @Test("multiple setup fixture functions added to metadata")
+  public correctTestCountAdded(setupFixtureFunctionCount: number) {
+    const testFixture = {};
+
+    for (let i = 0; i < setupFixtureFunctionCount; i++) {
+      SetupFixture(testFixture, "key " + i, null);
     }
 
-    @TestCase("key")
-    @TestCase("another key")
-    @TestCase("something-different")
-    @Test("setup fixture function added to metadata with isAsync = false")
-    public setupFixtureFunctionIsAsyncMetaDataAdded(key: string) {
+    const setupFixtureFunctions = Reflect.getMetadata(
+      METADATA_KEYS.SETUP_FIXTURE,
+      testFixture
+    );
 
-       const testFixture = {};
-
-       SetupFixture(testFixture, key, null);
-
-       const setupFixtureFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP_FIXTURE, testFixture);
-
-       Expect(setupFixtureFunctions[0].isAsync).toBe(false);
-    }
-
-    @TestCase(1)
-    @TestCase(2)
-    @TestCase(42)
-    @Test("multiple setup fixture functions added to metadata")
-    public correctTestCountAdded(setupFixtureFunctionCount: number) {
-
-       const testFixture = {};
-
-       for (let i = 0; i < setupFixtureFunctionCount; i ++) {
-         SetupFixture(testFixture, "key " + i, null);
-       }
-
-       const setupFixtureFunctions = Reflect.getMetadata(METADATA_KEYS.SETUP_FIXTURE, testFixture);
-
-       Expect(setupFixtureFunctions.length).toBe(setupFixtureFunctionCount);
-    }
+    Expect(setupFixtureFunctions.length).toBe(setupFixtureFunctionCount);
+  }
 }

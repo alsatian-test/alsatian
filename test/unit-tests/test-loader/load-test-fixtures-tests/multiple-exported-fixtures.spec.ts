@@ -1,183 +1,185 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  SpyOn,
+  Test,
+  TestCase
+} from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 export class MultipleExportedFixtureTests {
+  @TestCase(1)
+  @TestCase(2)
+  @TestCase(42)
+  public shouldContainCorrectNumberOfTestFixtures(
+    expectedTestFixtureCount: number
+  ) {
+    const fileRequirer = new FileRequirer();
 
-   @TestCase(1)
-   @TestCase(2)
-   @TestCase(42)
-   public shouldContainCorrectNumberOfTestFixtures(expectedTestFixtureCount: number) {
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      const fileRequirer = new FileRequirer();
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testFixtureWrapper: { [key: string]: () => any } = {};
+    for (let i = 0; i < expectedTestFixtureCount; i++) {
+      testFixtureWrapper["TestFixture" + i] = testFixtureConstructor;
+    }
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      const testFixtureWrapper: { [key: string]: () => any } = {};
-      for (let i = 0; i < expectedTestFixtureCount; i++) {
-         testFixtureWrapper["TestFixture" + i] = testFixtureConstructor;
-      }
+    const testLoader = new TestLoader(fileRequirer);
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+    Expect(testLoader.loadTestFixture("test").length).toBe(
+      expectedTestFixtureCount
+    );
+  }
 
-      const testLoader = new TestLoader(fileRequirer);
+  @Test()
+  public shouldIgnoreNonTestFixtureConstructorAtStartOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(expectedTestFixtureCount);
-   }
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-   @Test()
-   public shouldIgnoreNonTestFixtureConstructorAtStartOfWrapper() {
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const fileRequirer = new FileRequirer();
+    const testFixtureWrapper = {
+      firstThing: () => {},
+      secondThing: testFixtureConstructor,
+      thirdThing: testFixtureConstructor
+    };
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureWrapper = {
-         firstThing: () => {},
-         secondThing: testFixtureConstructor,
-         thirdThing: testFixtureConstructor
-      };
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+  @Test()
+  public shouldIgnoreObjectAtStartOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      const testLoader = new TestLoader(fileRequirer);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
+    const testFixtureConstructor = () => testFixtureInstance;
 
-   @Test()
-   public shouldIgnoreObjectAtStartOfWrapper() {
+    const testFixtureWrapper = {
+      firstThing: {},
+      secondThing: testFixtureConstructor,
+      thirdThing: testFixtureConstructor
+    };
 
-      const fileRequirer = new FileRequirer();
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 
-      const testFixtureWrapper = {
-         firstThing: {},
-         secondThing: testFixtureConstructor,
-         thirdThing: testFixtureConstructor
-      };
+  @Test()
+  public shouldIgnoreNonTestFixtureConstructorInMiddleOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      const testLoader = new TestLoader(fileRequirer);
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
+    const testFixtureWrapper = {
+      firstThing: testFixtureConstructor,
+      secondThing: () => {},
+      thirdThing: testFixtureConstructor
+    };
 
-   @Test()
-   public shouldIgnoreNonTestFixtureConstructorInMiddleOfWrapper() {
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      const fileRequirer = new FileRequirer();
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 
-      const testFixtureConstructor = () => testFixtureInstance;
+  @Test()
+  public shouldIgnoreObjectInMiddleOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      const testFixtureWrapper = {
-         firstThing: testFixtureConstructor,
-         secondThing: () => {},
-         thirdThing: testFixtureConstructor
-      };
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const testLoader = new TestLoader(fileRequirer);
+    const testFixtureWrapper = {
+      firstThing: testFixtureConstructor,
+      secondThing: {},
+      thirdThing: testFixtureConstructor
+    };
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-   @Test()
-   public shouldIgnoreObjectInMiddleOfWrapper() {
+    const testLoader = new TestLoader(fileRequirer);
 
-      const fileRequirer = new FileRequirer();
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+  @Test()
+  public shouldIgnoreNonTestFixtureConstructorAtEndOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      const testFixtureWrapper = {
-         firstThing: testFixtureConstructor,
-         secondThing: {},
-         thirdThing: testFixtureConstructor
-      };
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+    const testFixtureWrapper = {
+      firstThing: testFixtureConstructor,
+      secondThing: testFixtureConstructor,
+      thirdThing: () => {}
+    };
 
-      const testLoader = new TestLoader(fileRequirer);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
+    const testLoader = new TestLoader(fileRequirer);
 
-   @Test()
-   public shouldIgnoreNonTestFixtureConstructorAtEndOfWrapper() {
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 
-      const fileRequirer = new FileRequirer();
+  @Test()
+  public shouldIgnoreObjectAtEndOfWrapper() {
+    const fileRequirer = new FileRequirer();
 
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testFixtureInstance = {};
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const testFixtureWrapper = {
-         firstThing: testFixtureConstructor,
-         secondThing: testFixtureConstructor,
-         thirdThing: () => {}
-      };
+    const testFixtureWrapper = {
+      firstThing: testFixtureConstructor,
+      secondThing: testFixtureConstructor,
+      thirdThing: () => {}
+    };
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureWrapper);
 
-      const testLoader = new TestLoader(fileRequirer);
+    const testLoader = new TestLoader(fileRequirer);
 
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
-
-   @Test()
-   public shouldIgnoreObjectAtEndOfWrapper() {
-
-      const fileRequirer = new FileRequirer();
-
-      const testFixtureInstance = {};
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-      const testFixtureConstructor = () => testFixtureInstance;
-
-      const testFixtureWrapper = {
-         firstThing: testFixtureConstructor,
-         secondThing: testFixtureConstructor,
-         thirdThing: () => {}
-      };
-
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureWrapper);
-
-      const testLoader = new TestLoader(fileRequirer);
-
-      Expect(testLoader.loadTestFixture("test").length).toBe(2);
-   }
+    Expect(testLoader.loadTestFixture("test").length).toBe(2);
+  }
 }

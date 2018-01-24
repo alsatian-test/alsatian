@@ -1,26 +1,21 @@
 import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
 import { Unused } from "../unused";
+import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function Test(description?: string) {
-  return (target: object, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>) => {
+  return (
+    target: object,
+    propertyKey: string,
+    descriptor?: TypedPropertyDescriptor<any>
+  ) => {
     Unused(descriptor);
 
     // check if this has been registered as a test already
-    let tests: Array<any> = Reflect.getMetadata(TESTS, target);
+    markPropertyAsTest(propertyKey, target);
 
-    // if there are no tests registered yet then register it
-    if (!tests) {
-      tests = [ {
-         key: propertyKey
-      } ];
-    }
-    // otherwise add it to the register
-    else if (tests.filter(test => test.key === propertyKey).length === 0) {
-      tests.push( {
-         key: propertyKey
-      });
-    }
+    // get tests
+    const tests: Array<any> = Reflect.getMetadata(TESTS, target);
 
     // set the description
     tests.filter(test => test.key === propertyKey)[0].description = description;

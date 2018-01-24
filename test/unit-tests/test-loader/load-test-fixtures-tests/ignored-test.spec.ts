@@ -1,83 +1,115 @@
 import "reflect-metadata";
-import { Expect, METADATA_KEYS, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
+import {
+  Expect,
+  METADATA_KEYS,
+  SpyOn,
+  Test,
+  TestCase
+} from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 export class IgnoredTestTests {
+  @Test()
+  public singleUnignoredTest() {
+    const fileRequirer = new FileRequirer();
 
-   @Test()
-   public singleUnignoredTest() {
+    const testFixtureInstance = {
+      unignoredTest: () => {}
+    };
+    const unignoredTest = {
+      key: "unignoredTest"
+    };
+    Reflect.defineMetadata(
+      METADATA_KEYS.TESTS,
+      [unignoredTest],
+      testFixtureInstance
+    );
 
-     const fileRequirer = new FileRequirer();
+    const testFixtureConstructor = () => testFixtureInstance;
 
-     const testFixtureInstance = {
-       unignoredTest: () => {}
-     };
-     const unignoredTest = {
-       key: "unignoredTest"
-     };
-     Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-     const testFixtureConstructor = () => testFixtureInstance;
+    const testLoader = new TestLoader(fileRequirer);
 
-     const spy = SpyOn(fileRequirer, "require");
-     spy.andStub();
-     spy.andReturn(testFixtureConstructor);
+    Expect(testLoader.loadTestFixture("test")[0].tests[0].ignored).toBe(false);
+  }
 
-     const testLoader = new TestLoader(fileRequirer);
+  @Test()
+  public singleIgnoredTest() {
+    const fileRequirer = new FileRequirer();
 
-     Expect(testLoader.loadTestFixture("test")[0].tests[0].ignored).toBe(false);
-   }
+    const testFixtureInstance = {
+      ignoredTest: () => {}
+    };
+    const unignoredTest = {
+      key: "ignoredTest"
+    };
+    Reflect.defineMetadata(
+      METADATA_KEYS.TESTS,
+      [unignoredTest],
+      testFixtureInstance
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureInstance,
+      "ignoredTest"
+    );
 
-    @Test()
-    public singleIgnoredTest() {
+    const testFixtureConstructor = () => testFixtureInstance;
 
-      const fileRequirer = new FileRequirer();
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-      const testFixtureInstance = {
-        ignoredTest: () => {}
-      };
-      const unignoredTest = {
-        key: "ignoredTest"
-      };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureConstructor = () => testFixtureInstance;
+    Expect(testLoader.loadTestFixture("test")[0].tests[0].ignored).toBe(true);
+  }
 
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureConstructor);
+  @TestCase("some reason")
+  @TestCase("another reason")
+  @TestCase("last one, promise!")
+  public singleIgnoredTestWithReason(reason: string) {
+    const fileRequirer = new FileRequirer();
 
-      const testLoader = new TestLoader(fileRequirer);
+    const testFixtureInstance = {
+      ignoredTest: () => {}
+    };
+    const unignoredTest = {
+      key: "ignoredTest"
+    };
+    Reflect.defineMetadata(
+      METADATA_KEYS.TESTS,
+      [unignoredTest],
+      testFixtureInstance
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE,
+      true,
+      testFixtureInstance,
+      "ignoredTest"
+    );
+    Reflect.defineMetadata(
+      METADATA_KEYS.IGNORE_REASON,
+      reason,
+      testFixtureInstance,
+      "ignoredTest"
+    );
 
-      Expect(testLoader.loadTestFixture("test")[0].tests[0].ignored).toBe(true);
-    }
+    const testFixtureConstructor = () => testFixtureInstance;
 
-    @TestCase("some reason")
-    @TestCase("another reason")
-    @TestCase("last one, promise!")
-    public singleIgnoredTestWithReason(reason: string) {
-      const fileRequirer = new FileRequirer();
+    const spy = SpyOn(fileRequirer, "require");
+    spy.andStub();
+    spy.andReturn(testFixtureConstructor);
 
-      const testFixtureInstance = {
-        ignoredTest: () => {}
-      };
-      const unignoredTest = {
-        key: "ignoredTest"
-      };
-      Reflect.defineMetadata(METADATA_KEYS.TESTS, [ unignoredTest ], testFixtureInstance);
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureInstance, "ignoredTest");
-      Reflect.defineMetadata(METADATA_KEYS.IGNORE_REASON, reason, testFixtureInstance, "ignoredTest");
+    const testLoader = new TestLoader(fileRequirer);
 
-      const testFixtureConstructor = () => testFixtureInstance;
-
-      const spy = SpyOn(fileRequirer, "require");
-      spy.andStub();
-      spy.andReturn(testFixtureConstructor);
-
-      const testLoader = new TestLoader(fileRequirer);
-
-      Expect(testLoader.loadTestFixture("test")[0].tests[0].ignoreReason).toBe(reason);
-    }
- }
+    Expect(testLoader.loadTestFixture("test")[0].tests[0].ignoreReason).toBe(
+      reason
+    );
+  }
+}

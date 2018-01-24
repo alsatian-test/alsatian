@@ -24,12 +24,6 @@
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg" alt="Code Climate Issue Count" />
     </a>
-    <a href="https://www.bithound.io/github/alsatian-test/alsatian">
-        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/code.svg" alt="bitHound Code Rating" />
-    </a>
-    <a href="https://www.bithound.io/github/alsatian-test/alsatian/master/dependencies/npm">
-        <img src="https://www.bithound.io/github/alsatian-test/alsatian/badges/dependencies.svg" alt="bitHound Dependencies Rating" />
-    </a>
     <a href="https://snyk.io/test/github/alsatian-test/alsatian">
         <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
     </a>
