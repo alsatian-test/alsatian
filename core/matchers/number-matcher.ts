@@ -37,7 +37,11 @@ export class NumberMatcher extends Matcher<number> {
     }
   }
 
-  private _validateValues(limit: number, functionName: string, limitType: string) {
+  private _validateValues(
+    limit: number,
+    functionName: string,
+    limitType: string
+  ) {
     if (limit === null || limit === undefined) {
       throw new TypeError(
         `${functionName} ${limitType} must not be null or undefined.`

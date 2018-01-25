@@ -19,57 +19,50 @@ export class FunctionSpyMatcher {
   }
 
   public exactly(expectedCallCount: number): FunctionSpyCallCountMatcher {
-    return this._checkCallCount(
+    this._validateCallCount(expectedCallCount, "expectedCallCount");
+
+    this._throwCallCountError(
       count => count !== expectedCallCount,
       expectedCallCount,
-      "expectedCallCount",
       SpyCallCountType.Exactly,
       true
     );
+
+    return new FunctionSpyCallCountMatcher();
   }
 
   public anythingBut(unexpectedCallCount: number): FunctionSpyCallCountMatcher {
-    return this._checkCallCount(
+    this._validateCallCount(unexpectedCallCount, "unexpectedCallCount");
+
+    this._throwCallCountError(
       count => count === unexpectedCallCount,
       unexpectedCallCount,
-      "unexpectedCallCount",
       SpyCallCountType.Exactly,
       false
     );
+
+    return new FunctionSpyCallCountMatcher();
   }
 
   public greaterThan(minimumCallCount: number): FunctionSpyCallCountMatcher {
-    return this._checkCallCount(
+    this._validateCallCount(minimumCallCount, "minimumCallCount");
+
+    this._throwCallCountError(
       count => count <= minimumCallCount,
       minimumCallCount,
-      "minimumCallCount",
       SpyCallCountType.GreaterThan,
       true
     );
+
+    return new FunctionSpyCallCountMatcher();
   }
 
   public lessThan(maximumCallCount: number): FunctionSpyCallCountMatcher {
-    return this._checkCallCount(
-      count => count >= maximumCallCount,
-      maximumCallCount,
-      "maximumCallCount",
-      SpyCallCountType.LessThan,
-      true
-    );
-  }
-
-  private _checkCallCount(
-    countIsNotCorrect: (count: number) => boolean,
-    callCount: number,
-    callCountName: string,
-    callCountType: SpyCallCountType,
-    shouldMatch: boolean
-  ) {
-    this._validateCallCount(callCount, callCountName);
+    this._validateCallCount(maximumCallCount, "maximumCallCount");
 
     this._throwCallCountError(
-      countIsNotCorrect,
-      callCount,
+      count => count >= maximumCallCount,
+      maximumCallCount,
       SpyCallCountType.LessThan,
       true
     );
