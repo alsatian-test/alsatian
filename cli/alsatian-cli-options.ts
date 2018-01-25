@@ -3,10 +3,7 @@ import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 import { Unused } from "../core/unused";
-
-function removeItemByIndex(array: Array<any>, index: number) {
-  return array.filter((v, i) => i !== index);
-}
+import { removeItemByIndex } from "../core/utils/remove-item-by-index";
 
 export class AlsatianCliOptions {
   private _fileGlobs: Array<string>;
