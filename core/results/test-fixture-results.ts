@@ -2,8 +2,10 @@ import { ITestFixture } from "../_interfaces/test-fixture.i";
 import { ITest } from "../_interfaces/test.i";
 import { TestOutcome } from "./test-outcome";
 import { TestResults } from "./test-results";
+import { IResultWithOutcome } from "./result-with-outcome.i";
+import { getOverallOutcome } from "./get-overall-outcome";
 
-export class TestFixtureResults {
+export class TestFixtureResults implements IResultWithOutcome {
   private _testResults: Array<TestResults> = [];
   public get testResults() {
     return this._testResults;
@@ -16,21 +18,7 @@ export class TestFixtureResults {
   }
 
   get outcome(): TestOutcome {
-    const outcomes = this._testResults.map(testResult => testResult.outcome);
-
-    if (outcomes.indexOf(TestOutcome.Error) !== -1) {
-      return TestOutcome.Error;
-    }
-
-    if (outcomes.indexOf(TestOutcome.Fail) !== -1) {
-      return TestOutcome.Fail;
-    }
-
-    if (outcomes.indexOf(TestOutcome.Pass) !== -1) {
-      return TestOutcome.Pass;
-    }
-
-    return TestOutcome.Skip;
+    return getOverallOutcome(this._testResults);
   }
 
   public addTestResult(test: ITest): TestResults {

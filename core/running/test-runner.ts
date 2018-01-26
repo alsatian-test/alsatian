@@ -12,6 +12,7 @@ import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
+import { TestItem } from "./test-item";
 
 export class TestRunner {
   private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
@@ -64,78 +65,78 @@ export class TestRunner {
     testSetRunInfo: TestSetRunInfo,
     results: TestSetResults
   ) {
-    let currentTestFixtureResults: TestFixtureResults;
-    let currentTestResults: TestResults;
-    let errorOccurredRunningTest: Error | null;
+    const testItems = testSetRunInfo.testPlan.testItems;
+    const testFixtures = this._getTestFixtures(testItems);
 
-    for (const testItem of testSetRunInfo.testPlan.testItems) {
-      const testItemIndex = testSetRunInfo.testPlan.testItems.indexOf(testItem);
-      const previousTestItem =
-        testSetRunInfo.testPlan.testItems[testItemIndex - 1];
+    for (const testFixture of testFixtures) {
+      const testFixtureItems = testItems.filter(
+        testItem => testItem.testFixture === testFixture
+      );
 
-      // if new fixture
-      if (
-        !previousTestItem ||
-        previousTestItem.testFixture !== testItem.testFixture
-      ) {
-        if (previousTestItem) {
-          await this._teardownFixture(previousTestItem.testFixture.fixture);
-        }
+      await this._setupFixture(testFixture.fixture);
 
-        await this._setupFixture(testItem.testFixture.fixture);
+      this._outputStream.emitFixture(testFixture);
 
-        this._outputStream.emitFixture(testItem.testFixture);
-        currentTestFixtureResults = results.addTestFixtureResult(
-          testItem.testFixture
+      const testFixtureResults = results.addTestFixtureResult(testFixture);
+
+      for (const testItem of testFixtureItems) {
+        const result = await this._getTestItemResult(
+          testItem,
+          testSetRunInfo,
+          testFixtureResults
         );
-      }
 
-      // if new test
-      if (!previousTestItem || previousTestItem.test !== testItem.test) {
-        currentTestResults = currentTestFixtureResults.addTestResult(
-          testItem.test
-        );
-      }
-
-      let result: TestCaseResult;
-
-      try {
-        await testItem.run(testSetRunInfo.timeout);
-        result = currentTestResults.addTestCaseResult(
-          testItem.testCase.caseArguments
-        );
-        errorOccurredRunningTest = null;
-      } catch (error) {
-        result = currentTestResults.addTestCaseResult(
-          testItem.testCase.caseArguments,
-          error
-        );
-        errorOccurredRunningTest = error;
-      }
-
-      // emit onComplete event
-      this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-        onTestCompleteCB({
-          error: errorOccurredRunningTest,
-          outcome: result.outcome,
-          test: testItem.test,
-          testCase: testItem.testCase,
-          testFixture: testItem.testFixture,
-          testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
+        this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+          onTestCompleteCB({
+            error: result.error,
+            outcome: result.outcome,
+            test: testItem.test,
+            testCase: testItem.testCase,
+            testFixture: testItem.testFixture,
+            testId: testSetRunInfo.testPlan.testItems.indexOf(testItem) + 1
+          });
         });
-      });
 
-      this._outputStream.emitResult(testItemIndex + 1, result);
+        this._outputStream.emitResult(testItems.indexOf(testItem) + 1, result);
+      }
+
+      await this._teardownFixture(testFixture.fixture);
     }
 
-    // teardown the last test fixture
-    const lastTestItem =
-      testSetRunInfo.testPlan.testItems[
-        testSetRunInfo.testPlan.testItems.length - 1
-      ];
-    await this._teardownFixture(lastTestItem.testFixture.fixture);
-
     this._outputStream.end();
+  }
+
+  private _getTestFixtures(testItems: Array<TestItem>) {
+    return testItems
+      .map(testItem => testItem.testFixture)
+      .filter((fixture, index, array) => array.indexOf(fixture) === index);
+  }
+
+  private async _getTestItemResult(
+    testItem: TestItem,
+    testSetRunInfo: TestSetRunInfo,
+    testFixtureResults: TestFixtureResults
+  ) {
+    let error: Error;
+
+    try {
+      await testItem.run(testSetRunInfo.timeout);
+    } catch (e) {
+      error = e;
+    }
+
+    let testResults = testFixtureResults.testResults.find(
+      result => result.test === testItem.test
+    );
+
+    if (testResults === undefined) {
+      testResults = testFixtureResults.addTestResult(testItem.test);
+    }
+
+    return testResults.addTestCaseResult(
+      testItem.testCase.caseArguments,
+      error
+    );
   }
 
   private async _setupFixture(fixture: { [key: string]: () => any }) {

@@ -1,8 +1,9 @@
 import { ITest } from "../_interfaces/test.i";
 import { MatchError } from "../errors";
 import { TestOutcome } from "./test-outcome";
+import { IResultWithOutcome } from "./result-with-outcome.i";
 
-export class TestCaseResult {
+export class TestCaseResult implements IResultWithOutcome {
   private _test: ITest;
   private _arguments: Array<any>;
   private _error: Error | null;
