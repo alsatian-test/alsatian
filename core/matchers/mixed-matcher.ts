@@ -10,25 +10,23 @@ import { StringMatcher } from "./string-matcher";
 /**
  * Mixin version of all matchers to allow any function to be used at runtime
  */
-export class MixedMatcher extends Matcher<any> {
-
-}
+export class MixedMatcher extends Matcher<any> {}
 
 applyMixins(
-    MixedMatcher,
-    ContainerMatcher,
-    EmptyMatcher,
-    FunctionMatcher,
-    FunctionSpyMatcher,
-    NumberMatcher,
-    PropertyMatcher,
-    StringMatcher
+  MixedMatcher,
+  ContainerMatcher,
+  EmptyMatcher,
+  FunctionMatcher,
+  FunctionSpyMatcher,
+  NumberMatcher,
+  PropertyMatcher,
+  StringMatcher
 );
 
 function applyMixins(derivedCtor: any, ...baseCtors: Array<any>) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            derivedCtor.prototype[name] = baseCtor.prototype[name];
-        });
+  baseCtors.forEach(baseCtor => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+      derivedCtor.prototype[name] = baseCtor.prototype[name];
     });
+  });
 }

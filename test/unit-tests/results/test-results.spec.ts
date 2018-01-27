@@ -1,14 +1,16 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { EqualMatchError, ExactMatchError, MatchError } from "../../../core/errors";
+import {
+  EqualMatchError,
+  ExactMatchError,
+  MatchError
+} from "../../../core/errors";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResults } from "../../../core/results/test-results";
 import { TestBuilder } from "../../builders/test-builder";
 
 export class TestResultsTests {
-
   @Test()
   public oneTestCaseNoErrorOutcomePass() {
-
     const test = new TestBuilder().build();
 
     const testResults = new TestResults(test);
@@ -18,114 +20,111 @@ export class TestResultsTests {
     Expect(testResults.outcome).toBe(TestOutcome.Pass);
   }
 
-    @Test()
-    public oneIgnoredTestCaseNoErrorOutcomeSkip() {
+  @Test()
+  public oneIgnoredTestCaseNoErrorOutcomeSkip() {
+    const test = new TestBuilder().build();
+    test.ignored = true;
 
-      const test = new TestBuilder().build();
-      test.ignored = true;
+    const testResults = new TestResults(test);
 
-      const testResults = new TestResults(test);
+    testResults.addTestCaseResult([]);
 
-      testResults.addTestCaseResult([]);
+    Expect(testResults.outcome).toBe(TestOutcome.Skip);
+  }
 
-      Expect(testResults.outcome).toBe(TestOutcome.Skip);
-    }
+  @TestCase(TypeError)
+  @TestCase(RangeError)
+  @TestCase(EvalError)
+  public oneTestCaseErrorOutcomeError(errorType: new () => Error) {
+    const test = new TestBuilder().build();
 
-    @TestCase(TypeError)
-    @TestCase(RangeError)
-    @TestCase(EvalError)
-    public oneTestCaseErrorOutcomeError(errorType: new () => Error) {
+    const testResults = new TestResults(test);
 
-      const test = new TestBuilder().build();
+    testResults.addTestCaseResult([], new errorType());
 
-      const testResults = new TestResults(test);
+    Expect(testResults.outcome).toBe(TestOutcome.Error);
+  }
 
-      testResults.addTestCaseResult([], new errorType());
+  @TestCase(MatchError)
+  @TestCase(ExactMatchError)
+  @TestCase(EqualMatchError)
+  public oneTestCaseMatchErrorOutcomeError(errorType: new () => Error) {
+    const test = new TestBuilder().build();
 
-      Expect(testResults.outcome).toBe(TestOutcome.Error);
-    }
+    const testResults = new TestResults(test);
 
-    @TestCase(MatchError)
-    @TestCase(ExactMatchError)
-    @TestCase(EqualMatchError)
-    public oneTestCaseMatchErrorOutcomeError(errorType: new () => Error) {
+    testResults.addTestCaseResult([], new errorType());
 
-      const test = new TestBuilder().build();
+    Expect(testResults.outcome).toBe(TestOutcome.Fail);
+  }
 
-      const testResults = new TestResults(test);
+  @TestCase(MatchError)
+  @TestCase(ExactMatchError)
+  @TestCase(EqualMatchError)
+  public twoTestCasesOnePassOneMatchErrorOutcomeFail(
+    errorType: new () => Error
+  ) {
+    const test = new TestBuilder().build();
 
-      testResults.addTestCaseResult([], new errorType());
+    const testResults = new TestResults(test);
 
-      Expect(testResults.outcome).toBe(TestOutcome.Fail);
-    }
+    testResults.addTestCaseResult([]);
+    testResults.addTestCaseResult([], new errorType());
 
-    @TestCase(MatchError)
-    @TestCase(ExactMatchError)
-    @TestCase(EqualMatchError)
-    public twoTestCasesOnePassOneMatchErrorOutcomeFail(errorType: new () => Error) {
+    Expect(testResults.outcome).toBe(TestOutcome.Fail);
+  }
 
-      const test = new TestBuilder().build();
+  @TestCase(EvalError)
+  @TestCase(RangeError)
+  @TestCase(TypeError)
+  public twoTestCasesOnePassOneErrorOutcomeError(errorType: new () => Error) {
+    const test = new TestBuilder().build();
 
-      const testResults = new TestResults(test);
+    const testResults = new TestResults(test);
 
-      testResults.addTestCaseResult([]);
-      testResults.addTestCaseResult([], new errorType());
+    testResults.addTestCaseResult([]);
+    testResults.addTestCaseResult([], new errorType());
 
-      Expect(testResults.outcome).toBe(TestOutcome.Fail);
-    }
+    Expect(testResults.outcome).toBe(TestOutcome.Error);
+  }
 
-    @TestCase(EvalError)
-    @TestCase(RangeError)
-    @TestCase(TypeError)
-    public twoTestCasesOnePassOneErrorOutcomeError(errorType: new () => Error) {
+  @TestCase(EvalError, MatchError)
+  @TestCase(ExactMatchError, RangeError)
+  @TestCase(TypeError, EqualMatchError)
+  public twoTestCasesOneMatchErrorOneErrorOutcomeError(
+    errorTypeA: new () => Error,
+    errorTypeB: new () => Error
+  ) {
+    const test = new TestBuilder().build();
 
-      const test = new TestBuilder().build();
+    const testResults = new TestResults(test);
 
-      const testResults = new TestResults(test);
+    testResults.addTestCaseResult([], new errorTypeA());
+    testResults.addTestCaseResult([], new errorTypeB());
 
-      testResults.addTestCaseResult([]);
-      testResults.addTestCaseResult([], new errorType());
+    Expect(testResults.outcome).toBe(TestOutcome.Error);
+  }
 
-      Expect(testResults.outcome).toBe(TestOutcome.Error);
-    }
+  @Test()
+  public twoTestCasesNoErrorOutcomePass() {
+    const test = new TestBuilder().build();
 
-    @TestCase(EvalError, MatchError)
-    @TestCase(ExactMatchError, RangeError)
-    @TestCase(TypeError, EqualMatchError)
-    public twoTestCasesOneMatchErrorOneErrorOutcomeError(errorTypeA: new () => Error, errorTypeB: new () => Error) {
+    const testResults = new TestResults(test);
 
-      const test = new TestBuilder().build();
+    testResults.addTestCaseResult([]);
+    testResults.addTestCaseResult([]);
 
-      const testResults = new TestResults(test);
+    Expect(testResults.outcome).toBe(TestOutcome.Pass);
+  }
 
-      testResults.addTestCaseResult([], new errorTypeA());
-      testResults.addTestCaseResult([], new errorTypeB());
+  @TestCase("fixture")
+  @TestCase("awesome fixture")
+  @TestCase("super sweet fixture")
+  public testInConstructorIsAccessible(description: string) {
+    const test = new TestBuilder().withDescription(description).build();
 
-      Expect(testResults.outcome).toBe(TestOutcome.Error);
-    }
+    const testResults = new TestResults(test);
 
-    @Test()
-    public twoTestCasesNoErrorOutcomePass() {
-
-      const test = new TestBuilder().build();
-
-      const testResults = new TestResults(test);
-
-      testResults.addTestCaseResult([]);
-      testResults.addTestCaseResult([]);
-
-      Expect(testResults.outcome).toBe(TestOutcome.Pass);
-    }
-
-    @TestCase("fixture")
-    @TestCase("awesome fixture")
-    @TestCase("super sweet fixture")
-    public testInConstructorIsAccessible(description: string) {
-
-        const test = new TestBuilder().withDescription(description).build();
-
-        const testResults = new TestResults(test);
-
-        Expect(testResults.test).toBe(test);
-    }
+    Expect(testResults.test).toBe(test);
+  }
 }

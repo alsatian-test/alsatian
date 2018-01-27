@@ -1,66 +1,70 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
 import * as path from "path";
-import { AsyncTest, Expect, TestCase, Timeout } from "../../../core/alsatian-core";
+import {
+  AsyncTest,
+  Expect,
+  TestCase,
+  Timeout
+} from "../../../core/alsatian-core";
 
 export class CliIntegrationTests {
+  @TestCase("to-be")
+  @TestCase("to-throw")
+  @AsyncTest()
+  @Timeout(5000)
+  public toBeExpectations(expectationTestName: string) {
+    const result = child.exec(
+      `alsatian ` +
+        `./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
+        ` --tap`
+    );
 
-   @TestCase("to-be")
-   @TestCase("to-throw")
-   @AsyncTest()
-   @Timeout(5000)
-   public toBeExpectations(expectationTestName: string) {
+    let consoleOutput = "";
 
-      const result = child
-                    .exec(`alsatian ` +
-                          `./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
-                          ` --tap`);
+    result.stdout.on("data", (data: string) => (consoleOutput += data));
+    result.stderr.on("data", (data: string) => (consoleOutput += data));
 
-      let consoleOutput = "";
+    const expectedOutput = FileSystem.readFileSync(
+      `./test/integration-tests/expected-output/` +
+        `expectations/${expectationTestName}.txt`
+    ).toString();
 
-      result.stdout.on("data", (data: string) => consoleOutput += data);
-      result.stderr.on("data", (data: string) => consoleOutput += data);
-
-      const expectedOutput = FileSystem
-                              .readFileSync(`./test/integration-tests/expected-output/` +
-                                            `expectations/${expectationTestName}.txt`)
-                              .toString();
-
-      return new Promise<void>((resolve, reject) => {
-         result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
-            resolve();
-         });
+    return new Promise<void>((resolve, reject) => {
+      result.on("close", (code: number) => {
+        Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+        resolve();
       });
-   }
+    });
+  }
 
-   @TestCase("async-test")
-   @TestCase("setup")
-   @TestCase("teardown")
-   @TestCase("case-arguments")
-   @AsyncTest()
-   @Timeout(5000)
-   public syntaxTests(syntaxTestName: string) {
+  @TestCase("async-test")
+  @TestCase("setup")
+  @TestCase("teardown")
+  @TestCase("case-arguments")
+  @AsyncTest()
+  @Timeout(5000)
+  public syntaxTests(syntaxTestName: string) {
+    const result = child.exec(
+      `alsatian ` +
+        `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
+        `--tap`
+    );
 
-      const result = child
-                    .exec(`alsatian ` +
-                          `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
-                          `--tap`);
+    let consoleOutput = "";
 
-      let consoleOutput = "";
+    result.stdout.on("data", (data: string) => (consoleOutput += data));
+    result.stderr.on("data", (data: string) => (consoleOutput += data));
 
-      result.stdout.on("data", (data: string) => consoleOutput += data);
-      result.stderr.on("data", (data: string) => consoleOutput += data);
+    const expectedOutput = FileSystem.readFileSync(
+      `./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`
+    ).toString();
 
-      const expectedOutput = FileSystem
-                            .readFileSync(`./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`)
-                            .toString();
-
-      return new Promise<void>((resolve, reject) => {
-         result.on("close", (code: number) => {
-            Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
-            resolve();
-         });
+    return new Promise<void>((resolve, reject) => {
+      result.on("close", (code: number) => {
+        Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+        resolve();
       });
-   }
+    });
+  }
 }

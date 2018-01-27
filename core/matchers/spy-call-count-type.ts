@@ -1,5 +1,5 @@
 export enum SpyCallCountType {
-   Exactly,
-   GreaterThan,
-   LessThan
+  Exactly,
+  GreaterThan,
+  LessThan
 }

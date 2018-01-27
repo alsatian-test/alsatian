@@ -6,10 +6,10 @@ import { TestOutputStream } from "./test-output-stream";
 import { TestSet } from "./test-set";
 
 export {
-    FileRequirer,
-    GlobHelper,
-    TestFixture,
-    TestLoader,
-    TestOutputStream,
-    TestSet
+  FileRequirer,
+  GlobHelper,
+  TestFixture,
+  TestLoader,
+  TestOutputStream,
+  TestSet
 };

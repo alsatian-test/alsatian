@@ -9,13 +9,13 @@ import { SpyOnProperty } from "./spy-on-property";
 import { TypeMatcher } from "./type-matcher";
 
 export {
-   Any,
-   createFunctionSpy,
-   FunctionSpy,
-   RestorableFunctionSpy,
-   PropertySpy,
-   SpyCall,
-   SpyOn,
-   SpyOnProperty,
-   TypeMatcher
+  Any,
+  createFunctionSpy,
+  FunctionSpy,
+  RestorableFunctionSpy,
+  PropertySpy,
+  SpyCall,
+  SpyOn,
+  SpyOnProperty,
+  TypeMatcher
 };

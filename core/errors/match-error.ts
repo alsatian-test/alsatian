@@ -1,7 +1,6 @@
 import ExtendoError from "extendo-error";
 
 export class MatchError extends ExtendoError {
-
   protected _actual: any;
   public get actual(): any {
     return this._actual;
