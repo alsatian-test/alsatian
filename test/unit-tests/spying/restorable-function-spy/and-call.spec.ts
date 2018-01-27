@@ -2,80 +2,79 @@ import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { RestorableFunctionSpy } from "../../../../core/spying/restorable-function-spy";
 
 export class AndCallTests {
+  @Test()
+  public originalFunctionNotCalledIfSpyFaked() {
+    const object = {
+      originalFunction: () => {}
+    };
 
-   @Test()
-   public originalFunctionNotCalledIfSpyFaked() {
-      const object = {
-         originalFunction: () => {}
-      };
+    SpyOn(object, "originalFunction");
 
-      SpyOn(object, "originalFunction");
+    const originalFunction = object.originalFunction;
 
-      const originalFunction = object.originalFunction;
+    const spy = new RestorableFunctionSpy(object, "originalFunction");
 
-      const spy = new RestorableFunctionSpy(object, "originalFunction");
+    spy.andCall(() => {});
 
-      spy.andCall(() => {});
+    spy.call([]);
 
-      spy.call([]);
+    Expect(originalFunction).not.toHaveBeenCalled();
+  }
 
-      Expect(originalFunction).not.toHaveBeenCalled();
-   }
+  @TestCase(null)
+  @TestCase(undefined)
+  @TestCase(42)
+  @TestCase("something")
+  @TestCase({ an: "object" })
+  @TestCase(["an", "array"])
+  public spyShoulReturnCorrectValue(returnValue: any) {
+    const someObject = {
+      func: () => {}
+    };
 
-   @TestCase(null)
-   @TestCase(undefined)
-   @TestCase(42)
-   @TestCase("something")
-   @TestCase({ an: "object" })
-   @TestCase([ "an", "array" ])
-   public spyShoulReturnCorrectValue(returnValue: any) {
-      const someObject = {
-         func: () => {}
-      };
+    SpyOn(someObject, "func").andCall(() => {
+      return returnValue;
+    });
 
-      SpyOn(someObject, "func").andCall(() => {
-         return returnValue;
-      });
+    Expect(someObject.func()).toBe(returnValue);
+  }
 
-      Expect(someObject.func()).toBe(returnValue);
-   }
+  @Test()
+  public originalFunctionNotCalledIfSpyNotFaked() {
+    const object = {
+      originalFunction: () => {}
+    };
 
-   @Test()
-   public originalFunctionNotCalledIfSpyNotFaked() {
-      const object = {
-         originalFunction: () => {}
-      };
+    SpyOn(object, "originalFunction");
 
-      SpyOn(object, "originalFunction");
+    const originalFunction = object.originalFunction;
 
-      const originalFunction = object.originalFunction;
+    const spy = new RestorableFunctionSpy(object, "originalFunction");
 
-      const spy = new RestorableFunctionSpy(object, "originalFunction");
+    spy.call([]);
 
-      spy.call([]);
+    Expect(originalFunction).toHaveBeenCalled();
+  }
 
-      Expect(originalFunction).toHaveBeenCalled();
-   }
+  @TestCase(() => {})
+  @TestCase(() => 1 + 1)
+  public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
+    const object = {
+      originalFunction: () => {}
+    };
 
-   @TestCase(() => {})
-   @TestCase(() => 1 + 1)
-   public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
-      const object = {
-         originalFunction: () => {}
-      };
+    const fake = {
+      function: fakeFunction
+    };
 
-      const fake = {
-         function: fakeFunction
-      };
+    SpyOn(fake, "function");
 
-      SpyOn(fake, "function");
+    const originalFunction = object.originalFunction;
 
-      const originalFunction = object.originalFunction;
+    const spy = new RestorableFunctionSpy(object, "originalFunction");
 
-      const spy = new RestorableFunctionSpy(object, "originalFunction");
+    spy.call([]);
 
-      spy.call([]);
-
-      Expect(fake.function).not.toHaveBeenCalled();
-   }
+    Expect(fake.function).not.toHaveBeenCalled();
+  }
 }

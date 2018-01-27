@@ -4,14 +4,15 @@ import { TestFixture } from "../../core/test-fixture";
 import { TestBuilder } from "./test-builder";
 
 export class TestFixtureBuilder {
-
   private _testFixture: ITestFixture;
 
   public constructor() {
     this._testFixture = new TestFixture("Unnamed Test Fixture");
   }
 
-  public withFixture(fixture: { [id: string]: (...args: Array<any>) => any }): TestFixtureBuilder {
+  public withFixture(fixture: {
+    [id: string]: (...args: Array<any>) => any;
+  }): TestFixtureBuilder {
     this._testFixture.fixture = fixture;
     return this;
   }
@@ -19,13 +20,12 @@ export class TestFixtureBuilder {
   public addTest(test: ITest): TestFixtureBuilder {
     this._testFixture.tests.push(test);
     if (this._testFixture.fixture[test.key] === undefined) {
-        this._testFixture.fixture[test.key] = () => {};
+      this._testFixture.fixture[test.key] = () => {};
     }
     return this;
   }
 
   public withTests(tests: Array<ITest>): TestFixtureBuilder {
-
     tests.forEach(test => {
       this._testFixture.addTest(test);
       this._testFixture.fixture[test.key] = () => {};
@@ -45,8 +45,8 @@ export class TestFixtureBuilder {
   }
 
   public withDescription(description: string): TestFixtureBuilder {
-      this._testFixture.description = description;
-      return this;
+    this._testFixture.description = description;
+    return this;
   }
 
   public build(): ITestFixture {
