@@ -1,5 +1,6 @@
 import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
 import { EqualMatchError } from "../../../core/errors/equal-match-error";
+import { stringify } from "../../../core/stringification";
 
 export class ToEqualTests {
   @TestCase(undefined)
@@ -63,9 +64,9 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).toThrowError(
       EqualMatchError,
       "Expected " +
-        JSON.stringify(actual) +
+        stringify(actual) +
         " to be equal to " +
-        JSON.stringify(expected) +
+        stringify(expected) +
         "."
     );
   }
@@ -133,8 +134,46 @@ export class ToEqualTests {
 
     Expect(() => expect.toEqual(expected)).toThrowError(
       EqualMatchError,
-      `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
-        `to be equal to ${JSON.stringify(expected).replace(/,/g, ", ")}.`
+      `Expected ${stringify(actual)} ` +
+        `to be equal to ${stringify(expected)}.`
+    );
+  }
+
+  @TestCase({}, { with: "something" })
+  @TestCase({ with: "something" }, {})
+  @TestCase([], [1, 2, 3])
+  @TestCase([1, 2, 3], [])
+  public differentComplexValuesDoNotThrowIfNotEqualRequested(
+    expected: any,
+    actual: any
+  ) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.not.toEqual(expected)).not.toThrow();
+  }
+
+  @TestCase({}, {})
+  @TestCase({ with: "something" }, { with: "something" })
+  @TestCase(
+    { with: { something: "more" }, complex: "!", foSho: true, answer: 42 },
+    { with: { something: "more" }, complex: "!", foSho: true, answer: 42 }
+  )
+  @TestCase([], [])
+  @TestCase([1, 2, 3], [1, 2, 3])
+  @TestCase(
+    [{ with: "something" }, { and: "something", else: "!" }],
+    [{ with: "something" }, { and: "something", else: "!" }]
+  )
+  public matchingComplexTypesThrowsExactMatchErrorWithCorrectMessage(
+    expected: any,
+    actual: any
+  ) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.not.toEqual(expected)).toThrowError(
+      EqualMatchError,
+      `Expected ${stringify(actual)} ` +
+        `not to be equal to ${stringify(expected)}.`
     );
   }
 
