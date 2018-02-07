@@ -46,24 +46,28 @@ export class Matcher<T> {
    * @param expectedValue - the value that will be used to match
    */
   public toEqual(expectedValue: any) {
-    const valueMatch =
-      expectedValue instanceof TypeMatcher
-        ? expectedValue.test(this._actualValue)
-        : // exclude the double equals in this case from review as this is what we want to do
-          expectedValue == this._actualValue; // tslint:disable-line:triple-equals
+    let valueMatch: boolean;
+
+    if (expectedValue instanceof TypeMatcher) {
+      valueMatch = expectedValue.test(this._actualValue);
+    } else if (expectedValue instanceof Object) {
+      valueMatch = this._checkObjectsAreDeepEqual(
+        expectedValue,
+        this._actualValue
+      );
+    } else {
+      // exclude the double equals in this case from review
+      // as this is what we want to do
+      // tslint:disable-next-line:triple-equals
+      valueMatch = expectedValue == this._actualValue;
+    }
 
     if (valueMatch !== this.shouldMatch) {
-      if (
-        typeof expectedValue !== "object" ||
-        this._checkObjectsAreDeepEqual(expectedValue, this._actualValue) !==
-          this.shouldMatch
-      ) {
-        throw new EqualMatchError(
-          this._actualValue,
-          expectedValue,
-          this.shouldMatch
-        );
-      }
+      throw new EqualMatchError(
+        this._actualValue,
+        expectedValue,
+        this.shouldMatch
+      );
     }
   }
 
