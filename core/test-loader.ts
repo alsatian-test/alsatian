@@ -2,9 +2,21 @@ import { FileRequirer, TestFixture } from "./";
 import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
 
+/**
+ * Class responsible to load a test file with fixtures and make TestFixtures instances.
+ */
 export class TestLoader {
+  /**
+   * Creates a new TestLoader class
+   * @param _fileRequirer A helper FileRequirer instance
+   */
   public constructor(private _fileRequirer: FileRequirer) {}
 
+  /**
+   * Loads a test file that contains one or more fixtures
+   * @param filePath The file path of the file to load the Fixture from
+   * @returns An array of the loaded fixtures
+   */
   public loadTestFixture(filePath: string): Array<ITestFixture> {
     let testFixtureModule: any;
 
@@ -40,6 +52,12 @@ export class TestLoader {
     return testFixtures;
   }
 
+  /**
+   * Factory method to load a Fixture from a constructor function.
+   * @param testFixtureConstructor The constructor function of the fixture
+   * @param defaultFixtureDescription The description of the fixture
+   * @returns The fixture loaded, or null if no tests are found inside the fixture
+   */
   private _loadTestFixture(
     testFixtureConstructor: any,
     defaultFixtureDescription: string
