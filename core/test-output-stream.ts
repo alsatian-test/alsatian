@@ -4,25 +4,59 @@ import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 import { stringify } from "./stringification";
 
+/**
+ * Class used by alsatian to emit a valid TAP stream to process.stdout
+ * @see https://testanything.org/tap-specification.html
+ * @export
+ * @class TestOutputStream
+ * @extends {ReadableStream}
+ */
 export class TestOutputStream extends ReadableStream {
+  /**
+   * Not used
+   * @memberof TestOutputStream
+   */
   public _read() {} // tslint:disable-line:no-empty
 
+  /**
+   * Emit the corresponding signal to the stream to end the stream
+   * @memberof TestOutputStream
+   */
   public end() {
     this.push(null);
   }
 
+  /**
+   * Emits the TAP version
+   * @see https://testanything.org/tap-specification.html
+   * @memberof TestOutputStream
+   */
   public emitVersion(): void {
     this._writeOut("TAP version 13\n");
   }
 
+  /**
+   * Emits the current test plan. That is, the number of test that will run.
+   * @see https://testanything.org/tap-specification.html
+   * @param testCount
+   */
   public emitPlan(testCount: number): void {
     this._writeOut(`1..${testCount}\n`);
   }
 
+  /**
+   *
+   * @param fixture
+   */
   public emitFixture(fixture: ITestFixture): void {
     this._writeOut(`# FIXTURE ${fixture.description}\n`);
   }
 
+  /**
+   * Emits the result of a specific test
+   * @param testId The id of the test
+   * @param result The result of the test
+   */
   public emitResult(testId: number, result: TestCaseResult): void {
     const outcome = result.outcome;
     const test = result.test;
@@ -39,10 +73,25 @@ export class TestOutputStream extends ReadableStream {
     }
   }
 
+  /**
+   * Writes a string to the console
+   * @private
+   * @param {string} message
+   * @memberof TestOutputStream
+   */
   private _writeOut(message: string): void {
     this.push(message);
   }
 
+  /**
+   * Emits a passing test
+   *
+   * @private
+   * @param {number} testId The id of the test
+   * @param {ITest} test The test
+   * @param {Array<any>} testCaseArguments The argument of the test case
+   * @memberof TestOutputStream
+   */
   private _emitPass(
     testId: number,
     test: ITest,
@@ -53,6 +102,15 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`ok ${testId} ${description}\n`);
   }
 
+  /**
+   * Emits a skipped test
+   *
+   * @private
+   * @param {number} testId The test id
+   * @param {ITest} test The test
+   * @param {Array<any>} testCaseArguments The test case arguments
+   * @memberof TestOutputStream
+   */
   private _emitSkip(
     testId: number,
     test: ITest,
@@ -70,6 +128,16 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
   }
 
+  /**
+   * Emits a failing test
+   *
+   * @private
+   * @param {number} testId The test id
+   * @param {ITest} test The test
+   * @param {Array<any>} testCaseArguments The test case arguments
+   * @param {(Error | null)} error The Error object (if exits) that thrown the test
+   * @memberof TestOutputStream
+   */
   private _emitFail(
     testId: number,
     test: ITest,
@@ -88,6 +156,14 @@ export class TestOutputStream extends ReadableStream {
     }
   }
 
+  /**
+   * Generates a test description string
+   * @private
+   * @param {ITest} test The test
+   * @param {Array<any>} testCaseArguments The test case argument
+   * @returns {string} The generated test description
+   * @memberof TestOutputStream
+   */
   private _getTestDescription(
     test: ITest,
     testCaseArguments: Array<any>
@@ -101,6 +177,13 @@ export class TestOutputStream extends ReadableStream {
     return `${test.description} ( ${formattedArguments} )`;
   }
 
+  /**
+   * Emits the error output in TAP format
+   *
+   * @private
+   * @param {MatchError} error The error
+   * @memberof TestOutputStream
+   */
   private _writeMatchErrorOutput(error: MatchError): void {
     const sanitisedMessage = error.message
       .replace(/\\/g, "\\\\")
@@ -111,6 +194,13 @@ export class TestOutputStream extends ReadableStream {
     this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
   }
 
+  /**
+   * Emits an unhandled error message
+   *
+   * @private
+   * @param {(Error | null)} error The unhandled error (if exists)
+   * @memberof TestOutputStream
+   */
   private _writeUnhandledErrorOutput(error: Error | null): void {
     this._writeFailure(
       "The test threw an unhandled error.",
@@ -120,6 +210,16 @@ export class TestOutputStream extends ReadableStream {
     );
   }
 
+  /**
+   * Writes a failure message in TAP format
+   *
+   * @private
+   * @param {string} message The message
+   * @param {string} actual The actual received value
+   * @param {string} expected The expected value
+   * @param {string} [stack] The optional stack trace string
+   * @memberof TestOutputStream
+   */
   private _writeFailure(
     message: string,
     actual: string,

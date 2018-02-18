@@ -6,7 +6,8 @@
     "configurations": [
         {
             "name": "Debug Gulp",
-            "type": "node2",
+            "type": "node",
+            "protocol": "inspector",
             "request": "launch",
             "program": "${workspaceRoot}\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
@@ -16,7 +17,8 @@
         },
         {
             "name": "Debug Unit Tests",
-            "type": "node2",
+            "type": "node",
+            "protocol": "inspector",
             "request": "launch",
             "program": "${workspaceRoot}\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
@@ -26,7 +28,8 @@
         },
         {
             "name": "Launch Program",
-            "type": "node2",
+            "type": "node",
+            "protocol": "inspector",
             "request": "launch",
             "program": "${workspaceRoot}\\core\\alsatian-core.js",
             "cwd": "${workspaceRoot}",
@@ -35,7 +38,8 @@
         },
         {
             "name": "Attach to Process",
-            "type": "node2",
+            "type": "node",
+            "protocol": "inspector",
             "request": "attach",
             "port": 9229,
             "outFiles": [],

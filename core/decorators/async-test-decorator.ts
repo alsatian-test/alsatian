@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
-import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function AsyncTest(description?: string) {
@@ -9,8 +8,6 @@ export function AsyncTest(description?: string) {
     propertyKey: string,
     descriptor?: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>
   ) => {
-    Unused(descriptor);
-
     // check if this has been registered as a test already
     markPropertyAsTest(propertyKey, target);
 
