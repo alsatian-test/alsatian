@@ -1,4 +1,15 @@
 {
-    "typescript.check.workspaceVersion": false,
-    "tslint.exclude": "**/test/**/*"
+    "tslint.exclude": "**/test/**/*",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.d.ts": true,
+        "**/*.js": true,
+        "**/*.js.map": true,
+        ".nyc_output": true,
+        "coverage": true,
+    }
 }
