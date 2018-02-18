@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { TEST_CASES } from "./_metadata-keys";
-import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function TestCase(...testCaseArguments: Array<any>) {
@@ -9,8 +8,6 @@ export function TestCase(...testCaseArguments: Array<any>) {
     propertyKey: string,
     descriptor?: TypedPropertyDescriptor<any>
   ) => {
-    Unused(descriptor);
-
     markPropertyAsTest(propertyKey, target);
 
     // check if there are test cases already associated with this test

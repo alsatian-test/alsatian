@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { TEST_CASES } from "./_metadata-keys";
-import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
 
 function GetTestCases(
@@ -39,8 +38,6 @@ export function TestCases(
     propertyKey: string,
     descriptor?: TypedPropertyDescriptor<any>
   ) => {
-    Unused(descriptor);
-
     markPropertyAsTest(propertyKey, target);
 
     const testCases = GetTestCases(caseArguments).reduce((acc, val) => {
