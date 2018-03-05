@@ -6,9 +6,17 @@ import {
 } from "../../../../core/alsatian-core";
 import { EqualMatchError } from "../../../../core/errors/equal-match-error";
 
-// TO DO:
-// 1. Dictionary matchers should reflect level of nesting in error message.
-// 2. Make sure negations work - e.g., .not.to.throw().with.properties();
+/** TO DO:
+ * 1. Dictionary matchers should reflect level of nesting in error message.
+ * 2. Make sure negations work - e.g., .not.to.throw().with.properties();
+ * 3. Add fluent integration tests ^^^
+ * 4. Use Mix-ins/multiple inheritance strategy
+ *    1. Remove with.and and with.not
+ *    2.
+ * 5. In order for fluency to reach its full potential, we need to track state throughout a "sentence"
+ *    and lazily evaluate the result. E.g., Expect(val).to.equal(52).or.to.equal(51);
+ * 6. Documentation.
+ */
 
 /* class Rectangle {
   public width: number = 0;

@@ -1,12 +1,9 @@
 import { MatchError } from "../../alsatian-core";
 import { FluentMatcherBase } from "./fluent-matcher-base";
-import { IFluentBooleanMatcher } from "./fluent-boolean-matcher.i";
-import { FluentEntityMatcherNext } from "./fluent-entity-matcher-next";
+import { NextFluentMatcherCore } from ".";
 
 /** Affords type safety when creating property lambdas. */
-export type FluentMatcherNext =
-  | FluentPropertiesMatcherNext<any, any>
-  | FluentEntityMatcherNext<any, any>;
+export type FluentMatcherNext = NextFluentMatcherCore<any, any>;
 
 /** Lambda type for asserting property values. */
 export type PropertyLambda<TProp> = (
@@ -37,7 +34,7 @@ export type SubsetPropertyAssertsDict<T> = {
 export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
   T,
   TParent
-> implements IFluentBooleanMatcher<FluentPropertiesMatcher<T, TParent>> {
+> {
   constructor(
     protected actualValue: any,
     protected parent: TParent,
@@ -46,9 +43,13 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     super(actualValue, parent, invert);
   }
 
+  /**
+   * Ensures the expected object contains the provided subset of property definitions. See https://git.io/vAH9p
+   * @param subsetDict A subset of the original object's properties, with values replaced with assertions.
+   */
   public properties(
     subsetDict: SubsetPropertyAssertsDict<T>
-  ): FluentPropertiesMatcherNext<T, TParent> {
+  ): NextFluentMatcherCore<T, TParent> {
     if (typeof this.actualValue === "undefined" || this.actualValue === null) {
       throw new MatchError("should be defined.");
     }
@@ -73,28 +74,28 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       }
     }
 
-    return new FluentPropertiesMatcherNext(
-      this.actualValue,
-      this.parent,
-      false
-    );
+    return new NextFluentMatcherCore(this.actualValue, this.parent, false);
   }
 
   /**
    * Like properties(...) but ensures compile-time errors when properties are missing from the expected
    * value definition. This helps you remember to update your tests when adding properties to your types,
-   * in the future.
+   * in the future. See https://git.io/vAHHs
    * @param dict A dictionary with all properties of T.
    */
   public allProperties(
     dict: AllPropertyAssertsDict<T>
-  ): FluentPropertiesMatcherNext<T, TParent> {
+  ): NextFluentMatcherCore<T, TParent> {
     return this.properties(dict);
   }
 
+  /**
+   * Checks for the existence of keys on the expected object, without regard for values.
+   * @param expectedKeys An array of keys to existence-check.
+   */
   public keys<K extends keyof T>(
     expectedKeys: Array<K>
-  ): FluentPropertiesMatcherNext<T, TParent> {
+  ): NextFluentMatcherCore<T, TParent> {
     if (!this.actualValue) {
       throw new MatchError("should be defined.");
     }
@@ -107,16 +108,14 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       );
     }
 
-    return new FluentPropertiesMatcherNext(
-      this.actualValue,
-      this.parent,
-      false
-    );
+    return new NextFluentMatcherCore(this.actualValue, this.parent, false);
   }
 
-  public elements(
-    expected: Array<any>
-  ): FluentPropertiesMatcherNext<T, TParent> {
+  /**
+   * Checks an array for the given values.
+   * @param expected The values to existence-check within the expected array.
+   */
+  public elements(expected: Array<any>): NextFluentMatcherCore<T, TParent> {
     if (!(this.actualValue instanceof Array)) {
       throw new MatchError("not an array type", expected, this.actualValue);
     }
@@ -125,7 +124,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       throw new MatchError("does not contain all", expected, this.actualValue);
     }
 
-    return new FluentPropertiesMatcherNext(
+    return new NextFluentMatcherCore(
       this.actualValue as any,
       this.parent,
       false
@@ -155,18 +154,6 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
   ): FluentPropertiesMatcherNext<T, TParent> {
     return new FluentPropertiesMatcherNext(this.actualValue, this.parent);
   } */
-
-  public get and(): FluentPropertiesMatcher<T, TParent> {
-    return this;
-  }
-
-  public get not(): FluentPropertiesMatcher<T, TParent> {
-    return new FluentPropertiesMatcher(
-      this.actualValue,
-      this.parent,
-      !this.invert
-    );
-  }
 
   protected assertProperty<TKey extends keyof T>(
     key: TKey,
@@ -209,19 +196,5 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
         actual
       );
     }
-  }
-}
-
-/** Fluent API type indicating a completed assertion segment (awaiting next). Facilitates API-specific type safety. */
-export class FluentPropertiesMatcherNext<
-  T,
-  TParent
-> extends FluentPropertiesMatcher<T, TParent> {
-  constructor(
-    protected actualValue: T,
-    protected parent: TParent,
-    protected invert: boolean
-  ) {
-    super(actualValue, parent, invert); /* istanbul ignore next */
   }
 }

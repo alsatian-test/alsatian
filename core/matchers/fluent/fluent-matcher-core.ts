@@ -25,7 +25,34 @@ export class FluentMatcherCore<T, TParent> extends FluentMatcherBase<
     );
   }
 
+  /**
+   * Negates the next (and only the next) assertion operator.
+   */
   public get not(): FluentMatcherCore<T, TParent> {
     return new FluentMatcherCore(this.actualValue, this.parent, !this.invert);
+  }
+}
+
+export class NextFluentMatcherCore<T, TParent> extends FluentMatcherCore<
+  T,
+  TParent
+> {
+  constructor(
+    protected actualValue: T,
+    protected parent: TParent,
+    protected invert: boolean
+  ) {
+    super(actualValue, parent); /* istanbul ignore next */
+  }
+
+  /**
+   * Conjunction operator that's currently superfluous, but available for clarity.
+   */
+  public get and(): NextFluentMatcherCore<T, TParent> {
+    return new NextFluentMatcherCore(
+      this.actualValue,
+      this.parent,
+      this.invert
+    );
   }
 }

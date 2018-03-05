@@ -5,22 +5,18 @@ import {
   Any
 } from "../../../../core/alsatian-core";
 
-class MyError extends Error {}
-
 export class AndTests {
   @Test()
-  public FluentEntityMatcherAndReturnsSelf() {
+  public FluentEntityMatcher_dotAnd_ReturnsNewNextWithRightValues() {
     const expect = Expect(123).not.to.equal(54);
     const and = expect.and;
-    and.equal(123);
-    Expect(and).to.equal(expect);
+    and.to.equal(123); // finish
   }
 
   @Test()
-  public FluentPropertiesMatcherAndReturnsSelf() {
+  public FluentPropertiesMatcher_dotAnd_ReturnsNewNextWithRightValues() {
     const expect = Expect({ hi: "there" }).not.with.properties({ hi: "you" });
     const and = expect.and;
-    and.keys(["hi"]);
-    Expect(and).to.equal(expect);
+    and.with.keys(["hi"]);
   }
 }

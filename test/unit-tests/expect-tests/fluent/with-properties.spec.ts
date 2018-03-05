@@ -120,14 +120,8 @@ export class WithPropertiesTests {
     expectedRegexp: RegExp
   ) {
     const expect = Expect(object);
-    Expect(() => expect.with.not.properties(notExpected))
+    Expect(() => expect.not.with.properties(notExpected))
       .to.throw(MatchError)
       .with.properties({ message: expectedRegexp });
-  }
-
-  @Test()
-  public andReturnsCurrentObject() {
-    const expectWith = Expect({}).with;
-    Expect(expectWith).to.equal(expectWith.and);
   }
 }
