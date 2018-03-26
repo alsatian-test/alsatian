@@ -1,4 +1,4 @@
-import { SubsetPropertyAssertsDict, AllPropertyAssertsDict } from "./fluent-properties-matcher-base";
+import { SubsetPropertyAssertsDict, AllPropertyAssertsDict } from "./fluent-properties-matcher";
 import { FluentMatcherCore } from "./fluent-matcher-core";
 import { IFluentMatcherCore } from "./i-fluent-matcher-core";
 
