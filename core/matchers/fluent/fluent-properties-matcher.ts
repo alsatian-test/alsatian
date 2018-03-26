@@ -1,9 +1,10 @@
 import { MatchError } from "../../alsatian-core";
 import { FluentMatcherBase } from "./fluent-matcher-base";
-import { NextFluentMatcherCore } from ".";
+import { FluentMatcherCore } from "./fluent-matcher-core";
+import { FluentEntityMatcher } from "./fluent-entity-matcher";
 
 /** Affords type safety when creating property lambdas. */
-export type FluentMatcherNext = NextFluentMatcherCore<any, any>;
+export type FluentMatcherNext = FluentMatcherCore<any, any>;
 
 /** Lambda type for asserting property values. */
 export type PropertyLambda<TProp> = (
@@ -49,32 +50,9 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
    */
   public properties(
     subsetDict: SubsetPropertyAssertsDict<T>
-  ): NextFluentMatcherCore<T, TParent> {
-    if (typeof this.actualValue === "undefined" || this.actualValue === null) {
-      throw new MatchError("should be defined.");
-    }
-
-    const keys = Object.keys(subsetDict);
-    /*tslint:disable:forin*/
-    for (const i in keys) {
-      /*tslint:enable:forin*/
-      const k: keyof T = keys[i] as any;
-      const expected = subsetDict[k];
-      const actual = this.actualValue[k];
-      if (typeof expected === "function") {
-        this.assertProperty(k, expected as PropertyLambda<T[any]>, actual);
-      } else if (expected instanceof RegExp) {
-        this.assertRegExp(k, expected, actual);
-      } else if (this.checkInvert(expected !== actual)) {
-        throw new MatchError(
-          `property ${k} should${this.negation}have matching value`,
-          expected,
-          actual
-        );
-      }
-    }
-
-    return new NextFluentMatcherCore(this.actualValue, this.parent, false);
+  ): FluentMatcherCore<T, TParent> {
+    this._properties(this.actualValue, subsetDict, []);
+    return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
   /**
@@ -85,8 +63,9 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
    */
   public allProperties(
     dict: AllPropertyAssertsDict<T>
-  ): NextFluentMatcherCore<T, TParent> {
-    return this.properties(dict);
+  ): FluentMatcherCore<T, TParent> {
+    this._properties(this.actualValue, dict, []);
+    return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
   /**
@@ -95,7 +74,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
    */
   public keys<K extends keyof T>(
     expectedKeys: Array<K>
-  ): NextFluentMatcherCore<T, TParent> {
+  ): FluentMatcherCore<T, TParent> {
     if (!this.actualValue) {
       throw new MatchError("should be defined.");
     }
@@ -108,14 +87,14 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       );
     }
 
-    return new NextFluentMatcherCore(this.actualValue, this.parent, false);
+    return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
   /**
    * Checks an array for the given values.
    * @param expected The values to existence-check within the expected array.
    */
-  public elements(expected: Array<any>): NextFluentMatcherCore<T, TParent> {
+  public elements(expected: Array<any>): FluentMatcherCore<T, TParent> {
     if (!(this.actualValue instanceof Array)) {
       throw new MatchError("not an array type", expected, this.actualValue);
     }
@@ -124,7 +103,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       throw new MatchError("does not contain all", expected, this.actualValue);
     }
 
-    return new NextFluentMatcherCore(
+    return new FluentMatcherCore(
       this.actualValue as any,
       this.parent,
       false
@@ -155,15 +134,55 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     return new FluentPropertiesMatcherNext(this.actualValue, this.parent);
   } */
 
+  protected _properties(actualObject: any, expectedObject: any, path: string[]): void {
+    if (typeof actualObject === "undefined" || actualObject === null) {
+      if (path.length > 0) {
+        throw new MatchError(`property '${path[path.length - 1]}' should be defined at path '${this.formatKeyPath(path)}'`);
+      } else {
+        throw new MatchError("should be defined.");
+      }
+    }
+
+    const keys = Object.keys(expectedObject);
+    /*tslint:disable:forin*/
+    for (const i in keys) {
+      /*tslint:enable:forin*/
+      const k: keyof T = keys[i] as any;
+      var curPath = path.slice(0);
+      curPath.push(k);
+      const expected = expectedObject[k];
+      const actual = actualObject[k];
+      if (typeof expected === "function") {
+        this.assertProperty(k, expected as PropertyLambda<T[any]>, actual, curPath);
+      } else if (expected instanceof RegExp) {
+        this.assertRegExp(k, expected, actual, curPath);
+      } else if (typeof expected === "object" && Object.keys(<any>expected).length) {
+        this._properties(actual, expected, curPath);
+      } else if (this.checkInvert(expected !== actual)) {
+        throw new MatchError(
+          `property ${k} at path '${this.formatKeyPath(curPath)}' should${this.negation}equal`,
+          expected,
+          actual
+        );
+      }
+    }
+  }
+
+  protected formatKeyPath(path: string[]): string {
+    path.unshift("$");
+    return path.join(".");
+  }
+
   protected assertProperty<TKey extends keyof T>(
     key: TKey,
     assertion: PropertyLambda<T[TKey]>,
-    actual: T[TKey]
+    actual: T[TKey],
+    path: string[]
   ): void {
     const check = assertion(actual);
     if (typeof check === "boolean" && this.checkInvert(!check)) {
       throw new MatchError(
-        `value of dictionary property '${key}' failed lambda assertion`,
+        `value at '${key}', path '${this.formatKeyPath(path)}', failed lambda assertion`,
         this.getFnString(assertion),
         actual
       );
@@ -173,25 +192,26 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
   protected assertRegExp<TProp>(
     key: keyof T,
     regexp: RegExp,
-    actual: TProp
+    actual: TProp,
+    path: string[]
   ): void {
     if (actual instanceof RegExp) {
       if (this.checkInvert(actual.toString() !== regexp.toString())) {
         throw new MatchError(
-          `regular expressions should${this.negation}match`,
+          `regular expressions at path '${this.formatKeyPath(path)}' should${this.negation}match`,
           regexp,
           actual
         );
       }
     } else if (typeof actual !== "string") {
       throw new MatchError(
-        "expected type 'string' for regexp match",
+        `expected type 'string' for regexp match at path '${this.formatKeyPath(path)}'`,
         "string",
         typeof actual
       );
     } else if (this.checkInvert(!regexp.test(actual))) {
       throw new MatchError(
-        `regular expression should${this.negation}match`,
+        `regular expression at path '${this.formatKeyPath(path)}' should${this.negation}match`,
         regexp.toString(),
         actual
       );

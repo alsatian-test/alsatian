@@ -30,12 +30,12 @@ export class WithPropertiesTests {
   @TestCase(
     { honey: "sugar" },
     { honey: /ginger/ },
-    /regular expression should match/
+    /regular expression at path.*should match/
   )
   @TestCase(
     { 123: 653, depth: { deeper: 321 } },
     { 123: 653, depth: { deeper: "wrong" } },
-    /should have matching value/
+    /property deeper at path '\$.depth.deeper' should equal/
   )
   public propertiesDontMatchThrows(
     value: any,
@@ -73,11 +73,13 @@ export class WithPropertiesTests {
 
   @Test()
   public allPropertiesWrapsProperties() {
-    const thing = {};
-    const expect = Expect({}).with;
-    SpyOn(expect, "properties");
+    const thing = { one: "two" };
+    const actualValue = { one: "two" };
+    const expect = Expect(actualValue).with;
+    SpyOn(expect, "_properties");
     expect.allProperties(thing);
-    OriginalExpect(expect.properties).toHaveBeenCalledWith(thing);
+    //FIXME gross:
+    OriginalExpect(<()=>any>(<any>expect)["_properties"]).toHaveBeenCalledWith(actualValue, thing, Any(Array));
   }
 
   @Test()
@@ -85,7 +87,7 @@ export class WithPropertiesTests {
     const expect = Expect({ one: /123/ });
     Expect(() => expect.with.properties({ one: /321/ }))
       .to.throw(MatchError)
-      .with.properties({ message: /regular expressions should match/ });
+      .with.properties({ message: /regular expressions at path.*should match/ });
   }
 
   @Test()
@@ -107,12 +109,12 @@ export class WithPropertiesTests {
   @TestCase(
     { one: "321" },
     { one: /321/ },
-    /regular expression should not match/
+    /regular expression at path.*should not match/
   )
   @TestCase(
     { one: 321 },
     { two: 742, one: 321 },
-    /should not have matching value/
+    /should not equal/
   )
   public notWithPropertiesNegates(
     object: any,
@@ -123,5 +125,15 @@ export class WithPropertiesTests {
     Expect(() => expect.not.with.properties(notExpected))
       .to.throw(MatchError)
       .with.properties({ message: expectedRegexp });
+  }
+
+  @TestCase({ one: { two: { three: 321 } } }, { one: { two: { three: 0 }}}, /\$.one.two.three/)
+  @TestCase({ four: [0, 1, { five: 321 }] }, { four: [0, 1, { five: 0 } ] }, /\$.four.2.five/)
+  @TestCase({ one: [ ]}, { one: [ { prop: "not there" } ] }, /property '0' should be defined at path '\$.one.0'/)
+  public errorMessageRevealsNesting(object: any, expectAttempt: any, expectedPath: RegExp) {
+    const expect = Expect(object);
+    let val = Expect(() => expect.with.properties(expectAttempt))
+      .to.throw(MatchError)
+      .with.properties({ message: expectedPath });
   }
 }
