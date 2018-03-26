@@ -78,7 +78,7 @@ class Something {
 // .to.have returns result of factory as interface (rather than concrete impl)
 Expect(new Picture())
   .to.have((p: Picture) => p.rect)
-    .with.properties({ width: a => a > 3})
+    .with.properties({ width: a => a > 3});
 
 class Bob<T> {
   one<U>(lambda: (t: T) => U): U {

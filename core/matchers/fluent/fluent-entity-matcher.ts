@@ -10,7 +10,7 @@ import { IContextualFluentEntityMatcher } from "./i-contextual-fluent-entity-mat
 import { EqType } from "./eq-type";
 import { IFluentMatcherCore } from "./i-fluent-matcher-core";
 
-/** Fluent API for beginning entity (as opposed to property) assertion chains. */
+/** @inheritDoc */
 export class FluentEntityMatcher<T, TParent>
   extends FluentMatcherBase<T, TParent>
   implements IFluentEntityMatcher<T, TParent>,IContextualFluentEntityMatcher<T, TParent>
@@ -23,6 +23,7 @@ export class FluentEntityMatcher<T, TParent>
         super(actualValue, parent, invert);
     }
 
+    /** @inheritDoc */
     public equal(
         expected: T,
         eqType: EqType = EqType.strictly
@@ -40,8 +41,10 @@ export class FluentEntityMatcher<T, TParent>
                 throw new Error(`Unrecognized EqType: ${eqType}.`);
         }
     }
+    /** @inheritDoc */
     public equals = this.equal;
 
+    /** @inheritDoc */
     public strictlyEqual(expected: T): FluentMatcherCore<T, TParent> {
         if (this.checkInvert(this.actualValue !== expected)) {
             throw new MatchError(
@@ -56,8 +59,10 @@ export class FluentEntityMatcher<T, TParent>
             false
         );
     }
+    /** @inheritDoc */
     public strictlyEquals = this.strictlyEqual;
 
+    /** @inheritDoc */
     public looselyEqual(expected: T): FluentMatcherCore<T, TParent> {
         /*tslint:disable:triple-equals*/
         if (this.checkInvert(this.actualValue != expected)) {
@@ -70,11 +75,13 @@ export class FluentEntityMatcher<T, TParent>
         }
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public looselyEquals = this.looselyEqual;
 
+    /** @inheritDoc */
     public deeplyEqual(
         expected: T,
-        eqType: EqType.strictly | EqType.loosely
+        eqType: EqType.strictly | EqType.loosely = EqType.strictly
     ): FluentMatcherCore<T, TParent> {
         const equal = deepEqual(expected, this.actualValue, {
             strict: eqType === EqType.strictly
@@ -89,18 +96,24 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public deeplyEquals = this.deeplyEqual;
 
+    /** @inheritDoc */
     public deepStrictlyEqual(expected: T): FluentMatcherCore<T, TParent> {
         return this.deeplyEqual(expected, EqType.strictly);
     }
+    /** @inheritDoc */
     public deepStrictlyEquals = this.deepStrictlyEqual;
 
+    /** @inheritDoc */
     public deepLooselyEqual(expected: T): FluentMatcherCore<T, TParent> {
         return this.deeplyEqual(expected, EqType.loosely);
     }
+    /** @inheritDoc */
     public deepLooselyEquals = this.deepLooselyEqual;
 
+    /** @inheritDoc */
     public beDefined(): FluentMatcherCore<T, TParent> {
         if (this.checkInvert(typeof this.actualValue === "undefined")) {
             throw new MatchError("should be defined.");
@@ -108,8 +121,10 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public isDefined = this.beDefined;
 
+    /** @inheritDoc */
     public match(matcher: RegExp): FluentMatcherCore<string, TParent> {
         if (typeof this.actualValue !== "string") {
             throw new MatchError("actual value type was not a string");
@@ -125,12 +140,12 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public matches = this.match;
 
+    /** @inheritDoc */
     public throw(): FluentMatcherCore<Error, TParent>;
-    public throw<TError extends Error>(errorType?: {
-        new(...args: Array<any>): TError;
-    }): FluentMatcherCore<TError, TParent>;
+    /** @inheritDoc */
     public throw<TError extends Error>(errorType?: {
         new(...args: Array<any>): TError;
     }): FluentMatcherCore<TError, TParent> {
@@ -166,8 +181,10 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(actualError, this.parent, this.invert);
     }
+    /** @inheritDoc */
     public throws = this.throw;
 
+    /** @inheritDoc */
     public satisfy(
         predicate: (t: T) => boolean
     ): FluentMatcherCore<T, TParent> {
@@ -181,8 +198,10 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public satisfies = this.satisfy;
 
+    /** @inheritDoc */
     public beInstanceOf(expectedType: {
         new(): any;
     }): FluentMatcherCore<T, TParent> {
@@ -196,8 +215,10 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
+    /** @inheritDoc */
     public isInstanceOf = this.beInstanceOf;
 
+    /** @inheritDoc */
     public have<R>(selector: (t: T) => R): FluentMatcherCore<R, T> {
         if (! (selector instanceof Function)) {
             throw new Error("Provided selector was not a function.");
@@ -215,5 +236,6 @@ export class FluentEntityMatcher<T, TParent>
 
         return new FluentMatcherCore(selected, this.actualValue, this.invert);
     }
+    /** @inheritDoc */
     public has = this.have;
 }

@@ -25,6 +25,7 @@ export class FluentMatcherCore<T, TParent>
     super(actualValue, parent);
   }
 
+  /** @inheritDoc */
   public get with(): IFluentPropertiesMatcher<T, TParent> {
     return new FluentPropertiesMatcher(
       this.actualValue,
@@ -33,24 +34,22 @@ export class FluentMatcherCore<T, TParent>
     );
   }
 
+  /** @inheritDoc */
   public get to(): IFluentEntityMatcher<T, TParent> {
     return new FluentEntityMatcher(this.actualValue, this.parent, this.invert);
   }
 
+  /** @inheritDoc */
   public get that(): IContextualFluentEntityMatcher<T, TParent> {
     return new FluentEntityMatcher(this.actualValue, this.parent, this.invert);
   }
 
-  /**
-   * Negates the next (and only the next) assertion operator.
-   */
+  /** @inheritDoc */
   public get not(): FluentMatcherCore<T, TParent> {
     return new FluentMatcherCore(this.actualValue, this.parent, !this.invert);
   }
 
-  /**
-   * Conjunction operator that's currently superfluous, but available for clarity.
-   */
+  /** @inheritDoc */
   public get and(): FluentMatcherCore<T, TParent> {
     return new FluentMatcherCore(
       this.actualValue,
@@ -59,5 +58,6 @@ export class FluentMatcherCore<T, TParent>
     );
   }
 
+  /** @inheritDoc */
   public get lastContextualValue(): T { return this.actualValue; }
 }

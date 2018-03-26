@@ -29,9 +29,7 @@ export type SubsetPropertyAssertsDict<T> = {
     | SubsetPropertyAssertsDict<T[key]>
 };
 
-/**
- * Fluent API for beginning property assertions on complex types (e.g., objects or arrays).
- */
+/** @inheritDoc */
 export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
   T,
   TParent
@@ -44,10 +42,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     super(actualValue, parent, invert);
   }
 
-  /**
-   * Ensures the expected object contains the provided subset of property definitions. See https://git.io/vAH9p
-   * @param subsetDict A subset of the original object's properties, with values replaced with assertions.
-   */
+  /** @inheritDoc */
   public properties(
     subsetDict: SubsetPropertyAssertsDict<T>
   ): FluentMatcherCore<T, TParent> {
@@ -55,12 +50,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
-  /**
-   * Like properties(...) but ensures compile-time errors when properties are missing from the expected
-   * value definition. This helps you remember to update your tests when adding properties to your types,
-   * in the future. See https://git.io/vAHHs
-   * @param dict A dictionary with all properties of T.
-   */
+  /** @inheritDoc */
   public allProperties(
     dict: AllPropertyAssertsDict<T>
   ): FluentMatcherCore<T, TParent> {
@@ -68,10 +58,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
-  /**
-   * Checks for the existence of keys on the expected object, without regard for values.
-   * @param expectedKeys An array of keys to existence-check.
-   */
+  /** @inheritDoc */
   public keys<K extends keyof T>(
     expectedKeys: Array<K>
   ): FluentMatcherCore<T, TParent> {
@@ -90,10 +77,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     return new FluentMatcherCore(this.actualValue, this.parent, false);
   }
 
-  /**
-   * Checks an array for the given values.
-   * @param expected The values to existence-check within the expected array.
-   */
+  /** @inheritDoc */
   public elements(expected: Array<any>): FluentMatcherCore<T, TParent> {
     if (!(this.actualValue instanceof Array)) {
       throw new MatchError("not an array type", expected, this.actualValue);
@@ -153,7 +137,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       const expected = expectedObject[k];
       const actual = actualObject[k];
       if (typeof expected === "function") {
-        this.assertProperty(k, expected as PropertyLambda<T[any]>, actual, curPath);
+        this.assertProperty(k, expected as PropertyLambda<T[keyof T]>, actual, curPath);
       } else if (expected instanceof RegExp) {
         this.assertRegExp(k, expected, actual, curPath);
       } else if (typeof expected === "object" && Object.keys(<any>expected).length) {
