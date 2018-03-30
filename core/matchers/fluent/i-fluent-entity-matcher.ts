@@ -1,5 +1,6 @@
 import { EqType } from "./eq-type";
 import { IFluentMatcherCore } from "./i-fluent-matcher-core";
+import { IContextualFluentMatcherCore } from "./i-contextual-fluent-matcher-core";
 
 /** Fluent API for beginning entity (as opposed to property) assertion chains. */
 export interface IFluentEntityMatcher<T, TParent> {
@@ -62,7 +63,7 @@ export interface IFluentEntityMatcher<T, TParent> {
     /**
      * Validates whether the contextual value (a lambda function) throws an Error.
      */
-    throw(): IFluentMatcherCore<Error, TParent>;
+    throw(): IContextualFluentMatcherCore<Error, TParent>;
 
     /**
      * Validates whether the contextual value (a lambda function) throws an Error of the given type.
@@ -70,7 +71,7 @@ export interface IFluentEntityMatcher<T, TParent> {
      */
     throw<TError extends Error>(errorType?: {
         new(...args: Array<any>): TError;
-    }): IFluentMatcherCore<TError, TParent>;
+    }): IContextualFluentMatcherCore<TError, TParent>;
 
     /**
      * Checks whether the contextual value satisfies the given predicate function.
@@ -93,5 +94,5 @@ export interface IFluentEntityMatcher<T, TParent> {
      * the fluent context to the value of that property.
      * @param selector A property selector function.
      */
-    have<R>(selector: (t: T) => R): IFluentMatcherCore<R, T>;
+    have<R>(selector: (t: T) => R): IContextualFluentMatcherCore<R, T>;
 }

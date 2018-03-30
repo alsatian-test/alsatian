@@ -16,6 +16,16 @@ export class BeInstanceOfTests {
     Expect(() => expect.to.beDefined()).not.to.throw();
   }
 
+  @TestCase(null)
+  @TestCase("asdf")
+  @TestCase(123)
+  @TestCase({})
+  public notDefinedPasses(instance: any) {
+    const expect = Expect(instance);
+
+    Expect(() => expect.not.to.beDefined()).to.throw();
+  }
+
   @TestCase(undefined)
   public definedFails(instance: any) {
     const expect = Expect(instance);

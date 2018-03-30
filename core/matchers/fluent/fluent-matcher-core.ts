@@ -19,15 +19,15 @@ export class FluentMatcherCore<T, TParent>
 {
   constructor(
     protected actualValue: T,
-    protected parent: TParent = null,
-    protected invert: boolean = false
+    protected parent: TParent,
+    protected invert: boolean
   ) {
     super(actualValue, parent);
   }
 
   /** @inheritDoc */
   public get with(): IFluentPropertiesMatcher<T, TParent> {
-    return new FluentPropertiesMatcher(
+    return new FluentPropertiesMatcher<T, TParent>(
       this.actualValue,
       this.parent,
       this.invert
@@ -36,12 +36,12 @@ export class FluentMatcherCore<T, TParent>
 
   /** @inheritDoc */
   public get to(): IFluentEntityMatcher<T, TParent> {
-    return new FluentEntityMatcher(this.actualValue, this.parent, this.invert);
+    return new FluentEntityMatcher<T, TParent>(this.actualValue, this.parent, this.invert);
   }
 
   /** @inheritDoc */
   public get that(): IContextualFluentEntityMatcher<T, TParent> {
-    return new FluentEntityMatcher(this.actualValue, this.parent, this.invert);
+    return new FluentEntityMatcher<T, TParent>(this.actualValue, this.parent, this.invert);
   }
 
   /** @inheritDoc */

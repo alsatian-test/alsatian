@@ -9,6 +9,7 @@ import { IFluentEntityMatcher } from "./i-fluent-entity-matcher";
 import { IContextualFluentEntityMatcher } from "./i-contextual-fluent-entity-matcher";
 import { EqType } from "./eq-type";
 import { IFluentMatcherCore } from "./i-fluent-matcher-core";
+import { IContextualFluentMatcherCore } from "./i-contextual-fluent-matcher-core";
 
 /** @inheritDoc */
 export class FluentEntityMatcher<T, TParent>
@@ -116,7 +117,7 @@ export class FluentEntityMatcher<T, TParent>
     /** @inheritDoc */
     public beDefined(): FluentMatcherCore<T, TParent> {
         if (this.checkInvert(typeof this.actualValue === "undefined")) {
-            throw new MatchError("should be defined.");
+            throw new MatchError(`should${this.negation}be defined.`);
         }
 
         return new FluentMatcherCore(this.actualValue, this.parent, false);
@@ -234,7 +235,7 @@ export class FluentEntityMatcher<T, TParent>
             );
         }
 
-        return new FluentMatcherCore(selected, this.actualValue, this.invert);
+        return new FluentMatcherCore(selected, this.actualValue, false);
     }
     /** @inheritDoc */
     public has = this.have;
