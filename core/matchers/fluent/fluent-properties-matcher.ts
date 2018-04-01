@@ -2,14 +2,18 @@ import { MatchError } from "../../alsatian-core";
 import { FluentMatcherBase } from "./fluent-matcher-base";
 import { FluentMatcherCore } from "./fluent-matcher-core";
 import { FluentEntityMatcher } from "./fluent-entity-matcher";
+import { IContextualFluentEntityMatcher } from "./i-contextual-fluent-entity-matcher";
+import { IFluentEntityMatcher } from "./i-fluent-entity-matcher";
+import { IFluentPropertiesMatcher } from "./i-fluent-properties-matcher";
+import { IFluentMatcherCore } from "./i-fluent-matcher-core";
+import { IContextualFluentMatcherCore } from "./i-contextual-fluent-matcher-core";
 
 /** Affords type safety when creating property lambdas. */
-export type FluentMatcherNext = FluentMatcherCore<any, any>;
+export type FluentMatcherSafeStop = IFluentMatcherCore<any, any> | IContextualFluentMatcherCore<any, any>;
+export type PropLambdaUnderstoodReturns = boolean | void | FluentMatcherSafeStop;
 
 /** Lambda type for asserting property values. */
-export type PropertyLambda<TProp> = (
-  actual?: TProp
-) => boolean | void | FluentMatcherNext;
+export type PropertyLambda<TProp> = (actual?: TProp) => PropLambdaUnderstoodReturns;
 
 /** Dictionary type for asserting over all (strictly) values within an object. */
 export type AllPropertyAssertsDict<T> = {

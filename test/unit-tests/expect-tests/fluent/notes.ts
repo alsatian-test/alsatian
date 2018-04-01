@@ -76,9 +76,22 @@ class Something {
 }*/
 
 // .to.have returns result of factory as interface (rather than concrete impl)
-Expect(new Picture())
-  .to.have((p: Picture) => p.rect)
-    .with.properties({ width: a => a > 3});
+Expect({ someProp: 1, someOther: 2 })
+  .with.properties({
+    someProp: p => Expect(p).to.beDefined(),
+    someOther: /2/,
+  });
+/*Expect(new Picture())
+  .with.properties({
+    rect: { width: w => w > 3 }
+  })
+    .with.properties({ width: { a: 3 }});
+
+Expect([1,2])
+  .to.haveMatches(/ /)
+  .with.elements([
+    _0 => _0 == 1
+  ]);*/
 
 class Bob<T> {
   one<U>(lambda: (t: T) => U): U {

@@ -35,6 +35,15 @@ export class FluentMatcherCore<T, TParent>
   }
 
   /** @inheritDoc */
+  public get without(): IFluentPropertiesMatcher<T, TParent> {
+    return new FluentPropertiesMatcher<T, TParent>(
+      this.actualValue,
+      this.parent,
+      !this.invert
+    );
+  }
+
+  /** @inheritDoc */
   public get to(): IFluentEntityMatcher<T, TParent> {
     return new FluentEntityMatcher<T, TParent>(this.actualValue, this.parent, this.invert);
   }
@@ -47,6 +56,11 @@ export class FluentMatcherCore<T, TParent>
   /** @inheritDoc */
   public get not(): FluentMatcherCore<T, TParent> {
     return new FluentMatcherCore(this.actualValue, this.parent, !this.invert);
+  }
+
+  /** @inheritDoc */
+  public maybe(yayNay: boolean): FluentMatcherCore<T, TParent> {
+    return new FluentMatcherCore(this.actualValue, this.parent, !yayNay);
   }
 
   /** @inheritDoc */

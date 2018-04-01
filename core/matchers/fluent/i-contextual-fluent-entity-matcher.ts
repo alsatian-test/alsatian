@@ -54,19 +54,28 @@ export interface IContextualFluentEntityMatcher<T, TParent> {
     isDefined(): IContextualFluentMatcherCore<T, TParent>;
 
     /**
-     * Validates the contextual, string value with a regular expression.
+     * Validates the contextual, string value with a regular expression. Preserves context.
      * @param matcher The regular expression to validate the contextual value.
      */    
     matches(matcher: RegExp): IContextualFluentMatcherCore<string, TParent>;
 
     /**
+     * Same as matches, except that it narrows the context to the matches themselves.
+     * @param matcher The regular expression to match the contextual value.
+     */
+    hasMatches(matcher: RegExp): IContextualFluentMatcherCore<string[], TParent>
+
+    /**
      * Validates whether the contextual value (a lambda function) throws an Error.
+     * Narrows the fluent context to the error object.
      */
     throws(): IContextualFluentMatcherCore<Error, TParent>;
 
     /**
      * Validates whether the contextual value (a lambda function) throws an Error of the given type.
+     * Narrows the fluent context to the error object.
      * @param errorType The type of the Error.
+     * @returns A fluent context for the error object.
      */
     throws<TError extends Error>(errorType?: {
         new(...args: Array<any>): TError;
@@ -92,6 +101,7 @@ export interface IContextualFluentEntityMatcher<T, TParent> {
      * Checks whether the contextual value has the given property, and narrows
      * the fluent context to the value of that property.
      * @param selector A property selector function.
+     * @returns A fluent context for the selected property.
      */
     has<R>(selector: (t: T) => R): IContextualFluentMatcherCore<R, T>;
 }

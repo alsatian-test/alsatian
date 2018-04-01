@@ -127,22 +127,19 @@ export class FluentEntityMatcher<T, TParent>
 
     /** @inheritDoc */
     public match(matcher: RegExp): FluentMatcherCore<string, TParent> {
-        if (typeof this.actualValue !== "string") {
-            throw new MatchError("actual value type was not a string");
-        }
-
-        if (this.checkInvert(!matcher.test(this.actualValue))) {
-            throw new MatchError(
-                "should match",
-                matcher.toString(),
-                this.actualValue
-            );
-        }
-
+        this._match(matcher);
         return new FluentMatcherCore(this.actualValue, this.parent, false);
     }
     /** @inheritDoc */
     public matches = this.match;
+
+    /** @inheritDoc */
+    public haveMatches(matcher: RegExp): FluentMatcherCore<string[], TParent> {
+        this._match(matcher);
+        let matches = this.actualValue.match(matcher);
+        return new FluentMatcherCore(matches, this.actualValue, false);
+    }
+    public hasMatches = this.haveMatches;
 
     /** @inheritDoc */
     public throw(): FluentMatcherCore<Error, TParent>;
@@ -239,4 +236,18 @@ export class FluentEntityMatcher<T, TParent>
     }
     /** @inheritDoc */
     public has = this.have;
+
+    private _match(matcher: RegExp): void {
+        if (typeof this.actualValue !== "string") {
+            throw new MatchError("actual value type was not a string");
+        }
+
+        if (this.checkInvert(!matcher.test(this.actualValue))) {
+            throw new MatchError(
+                "should match",
+                matcher.toString(),
+                this.actualValue
+            );
+        }
+    }
 }
