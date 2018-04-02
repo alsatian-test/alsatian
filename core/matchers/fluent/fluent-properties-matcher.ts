@@ -11,11 +11,18 @@ import { PropertiesMatchError } from "../../errors/properties-match-error";
 import { NestedPropertiesMatchError } from "../../errors/nested-properties-match-error";
 
 /** Affords type safety when creating property lambdas. */
-export type FluentMatcherSafeStop = IFluentMatcherCore<any, any> | IContextualFluentMatcherCore<any, any>;
-export type PropLambdaUnderstoodReturns = boolean | void | FluentMatcherSafeStop;
+export type FluentMatcherSafeStop =
+  | IFluentMatcherCore<any, any>
+  | IContextualFluentMatcherCore<any, any>;
+export type PropLambdaUnderstoodReturns =
+  | boolean
+  | void
+  | FluentMatcherSafeStop;
 
 /** Lambda type for asserting property values. */
-export type PropertyLambda<TProp> = (actual?: TProp) => PropLambdaUnderstoodReturns;
+export type PropertyLambda<TProp> = (
+  actual?: TProp
+) => PropLambdaUnderstoodReturns;
 
 /** Dictionary type for asserting over all (strictly) values within an object. */
 export type AllPropertyAssertsDict<T> = {
@@ -93,11 +100,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
       throw new MatchError("does not contain all", expected, this.actualValue);
     }
 
-    return new FluentMatcherCore(
-      this.actualValue as any,
-      this.parent,
-      false
-    );
+    return new FluentMatcherCore(this.actualValue as any, this.parent, false);
   }
 
   /*  public allPairs<K extends keyof T>(
@@ -124,10 +127,18 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     return new FluentPropertiesMatcherNext(this.actualValue, this.parent);
   } */
 
-  protected _properties(actualObject: any, expectedObject: any, path: string[]): void {
+  protected _properties(
+    actualObject: any,
+    expectedObject: any,
+    path: Array<string>
+  ): void {
     if (typeof actualObject === "undefined" || actualObject === null) {
       if (path.length > 0) {
-        throw new MatchError(`property '${path[path.length - 1]}' should be defined at path '${this.formatKeyPath(path)}'`);
+        throw new MatchError(
+          `property '${
+            path[path.length - 1]
+          }' should be defined at path '${this.formatKeyPath(path)}'`
+        );
       } else {
         throw new MatchError("should be defined.");
       }
@@ -138,19 +149,29 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     for (const i in keys) {
       /*tslint:enable:forin*/
       const k: keyof T = keys[i] as any;
-      var curPath = path.slice(0);
+      const curPath = path.slice(0);
       curPath.push(k);
       const expected = expectedObject[k];
       const actual = actualObject[k];
       if (typeof expected === "function") {
-        this.assertProperty(k, expected as PropertyLambda<T[keyof T]>, actual, curPath);
+        this.assertProperty(
+          k,
+          expected as PropertyLambda<T[keyof T]>,
+          actual,
+          curPath
+        );
       } else if (expected instanceof RegExp) {
         this.assertRegExp(k, expected, actual, curPath);
-      } else if (typeof expected === "object" && Object.keys(<any>expected).length) {
+      } else if (
+        typeof expected === "object" &&
+        Object.keys(expected as any).length
+      ) {
         this._properties(actual, expected, curPath);
       } else if (this.checkInvert(expected !== actual)) {
         throw new MatchError(
-          `property ${k} at path '${this.formatKeyPath(curPath)}' should${this.negation}equal`,
+          `property ${k} at path '${this.formatKeyPath(curPath)}' should${
+            this.negation
+          }equal`,
           expected,
           actual
         );
@@ -158,7 +179,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     }
   }
 
-  protected formatKeyPath(path: string[]): string {
+  protected formatKeyPath(path: Array<string>): string {
     path.unshift("$");
     return path.join(".");
   }
@@ -167,7 +188,7 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     key: TKey,
     assertion: PropertyLambda<T[TKey]>,
     actual: T[TKey],
-    path: string[]
+    path: Array<string>
   ): void {
     let threw = false;
     let check = null;
@@ -189,22 +210,22 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
           err
         );
       }
-    } finally {
-      if (typeof check === "boolean" && this.checkInvert(!check)) {
-        throw new PropertiesMatchError(
-          `failed ${this.invert ? "(inverted) " : " "}boolean lambda assertion`,
-          this.formatKeyPath(path),
-          this.getFnString(assertion),
-          actual
-        );
-      } else if (this.invert && ! threw) {
-        throw new PropertiesMatchError(
-          "expected lambda to return false, or yield a failed nested expectation or error",
-          this.formatKeyPath(path),
-          this.getFnString(assertion),
-          actual
-        )
-      }
+    }
+
+    if (typeof check === "boolean" && this.checkInvert(!check)) {
+      throw new PropertiesMatchError(
+        `failed ${this.invert ? "(inverted) " : " "}boolean lambda assertion`,
+        this.formatKeyPath(path),
+        this.getFnString(assertion),
+        actual
+      );
+    } else if (this.invert && !threw) {
+      throw new PropertiesMatchError(
+        "expected lambda to return false, or yield a failed nested expectation or error",
+        this.formatKeyPath(path),
+        this.getFnString(assertion),
+        actual
+      );
     }
   }
 
@@ -212,25 +233,31 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     key: keyof T,
     regexp: RegExp,
     actual: TProp,
-    path: string[]
+    path: Array<string>
   ): void {
     if (actual instanceof RegExp) {
       if (this.checkInvert(actual.toString() !== regexp.toString())) {
         throw new MatchError(
-          `regular expressions at path '${this.formatKeyPath(path)}' should${this.negation}match`,
+          `regular expressions at path '${this.formatKeyPath(path)}' should${
+            this.negation
+          }match`,
           regexp,
           actual
         );
       }
     } else if (typeof actual !== "string") {
       throw new MatchError(
-        `expected type 'string' for regexp match at path '${this.formatKeyPath(path)}'`,
+        `expected type 'string' for regexp match at path '${this.formatKeyPath(
+          path
+        )}'`,
         "string",
         typeof actual
       );
     } else if (this.checkInvert(!regexp.test(actual))) {
       throw new MatchError(
-        `regular expression at path '${this.formatKeyPath(path)}' should${this.negation}match`,
+        `regular expression at path '${this.formatKeyPath(path)}' should${
+          this.negation
+        }match`,
         regexp.toString(),
         actual
       );

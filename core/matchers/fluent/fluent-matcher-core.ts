@@ -10,13 +10,9 @@ import { IFluentPropertiesMatcher } from "./i-fluent-properties-matcher";
 /**
  * Core modifiers for describing expectations.
  */
-export class FluentMatcherCore<T, TParent> 
-  extends FluentMatcherBase<
-  T,
-  TParent
->
-  implements IContextualFluentMatcherCore<T, TParent>, IFluentMatcherCore<T, TParent>
-{
+export class FluentMatcherCore<T, TParent> extends FluentMatcherBase<T, TParent>
+  implements IContextualFluentMatcherCore<T, TParent>,
+    IFluentMatcherCore<T, TParent> {
   constructor(
     protected actualValue: T,
     protected parent: TParent,
@@ -45,12 +41,20 @@ export class FluentMatcherCore<T, TParent>
 
   /** @inheritDoc */
   public get to(): IFluentEntityMatcher<T, TParent> {
-    return new FluentEntityMatcher<T, TParent>(this.actualValue, this.parent, this.invert);
+    return new FluentEntityMatcher<T, TParent>(
+      this.actualValue,
+      this.parent,
+      this.invert
+    );
   }
 
   /** @inheritDoc */
   public get that(): IContextualFluentEntityMatcher<T, TParent> {
-    return new FluentEntityMatcher<T, TParent>(this.actualValue, this.parent, this.invert);
+    return new FluentEntityMatcher<T, TParent>(
+      this.actualValue,
+      this.parent,
+      this.invert
+    );
   }
 
   /** @inheritDoc */
@@ -65,13 +69,11 @@ export class FluentMatcherCore<T, TParent>
 
   /** @inheritDoc */
   public get and(): FluentMatcherCore<T, TParent> {
-    return new FluentMatcherCore(
-      this.actualValue,
-      this.parent,
-      this.invert
-    );
+    return new FluentMatcherCore(this.actualValue, this.parent, this.invert);
   }
 
   /** @inheritDoc */
-  public get lastContextualValue(): T { return this.actualValue; }
+  public get lastContextualValue(): T {
+    return this.actualValue;
+  }
 }

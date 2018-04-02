@@ -1,6 +1,5 @@
 import { MatchError } from "./match-error";
 
-
 export class PropertiesMatchError extends MatchError {
   public constructor(
     message: string,
