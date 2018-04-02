@@ -203,7 +203,7 @@ export class FluentEntityMatcher<T, TParent> extends FluentMatcherBase<
       }
     }
 
-    return new FluentMatcherCore(actualError, this.parent, this.invert);
+    return new FluentMatcherCore(actualError, this.parent, false);
   }
 
   /** @inheritDoc */

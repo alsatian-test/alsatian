@@ -58,6 +58,12 @@ export class ToThrowTests {
   }
 
   @Test()
+  public throwShouldResetNegationContext() {
+    const expect = Expect(() => {}).not.to.throw();
+    Expect((expect as any).invert).to.equal(false);
+  }
+
+  @Test()
   public noThrowShouldFail() {
     const expect = Expect(() => {});
 

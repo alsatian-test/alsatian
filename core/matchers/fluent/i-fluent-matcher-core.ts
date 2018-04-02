@@ -30,6 +30,7 @@ export interface IFluentMatcherCore<T, TParent> {
 
   /**
    * Negates the next item in the fluent chain. E.g., Expect(val).not.to.equal(3).
+   * Note: does not negate the entire chain. See: https://git.io/vxiKp
    */
   not: IFluentMatcherCore<T, TParent>;
 
