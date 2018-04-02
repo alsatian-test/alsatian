@@ -219,4 +219,36 @@ export class WithPropertiesTests {
         message: /expected lambda to return false, or yield a failed nested expectation or error/
       });
   }
+
+  @Test()
+  public elaborateNestedExpect_Error_Passes() {
+    const expect = Expect({
+      one: "two",
+      three: { four: [5, 6] }
+    });
+    const lambda = () =>
+      expect.with.properties({
+        one: o => Expect(o).to.equal("two"), // should pass
+        three: { four: [5, (n: any) => Expect(n).to.equal(7) /* fail */] }
+      });
+    Expect(lambda)
+      .to.throw(MatchError)
+      .with.properties({
+        message: /Property at path '\$.three.four.1': failed nested expectation./
+      });
+  }
+
+  @Test()
+  public elaborateNegatedNestedExpect_Error_Passes() {
+    const expect = Expect({
+      one: "two",
+      three: { four: [5, 6] }
+    });
+    const lambda = () =>
+      expect.not.with.properties({
+        one: o => Expect(o).to.equal("two"), // should pass
+        three: { four: [5, (n: any) => Expect(n).to.equal(6) /* fail */] }
+      });
+    Expect(lambda).to.throw(MatchError);
+  }
 }
