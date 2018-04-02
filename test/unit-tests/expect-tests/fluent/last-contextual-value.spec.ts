@@ -9,7 +9,7 @@ import {
 export class LastContextualValueTests {
   @Test()
   public LastContextualValue_ReturnsMostRecentActual() {
-    const last = Expect({one: 2}).to.have(p => p.one).lastContextualValue;
+    const last = Expect({ one: 2 }).to.have(p => p.one).lastContextualValue;
     Expect(last).to.equal(2);
   }
 

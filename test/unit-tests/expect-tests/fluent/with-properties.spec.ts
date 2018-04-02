@@ -78,8 +78,13 @@ export class WithPropertiesTests {
     const expect = Expect(actualValue).with;
     SpyOn(expect, "_properties");
     expect.allProperties(thing);
-    //FIXME gross:
-    OriginalExpect(<()=>any>(<any>expect)["_properties"]).toHaveBeenCalledWith(actualValue, thing, Any(Array));
+    // FIXME gross:
+    OriginalExpect((expect as any)
+      ._properties as () => any).toHaveBeenCalledWith(
+      actualValue,
+      thing,
+      Any(Array)
+    );
   }
 
   @Test()
@@ -87,7 +92,9 @@ export class WithPropertiesTests {
     const expect = Expect({ one: /123/ });
     Expect(() => expect.with.properties({ one: /321/ }))
       .to.throw(MatchError)
-      .with.properties({ message: /regular expressions at path.*should match/ });
+      .with.properties({
+        message: /regular expressions at path.*should match/
+      });
   }
 
   @Test()
@@ -111,11 +118,7 @@ export class WithPropertiesTests {
     { one: /321/ },
     /regular expression at path.*should not match/
   )
-  @TestCase(
-    { one: 321 },
-    { two: 742, one: 321 },
-    /should not equal/
-  )
+  @TestCase({ one: 321 }, { two: 742, one: 321 }, /should not equal/)
   public notWithPropertiesNegates(
     object: any,
     notExpected: any,
@@ -127,10 +130,26 @@ export class WithPropertiesTests {
       .with.properties({ message: expectedRegexp });
   }
 
-  @TestCase({ one: { two: { three: 321 } } }, { one: { two: { three: 0 }}}, /\$.one.two.three/)
-  @TestCase({ four: [0, 1, { five: 321 }] }, { four: [0, 1, { five: 0 } ] }, /\$.four.2.five/)
-  @TestCase({ one: [ ]}, { one: [ { prop: "not there" } ] }, /property '0' should be defined at path '\$.one.0'/)
-  public errorMessageRevealsNesting(object: any, expectAttempt: any, expectedPath: RegExp) {
+  @TestCase(
+    { one: { two: { three: 321 } } },
+    { one: { two: { three: 0 } } },
+    /\$.one.two.three/
+  )
+  @TestCase(
+    { four: [0, 1, { five: 321 }] },
+    { four: [0, 1, { five: 0 }] },
+    /\$.four.2.five/
+  )
+  @TestCase(
+    { one: [] },
+    { one: [{ prop: "not there" }] },
+    /property '0' should be defined at path '\$.one.0'/
+  )
+  public errorMessageRevealsNesting(
+    object: any,
+    expectAttempt: any,
+    expectedPath: RegExp
+  ) {
     const expect = Expect(object);
     Expect(() => expect.with.properties(expectAttempt))
       .to.throw(MatchError)
@@ -139,46 +158,65 @@ export class WithPropertiesTests {
 
   @Test()
   public booleanLambdaInvertsMessageWhenInverted() {
-    const expect = Expect({ "one": "two" });
+    const expect = Expect({ one: "two" });
     Expect(() => expect.not.with.properties({ one: () => true }))
       .to.throw(MatchError)
-      .with.properties({ message: /failed \(inverted\) boolean lambda assertion/ });
+      .with.properties({
+        message: /failed \(inverted\) boolean lambda assertion/
+      });
   }
 
   @Test()
   public nestedExpectFailsCaughtAndWrapped() {
     const expect = Expect({ one: "two" });
-    const lambda = () => expect.with.properties({ one: o => Expect(o).to.equal("three") });
+    const lambda = () =>
+      expect.with.properties({ one: o => Expect(o).to.equal("three") });
     Expect(lambda)
       .to.throw(MatchError)
-      .with.properties({ message: /Property at path '\$.one': failed nested expectation./});
+      .with.properties({
+        message: /Property at path '\$.one': failed nested expectation./
+      });
   }
 
   @Test()
   public nestedExpectThrowsCaughtAndWrapped() {
     const expect = Expect({ one: "two" });
-    const lambda = () => expect.with.properties({ one: o => { throw new Error() } });
+    const lambda = () =>
+      expect.with.properties({
+        one: o => {
+          throw new Error();
+        }
+      });
     Expect(lambda)
       .to.throw(MatchError)
-      .with.properties({ message: /Property at path '\$.one': threw unexpected error./});
+      .with.properties({
+        message: /Property at path '\$.one': threw unexpected error./
+      });
   }
 
   @Test()
   public nestedExpectPassNoError() {
     const expect = Expect({ one: "two" });
-    const lambda = () => expect.with.properties({ one: o => Expect(o).to.equal("two") });
-    Expect(lambda)
-      .not.to.throw(MatchError);
+    const lambda = () =>
+      expect.with.properties({ one: o => Expect(o).to.equal("two") });
+    Expect(lambda).not.to.throw(MatchError);
   }
 
   @TestCase({ one: (o: any) => Expect(o).to.equal("two") })
-  @TestCase({ one: (o: any) => { /* no op */ } })
+  @TestCase({
+    one: (o: any) => {
+      /* no op */
+    }
+  })
   @TestCase({ one: (o: any) => true })
   public negatedNestedExpectNoErrorFails() {
     const expect = Expect({ one: "two" });
-    const lambda = () => expect.not.with.properties({ one: o => Expect(o).to.equal("two") });
+    const lambda = () =>
+      expect.not.with.properties({ one: o => Expect(o).to.equal("two") });
     Expect(lambda)
       .to.throw(MatchError)
-      .with.properties({ message: /Property at path '\$.one': expected lambda to return false, or yield a failed nested expectation or error/ })
+      .with.properties({
+        message: /expected lambda to return false, or yield a failed nested expectation or error/
+      });
   }
 }

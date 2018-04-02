@@ -9,7 +9,7 @@ import {
 export class ThatTests {
   @Test()
   public FluentEntityMatcher_dotThat_ReturnsNewWithRightValues() {
-    const expect = Expect({one: 2}).to.have(p => p.one);
+    const expect = Expect({ one: 2 }).to.have(p => p.one);
     const that = expect.that;
     that.equals(2); // finish
   }

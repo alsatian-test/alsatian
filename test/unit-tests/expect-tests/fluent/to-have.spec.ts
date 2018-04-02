@@ -10,21 +10,24 @@ import {
 export class ToHaveTests {
   @Test()
   public ToHave_ThrowsWhenNotProvidedFunc() {
-    let lambda = () => Expect({one: 2}).to.have(<any>3);
-    Expect(lambda).to.throw<Error>()
-        .that.has(p => p.message)
-            .that.matches(/not a function/);
+    const lambda = () => Expect({ one: 2 }).to.have(3 as any);
+    Expect(lambda)
+      .to.throw<Error>()
+      .that.has(p => p.message)
+      .that.matches(/not a function/);
   }
 
   @Test()
   public ToHave_NoMatchWhenPropertyMissing() {
-    const lambda = () => Expect({ hi: "there" }).to.have((p: any) => p.something);
-    Expect(lambda).to.throw<MatchError>()
-        .that.has(p => p.message)
-            .that.matches(/should be defined/);
+    const lambda = () =>
+      Expect({ hi: "there" }).to.have((p: any) => p.something);
+    Expect(lambda)
+      .to.throw<MatchError>()
+      .that.has(p => p.message)
+      .that.matches(/should be defined/);
   }
 
-@Test()
+  @Test()
   public ToHave_MatchesWhenPropertyPresent() {
     const lambda = () => Expect({ hi: "there" }).to.have(p => p.hi);
     Expect(lambda).not.to.throw<MatchError>();
