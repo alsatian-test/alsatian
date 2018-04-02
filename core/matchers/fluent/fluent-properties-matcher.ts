@@ -7,6 +7,8 @@ import { IFluentEntityMatcher } from "./i-fluent-entity-matcher";
 import { IFluentPropertiesMatcher } from "./i-fluent-properties-matcher";
 import { IFluentMatcherCore } from "./i-fluent-matcher-core";
 import { IContextualFluentMatcherCore } from "./i-contextual-fluent-matcher-core";
+import { PropertiesMatchError } from "../../errors/properties-match-error";
+import { NestedPropertiesMatchError } from "../../errors/nested-properties-match-error";
 
 /** Affords type safety when creating property lambdas. */
 export type FluentMatcherSafeStop = IFluentMatcherCore<any, any> | IContextualFluentMatcherCore<any, any>;
@@ -167,13 +169,42 @@ export class FluentPropertiesMatcher<T, TParent> extends FluentMatcherBase<
     actual: T[TKey],
     path: string[]
   ): void {
-    const check = assertion(actual);
-    if (typeof check === "boolean" && this.checkInvert(!check)) {
-      throw new MatchError(
-        `value at '${key}', path '${this.formatKeyPath(path)}', failed lambda assertion`,
-        this.getFnString(assertion),
-        actual
-      );
+    let threw = false;
+    let check = null;
+
+    try {
+      check = assertion(actual);
+    } catch (err) {
+      threw = true;
+      if (err instanceof MatchError) {
+        throw new NestedPropertiesMatchError(
+          "failed nested expectation",
+          this.formatKeyPath(path),
+          err
+        );
+      } else {
+        throw new NestedPropertiesMatchError(
+          "threw unexpected error",
+          this.formatKeyPath(path),
+          err
+        );
+      }
+    } finally {
+      if (typeof check === "boolean" && this.checkInvert(!check)) {
+        throw new PropertiesMatchError(
+          `failed ${this.invert ? "(inverted) " : " "}boolean lambda assertion`,
+          this.formatKeyPath(path),
+          this.getFnString(assertion),
+          actual
+        );
+      } else if (this.invert && ! threw) {
+        throw new PropertiesMatchError(
+          "expected lambda to return false, or yield a failed nested expectation or error",
+          this.formatKeyPath(path),
+          this.getFnString(assertion),
+          actual
+        )
+      }
     }
   }
 

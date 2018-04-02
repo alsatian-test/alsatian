@@ -132,8 +132,53 @@ export class WithPropertiesTests {
   @TestCase({ one: [ ]}, { one: [ { prop: "not there" } ] }, /property '0' should be defined at path '\$.one.0'/)
   public errorMessageRevealsNesting(object: any, expectAttempt: any, expectedPath: RegExp) {
     const expect = Expect(object);
-    let val = Expect(() => expect.with.properties(expectAttempt))
+    Expect(() => expect.with.properties(expectAttempt))
       .to.throw(MatchError)
       .with.properties({ message: expectedPath });
+  }
+
+  @Test()
+  public booleanLambdaInvertsMessageWhenInverted() {
+    const expect = Expect({ "one": "two" });
+    Expect(() => expect.not.with.properties({ one: () => true }))
+      .to.throw(MatchError)
+      .with.properties({ message: /failed \(inverted\) boolean lambda assertion/ });
+  }
+
+  @Test()
+  public nestedExpectFailsCaughtAndWrapped() {
+    const expect = Expect({ one: "two" });
+    const lambda = () => expect.with.properties({ one: o => Expect(o).to.equal("three") });
+    Expect(lambda)
+      .to.throw(MatchError)
+      .with.properties({ message: /Property at path '\$.one': failed nested expectation./});
+  }
+
+  @Test()
+  public nestedExpectThrowsCaughtAndWrapped() {
+    const expect = Expect({ one: "two" });
+    const lambda = () => expect.with.properties({ one: o => { throw new Error() } });
+    Expect(lambda)
+      .to.throw(MatchError)
+      .with.properties({ message: /Property at path '\$.one': threw unexpected error./});
+  }
+
+  @Test()
+  public nestedExpectPassNoError() {
+    const expect = Expect({ one: "two" });
+    const lambda = () => expect.with.properties({ one: o => Expect(o).to.equal("two") });
+    Expect(lambda)
+      .not.to.throw(MatchError);
+  }
+
+  @TestCase({ one: (o: any) => Expect(o).to.equal("two") })
+  @TestCase({ one: (o: any) => { /* no op */ } })
+  @TestCase({ one: (o: any) => true })
+  public negatedNestedExpectNoErrorFails() {
+    const expect = Expect({ one: "two" });
+    const lambda = () => expect.not.with.properties({ one: o => Expect(o).to.equal("two") });
+    Expect(lambda)
+      .to.throw(MatchError)
+      .with.properties({ message: /Property at path '\$.one': expected lambda to return false, or yield a failed nested expectation or error/ })
   }
 }
