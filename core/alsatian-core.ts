@@ -58,6 +58,8 @@ import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
 import { TestRunner } from "./running";
 
+import { FluentExpect } from "./expect/fluent-expect";
+
 export {
   Any,
   AsyncSetup,
@@ -70,6 +72,7 @@ export {
   EmptyMatcher,
   Expect,
   IExpect,
+  FluentExpect,
   FocusTest,
   FocusTests,
   FunctionMatcher,
