@@ -4,7 +4,7 @@ import {
   TestCase,
   Any
 } from "../../../../core/alsatian-core";
-import { MatchError } from "../../../../core/errors";
+import { MatchError, ErrorMatchError } from "../../../../core/errors";
 
 export class ToMatchTests {
   @TestCase("asdfasdf", /asdf/)

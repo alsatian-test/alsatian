@@ -173,37 +173,32 @@ export class FluentEntityMatcher<T, TParent> extends FluentMatcherBase<
   public throw<TError extends Error>(errorType?: {
     new (...args: Array<any>): TError;
   }): FluentMatcherCore<TError, TParent> {
-    let threw: boolean;
-    let actualError: TError;
+    let threw: TError = null;
     try {
       this.actualValue();
-      threw = false;
     } catch (err) {
-      threw = true;
-      actualError = err;
+      threw = err;
     }
 
     if (this.checkInvert(!threw)) {
       throw new ErrorMatchError(
-        actualError,
+        threw,
         !this.invert,
         errorType,
         `should${this.negation}throw`
       );
+    } else if (
+      typeof errorType !== "undefined" &&
+      this.checkInvert(!(threw instanceof errorType))
+    ) {
+      throw new ErrorMatchError(
+        threw,
+        !this.invert,
+        errorType,
+        `should${this.negation}throw type`
+      );
     }
-
-    if (typeof errorType !== "undefined") {
-      if (this.checkInvert(!(actualError instanceof errorType))) {
-        throw new ErrorMatchError(
-          actualError,
-          !this.invert,
-          errorType,
-          `should${this.negation}throw type`
-        );
-      }
-    }
-
-    return new FluentMatcherCore(actualError, this.parent, false);
+    return new FluentMatcherCore(threw, this.parent, false);
   }
 
   /** @inheritDoc */
