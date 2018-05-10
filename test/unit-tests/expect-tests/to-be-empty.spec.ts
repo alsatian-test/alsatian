@@ -5,7 +5,7 @@ class DummyClass {}
 
 export class ToBeEmptyTests {
   // tslint:disable-next-line:max-line-length
-  private readonly _typeErrorMessage: string = "toBeEmpty requires value passed in to Expect to be an array, string or object literal";
+  private readonly _typeErrorMessage: string = "toBeEmpty requires value passed in to Expect to be an array, string, object literal or map";
 
   @TestCase([])
   @TestCase([1])
@@ -33,6 +33,17 @@ export class ToBeEmptyTests {
   @TestCase({})
   @TestCase({ a: true })
   public emptyShouldNotThrowTypeErrorForObjectLiterals(value: object) {
+    const expect = Expect(value);
+
+    Expect(() => expect.toBeEmpty()).not.toThrowError(
+      TypeError,
+      this._typeErrorMessage
+    );
+  }
+
+  @TestCase(new Map())
+  @TestCase(new Map([["keyOne", "valueOne"]]))
+  public emptyShouldNotThrowTypeErrorForMaps(value: Map<any, any>) {
     const expect = Expect(value);
 
     Expect(() => expect.toBeEmpty()).not.toThrowError(
@@ -168,6 +179,40 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldNotThrowErrorForNonEmptyObject() {
     const expect = Expect({ a: true });
+
+    Expect(() => expect.not.toBeEmpty()).not.toThrow();
+  }
+
+  @Test()
+  public emptyShouldNotThrowErrorForEmptyMap() {
+    const expect = Expect(new Map());
+
+    Expect(() => expect.toBeEmpty()).not.toThrow();
+  }
+
+  @Test()
+  public emptyShouldThrowErrorForNonEmptyMap() {
+    const expect = Expect(new Map([["key", "value"]]));
+
+    Expect(() => expect.toBeEmpty()).toThrowError(
+      EmptyMatchError,
+      'Expected "Map<1>" to be empty.'
+    );
+  }
+
+  @Test()
+  public notEmptyShouldThrowErrorForEmptyMap() {
+    const expect = Expect(new Map());
+
+    Expect(() => expect.not.toBeEmpty()).toThrowError(
+      EmptyMatchError,
+      'Expected "Map<0>" not to be empty.'
+    );
+  }
+
+  @Test()
+  public notEmptyShouldNotThrowErrorForNonEmptyMap() {
+    const expect = Expect(new Map([["key", "value"]]));
 
     Expect(() => expect.not.toBeEmpty()).not.toThrow();
   }
