@@ -7,6 +7,10 @@ export class DerivedError extends Error {
   }
 }
 
+export class Testable<TA, TB> {
+  constructor(public a: TA, public b: TB) {}
+}
+
 export class TypeMatcherTestFunctionTests {
   @TestCase(0)
   @TestCase(1)
@@ -244,10 +248,6 @@ export class TypeMatcherTestFunctionTests {
       TypeError,
       "thatMatches requires none-null or non-undefined argument"
     );
-    Expect(() => sut.thatMatches(new Error("Something else"))).toThrowError(
-      TypeError,
-      "thatMatches requires value passed in to be an object literal"
-    );
     Expect(() => sut.thatMatches(3 as any)).toThrowError(
       Error,
       "Invalid arguments"
@@ -386,6 +386,16 @@ export class TypeMatcherTestFunctionTests {
     Expect(sut.stringify()).toBe(
       `Any Error and matches '${JSON.stringify(literal, replacer)}'`
     );
+  }
+
+  @TestCase(new Testable("a", "b"), new Testable("a", "b"))
+  @Test()
+  public thatMatchesShouldMatchAClassInstance(
+    instance: Testable<any, any>,
+    matcher: Testable<any, any>
+  ) {
+    const sut = new TypeMatcher(Testable).thatMatches(matcher);
+    Expect(sut.test(instance)).toBe(true);
   }
 
   @Test()
