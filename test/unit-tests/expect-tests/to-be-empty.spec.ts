@@ -4,8 +4,7 @@ import { EmptyMatchError } from "../../../core/errors/empty-match-error";
 class DummyClass {}
 
 export class ToBeEmptyTests {
-
-  private readonly _typeErrorMessage: string = 
+  private readonly _typeErrorMessage: string =
     "toBeEmpty requires value passed in to Expect to be " +
     "an array, string or object literal";
 
