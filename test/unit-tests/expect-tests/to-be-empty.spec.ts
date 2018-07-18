@@ -4,8 +4,10 @@ import { EmptyMatchError } from "../../../core/errors/empty-match-error";
 class DummyClass {}
 
 export class ToBeEmptyTests {
-  // tslint:disable-next-line:max-line-length
-  private readonly _typeErrorMessage: string = "toBeEmpty requires value passed in to Expect to be an array, string or object literal";
+
+  private readonly _typeErrorMessage: string = 
+    "toBeEmpty requires value passed in to Expect to be " +
+    "an array, string or object literal";
 
   @TestCase([])
   @TestCase([1])
