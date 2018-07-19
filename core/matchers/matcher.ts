@@ -112,8 +112,12 @@ export class Matcher<T> {
 
   private _checkBuffersAreEqual(_bufferA: any, _bufferB: any): boolean {
     try {
-      const bufferA = Buffer.from(_bufferA);
-      const bufferB = Buffer.from(_bufferB);
+      const bufferA = Buffer.isBuffer(_bufferA)
+        ? _bufferA
+        : Buffer.from(_bufferA);
+      const bufferB = Buffer.isBuffer(_bufferB)
+        ? _bufferB
+        : Buffer.from(_bufferB);
 
       return bufferA.equals(bufferB);
     } catch (error) {

@@ -230,17 +230,6 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
-  @FocusTest
-  @TestCase(Buffer.from([1, 2, 3]), Buffer.from([1, 2, 3]))
-  @TestCase(Buffer.from([1, 2, 3]), [1, 2, 3]) // Array
-  @TestCase(Buffer.from([1, 2, 3]), "") // String, "" was retrieved from Buffer.from([1, 2, 3]).toString()
-  @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, 2: 3, length: 3 }) // ArrayLike
-  public canMatchWithBuffer(expected: any, actual: any) {
-    const expect = Expect(actual);
-
-    Expect(() => expect.toEqual(expected)).not.toThrow();
-  }
-
   @TestCase(Any(Number), "something")
   @TestCase(Any(String), 42)
   @TestCase(Any(Object).thatMatches("property", 42), {
@@ -288,7 +277,16 @@ export class ToEqualTests {
     );
   }
 
-  @FocusTest
+  @TestCase(Buffer.from([1, 2, 3]), Buffer.from([1, 2, 3]))
+  @TestCase(Buffer.from([1, 2, 3]), [1, 2, 3]) // Array
+  @TestCase(Buffer.from([1, 2, 3]), "") // String, "" was retrieved from Buffer.from([1, 2, 3]).toString()
+  @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, 2: 3, length: 3 }) // ArrayLike
+  public canMatchWithBuffer(expected: any, actual: any) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.toEqual(expected)).not.toThrow();
+  }
+
   @TestCase(Buffer.from([1, 2, 3]), null)
   @TestCase(Buffer.from([1, 2, 3]), undefined)
   @TestCase(Buffer.from([1, 2, 3]), 1)
@@ -299,7 +297,6 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).toThrow();
   }
 
-  @FocusTest
   @TestCase(
     Buffer.from([1, 2, 3]),
     null,
