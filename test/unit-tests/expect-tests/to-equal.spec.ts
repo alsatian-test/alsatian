@@ -1,4 +1,10 @@
-import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  TestCase,
+  Any,
+  FocusTest
+} from "../../../core/alsatian-core";
 import { EqualMatchError } from "../../../core/errors/equal-match-error";
 import { stringify } from "../../../core/stringification";
 
@@ -224,6 +230,17 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
+  @FocusTest
+  @TestCase(Buffer.from([1, 2, 3]), Buffer.from([1, 2, 3]))
+  @TestCase(Buffer.from([1, 2, 3]), [1, 2, 3]) // Array
+  @TestCase(Buffer.from([1, 2, 3]), "") // String, "" was retrieved from Buffer.from([1, 2, 3]).toString()
+  @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, 2: 3, length: 3 }) // ArrayLike
+  public canMatchWithBuffer(expected: any, actual: any) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.toEqual(expected)).not.toThrow();
+  }
+
   @TestCase(Any(Number), "something")
   @TestCase(Any(String), 42)
   @TestCase(Any(Object).thatMatches("property", 42), {
@@ -259,6 +276,51 @@ export class ToEqualTests {
       `to be equal to Any Object and matches '{"anotherProperty":"something"}'.`
   )
   public throwsCorrectErrorMessageForNonMatchesWithAny(
+    expected: any,
+    actual: any,
+    errorMessage: string
+  ) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.toEqual(expected)).toThrowError(
+      EqualMatchError,
+      errorMessage
+    );
+  }
+
+  @FocusTest
+  @TestCase(Buffer.from([1, 2, 3]), null)
+  @TestCase(Buffer.from([1, 2, 3]), undefined)
+  @TestCase(Buffer.from([1, 2, 3]), 1)
+  @TestCase(Buffer.from([1, 2, 3]), {})
+  public throwsErrorsForNonMatchesWithBuffer(expected: any, actual: any) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.toEqual(expected)).toThrow();
+  }
+
+  @FocusTest
+  @TestCase(
+    Buffer.from([1, 2, 3]),
+    null,
+    `Expected null to be equal to {"type":"Buffer","data":[1,2,3]}.`
+  )
+  @TestCase(
+    Buffer.from([1, 2, 3]),
+    undefined,
+    `Expected undefined to be equal to {"type":"Buffer","data":[1,2,3]}.`
+  )
+  @TestCase(
+    Buffer.from([1, 2, 3]),
+    1,
+    `Expected 1 to be equal to {"type":"Buffer","data":[1,2,3]}.`
+  )
+  @TestCase(
+    Buffer.from([1, 2, 3]),
+    {},
+    `Expected {} to be equal to {"type":"Buffer","data":[1,2,3]}.`
+  )
+  public throwsCorrectErrorMessageForNonMatchesWithBuffer(
     expected: any,
     actual: any,
     errorMessage: string

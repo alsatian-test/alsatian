@@ -50,6 +50,11 @@ export class Matcher<T> {
 
     if (expectedValue instanceof TypeMatcher) {
       valueMatch = expectedValue.test(this._actualValue);
+    } else if (
+      Buffer.isBuffer(expectedValue) ||
+      Buffer.isBuffer(this._actualValue)
+    ) {
+      return this._checkBuffersAreEqual(expectedValue, this._actualValue);
     } else if (expectedValue instanceof Object) {
       valueMatch = this._checkObjectsAreDeepEqual(
         expectedValue,
@@ -102,6 +107,20 @@ export class Matcher<T> {
       (!this._actualValue && this.shouldMatch)
     ) {
       throw new TruthyMatchError(this._actualValue, this.shouldMatch);
+    }
+  }
+
+  private _checkBuffersAreEqual(_bufferA: any, _bufferB: any): boolean {
+    try {
+      const bufferA = Buffer.from(_bufferA);
+      const bufferB = Buffer.from(_bufferB);
+
+      return bufferA.equals(bufferB);
+    } catch (error) {
+      // if an error is thrown in the try, we can assume that either _bufferA or _bufferB were
+      // not of type string, Buffer, ArrayBuffer, Array, or Array-like Object, which are the only
+      // types convertible with Buffer.from(). It will throw a TypeError [ERR_INVALID_ARG_TYPE].
+      return false;
     }
   }
 
