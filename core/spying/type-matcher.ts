@@ -96,12 +96,6 @@ export class TypeMatcher<ExpectedType extends object> {
   }
 
   private _matchesObjectLiteral(properties: object): this {
-    if (properties.constructor !== Object) {
-      throw new TypeError(
-        "thatMatches requires value passed in to be an object literal"
-      );
-    }
-
     this._testers.push({
       stringify: () => `matches '${stringify(properties)}'`,
       test: (v: any) => {
