@@ -54,7 +54,7 @@ export class Matcher<T> {
       Buffer.isBuffer(expectedValue) ||
       Buffer.isBuffer(this._actualValue)
     ) {
-      return this._checkBuffersAreEqual(expectedValue, this._actualValue);
+      valueMatch = this._checkBuffersAreEqual(expectedValue, this._actualValue);
     } else if (expectedValue instanceof Object) {
       valueMatch = this._checkObjectsAreDeepEqual(
         expectedValue,
