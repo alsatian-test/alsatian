@@ -18,19 +18,26 @@ export class EmptyMatcher<T> extends Matcher<T> {
     if (
       typeof this.actualValue !== "string" &&
       !Array.isArray(this.actualValue) &&
-      this.actualValue.constructor !== Object
+      this.actualValue.constructor !== Object &&
+      !(this.actualValue instanceof Map)
     ) {
       throw new TypeError(
-        "toBeEmpty requires value passed in to Expect to be an array, string or object literal"
+        "toBeEmpty requires value passed in to Expect to be an array, string, object literal or map"
       );
     }
 
-    const contents = (this.actualValue as any).length
-      ? this.actualValue
-      : Object.keys(this.actualValue);
+    if (this.actualValue instanceof Map) {
+      if ((this.actualValue.size === 0) !== this.shouldMatch) {
+        throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+      }
+    } else {
+      const contents = (this.actualValue as any).length
+        ? this.actualValue
+        : Object.keys(this.actualValue);
 
-    if (((contents as any).length === 0) !== this.shouldMatch) {
-      throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+      if (((contents as any).length === 0) !== this.shouldMatch) {
+        throw new EmptyMatchError(this.actualValue, this.shouldMatch);
+      }
     }
   }
 }

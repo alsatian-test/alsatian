@@ -5,6 +5,10 @@ export function stringify(data: any): string {
     return stringifyArray(data);
   }
 
+  if (data instanceof Map) {
+    return `Map<${data.size}>`;
+  }
+
   if (data === Any) {
     return "Anything";
   }
