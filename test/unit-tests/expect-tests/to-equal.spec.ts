@@ -291,6 +291,10 @@ export class ToEqualTests {
   @TestCase(Buffer.from([1, 2, 3]), undefined)
   @TestCase(Buffer.from([1, 2, 3]), 1)
   @TestCase(Buffer.from([1, 2, 3]), {})
+  @TestCase(Buffer.from([1, 2, 3]), Buffer.from([1, 2]))
+  @TestCase(Buffer.from([1, 2, 3]), [1, 2])
+  @TestCase(Buffer.from([1, 2, 3]), "")
+  @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, length: 2 })
   public throwsErrorsForNonMatchesWithBuffer(expected: any, actual: any) {
     const expect = Expect(actual);
 

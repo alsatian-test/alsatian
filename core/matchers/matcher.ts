@@ -50,10 +50,7 @@ export class Matcher<T> {
 
     if (expectedValue instanceof TypeMatcher) {
       valueMatch = expectedValue.test(this._actualValue);
-    } else if (
-      Buffer.isBuffer(expectedValue) ||
-      Buffer.isBuffer(this._actualValue)
-    ) {
+    } else if (Buffer.isBuffer(expectedValue)) {
       valueMatch = this._checkBuffersAreEqual(expectedValue, this._actualValue);
     } else if (expectedValue instanceof Object) {
       valueMatch = this._checkObjectsAreDeepEqual(
@@ -110,20 +107,15 @@ export class Matcher<T> {
     }
   }
 
-  private _checkBuffersAreEqual(_bufferA: any, _bufferB: any): boolean {
-    try {
-      const bufferA = Buffer.isBuffer(_bufferA)
-        ? _bufferA
-        : Buffer.from(_bufferA);
-      const bufferB = Buffer.isBuffer(_bufferB)
-        ? _bufferB
-        : Buffer.from(_bufferB);
+  private _checkBuffersAreEqual(buffer: Buffer, other: any): boolean {
+    // Buffer.from() only accepts of type string, Buffer, ArrayBuffer, Array, or Array-like Object.
+    if (this._isBufferable(other)) {
+      const otherBuffer = Buffer.isBuffer(other)
+        ? other
+        : Buffer.from(other as string); // Typings don't know that Buffer.from() can accept ArrayLike<T>
 
-      return bufferA.equals(bufferB);
-    } catch (error) {
-      // if an error is thrown in the try, we can assume that either _bufferA or _bufferB were
-      // not of type string, Buffer, ArrayBuffer, Array, or Array-like Object, which are the only
-      // types convertible with Buffer.from(). It will throw a TypeError [ERR_INVALID_ARG_TYPE].
+      return buffer.equals(otherBuffer);
+    } else {
       return false;
     }
   }
@@ -163,5 +155,22 @@ export class Matcher<T> {
 
     // all properties match so all is good
     return true;
+  }
+
+  private _isBufferable(
+    obj: any
+  ): obj is string | Buffer | Array<any> | ArrayBuffer | ArrayLike<any> {
+    return (
+      "string" === typeof obj ||
+      Buffer.isBuffer(obj) ||
+      Array.isArray(obj) ||
+      obj instanceof ArrayBuffer ||
+      // ArrayLike<any>
+      (null != obj &&
+        "object" === typeof obj &&
+        obj.hasOwnProperty("length") &&
+        "number" === typeof obj.length &&
+        (obj.length === 0 || (obj.length > 0 && obj.length - 1 in obj)))
+    );
   }
 }
