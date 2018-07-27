@@ -5,29 +5,15 @@
 // also: https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes
 //       #literal-types-are-inferred-by-default-for-const-variables-and-readonly-properties
 
-const TEST_FIXTURE: "alsatian:test-fixture" = "alsatian:test-fixture";
-const TESTS: "alsatian:tests" = "alsatian:tests";
-const FOCUS: "alsatian:focus" = "alsatian:focus";
-const IGNORE: "alsatian:ignore" = "alsatian:ignore";
-const IGNORE_REASON: "alsatian:ignore-reason" = "alsatian:ignore-reason";
-const SETUP: "alsatian:setup" = "alsatian:setup";
-const SETUP_FIXTURE: "alsatian:setup-fixture" = "alsatian:setup-fixture";
-const TEARDOWN: "alsatian:teardown" = "alsatian:teardown";
-const TEARDOWN_FIXTURE: "alsatian:teardown-fixture" =
+export const TEST_FIXTURE: "alsatian:test-fixture" = "alsatian:test-fixture";
+export const TESTS: "alsatian:tests" = "alsatian:tests";
+export const FOCUS: "alsatian:focus" = "alsatian:focus";
+export const IGNORE: "alsatian:ignore" = "alsatian:ignore";
+export const IGNORE_REASON: "alsatian:ignore-reason" = "alsatian:ignore-reason";
+export const SETUP: "alsatian:setup" = "alsatian:setup";
+export const SETUP_FIXTURE: "alsatian:setup-fixture" = "alsatian:setup-fixture";
+export const TEARDOWN: "alsatian:teardown" = "alsatian:teardown";
+export const TEARDOWN_FIXTURE: "alsatian:teardown-fixture" =
   "alsatian:teardown-fixture";
-const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
-const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";
-
-export {
-  TEST_FIXTURE,
-  TESTS,
-  FOCUS,
-  IGNORE,
-  IGNORE_REASON,
-  SETUP,
-  SETUP_FIXTURE,
-  TEARDOWN,
-  TEARDOWN_FIXTURE,
-  TEST_CASES,
-  TIMEOUT
-};
+export const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
+export const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";

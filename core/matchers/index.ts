@@ -1,25 +1,11 @@
-import { ContainerMatcher } from "./container-matcher";
-import { EmptyMatcher } from "./empty-matcher";
-import { FunctionMatcher } from "./function-matcher";
-import { FunctionSpyCallCountMatcher } from "./function-spy-call-count-matcher";
-import { FunctionSpyMatcher } from "./function-spy-matcher";
-import { Matcher } from "./matcher";
-import { MixedMatcher } from "./mixed-matcher";
-import { NumberMatcher } from "./number-matcher";
-import { PropertyMatcher } from "./property-matcher";
-import { SpyCallCountType } from "./spy-call-count-type";
-import { StringMatcher } from "./string-matcher";
-
-export {
-  ContainerMatcher,
-  EmptyMatcher,
-  FunctionMatcher,
-  FunctionSpyCallCountMatcher,
-  FunctionSpyMatcher,
-  Matcher,
-  MixedMatcher,
-  NumberMatcher,
-  PropertyMatcher,
-  SpyCallCountType,
-  StringMatcher
-};
+export { ContainerMatcher } from "./container-matcher";
+export { EmptyMatcher } from "./empty-matcher";
+export { FunctionMatcher } from "./function-matcher";
+export { FunctionSpyCallCountMatcher } from "./function-spy-call-count-matcher";
+export { FunctionSpyMatcher } from "./function-spy-matcher";
+export { Matcher } from "./matcher";
+export { MixedMatcher } from "./mixed-matcher";
+export { NumberMatcher } from "./number-matcher";
+export { PropertyMatcher } from "./property-matcher";
+export { SpyCallCountType } from "./spy-call-count-type";
+export { StringMatcher } from "./string-matcher";
