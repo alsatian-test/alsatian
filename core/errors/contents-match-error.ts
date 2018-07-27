@@ -7,13 +7,11 @@ export class ContentsMatchError extends MatchError {
     expectedContent: any,
     shouldMatch: boolean
   ) {
-    super();
-
-    this.message =
+    super(
       `Expected ${stringify(actualValue)} ${!shouldMatch ? "not " : ""}` +
-      `to contain ${stringify(expectedContent)}.`;
-
-    this._actual = actualValue;
-    this._expected = expectedContent;
+      `to contain ${stringify(expectedContent)}.`,
+      expectedContent,
+      actualValue
+    );
   }
 }

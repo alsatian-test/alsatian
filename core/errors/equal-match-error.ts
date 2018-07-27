@@ -7,12 +7,11 @@ export class EqualMatchError extends MatchError {
     expectedValue: any,
     shouldMatch: boolean
   ) {
-    super();
-
-    this.message =
+    super(
       `Expected ${stringify(actualValue)} ${!shouldMatch ? "not " : ""}` +
-      `to be equal to ${stringify(expectedValue)}.`;
-    this._expected = expectedValue;
-    this._actual = actualValue;
+      `to be equal to ${stringify(expectedValue)}.`,
+      expectedValue,
+      actualValue
+    );
   }
 }
