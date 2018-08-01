@@ -6,6 +6,7 @@ export class TestFixture implements ITestFixture {
   public ignoreReason: string;
   public focussed: boolean;
   public description: string;
+  public filePath: string;
 
   private _tests: Array<ITest> = [];
   public get tests() {

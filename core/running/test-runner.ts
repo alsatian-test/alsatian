@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import {
+  Expect,
   METADATA_KEYS,
   TestCaseResult,
   TestFixtureResults,
@@ -35,6 +36,8 @@ export class TestRunner {
     if (testPlan.testItems.length === 0) {
       throw new Error("no tests to run.");
     }
+
+    Reflect.defineMetadata("alsatian:test-plan", testPlan, Expect);
 
     if (!timeout) {
       timeout = 500;

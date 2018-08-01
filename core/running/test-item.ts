@@ -3,7 +3,26 @@ import { METADATA_KEYS } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 
+export interface Matcher {
+  isValid: boolean | (() => Promise<boolean>);
+  message: string;
+  expected: any;
+  actual: any;
+}
+
 export class TestItem {
+
+  public registerMatcher(isValid: boolean | (() => Promise<boolean>), message: string, expected: any, actual: any): any {
+    this.matchers.push({
+      isValid,
+      message,
+      expected,
+      actual
+    });
+  }
+
+  public readonly matchers: Array<Matcher> = [];
+
   private _testCase: ITestCase;
   public get testCase() {
     return this._testCase;
@@ -48,10 +67,40 @@ export class TestItem {
       await this._setup();
       try {
         await this._runTest(this._test.timeout || timeout);
-        await this._teardown();
-      } catch (error) {
-        await this._teardown();
+
+        if (this.matchers.length === 0) {
+          console.warn("Yikes no checks have been made");
+        }
+
+        const results: Array<any> = [];
+
+        enum Result {
+          Pass,
+          Fail,
+          Error
+        }
+
+        for (const matcher of this.matchers) {
+          const matcherValid = typeof matcher.isValid === "boolean" ? matcher.isValid : await matcher.isValid();
+
+          if (matcherValid) {
+            results.push({
+              result: Result.Pass
+            });
+          }
+          else {
+            results.push({
+              result: Result.Fail,
+              ... matcher
+            });
+          }
+        }
+      }
+      catch (error) {
         throw error;
+      }
+      finally {
+        await this._teardown();
       }
     }
   }

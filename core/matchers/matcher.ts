@@ -1,5 +1,7 @@
 import { EqualMatchError, ExactMatchError, TruthyMatchError } from "../errors";
 import { Any, TypeMatcher } from "../spying";
+import { TestItem } from "../running";
+import { stringify } from "../stringification";
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
@@ -15,7 +17,7 @@ export class Matcher<T> {
     return this._shouldMatch;
   }
 
-  public constructor(actualValue: T) {
+  public constructor(actualValue: T, private testItem: TestItem) {
     this._actualValue = actualValue;
   }
 
@@ -32,6 +34,15 @@ export class Matcher<T> {
    * @param expectedValue - the value that will be used to match
    */
   public toBe(expectedValue: T) {
+
+    this.testItem.registerMatcher(
+      (expectedValue !== this._actualValue) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
+      `to be ${stringify(expectedValue)}.`,
+      this._actualValue,
+      expectedValue,
+    );
+
     if ((expectedValue !== this._actualValue) === this.shouldMatch) {
       throw new ExactMatchError(
         this._actualValue,

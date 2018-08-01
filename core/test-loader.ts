@@ -21,7 +21,7 @@ export class TestLoader {
     const testFixtures: Array<ITestFixture> = [];
 
     const loadFixture = (constructor: any, description: string) => {
-      const testFixture = this._loadTestFixture(constructor, description);
+      const testFixture = this._loadTestFixture(constructor, description, filePath);
       if (testFixture !== null) {
         testFixtures.push(testFixture);
       }
@@ -42,7 +42,8 @@ export class TestLoader {
 
   private _loadTestFixture(
     testFixtureConstructor: any,
-    defaultFixtureDescription: string
+    defaultFixtureDescription: string,
+    filePath: string
   ): ITestFixture | null {
     // get test fixture metadata or create new metadata
     // to support not requiring the TestFixture decorator.
@@ -53,6 +54,8 @@ export class TestLoader {
       new TestFixture(defaultFixtureDescription);
 
     testFixture.ignored = false;
+
+    testFixture.filePath = filePath;
 
     if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixtureConstructor)) {
       // fixture should be ignored
