@@ -11,12 +11,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
    * Checks that a function throws an error when executed
    */
   public toThrow() {
-    if (this.actualValue instanceof Function === false) {
-      throw new TypeError(
-        "toThrow requires value passed in to Expect to be a function."
-      );
-    }
-
     let errorThrown: Error | null = null;
 
     try {
@@ -31,12 +25,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
   }
 
   public async toThrowAsync() {
-    if (this.actualValue instanceof Function === false) {
-      throw new TypeError(
-        "toThrowAsync requires value passed in to Expect to be a function."
-      );
-    }
-
     let errorThrown: Error | null = null;
 
     try {
@@ -59,11 +47,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorType: new (...args: Array<any>) => Error,
     errorMessage: string
   ) {
-    if (this.actualValue instanceof Function === false) {
-      throw new TypeError(
-        "toThrowError requires value passed in to Expect to be a function."
-      );
-    }
 
     let threwRightError = false;
     let actualError: Error | null = null;
@@ -97,12 +80,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorType: new (...args: Array<any>) => Error,
     errorMessage: string
   ) {
-    if (this.actualValue instanceof Function === false) {
-      throw new TypeError(
-        "toThrowErrorAsync requires value passed to Expect to be a function."
-      );
-    }
-
     let threwRightError = false;
     let actualError: Error | null = null;
 
@@ -130,11 +107,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
    * Checks that a spy has been called
    */
   public toHaveBeenCalled(): FunctionSpyMatcher {
-    if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
-      throw new TypeError(
-        "toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function."
-      );
-    }
 
     if ((this.actualValue.calls.length === 0) === this.shouldMatch) {
       throw new FunctionCallMatchError(this.actualValue, this.shouldMatch);
@@ -150,12 +122,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
   public toHaveBeenCalledWith(
     ...expectedArguments: Array<any>
   ): FunctionSpyMatcher {
-    if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
-      throw new TypeError(
-        "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
-      );
-    }
-
     if (
       this.actualValue.calls.some((call: any) =>
         this._callArgumentsMatch(call, expectedArguments)
@@ -185,12 +151,5 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
         (expectedArgument instanceof TypeMatcher && expectedArgument.test(arg))
       );
     });
-  }
-
-  private _isFunctionSpyOrSpiedOnFunction(value: any) {
-    return (
-      value instanceof FunctionSpy ||
-      (value instanceof Function && value.calls !== undefined)
-    );
   }
 }

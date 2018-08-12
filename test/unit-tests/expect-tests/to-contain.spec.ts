@@ -269,40 +269,6 @@ export class ToContainTests {
   @TestCase(42)
   @TestCase({})
   @TestCase({ an: "object" })
-  public checkingNonStringOrArraysContainShouldThrow(container: any) {
-    const EXPECT = Expect([]);
-    (EXPECT as any)._actualValue = container;
-
-    Expect(() => EXPECT.toContain("something")).toThrowError(
-      TypeError,
-      "toContain must only be used to check whether strings or arrays contain given contents."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
-    const EXPECT = Expect([]);
-    (EXPECT as any)._actualValue = container;
-
-    Expect(() => EXPECT.not.toContain("something")).toThrowError(
-      TypeError,
-      "toContain must only be used to check whether strings or arrays contain given contents."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
   @TestCase([])
   @TestCase(["an", "array"])
   public checkingStringContainsNonStringShouldThrow(expectedContent: any) {

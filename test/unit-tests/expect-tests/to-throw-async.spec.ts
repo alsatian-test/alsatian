@@ -97,58 +97,6 @@ export class ToThrowAsyncTests {
     );
   }
 
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @AsyncTest("Test toThrowAsync throws a TypeError when it should")
-  public async asyncCheckingWhetherNonFunctionThrowsShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    await Expect(async () => {
-      await EXPECT.toThrowAsync();
-    }).toThrowErrorAsync(
-      TypeError,
-      "toThrowAsync requires value passed in to Expect to be a function."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @AsyncTest("Test not.toThrowAsync throws a TypeError when it should")
-  public async asyncCheckingWhetherNonFunctionDoesNotThrowShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    await Expect(async () => {
-      await EXPECT.not.toThrowAsync();
-    }).toThrowErrorAsync(
-      TypeError,
-      "toThrowAsync requires value passed in to Expect to be a function."
-    );
-  }
-
   @AsyncTest(
     "Test toThrowAsync errors are caught and error is type ErrorMatchError"
   )

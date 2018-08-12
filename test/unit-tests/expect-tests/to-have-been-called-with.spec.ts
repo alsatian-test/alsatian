@@ -303,52 +303,6 @@ export class ToHaveBeenCalledWithTests {
     );
   }
 
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @TestCase(() => {})
-  @TestCase((thisCouldBe: any) => "function")
-  public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasBeenCalledShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.toHaveBeenCalledWith()).toThrowError(
-      TypeError,
-      "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @TestCase(() => {})
-  @TestCase((thisCouldBe: any) => "function")
-  public checkingWhetherNonFunctionSpyOrSpiedOnFunctionHasNotBeenCalledShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.not.toHaveBeenCalledWith()).toThrowError(
-      TypeError,
-      "toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
-    );
-  }
-
   @TestCase([[]])
   @TestCase([[], []])
   @TestCase([[1], [2], [3]])

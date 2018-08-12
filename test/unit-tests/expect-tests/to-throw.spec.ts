@@ -57,48 +57,6 @@ export class ToThrowTests {
     );
   }
 
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public checkingWhetherNonFunctionThrowsShouldThrow(actualValue: any) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.toThrow()).toThrowError(
-      TypeError,
-      "toThrow requires value passed in to Expect to be a function."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public checkingWhetherNonFunctionDoesNotThrowShouldThrow(actualValue: any) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.not.toThrow()).toThrowError(
-      TypeError,
-      "toThrow requires value passed in to Expect to be a function."
-    );
-  }
-
   @Test()
   public actualValueAndShouldMatchShouldBeSetToErrorWasNotThrown() {
     let errorMatchError: ErrorMatchError;
