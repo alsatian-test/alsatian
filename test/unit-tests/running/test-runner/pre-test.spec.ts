@@ -14,10 +14,21 @@ import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
+import { TestPlan } from "../../../../core/running";
 
 export class PreTestTests {
-  private _originalStdOut: any;
-  private _originalProcessExit: any;
+
+  private _originalTestPlan: TestPlan;
+
+  @Setup
+  private _recordOriginalTestPlan() {    
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
+  }
+
+  @Teardown
+  private _restoreOriginalTestPlan() {    
+    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+  }
 
   @AsyncTest()
   public async tapVersionHeaderOutput() {

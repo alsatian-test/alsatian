@@ -123,9 +123,13 @@ export class TestRunner {
     let error: Error;
 
     try {
+      testItem.isRunning = true;
       await testItem.run(testSetRunInfo.timeout);
     } catch (e) {
       error = e;
+    }
+    finally {
+      testItem.isRunning = false;
     }
 
     let testResults = testFixtureResults.testResults.find(

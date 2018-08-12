@@ -21,6 +21,8 @@ export class TestItem {
     });
   }
 
+  public isRunning = false;
+
   public readonly matchers: Array<Matcher> = [];
 
   private _testCase: ITestCase;

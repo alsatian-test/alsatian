@@ -4,23 +4,24 @@ import {
   Setup,
   SpyOn,
   Teardown,
-  Test,
   TestCase
 } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
-import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
+import { TestPlan } from "../../../../core/running";
 
 export class NotestsErrorTests {
   private _originalStdErr: any;
   private _originalProcessExit: any;
+  private _originalTestPlan: TestPlan;
 
   @Setup
   private _spyProcess() {
     this._originalProcessExit = process.exit;
     this._originalStdErr = process.stderr.write;
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
 
     SpyOn(process, "exit").andStub();
     SpyOn(process.stderr, "write").andStub();
@@ -30,6 +31,7 @@ export class NotestsErrorTests {
   private _resetProcess() {
     process.exit = this._originalProcessExit;
     process.stderr.write = this._originalStdErr;
+    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
   }
 
   @AsyncTest("empty test fixture throws no tests error")

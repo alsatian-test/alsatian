@@ -42,11 +42,12 @@ function ExpectFunction<ActualType>(
 ): Matcher<ActualType> {
   const TEST_PLAN = Reflect.getMetadata("alsatian:test-plan", ExpectFunction) as TestPlan;
   const STACK = getStack();
-  const STACK_LINE = STACK[STACK.findIndex(x => /Object.ExpectFunction/.test(x.functionName)) + 1];
 
-  const TEST_ITEM = TEST_PLAN.testItems.find(x => {
-    return x.testFixture.filePath.replace(/\//g, "\\") === STACK_LINE.filePath 
-        && x.test.key === STACK_LINE.functionName.split(".")[1]
+  const TEST_ITEM = TEST_PLAN.testItems.find(testItem => {
+    const FIXTURE_CLASS_NAME = Object.getPrototypeOf(testItem.testFixture.fixture).constructor.name;
+    return STACK.some(stackLine => stackLine.filePath === testItem.testFixture.filePath.replace(/\//g, "\\") 
+                                && stackLine.functionName.split(".")[0] === FIXTURE_CLASS_NAME
+                                && testItem.isRunning)
   });
 
   const MATCHER = findMatcher(actualValue);

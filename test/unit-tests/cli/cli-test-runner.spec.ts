@@ -8,23 +8,21 @@ import {
   Teardown,
   TestCase,
   TestOutcome,
-  TestRunner,
-  TestSet
+  TestRunner
 } from "../../../core/alsatian-core";
-import { TestBuilder } from "../../builders/test-builder";
-import { TestCaseBuilder } from "../../builders/test-case-builder";
-import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class CliTestRunnerTests {
   private _originalStdErr: any;
   private _originalStdOut: any;
   private _originalProcessExit: any;
+  private _originalTestPlan: any;
 
   @Setup
   private _spyProcess() {
     this._originalProcessExit = process.exit;
     this._originalStdOut = process.stdout.write;
     this._originalStdErr = process.stderr.write;
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
 
     SpyOn(process, "exit").andStub();
     SpyOn(process.stderr, "write").andStub();
@@ -35,7 +33,8 @@ export class CliTestRunnerTests {
   private _resetProcess() {
     process.exit = this._originalProcessExit;
     process.stdout.write = this._originalStdOut;
-    process.stderr.write = this._originalStdErr;
+    process.stderr.write = this._originalStdErr;    
+    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
   }
 
   @TestCase(null)

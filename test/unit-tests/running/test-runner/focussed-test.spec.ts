@@ -1,16 +1,28 @@
-import { AsyncTest, Expect, SpyOn, Test } from "../../../../core/alsatian-core";
-import { MatchError } from "../../../../core/errors/match-error";
+import { AsyncTest, Expect, Setup } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
+import { TestPlan } from "../../../../core/running";
 
 export class FocussedTestTests {
+
+  private _originalTestPlan: TestPlan;
+
+  @Setup
+  private _recordOriginalTestPlan() {    
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
+  }
+
+  private _restoreOriginalTestPlan() {    
+    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+  }
+
   @AsyncTest()
   public async twoUnfocussedTestsBothRun() {
+
     const output = new TestOutputStream();
 
     let testOneExecuted = false;
@@ -44,6 +56,9 @@ export class FocussedTestTests {
     const testRunner = new TestRunner(output);
 
     await testRunner.run(testSet);
+
+    this._restoreOriginalTestPlan();
+
     Expect(testOneExecuted).toBe(true);
     Expect(testTwoExecuted).toBe(true);
   }
@@ -84,6 +99,9 @@ export class FocussedTestTests {
     const testRunner = new TestRunner(output);
 
     await testRunner.run(testSet);
+
+    this._restoreOriginalTestPlan();
+
     Expect(testOneExecuted).toBe(true);
     Expect(testTwoExecuted).toBe(false);
   }
@@ -124,6 +142,9 @@ export class FocussedTestTests {
     const testRunner = new TestRunner(output);
 
     await testRunner.run(testSet);
+
+    this._restoreOriginalTestPlan();
+
     Expect(testOneExecuted).toBe(false);
     Expect(testTwoExecuted).toBe(true);
   }
