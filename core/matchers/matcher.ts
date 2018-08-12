@@ -1,4 +1,4 @@
-import { EqualMatchError, ExactMatchError, TruthyMatchError } from "../errors";
+import { EqualMatchError, TruthyMatchError } from "../errors";
 import { Any, TypeMatcher } from "../spying";
 import { TestItem } from "../running";
 import { stringify } from "../stringification";
@@ -35,21 +35,12 @@ export class Matcher<T> {
    */
   public toBe(expectedValue: T) {
 
-    this.testItem.registerMatcher(
-      (expectedValue !== this._actualValue) === this.shouldMatch,
+    this._registerMatcher(
+      (expectedValue === this._actualValue) === this.shouldMatch,
       `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
       `to be ${stringify(expectedValue)}.`,
-      this._actualValue,
       expectedValue,
     );
-
-    if ((expectedValue !== this._actualValue) === this.shouldMatch) {
-      throw new ExactMatchError(
-        this._actualValue,
-        expectedValue,
-        this.shouldMatch
-      );
-    }
   }
 
   /**
@@ -88,22 +79,24 @@ export class Matcher<T> {
    * Checks that a value is not undefined
    */
   public toBeDefined() {
-    if ((this._actualValue === undefined) === this.shouldMatch) {
-      throw new ExactMatchError(
-        this._actualValue,
-        undefined,
-        !this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      (this._actualValue !== undefined) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${this.shouldMatch ? "not " : ""}` +
+      `to be undefined.`,
+      undefined,
+    );
   }
 
   /**
    * Checks that a value is null
    */
   public toBeNull() {
-    if ((this._actualValue !== null) === this.shouldMatch) {
-      throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
-    }
+    this._registerMatcher(
+      (this._actualValue === null) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
+      `to be null.`,
+      null,
+    );
   }
 
   /**
@@ -182,6 +175,15 @@ export class Matcher<T> {
         obj.hasOwnProperty("length") &&
         "number" === typeof obj.length &&
         (obj.length === 0 || (obj.length > 0 && obj.length - 1 in obj)))
+    );
+  }
+
+  protected _registerMatcher(isMatch: boolean, failureMessage: string, expectedValue: T) {
+    this.testItem.registerMatcher(
+      isMatch,
+      failureMessage,
+      expectedValue,
+      this._actualValue
     );
   }
 }

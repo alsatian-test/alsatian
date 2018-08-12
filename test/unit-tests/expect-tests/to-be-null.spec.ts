@@ -1,12 +1,15 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
+import { Expect, Test, TestCase, Matcher, SpyOn, Any } from "../../../core/alsatian-core";
+import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeNullTests {
   @Test()
-  public nullShouldNotThrowError() {
-    const expect = Expect(null);
+  public nullShouldRecordMatch() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(null, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeNull();
 
-    Expect(() => expect.toBeNull()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @TestCase(undefined)
@@ -20,10 +23,13 @@ export class ToBeNullTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public nullShouldThrowErrorForNonNullValues(value: any) {
-    const expect = Expect(value);
+  public nullShouldRecordNonMatchForNonNullValues(value: any) {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(value, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeNull();
 
-    Expect(() => expect.toBeNull()).toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
   }
 
   @TestCase(undefined)
@@ -37,11 +43,11 @@ export class ToBeNullTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public nullShouldThrowCorrectErrorWithCorrectMessageForNonNullValues(
+  public nullShouldRecordNonMatchWithCorrectMessageNonNullValues(
     value: any
   ) {
-    const expect = Expect(value);
-
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(value, testItem);
     let stringifiedArgument = JSON.stringify(value);
 
     if (stringifiedArgument) {
@@ -51,21 +57,33 @@ export class ToBeNullTests {
     const expectedErrorMessage =
       "Expected " + stringifiedArgument + " to be null.";
 
-    Expect(() => expect.toBeNull()).toThrowError(
-      ExactMatchError,
-      expectedErrorMessage
+    SpyOn(testItem, "registerMatcher");
+    
+    matcher.toBeNull();
+
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      expectedErrorMessage,
+      null,
+      value
     );
   }
 
   @Test()
-  public notNullShouldThrowError() {
-    const expect = Expect(null);
+  public notNullShouldRecordNonMatch() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(null, testItem);
+    SpyOn(testItem, "registerMatcher");
 
     const expectedErrorMessage = "Expected null not to be null.";
+    
+    matcher.not.toBeNull();
 
-    Expect(() => expect.not.toBeNull()).toThrowError(
-      ExactMatchError,
-      expectedErrorMessage
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      expectedErrorMessage,
+      null,
+      null
     );
   }
 
@@ -80,9 +98,12 @@ export class ToBeNullTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public notNullShouldNotThrowErrorForNonNullValues(value: any) {
-    const expect = Expect(value);
+  public notNullShouldRecordMatchForNonNullValues(value: any) {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(value, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeNull();
 
-    Expect(() => expect.not.toBeNull()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
   }
 }

@@ -1,5 +1,6 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
+import { Expect, Test, TestCase, Matcher, SpyOn, Any } from "../../../core/alsatian-core";
+import { TestItem } from "../../../core/running";
+import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeDefinedTests {
   @TestCase(null)
@@ -13,28 +14,39 @@ export class ToBeDefinedTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public definedShouldNotThrowError(value: any) {
-    const expect = Expect(value);
+  public definedShouldRecordMatch(value: any) {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(value, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeDefined();
 
-    Expect(() => expect.toBeDefined()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public definedShouldThrowErrorForUndefined() {
-    const expect = Expect(undefined);
+  public definedShouldRecordNonMatchForUndefined() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(undefined, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeDefined();
 
-    Expect(() => expect.toBeDefined()).toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
   }
 
   @Test()
-  public definedShouldThrowCorrectErrorWithCorrectMessageForUndefined() {
-    const expect = Expect(undefined);
+  public definedShouldRecordNonMatchWithCorrectMessageForUndefined() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(undefined, testItem);
 
-    const expectedErrorMessage = "Expected undefined not to be undefined.";
+    SpyOn(testItem, "registerMatcher");
+    
+    matcher.toBeDefined();
 
-    Expect(() => expect.toBeDefined()).toThrowError(
-      ExactMatchError,
-      expectedErrorMessage
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      "Expected undefined not to be undefined.",
+      undefined,
+      undefined
     );
   }
 
@@ -49,24 +61,35 @@ export class ToBeDefinedTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public notDefinedShouldThrowError(value: any) {
-    const expect = Expect(value);
+  public notDefinedShouldRecordNonMatch(value: any) {
+    
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(value, testItem);
 
     const expectedErrorMessage =
       "Expected " +
       JSON.stringify(value).replace(",", ", ") +
       " to be undefined.";
 
-    Expect(() => expect.not.toBeDefined()).toThrowError(
-      ExactMatchError,
-      expectedErrorMessage
+    SpyOn(testItem, "registerMatcher");
+    
+    matcher.not.toBeDefined();
+
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      expectedErrorMessage,
+      undefined,
+      value
     );
   }
 
   @Test()
-  public notDefinedShouldNotThrowErrorForUndefined() {
-    const expect = Expect(undefined);
+  public notDefinedShouldRecordNonMatchForUndefined() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new Matcher(undefined, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeDefined();
 
-    Expect(() => expect.not.toBeDefined()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 }

@@ -1,7 +1,6 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import {
   EqualMatchError,
-  ExactMatchError,
   MatchError
 } from "../../../core/errors";
 import { TestOutcome } from "../../../core/results/test-outcome";
@@ -59,7 +58,6 @@ export class TestSetResultsTests {
   }
 
   @TestCase(MatchError)
-  @TestCase(ExactMatchError)
   @TestCase(EqualMatchError)
   public oneTestFixtureMatchErrorOutcomeFail(errorType: new () => Error) {
     const testFixture = new TestFixtureBuilder().build();
@@ -76,7 +74,6 @@ export class TestSetResultsTests {
   }
 
   @TestCase(MatchError)
-  @TestCase(ExactMatchError)
   @TestCase(EqualMatchError)
   public twoTestFixturesOnePassOneMatchErrorOutcomeFail(
     errorType: new () => Error
@@ -124,7 +121,6 @@ export class TestSetResultsTests {
   }
 
   @TestCase(EvalError, MatchError)
-  @TestCase(ExactMatchError, RangeError)
   @TestCase(TypeError, EqualMatchError)
   public twoTestFixturesOneMatchErrorOneErrorOutcomeError(
     errorTypeA: new () => Error,

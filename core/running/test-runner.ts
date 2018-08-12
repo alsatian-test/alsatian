@@ -7,13 +7,15 @@ import {
   TestOutputStream,
   TestResults,
   TestSet,
-  TestSetResults
+  TestSetResults,
+  TestOutcome
 } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
 import { TestItem } from "./test-item";
+import { MatchError } from "../errors";
 
 export class TestRunner {
   private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
@@ -120,18 +122,6 @@ export class TestRunner {
     testSetRunInfo: TestSetRunInfo,
     testFixtureResults: TestFixtureResults
   ) {
-    let error: Error;
-
-    try {
-      testItem.isRunning = true;
-      await testItem.run(testSetRunInfo.timeout);
-    } catch (e) {
-      error = e;
-    }
-    finally {
-      testItem.isRunning = false;
-    }
-
     let testResults = testFixtureResults.testResults.find(
       result => result.test === testItem.test
     );
@@ -140,10 +130,35 @@ export class TestRunner {
       testResults = testFixtureResults.addTestResult(testItem.test);
     }
 
-    return testResults.addTestCaseResult(
-      testItem.testCase.caseArguments,
-      error
-    );
+    try {
+      testItem.isRunning = true;
+      const results = await testItem.run(testSetRunInfo.timeout);
+      //TODO: handles OLD WAY remove later
+      let overallResult = testResults.addTestCaseResult(testItem.testCase.caseArguments);
+      results.forEach(result => {
+        //TODO: handles OLD WAY remove later
+        if (result === undefined) {
+          overallResult = testResults.addTestCaseResult(testItem.testCase.caseArguments);
+          return;
+        }
+
+        overallResult = testResults.addTestCaseResult(
+          testItem.testCase.caseArguments,
+          result.outcome === TestOutcome.Fail ? new MatchError(result.message, result.expected, result.actual) :
+          result.outcome === TestOutcome.Error ? result.error : undefined
+        );
+      });
+      return overallResult;
+    } catch (e) {
+      //TODO: handles OLD WAY remove later and replace with error rather than fail
+      return testResults.addTestCaseResult(
+        testItem.testCase.caseArguments,
+        e
+      );
+    }
+    finally {
+      testItem.isRunning = false;
+    }
   }
 
   private async _setupFixture(fixture: { [key: string]: () => any }) {

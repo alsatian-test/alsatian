@@ -13,7 +13,6 @@ export class TempTests {
   @TestCase("empty-match-error", "EmptyMatchError")
   @TestCase("error-match-error", "ErrorMatchError")
   @TestCase("equal-match-error", "EqualMatchError")
-  @TestCase("exact-match-error", "ExactMatchError")
   @TestCase("function-call-count-match-error", "FunctionCallCountMatchError")
   @TestCase("function-call-match-error", "FunctionCallMatchError")
   @TestCase("greater-than-match-error", "GreaterThanMatchError")

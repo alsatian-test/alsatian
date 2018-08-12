@@ -3,7 +3,8 @@ import {
   Expect,
   METADATA_KEYS,
   SpyOn,
-  Timeout
+  Timeout,
+  TestOutcome
 } from "../../../../core/alsatian-core";
 import { MatchError } from "../../../../core/errors";
 import { TestItem } from "../../../../core/running/test-item";
@@ -70,15 +71,10 @@ export class TestItemRunSyncTests {
 
     const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-    let error: Error;
+    const result = (await testItem.run(500))[0];
 
-    try {
-      await testItem.run(500);
-    } catch (e) {
-      error = e;
-    }
-
-    Expect(error).toBe(expectedError);
+    Expect(result.outcome).toBe(TestOutcome.Error);
+    Expect(result.error).toBe(expectedError);
   }
 
   @AsyncTest()
@@ -98,14 +94,9 @@ export class TestItemRunSyncTests {
 
     const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-    let error: Error;
+    const result = (await testItem.run(500))[0];
 
-    try {
-      await testItem.run(500);
-    } catch (e) {
-      error = e;
-    }
-
-    Expect(error).toBe(expectedError);
+    Expect(result.outcome).toBe(TestOutcome.Error);
+    Expect(result.error).toBe(expectedError);
   }
 }

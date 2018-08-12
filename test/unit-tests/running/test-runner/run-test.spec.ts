@@ -79,6 +79,8 @@ export class RunTestTests {
 
     await testRunner.run(testSet);
 
+    this._restoreOriginalTestPlan();
+
     Expect(spyContainer.onCompleteCB)
       .toHaveBeenCalled()
       .exactly(1);

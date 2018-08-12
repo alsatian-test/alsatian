@@ -2,6 +2,7 @@ import { ITest, ITestCase, ITestFixture } from "../_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
+import { TestOutcome } from "../results";
 
 export interface Matcher {
   isValid: boolean | (() => Promise<boolean>);
@@ -64,9 +65,12 @@ export class TestItem {
 
   public async run(timeout: number) {
     if (this._test.ignored) {
-      return;
+      return [ { outcome: TestOutcome.Skip } ];
     } else {
       await this._setup();
+
+      const results: Array<any> = [];
+      
       try {
         await this._runTest(this._test.timeout || timeout);
 
@@ -74,35 +78,31 @@ export class TestItem {
           console.warn("Yikes no checks have been made");
         }
 
-        const results: Array<any> = [];
-
-        enum Result {
-          Pass,
-          Fail,
-          Error
-        }
-
         for (const matcher of this.matchers) {
           const matcherValid = typeof matcher.isValid === "boolean" ? matcher.isValid : await matcher.isValid();
 
           if (matcherValid) {
             results.push({
-              result: Result.Pass
+              outcome: TestOutcome.Pass
             });
           }
           else {
             results.push({
-              result: Result.Fail,
+              outcome: TestOutcome.Fail,
               ... matcher
             });
           }
         }
       }
       catch (error) {
-        throw error;
+        results.push({
+          outcome: TestOutcome.Error,
+          error: error
+        });
       }
       finally {
         await this._teardown();
+        return results;
       }
     }
   }
