@@ -33,8 +33,12 @@ export class CliTestRunnerTests {
   private _resetProcess() {
     process.exit = this._originalProcessExit;
     process.stdout.write = this._originalStdOut;
-    process.stderr.write = this._originalStdErr;    
-    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+    process.stderr.write = this._originalStdErr;
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   @TestCase(null)

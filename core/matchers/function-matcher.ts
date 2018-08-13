@@ -47,7 +47,6 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorType: new (...args: Array<any>) => Error,
     errorMessage: string
   ) {
-
     let threwRightError = false;
     let actualError: Error | null = null;
 

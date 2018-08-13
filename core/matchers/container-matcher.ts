@@ -12,7 +12,6 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
    * @param expectedContent - the string or array item that the value should contain
    */
   public toContain(expectedContent: ContentType) {
-
     if (
       typeof this.actualValue === "string" &&
       typeof expectedContent !== "string"

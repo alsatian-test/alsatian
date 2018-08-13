@@ -21,7 +21,10 @@ class ExampleExtensionMatcher extends Matcher<ExampleExtension> {
   }
 }
 
-const EXTENDED_EXPECT = Expect.extend(ExampleExtension, ExampleExtensionMatcher);
+const EXTENDED_EXPECT = Expect.extend(
+  ExampleExtension,
+  ExampleExtensionMatcher
+);
 
 @TestFixture("extending expect")
 export class ExtendingExpectTests {

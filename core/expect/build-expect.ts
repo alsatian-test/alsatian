@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { 
+import {
   MixedMatcher,
   PropertyMatcher,
   FunctionMatcher,
@@ -20,15 +20,21 @@ export declare type MatcherFunction = (actualValue: any) => MixedMatcher;
 export function buildExpect(): IExpect {
   const EXPECT = ExpectFunction as IExpect;
   EXPECT.fail = fail;
-  EXPECT.extend = (<P, S extends Matcher<P>>(a: new (...args: any[]) => P, b: new(value: P, testItem: any) => S) => {
+  EXPECT.extend = (<P, S extends Matcher<P>>(
+    a: new (...args: Array<any>) => P,
+    b: new (value: P, testItem: any) => S
+  ) => {
     MATCHER_MAP.push([a, b]);
     return EXPECT;
   }) as any;
-  
+
   return EXPECT;
 }
 
-type MatcherDictionary<T> = [new (...args: any[]) => T, new(value: T, testItem: any) => Matcher<T>];
+type MatcherDictionary<T> = [
+  new (...args: Array<any>) => T,
+  new (value: T, testItem: any) => Matcher<T>
+];
 
 const MATCHER_MAP: Array<MatcherDictionary<any>> = [
   [Array, ContainerMatcher],
@@ -40,14 +46,23 @@ const MATCHER_MAP: Array<MatcherDictionary<any>> = [
 function ExpectFunction<ActualType>(
   actualValue: ActualType
 ): Matcher<ActualType> {
-  const TEST_PLAN = Reflect.getMetadata("alsatian:test-plan", ExpectFunction) as TestPlan;
+  const TEST_PLAN = Reflect.getMetadata(
+    "alsatian:test-plan",
+    ExpectFunction
+  ) as TestPlan;
   const STACK = getStack();
 
   const TEST_ITEM = TEST_PLAN.testItems.find(testItem => {
-    const FIXTURE_CLASS_NAME = Object.getPrototypeOf(testItem.testFixture.fixture).constructor.name;
-    return STACK.some(stackLine => stackLine.filePath === testItem.testFixture.filePath.replace(/\//g, "\\") 
-                                && stackLine.functionName.split(".")[0] === FIXTURE_CLASS_NAME
-                                && testItem.isRunning)
+    const FIXTURE_CLASS_NAME = Object.getPrototypeOf(
+      testItem.testFixture.fixture
+    ).constructor.name;
+    return STACK.some(
+      stackLine =>
+        stackLine.filePath ===
+          testItem.testFixture.filePath.replace(/\//g, "\\") &&
+        stackLine.functionName.split(".")[0] === FIXTURE_CLASS_NAME &&
+        testItem.isRunning
+    );
   });
 
   const MATCHER = findMatcher(actualValue);
@@ -56,16 +71,20 @@ function ExpectFunction<ActualType>(
 
 function getStack() {
   return new Error().stack.split("\n").map(stackLine => {
-    const STACK_ITEMS = stackLine.replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$1 $2").split(" ");
+    const STACK_ITEMS = stackLine
+      .replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$1 $2")
+      .split(" ");
 
     return {
       functionName: STACK_ITEMS[0],
       filePath: STACK_ITEMS[1]
-    }
+    };
   });
 }
 
-function findMatcher<T>(actualValue: T): new(value: T, testItem: any) => Matcher<T> {
+function findMatcher<T>(
+  actualValue: T
+): new (value: T, testItem: any) => Matcher<T> {
   if (typeof actualValue === "function") {
     return FunctionMatcher;
   }
@@ -77,18 +96,18 @@ function findMatcher<T>(actualValue: T): new(value: T, testItem: any) => Matcher
   if (typeof actualValue === "number") {
     return NumberMatcher as any;
   }
-  
+
   if (actualValue === null || actualValue === undefined) {
     return Matcher;
   }
 
   const proto = Object.getPrototypeOf(actualValue);
-  
+
   if (proto === null) {
     return Matcher;
   }
 
-  const match = MATCHER_MAP.find((x) => x[0] === proto.constructor);
+  const match = MATCHER_MAP.find(x => x[0] === proto.constructor);
 
   return match ? match[1] : findMatcher(proto);
 }

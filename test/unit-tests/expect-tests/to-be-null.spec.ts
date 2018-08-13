@@ -1,4 +1,11 @@
-import { Expect, Test, TestCase, Matcher, SpyOn, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  TestCase,
+  Matcher,
+  SpyOn,
+  Any
+} from "../../../core/alsatian-core";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeNullTests {
@@ -43,9 +50,7 @@ export class ToBeNullTests {
   @TestCase([])
   @TestCase([1])
   @TestCase([1, 2])
-  public nullShouldRecordNonMatchWithCorrectMessageNonNullValues(
-    value: any
-  ) {
+  public nullShouldRecordNonMatchWithCorrectMessageNonNullValues(value: any) {
     const testItem = new TestItemBuilder().build();
     const matcher = new Matcher(value, testItem);
     let stringifiedArgument = JSON.stringify(value);
@@ -58,7 +63,7 @@ export class ToBeNullTests {
       "Expected " + stringifiedArgument + " to be null.";
 
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.toBeNull();
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(
@@ -76,7 +81,7 @@ export class ToBeNullTests {
     SpyOn(testItem, "registerMatcher");
 
     const expectedErrorMessage = "Expected null not to be null.";
-    
+
     matcher.not.toBeNull();
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(

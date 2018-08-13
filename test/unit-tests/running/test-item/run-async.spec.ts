@@ -24,7 +24,7 @@ export class TestItemRunAsyncTests {
               "something",
               "something"
             );
-            
+
             resolve();
           });
         }
@@ -71,7 +71,7 @@ export class TestItemRunAsyncTests {
               "nothing"
             );
             resolve();
-          })
+          });
         }
       })
       .addTest(test)

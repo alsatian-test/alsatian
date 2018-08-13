@@ -17,17 +17,20 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestPlan } from "../../../../core/running";
 
 export class PreTestTests {
-
   private _originalTestPlan: TestPlan;
 
   @Setup
-  private _recordOriginalTestPlan() {    
+  private _recordOriginalTestPlan() {
     this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
   }
 
   @Teardown
-  private _restoreOriginalTestPlan() {    
-    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+  private _restoreOriginalTestPlan() {
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   @AsyncTest()

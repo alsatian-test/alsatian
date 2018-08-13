@@ -1,8 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import {
-  EqualMatchError,
-  MatchError
-} from "../../../core/errors";
+import { EqualMatchError, MatchError } from "../../../core/errors";
 import { TestFixtureResults } from "../../../core/results/test-fixture-results";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestBuilder } from "../../builders/test-builder";

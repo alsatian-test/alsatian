@@ -7,18 +7,11 @@ import { stringify } from "../stringification";
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher<T> {
-  private _actualValue: T;
   protected get actualValue(): T {
     return this._actualValue;
   }
-
-  private _shouldMatch: boolean = true;
   protected get shouldMatch(): boolean {
     return this._shouldMatch;
-  }
-
-  public constructor(actualValue: T, private testItem: TestItem) {
-    this._actualValue = actualValue;
   }
 
   /**
@@ -28,18 +21,25 @@ export class Matcher<T> {
     this._shouldMatch = !this.shouldMatch;
     return this;
   }
+  private _actualValue: T;
+
+  private _shouldMatch: boolean = true;
+
+  public constructor(actualValue: T, private testItem: TestItem) {
+    this._actualValue = actualValue;
+  }
 
   /**
    * Checks that a value is identical to another
    * @param expectedValue - the value that will be used to match
    */
   public toBe(expectedValue: T) {
-
     this._registerMatcher(
       (expectedValue === this._actualValue) === this.shouldMatch,
-      `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
-      `to be ${stringify(expectedValue)}.`,
-      expectedValue,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to be ${stringify(expectedValue)}.`,
+      expectedValue
     );
   }
 
@@ -81,9 +81,10 @@ export class Matcher<T> {
   public toBeDefined() {
     this._registerMatcher(
       (this._actualValue !== undefined) === this.shouldMatch,
-      `Expected ${stringify(this.actualValue)} ${this.shouldMatch ? "not " : ""}` +
-      `to be undefined.`,
-      undefined,
+      `Expected ${stringify(this.actualValue)} ${
+        this.shouldMatch ? "not " : ""
+      }` + `to be undefined.`,
+      undefined
     );
   }
 
@@ -93,9 +94,10 @@ export class Matcher<T> {
   public toBeNull() {
     this._registerMatcher(
       (this._actualValue === null) === this.shouldMatch,
-      `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
-      `to be null.`,
-      null,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to be null.`,
+      null
     );
   }
 
@@ -109,6 +111,19 @@ export class Matcher<T> {
     ) {
       throw new TruthyMatchError(this._actualValue, this.shouldMatch);
     }
+  }
+
+  protected _registerMatcher(
+    isMatch: boolean,
+    failureMessage: string,
+    expectedValue: T
+  ) {
+    this.testItem.registerMatcher(
+      isMatch,
+      failureMessage,
+      expectedValue,
+      this._actualValue
+    );
   }
 
   private _checkBuffersAreEqual(buffer: Buffer, other: any): boolean {
@@ -175,15 +190,6 @@ export class Matcher<T> {
         obj.hasOwnProperty("length") &&
         "number" === typeof obj.length &&
         (obj.length === 0 || (obj.length > 0 && obj.length - 1 in obj)))
-    );
-  }
-
-  protected _registerMatcher(isMatch: boolean, failureMessage: string, expectedValue: T) {
-    this.testItem.registerMatcher(
-      isMatch,
-      failureMessage,
-      expectedValue,
-      this._actualValue
     );
   }
 }

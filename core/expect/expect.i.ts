@@ -13,7 +13,6 @@ import { FunctionSpy, PropertySpy } from "../spying";
  * Enables actual vs expected comparisons
  */
 export interface IExpect {
-
   /**
    * Allows checking of test outcomes
    * @param actualValue - the value or function under test
@@ -32,14 +31,13 @@ export interface IExpect {
    */
   fail(message: string): void;
 
-  extend<R, S extends Matcher<R>>(type: new(...a: any[]) => R, matcher: new(value: R, testItem: any) => S): IExtendedExpect<R, S> & this;
+  extend<R, S extends Matcher<R>>(
+    type: new (...a: Array<any>) => R,
+    matcher: new (value: R, testItem: any) => S
+  ): IExtendedExpect<R, S> & this;
 }
 
-export interface IExtendedExpect<ExpectType, MatcherType extends Matcher<ExpectType>> {
-
-  /**
-   * Allows checking of test outcomes
-   * @param actualValue - the value or function under test
-   */
-  <N extends ExpectType>(actualValue: N): Matcher<N> & MatcherType;
-}
+export type IExtendedExpect<
+  ExpectType,
+  MatcherType extends Matcher<ExpectType>
+> = <N extends ExpectType>(actualValue: N) => Matcher<N> & MatcherType;

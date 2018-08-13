@@ -21,7 +21,11 @@ export class TestLoader {
     const testFixtures: Array<ITestFixture> = [];
 
     const loadFixture = (constructor: any, description: string) => {
-      const testFixture = this._loadTestFixture(constructor, description, filePath);
+      const testFixture = this._loadTestFixture(
+        constructor,
+        description,
+        filePath
+      );
       if (testFixture !== null) {
         testFixtures.push(testFixture);
       }

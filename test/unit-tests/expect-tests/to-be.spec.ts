@@ -1,4 +1,11 @@
-import { Expect, Test, TestCase, SpyOn, Matcher, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  TestCase,
+  SpyOn,
+  Matcher,
+  Any
+} from "../../../core/alsatian-core";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeTests {
@@ -38,11 +45,10 @@ export class ToBeTests {
 
   @Test()
   public differentValuesRecordsNonMatch() {
-    
     const testItem = new TestItemBuilder().build();
     const matcher = new Matcher(1, testItem);
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.toBe(2);
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(
@@ -74,11 +80,10 @@ export class ToBeTests {
     expected: any,
     actual: any
   ) {
-    
     const testItem = new TestItemBuilder().build();
     const matcher = new Matcher(actual, testItem);
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.toBe(expected);
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(
@@ -154,7 +159,7 @@ export class ToBeTests {
     const testItem = new TestItemBuilder().build();
     const matcher = new Matcher(actual, testItem);
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.toBe(expected);
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(

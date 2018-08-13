@@ -31,7 +31,11 @@ export class NotestsErrorTests {
   private _resetProcess() {
     process.exit = this._originalProcessExit;
     process.stderr.write = this._originalStdErr;
-    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   @AsyncTest("empty test fixture throws no tests error")

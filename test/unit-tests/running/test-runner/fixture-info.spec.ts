@@ -16,17 +16,20 @@ import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestPlan } from "../../../../core/running";
 
 export class FixtureInfoTests {
-
   private _originalTestPlan: TestPlan;
 
   @Setup
-  private _recordPreviousTestPlan() {    
+  private _recordPreviousTestPlan() {
     this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
   }
 
   @Teardown
-  private _resetPreviousTestPlan() {    
-    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+  private _resetPreviousTestPlan() {
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   private static _getExpectedFixtureOutput(fixtureName: string): string {

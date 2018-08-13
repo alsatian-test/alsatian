@@ -1,4 +1,11 @@
-import { Expect, Test, TestCase, Matcher, SpyOn, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  TestCase,
+  Matcher,
+  SpyOn,
+  Any
+} from "../../../core/alsatian-core";
 import { TestItem } from "../../../core/running";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
@@ -39,7 +46,7 @@ export class ToBeDefinedTests {
     const matcher = new Matcher(undefined, testItem);
 
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.toBeDefined();
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(
@@ -62,7 +69,6 @@ export class ToBeDefinedTests {
   @TestCase([1])
   @TestCase([1, 2])
   public notDefinedShouldRecordNonMatch(value: any) {
-    
     const testItem = new TestItemBuilder().build();
     const matcher = new Matcher(value, testItem);
 
@@ -72,7 +78,7 @@ export class ToBeDefinedTests {
       " to be undefined.";
 
     SpyOn(testItem, "registerMatcher");
-    
+
     matcher.not.toBeDefined();
 
     Expect(testItem.registerMatcher).toHaveBeenCalledWith(

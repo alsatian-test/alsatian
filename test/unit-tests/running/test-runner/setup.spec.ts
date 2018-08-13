@@ -20,17 +20,20 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("setting up tests")
 export class SetupTests {
-
   private _originalTestPlan: TestPlan;
 
   @Setup
-  private _recordOriginalTestPlan() {    
+  private _recordOriginalTestPlan() {
     this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
   }
 
   @Teardown
-  private _restoreOriginalTestPlan() {    
-    Reflect.defineMetadata("alsatian:test-plan", this._originalTestPlan, Expect);
+  private _restoreOriginalTestPlan() {
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   private _createTestFixture() {

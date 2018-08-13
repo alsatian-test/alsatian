@@ -133,30 +133,33 @@ export class TestRunner {
     try {
       testItem.isRunning = true;
       const results = await testItem.run(testSetRunInfo.timeout);
-      //TODO: handles OLD WAY remove later
-      let overallResult = testResults.addTestCaseResult(testItem.testCase.caseArguments);
+      // TODO: handles OLD WAY remove later
+      let overallResult = testResults.addTestCaseResult(
+        testItem.testCase.caseArguments
+      );
       results.forEach(result => {
-        //TODO: handles OLD WAY remove later
+        // TODO: handles OLD WAY remove later
         if (result === undefined) {
-          overallResult = testResults.addTestCaseResult(testItem.testCase.caseArguments);
+          overallResult = testResults.addTestCaseResult(
+            testItem.testCase.caseArguments
+          );
           return;
         }
 
         overallResult = testResults.addTestCaseResult(
           testItem.testCase.caseArguments,
-          result.outcome === TestOutcome.Fail ? new MatchError(result.message, result.expected, result.actual) :
-          result.outcome === TestOutcome.Error ? result.error : undefined
+          result.outcome === TestOutcome.Fail
+            ? new MatchError(result.message, result.expected, result.actual)
+            : result.outcome === TestOutcome.Error
+              ? result.error
+              : undefined
         );
       });
       return overallResult;
     } catch (e) {
-      //TODO: handles OLD WAY remove later and replace with error rather than fail
-      return testResults.addTestCaseResult(
-        testItem.testCase.caseArguments,
-        e
-      );
-    }
-    finally {
+      // TODO: handles OLD WAY remove later and replace with error rather than fail
+      return testResults.addTestCaseResult(testItem.testCase.caseArguments, e);
+    } finally {
       testItem.isRunning = false;
     }
   }

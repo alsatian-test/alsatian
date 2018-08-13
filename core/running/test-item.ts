@@ -4,7 +4,7 @@ import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 import { TestOutcome } from "../results";
 
-export interface Matcher {
+export interface IMatcher {
   isValid: boolean | (() => Promise<boolean>);
   message: string;
   expected: any;
@@ -12,34 +12,25 @@ export interface Matcher {
 }
 
 export class TestItem {
-
-  public registerMatcher(isValid: boolean | (() => Promise<boolean>), message: string, expected: any, actual: any): any {
-    this.matchers.push({
-      isValid,
-      message,
-      expected,
-      actual
-    });
+  public get testCase() {
+    return this._testCase;
+  }
+  public get test() {
+    return this._test;
+  }
+  public get testFixture() {
+    return this._testFixture;
   }
 
   public isRunning = false;
 
-  public readonly matchers: Array<Matcher> = [];
+  public readonly matchers: Array<IMatcher> = [];
 
   private _testCase: ITestCase;
-  public get testCase() {
-    return this._testCase;
-  }
 
   private _test: ITest;
-  public get test() {
-    return this._test;
-  }
 
   private _testFixture: ITestFixture;
-  public get testFixture() {
-    return this._testFixture;
-  }
 
   public constructor(
     testFixture: ITestFixture,
@@ -63,47 +54,63 @@ export class TestItem {
     this._testCase = testCase;
   }
 
+  public registerMatcher(
+    isValid: boolean | (() => Promise<boolean>),
+    message: string,
+    expected: any,
+    actual: any
+  ): any {
+    this.matchers.push({
+      isValid,
+      message,
+      expected,
+      actual
+    });
+  }
+
   public async run(timeout: number) {
     if (this._test.ignored) {
-      return [ { outcome: TestOutcome.Skip } ];
+      return [{ outcome: TestOutcome.Skip }];
     } else {
       await this._setup();
 
       const results: Array<any> = [];
-      
+
       try {
         await this._runTest(this._test.timeout || timeout);
 
         if (this.matchers.length === 0) {
-          console.warn("Yikes no checks have been made");
+          // TODO: add warning
+          // console.warn("Yikes no checks have been made");
         }
 
         for (const matcher of this.matchers) {
-          const matcherValid = typeof matcher.isValid === "boolean" ? matcher.isValid : await matcher.isValid();
+          const matcherValid =
+            typeof matcher.isValid === "boolean"
+              ? matcher.isValid
+              : await matcher.isValid();
 
           if (matcherValid) {
             results.push({
               outcome: TestOutcome.Pass
             });
-          }
-          else {
+          } else {
             results.push({
               outcome: TestOutcome.Fail,
-              ... matcher
+              ...matcher
             });
           }
         }
-      }
-      catch (error) {
+      } catch (error) {
         results.push({
           outcome: TestOutcome.Error,
-          error: error
+          error
         });
-      }
-      finally {
+      } finally {
         await this._teardown();
-        return results;
       }
+
+      return results;
     }
   }
 

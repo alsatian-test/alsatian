@@ -2,7 +2,6 @@ import { Expect, Test, TestCase } from "../../../core/alsatian-core";
 import { EmptyMatchError } from "../../../core/errors/empty-match-error";
 
 export class ToBeEmptyTests {
-
   @Test()
   public emptyShouldNotThrowErrorForEmptyArray() {
     const expect = Expect([]);
