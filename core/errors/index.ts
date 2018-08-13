@@ -1,4 +1,3 @@
-import { ContentsMatchError } from "./contents-match-error";
 import { EmptyMatchError } from "./empty-match-error";
 import { EqualMatchError } from "./equal-match-error";
 import { ErrorMatchError } from "./error-match-error";
@@ -17,7 +16,6 @@ export {
   EqualMatchError,
   RegexMatchError,
   TruthyMatchError,
-  ContentsMatchError,
   LessThanMatchError,
   GreaterThanMatchError,
   ErrorMatchError,

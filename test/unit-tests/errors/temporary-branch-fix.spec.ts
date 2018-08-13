@@ -9,7 +9,6 @@ import {
 export class TempTests {
   private _setErrorMessage() {}
 
-  @TestCase("contents-match-error", "ContentsMatchError")
   @TestCase("empty-match-error", "EmptyMatchError")
   @TestCase("error-match-error", "ErrorMatchError")
   @TestCase("equal-match-error", "EqualMatchError")

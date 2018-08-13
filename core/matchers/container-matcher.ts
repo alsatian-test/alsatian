@@ -1,10 +1,10 @@
-import { ContentsMatchError } from "../errors";
 import { EmptyMatcher } from "./empty-matcher";
+import { stringify } from "../stringification";
 
 /**
  * Compares container types e.g. string and Array
  */
-export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
+export class ContainerMatcher<ContainerType extends { indexOf(content: ContentType): number }, ContentType> extends EmptyMatcher<
   ContainerType
 > {
   /**
@@ -21,15 +21,11 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
       );
     }
 
-    if (
-      ((this.actualValue as any).indexOf(expectedContent) === -1) ===
-      this.shouldMatch
-    ) {
-      throw new ContentsMatchError(
-        this.actualValue,
-        expectedContent,
-        this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      (this.actualValue.indexOf(expectedContent) > -1) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${!this.shouldMatch ? "not " : ""}` +
+      `to contain ${stringify(expectedContent)}.`,
+      expectedContent
+    );
   }
 }

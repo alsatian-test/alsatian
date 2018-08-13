@@ -116,7 +116,7 @@ export class Matcher<T> {
   protected _registerMatcher(
     isMatch: boolean,
     failureMessage: string,
-    expectedValue: T
+    expectedValue: any
   ) {
     this.testItem.registerMatcher(
       isMatch,
