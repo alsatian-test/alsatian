@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {
-  MixedMatcher,
   PropertyMatcher,
   FunctionMatcher,
   ContainerMatcher,
@@ -13,9 +12,6 @@ import { fail } from "./fail";
 import { Matcher } from "../matchers";
 import { PropertySpy, FunctionSpy } from "../spying";
 import { TestPlan } from "../running";
-
-export declare type MatcherConstructor = new (actualValue: any) => MixedMatcher;
-export declare type MatcherFunction = (actualValue: any) => MixedMatcher;
 
 export function buildExpect(): IExpect {
   const EXPECT = ExpectFunction as IExpect;

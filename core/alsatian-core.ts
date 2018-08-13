@@ -8,7 +8,6 @@ import {
   FunctionMatcher,
   FunctionSpyMatcher,
   Matcher,
-  MixedMatcher,
   NumberMatcher,
   PropertyMatcher,
   StringMatcher
@@ -79,7 +78,6 @@ export {
   Matcher,
   MatchError,
   METADATA_KEYS,
-  MixedMatcher,
   NumberMatcher,
   PropertyMatcher,
   Setup,
