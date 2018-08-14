@@ -1,140 +1,204 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { EmptyMatchError } from "../../../core/errors/empty-match-error";
+import { Expect, Test, EmptyMatcher, SpyOn, Any } from "../../../core/alsatian-core";
+import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeEmptyTests {
   @Test()
-  public emptyShouldNotThrowErrorForEmptyArray() {
-    const expect = Expect([]);
+  public emptyShouldReportMatchForEmptyArray() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher([], testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldThrowErrorForNonEmptyArray() {
-    const expect = Expect([0]);
+  public emptyShouldReportNonMatchForNonEmptyArray() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher([0], testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "[0]" to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "[0]" to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldThrowErrorForEmptyArray() {
-    const expect = Expect([]);
+  public notEmptyShouldReportNonMatchForEmptyArray() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher([], testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "[]" not to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "[]" not to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldNotThrowErrorForNonEmptyArray() {
-    const expect = Expect([0]);
+  public notEmptyShouldReportMatchForNonEmptyArray() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher([0], testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldNotThrowErrorForEmptyString() {
-    const expect = Expect("");
+  public emptyShouldReportMatchForEmptyString() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher("", testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldThrowErrorForNonEmptyString() {
-    const expect = Expect("string");
+  public emptyShouldReportNonMatchForNonEmptyString() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher("string", testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "string" to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "string" to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldThrowErrorForEmptyString() {
-    const expect = Expect("");
+  public notEmptyShouldReportNonMatchForEmptyString() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher("", testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "" not to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "" not to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldNotThrowErrorForNonEmptyString() {
-    const expect = Expect("string");
+  public notEmptyShouldReportMatchForNonEmptyString() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher("string", testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldNotThrowErrorForEmptyObject() {
-    const expect = Expect({});
+  public emptyShouldReportMatchForEmptyObject() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher({}, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldThrowErrorForNonEmptyObject() {
-    const expect = Expect({ a: true });
+  public emptyShouldReportNonMatchForNonEmptyObject() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher({ a: true }, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "{"a":true}" to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "{"a":true}" to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldThrowErrorForEmptyObject() {
-    const expect = Expect({});
+  public notEmptyShouldReportNonMatchForEmptyObject() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher({}, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "{}" not to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "{}" not to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldNotThrowErrorForNonEmptyObject() {
-    const expect = Expect({ a: true });
+  public notEmptyShouldReportMatchForNonEmptyObject() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher({ a: true }, testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldNotThrowErrorForEmptyMap() {
-    const expect = Expect(new Map());
+  public emptyShouldReportMatchForEmptyMap() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher(new Map(), testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @Test()
-  public emptyShouldThrowErrorForNonEmptyMap() {
-    const expect = Expect(new Map([["key", "value"]]));
+  public emptyShouldReportNonMatchForNonEmptyMap() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher(new Map([["key", "value"]]), testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.toBeEmpty();
 
-    Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "Map<1>" to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "Map<1>" to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldThrowErrorForEmptyMap() {
-    const expect = Expect(new Map());
+  public notEmptyShouldReportNonMatchForEmptyMap() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher(new Map(), testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
-      'Expected "Map<0>" not to be empty.'
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
+      false,
+      'Expected "Map<0>" not to be empty.',
+      Any,
+      Any
     );
   }
 
   @Test()
-  public notEmptyShouldNotThrowErrorForNonEmptyMap() {
-    const expect = Expect(new Map([["key", "value"]]));
+  public notEmptyShouldReportMatchForNonEmptyMap() {
+    const testItem = new TestItemBuilder().build();
+    const matcher = new EmptyMatcher(new Map([["key", "value"]]), testItem);
+    SpyOn(testItem, "registerMatcher");
+    matcher.not.toBeEmpty();
 
-    Expect(() => expect.not.toBeEmpty()).not.toThrow();
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 }

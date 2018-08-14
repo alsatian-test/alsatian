@@ -1,4 +1,3 @@
-import { EmptyMatchError } from "./empty-match-error";
 import { EqualMatchError } from "./equal-match-error";
 import { ErrorMatchError } from "./error-match-error";
 import { FunctionCallCountMatchError } from "./function-call-count-match-error";
@@ -22,6 +21,5 @@ export {
   FunctionCallMatchError,
   FunctionCallCountMatchError,
   TestTimeoutError,
-  PropertySetMatchError,
-  EmptyMatchError
+  PropertySetMatchError
 };

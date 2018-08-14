@@ -1,9 +1,6 @@
 import {
-  buildExpect,
   Expect,
-  IExpect,
   MatchError,
-  NumberMatcher,
   Test,
   Matcher
 } from "../../../core/alsatian-core";
@@ -23,7 +20,7 @@ class AnswerMatcher extends Matcher<Answer> {
 const EXTENDED_EXPECT = Expect.extend(Answer, AnswerMatcher);
 
 export class ExtendingExpectTests {
-  
+
   @Test("extension has new function")
   public extensionHasNewFunctions() {
     Expect(EXTENDED_EXPECT(new Answer(42)).toBeTheAnswer).toBeDefined();
