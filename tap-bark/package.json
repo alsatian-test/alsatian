@@ -1,0 +1,51 @@
+{
+    "name": "tap-bark",
+    "version": "1.0.0",
+    "description": "TAP parser for Alsatian",
+    "main": "src/tap-bark.js",
+    "typings": "src/tap-bark.d.ts",
+    "bin": {
+        "tap-bark": "index.js"
+    },
+    "scripts": {
+        "prepublish": "in-publish && npm test && npm run build || not-in-publish",
+        "pretest": "npm run install-self && npm run build-integration-tests && npm run build-with-maps",
+        "install-self": "npm run build && install-self",
+        "test": "npm run tests-with-coverage",
+        "tests-with-coverage": "nyc --reporter=lcov --reporter=html alsatian \"./test/**/*.test.js\" && nyc report",
+        "review": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./node_modules/**/*.ts\"",
+        "build": "tsc",
+        "build-with-maps": "tsc --sourceMap -p ./",
+        "build-integration-tests": "tsc -p test/integration-tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alsatian-test/tap-bark.git"
+    },
+    "author": "James Monger <jameskmonger@hotmail.co.uk> (http://jamesmonger.com)",
+    "contributors": [
+        "James Richford"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/alsatian-test/tap-bark/issues"
+    },
+    "homepage": "https://github.com/alsatian-test/tap-bark#readme",
+    "dependencies": {
+        "@types/node": ">=0.0.2",
+        "chalk": "^1.1.3",
+        "duplexer": "^0.1.1",
+        "tap-parser": "^5.0.0",
+        "through2": "^2.0.1"
+    },
+    "devDependencies": {
+        "alsatian": "^1.0.0-beta.4",
+        "codeclimate-test-reporter": "^0.4.0",
+        "coveralls": "^2.11.15",
+        "in-publish": "^2.0.0",
+        "install-self": "^1.0.0-beta.6",
+        "nyc": "^10.0.0",
+        "tslint": "^4.0.2",
+        "typescript": "^2.0.3"
+    }
+}

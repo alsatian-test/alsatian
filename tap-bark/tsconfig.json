@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "newLine": "LF",
+        "lib": [ "es2015" ]
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.d.ts",
+        "test/integration-tests/**/*.test.ts"
+    ],
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "index.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

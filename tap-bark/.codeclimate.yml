@@ -1,0 +1,9 @@
+engines:
+  fixme:
+    enabled: true
+ratings:
+  paths:
+    - "src/**/*.ts"
+    - "index.ts"
+exclude_paths:
+  - test/

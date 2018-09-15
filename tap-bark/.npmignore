@@ -1,0 +1,14 @@
+# TypeScript
+*.js.map
+*.ts
+!*.d.ts
+
+# TypeScript config
+tsconfig.json
+
+# Typings info
+typings.json
+typings
+
+# Tests
+test
