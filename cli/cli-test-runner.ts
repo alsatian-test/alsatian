@@ -1,4 +1,4 @@
-import { TapBark } from "tap-bark";
+import { TapBark } from "../tap-bark/src/tap-bark";
 import { TestOutputStream, TestRunner, TestSet } from "../core/alsatian-core";
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 

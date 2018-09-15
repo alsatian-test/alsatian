@@ -39,7 +39,7 @@
     "fix-tests-linting-issues": "tslint --fix --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "pretest": "npm run build",
     "test": "npm run review && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" --tap",
+    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "install-self": "npm link && install-self",

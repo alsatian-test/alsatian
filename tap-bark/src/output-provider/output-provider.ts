@@ -1,6 +1,7 @@
 import { IOutputProvider } from "./output-provider.i";
 import { ResultType } from "../result-type";
 import { Assertion } from "../external/tap-parser";
+import { fail } from "assert";
 const chalk = require("chalk");
 
 export class OutputProvider implements IOutputProvider {
@@ -32,17 +33,19 @@ export class OutputProvider implements IOutputProvider {
         const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
 
         if (assertion.diag) {
-            let output = failureTitle + assertion.diag.message + "\nExpected: " + assertion.diag.data.expect + "\n  Actual: " + assertion.diag.data.got;
+            const data = assertion.diag.data;
+            const details = data.details;
+            const title = `${failureTitle} ${assertion.diag.message}\n`;
 
-            if (assertion.diag.data.stack) {
-                output = output
-                    + "\n=====\n"
-                    + chalk.bold.white("Stack Trace") + "\n\n"
-                    + assertion.diag.data.stack + "\n"
-                    + "=====";
+            if (details && Object.keys(details).length > 0) {
+                return `${title}${
+                    Object.keys(details)
+                            .map(key => `\n${key}:\n${details[key]}`)
+                            .join("\n")
+                    }`;
             }
 
-            return output;
+            return `${title}\nexpected:\n${data.expect}\nactual:\n${data.got}`;
         }
 
         return failureTitle + "Failure reason unknown.";

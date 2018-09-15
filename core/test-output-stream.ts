@@ -133,39 +133,6 @@ export class TestOutputStream extends ReadableStream {
     expected: string,
     details?: { [props: string]: any }
   ): void {
-    /*
-    let output =
-      " ---\n" +
-      '   message: "' +
-      message +
-      '"\n' +
-      "   severity: fail\n" +
-      "   data:\n" +
-      "     got: " +
-      actual +
-      "\n" +
-      "     expect: " +
-      expected +
-      "\n";
-
-    if (details && details.diff) {
-      output += "     diff: " + details.diff + "\n";
-    }
-
-    if (details && details.stack) {
-      output = output + "     stack: |\n";
-
-      output =
-        output +
-        details.stack
-          .split("\n")
-          .map((l: string) => "       " + l)
-          .join("\n") +
-        "\n";
-    }
-
-    output = output + " ...\n";
-    */
 
     const output = {
       message,
@@ -177,6 +144,6 @@ export class TestOutputStream extends ReadableStream {
       }
     };
 
-    this._writeOut(` ---\n${safeDump(output)} ...\n`);
+    this._writeOut(` ---\n${safeDump(output).split("\n").map(s => ` ${s}`).join("\n")}\n ...\n`);
   }
 }
