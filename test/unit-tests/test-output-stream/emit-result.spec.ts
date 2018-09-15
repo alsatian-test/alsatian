@@ -8,7 +8,7 @@ import {
   TestCaseResult,
   TestOutputStream
 } from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 
@@ -239,11 +239,15 @@ export class EmitResultTests {
 
     const test: ITest = new TestBuilder().build();
 
-    const error = new EqualMatchError(actualValue, 2, true);
+    const message = `Expected ${actualValue} to be equal to 2.`;
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(test, []);
 
-    const expected = _getErrorYaml(error);
+    const expected = _getErrorYaml({
+      message,
+      expected: 2,
+      actual: actualValue
+    } as any);
 
     testOutput.emitResult(1, testCaseResult);
 
@@ -259,11 +263,15 @@ export class EmitResultTests {
 
     const test: ITest = new TestBuilder().build();
 
-    const error = new EqualMatchError(1, expectedValue, true);
+    const message = `Expected 1 to be equal to ${expectedValue}.`;
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(test, []);
 
-    const expected = _getErrorYaml(error);
+    const expected = _getErrorYaml({
+      message,
+      expected: expectedValue,
+      actual: 1
+    } as any);
 
     testOutput.emitResult(1, testCaseResult);
 

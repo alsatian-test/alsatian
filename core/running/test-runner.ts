@@ -152,7 +152,8 @@ export class TestRunner {
             ? new MatchError(result.message, result.expected, result.actual)
             : result.outcome === TestOutcome.Error
               ? result.error
-              : undefined
+              : undefined,
+          result
         );
       });
       return overallResult;

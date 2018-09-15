@@ -9,6 +9,7 @@ export interface IMatcher {
   message: string;
   expected: any;
   actual: any;
+  extras?: { [prop: string]: any };
 }
 
 export class TestItem {
@@ -58,13 +59,15 @@ export class TestItem {
     isValid: boolean | (() => Promise<boolean>),
     message: string,
     expected: any,
-    actual: any
+    actual: any,
+    extras?: { [prop: string]: any }
   ): any {
     this.matchers.push({
       isValid,
       message,
       expected,
-      actual
+      actual,
+      extras
     });
   }
 

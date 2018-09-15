@@ -1,4 +1,3 @@
-import { EqualMatchError } from "./equal-match-error";
 import { ErrorMatchError } from "./error-match-error";
 import { FunctionCallCountMatchError } from "./function-call-count-match-error";
 import { FunctionCallMatchError } from "./function-call-match-error";
@@ -12,7 +11,6 @@ import { TruthyMatchError } from "./truthy-match-error";
 
 export {
   MatchError,
-  EqualMatchError,
   RegexMatchError,
   TruthyMatchError,
   LessThanMatchError,

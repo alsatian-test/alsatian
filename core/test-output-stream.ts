@@ -3,6 +3,7 @@ import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 import { stringify } from "./stringification";
+import { safeDump } from "js-yaml";
 
 export class TestOutputStream extends ReadableStream {
   public _read() {} // tslint:disable-line:no-empty
@@ -31,7 +32,7 @@ export class TestOutputStream extends ReadableStream {
     if (outcome === TestOutcome.Pass) {
       this._emitPass(testId, test, testCaseArguments);
     } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
-      this._emitFail(testId, test, testCaseArguments, result.error);
+      this._emitFail(testId, test, testCaseArguments, result);
     } else if (outcome === TestOutcome.Skip) {
       this._emitSkip(testId, test, testCaseArguments);
     } else {
@@ -74,17 +75,23 @@ export class TestOutputStream extends ReadableStream {
     testId: number,
     test: ITest,
     testCaseArguments: Array<any>,
-    error: Error | null
+    result: TestCaseResult
   ): void {
     const description = this._getTestDescription(test, testCaseArguments);
 
     this._writeOut(`not ok ${testId} ${description}\n`);
 
+    // TODO this is WRONG and just for test purposes
+    // should be !result.error but for some reason error is
+    // populated need to track down why
+    if (result.error) {
+      this._writeFailure(result.extras.message, "", "", result.extras.extras);
+    }
     // if it's a match error then log it properly, otherwise log it as unhandled
-    if (error instanceof MatchError) {
-      this._writeMatchErrorOutput(error);
+    else if (result.error instanceof MatchError) {
+      this._writeMatchErrorOutput(result.error);
     } else {
-      this._writeUnhandledErrorOutput(error);
+      this._writeUnhandledErrorOutput(result.error);
     }
   }
 
@@ -116,7 +123,7 @@ export class TestOutputStream extends ReadableStream {
       "The test threw an unhandled error.",
       "an unhandled error",
       "no unhandled errors to be thrown",
-      error instanceof Error ? error.stack : undefined
+      error instanceof Error ? { stack: error.stack } : undefined
     );
   }
 
@@ -124,8 +131,9 @@ export class TestOutputStream extends ReadableStream {
     message: string,
     actual: string,
     expected: string,
-    stack?: string
+    details?: { [props: string]: any }
   ): void {
+    /*
     let output =
       " ---\n" +
       '   message: "' +
@@ -140,20 +148,35 @@ export class TestOutputStream extends ReadableStream {
       expected +
       "\n";
 
-    if (stack) {
+    if (details && details.diff) {
+      output += "     diff: " + details.diff + "\n";
+    }
+
+    if (details && details.stack) {
       output = output + "     stack: |\n";
 
       output =
         output +
-        stack
+        details.stack
           .split("\n")
-          .map(l => "       " + l)
+          .map((l: string) => "       " + l)
           .join("\n") +
         "\n";
     }
 
     output = output + " ...\n";
+    */
 
-    this._writeOut(output);
+    const output = {
+      message,
+      severity: "fail",
+      data: {
+        got: actual,
+        expect: expected,
+        details
+      }
+    };
+
+    this._writeOut(` ---\n${safeDump(output)} ...\n`);
   }
 }

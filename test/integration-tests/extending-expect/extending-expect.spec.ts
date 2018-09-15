@@ -1,9 +1,4 @@
-import {
-  Expect,
-  MatchError,
-  Test,
-  Matcher
-} from "../../../core/alsatian-core";
+import { Expect, MatchError, Test, Matcher } from "../../../core/alsatian-core";
 
 class Answer {
   public constructor(public readonly value: number) {}
@@ -20,12 +15,13 @@ class AnswerMatcher extends Matcher<Answer> {
 const EXTENDED_EXPECT = Expect.extend(Answer, AnswerMatcher);
 
 export class ExtendingExpectTests {
-
   @Test("extension has new function")
   public extensionHasNewFunctions() {
     Expect(EXTENDED_EXPECT(new Answer(42)).toBeTheAnswer).toBeDefined();
     Expect(EXTENDED_EXPECT(new Answer(42)).toBeTheAnswer).not.toBeNull();
-    Expect(typeof EXTENDED_EXPECT(new Answer(42)).toBeTheAnswer).toBe("function");
+    Expect(typeof EXTENDED_EXPECT(new Answer(42)).toBeTheAnswer).toBe(
+      "function"
+    );
   }
 
   @Test("extension retains existing functions")

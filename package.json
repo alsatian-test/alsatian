@@ -39,7 +39,7 @@
     "fix-tests-linting-issues": "tslint --fix --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "pretest": "npm run build",
     "test": "npm run review && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
+    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\" --tap",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "install-self": "npm link && install-self",
@@ -89,8 +89,11 @@
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
+    "@types/deep-diff": "0.0.31",
+    "@types/diff": "^3.5.1",
     "@types/glob": "^5.0.30",
     "@types/gulp": "^4.0.0",
+    "@types/js-yaml": "^3.11.2",
     "@types/selenium-webdriver": "^3.0.0",
     "babel-cli": "^6.18.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -112,8 +115,12 @@
   },
   "dependencies": {
     "@types/node": ">=4.0.0",
+    "chalk": "^2.4.1",
+    "deep-diff": "^1.0.2",
+    "diff": "^3.5.0",
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
+    "js-yaml": "^3.12.0",
     "reflect-metadata": "^0.1.3",
     "tap-bark": "1.0.0"
   }

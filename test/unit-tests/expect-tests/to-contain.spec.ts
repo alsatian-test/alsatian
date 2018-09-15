@@ -1,4 +1,10 @@
-import { Expect, TestCase, ContainerMatcher, SpyOn, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  TestCase,
+  ContainerMatcher,
+  SpyOn,
+  Any
+} from "../../../core/alsatian-core";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToContainTests {
@@ -57,12 +63,7 @@ export class ToContainTests {
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      true,
-      Any,
-      Any,
-      Any
-    );
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @TestCase("something", "something")
@@ -76,12 +77,7 @@ export class ToContainTests {
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      true,
-      Any,
-      Any,
-      Any
-    );
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @TestCase([], 1)
@@ -95,12 +91,7 @@ export class ToContainTests {
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      true,
-      Any,
-      Any,
-      Any
-    );
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @TestCase("", "something")
@@ -114,12 +105,7 @@ export class ToContainTests {
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      true,
-      Any,
-      Any,
-      Any
-    );
+    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
   }
 
   @TestCase([1], 1)

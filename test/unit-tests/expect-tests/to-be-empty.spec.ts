@@ -1,4 +1,10 @@
-import { Expect, Test, EmptyMatcher, SpyOn, Any } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  EmptyMatcher,
+  SpyOn,
+  Any
+} from "../../../core/alsatian-core";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToBeEmptyTests {

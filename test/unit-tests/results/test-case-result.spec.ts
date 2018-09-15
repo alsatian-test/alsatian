@@ -1,5 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { TestCaseResult } from "../../../core/results/test-case-result";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestBuilder } from "../../builders/test-builder";
@@ -50,7 +50,6 @@ export class TestCaseResultTests {
   }
 
   @TestCase(MatchError)
-  @TestCase(EqualMatchError)
   public matchErrorOutcomeIsFail(errorType: new () => Error) {
     const test = new TestBuilder().build();
     test.ignored = true;

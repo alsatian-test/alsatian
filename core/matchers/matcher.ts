@@ -1,7 +1,10 @@
-import { EqualMatchError, TruthyMatchError } from "../errors";
-import { Any, TypeMatcher } from "../spying";
+import { TruthyMatchError } from "../errors";
+import { TypeMatcher } from "../spying";
 import { TestItem } from "../running";
 import { stringify } from "../stringification";
+import { diff } from "deep-diff";
+import { diffChars } from "diff";
+import chalk from "chalk";
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
@@ -66,13 +69,16 @@ export class Matcher<T> {
       valueMatch = expectedValue == this._actualValue;
     }
 
-    if (valueMatch !== this.shouldMatch) {
-      throw new EqualMatchError(
-        this._actualValue,
-        expectedValue,
-        this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      valueMatch,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to be equal to ${stringify(expectedValue)}.`,
+      expectedValue,
+      {
+        diff: this._diff(expectedValue, this._actualValue)
+      }
+    );
   }
 
   /**
@@ -116,14 +122,41 @@ export class Matcher<T> {
   protected _registerMatcher(
     isMatch: boolean,
     failureMessage: string,
-    expectedValue: any
+    expectedValue: any,
+    extras?: { [prop: string]: any }
   ) {
     this.testItem.registerMatcher(
       isMatch,
       failureMessage,
       expectedValue,
-      this._actualValue
+      this._actualValue,
+      extras
     );
+  }
+
+  private _diff(a: any, b: any) {
+    if (typeof a === "string") {
+      return diffChars(a, b)
+        .map(
+          x =>
+            x.added
+              ? chalk.green(x.value)
+              : x.removed
+                ? chalk.red(x.value)
+                : x.value
+        )
+        .join("");
+    }
+
+    return diff(a, b)
+      .map(d => {
+        if (d.kind === "N") {
+          return chalk.green(`+ ${d.path.join(".")}: ${JSON.stringify(d.rhs)}`);
+        } else if (d.kind === "D") {
+          return chalk.red(`- ${d.path.join(".")}: ${JSON.stringify(d.lhs)}`);
+        }
+      })
+      .join("\n");
   }
 
   private _checkBuffersAreEqual(buffer: Buffer, other: any): boolean {
