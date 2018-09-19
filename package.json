@@ -89,7 +89,7 @@
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
-    "@types/glob": "^5.0.30",
+    "@types/glob": "^7.1.0",
     "@types/gulp": "^4.0.0",
     "@types/selenium-webdriver": "^3.0.0",
     "babel-cli": "^6.18.0",
