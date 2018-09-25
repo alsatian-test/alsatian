@@ -15,7 +15,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -37,7 +37,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -59,7 +59,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -73,7 +73,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -87,7 +87,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -101,7 +101,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -115,7 +115,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -137,7 +137,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue, testItem);
+    const matcher = new ContainerMatcher(actualValue);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -159,7 +159,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -178,7 +178,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -197,7 +197,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -216,7 +216,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -235,7 +235,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -254,7 +254,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.toContain(expectedContent);
 
@@ -273,7 +273,7 @@ export class ToContainTests {
     expectedContent: T
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 
@@ -292,7 +292,7 @@ export class ToContainTests {
     expectedContent: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container, testItem);
+    const matcher = new ContainerMatcher(container);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toContain(expectedContent);
 

@@ -3,6 +3,8 @@ import { METADATA_KEYS } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 import { TestOutcome } from "../results";
+import { TestOutputStream } from "../test-output-stream";
+import { SpyOn } from "../spying";
 
 export interface IMatcher {
   isValid: boolean | (() => Promise<boolean>);
@@ -71,49 +73,23 @@ export class TestItem {
     });
   }
 
-  public async run(timeout: number) {
+  public async run(timeout: number, outputStream: TestOutputStream) {
     if (this._test.ignored) {
       return [{ outcome: TestOutcome.Skip }];
     } else {
       await this._setup();
 
-      const results: Array<any> = [];
-
       try {
+        if (/(\(|\s)Expect\(/.test(this._testFixture.fixture.toString())) {
+          outputStream.emitWarning(`No calls to Expect in ${this.test.description}`);
+        }
+
         await this._runTest(this._test.timeout || timeout);
-
-        if (this.matchers.length === 0) {
-          // TODO: add warning
-          // console.warn("Yikes no checks have been made");
-        }
-
-        for (const matcher of this.matchers) {
-          const matcherValid =
-            typeof matcher.isValid === "boolean"
-              ? matcher.isValid
-              : await matcher.isValid();
-
-          if (matcherValid) {
-            results.push({
-              outcome: TestOutcome.Pass
-            });
-          } else {
-            results.push({
-              outcome: TestOutcome.Fail,
-              ...matcher
-            });
-          }
-        }
       } catch (error) {
-        results.push({
-          outcome: TestOutcome.Error,
-          error
-        });
+        throw error;
       } finally {
         await this._teardown();
       }
-
-      return results;
     }
   }
 

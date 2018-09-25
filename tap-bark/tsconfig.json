@@ -1,10 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
         "isolatedModules": false,
-        "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": true,
@@ -14,7 +13,9 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "newLine": "LF",
-        "lib": [ "es2015" ]
+        "lib": [ "es2015" ],
+        "jsx": "react",
+        "jsxFactory": "h"
     },
     "exclude": [
         "node_modules",
@@ -24,7 +25,7 @@
     "include": [
         "src/**/*.ts",
         "test/**/*.ts",
-        "index.ts"
+        "index.ts", "src/tap-bark.tsx"
     ],
     "atom": {
         "rewriteTsconfig": false

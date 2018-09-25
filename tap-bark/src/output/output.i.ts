@@ -8,4 +8,5 @@ export interface IOutput {
     setProgress(current: number, total: number): void;
     outputResults(results: IResults): void;
     getStream(): IStream;
+    outputLog(message: string): void;
 }

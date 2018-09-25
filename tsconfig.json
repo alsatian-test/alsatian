@@ -1,7 +1,7 @@
 {
    "extends": "./tsconfig.base.json",
    "compilerOptions": {
-      "target": "es5",
+      "target": "es6",
       "module": "commonjs",
       "moduleResolution": "node",
       "declaration": true,
@@ -9,7 +9,9 @@
       "preserveConstEnums": true,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      "lib": [ "es2015" ]
+      "lib": [ "es2015" ],
+      "jsx": "react",
+      "jsxFactory": "h"
    },
    "buildOnSave": false,
    "compileOnSave": true,
@@ -25,7 +27,7 @@
       "./cli/**/*.ts",
       "./core/**/*.ts",
       "./test/**/*.ts",
-      "./scripts/**/*.ts"
+      "./scripts/**/*.ts", "tap-bark/src/tap-bark.tsx"
    ],
    "atom": {
       "rewriteTsconfig": false

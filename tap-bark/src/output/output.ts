@@ -84,6 +84,10 @@ export class Output {
         this._stream.cursorTo(0, undefined);
     }
 
+    public outputLog(message: string) {
+        this._stream.writeLine(message);
+    }
+
     public outputResults(results: IResults): void {
         let total = results.pass + results.fail + results.ignore;
 

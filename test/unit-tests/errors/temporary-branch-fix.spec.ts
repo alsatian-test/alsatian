@@ -2,9 +2,11 @@ import {
   Expect,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  IgnoreTests
 } from "../../../core/alsatian-core";
 
+@IgnoreTests()
 @TestFixture("temporary tests to satisfy TypeScript quirk")
 export class TempTests {
   private _setErrorMessage() {}

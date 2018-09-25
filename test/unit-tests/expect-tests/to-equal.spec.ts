@@ -11,15 +11,23 @@ import { stringify } from "../../../core/stringification";
 import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToEqualTests {
-  @FocusTest
+  // @FocusTest
+  @Test()
+  public noExpectTest() {
+    // console.log("I ain't doing anything")
+  }
+
+  //@FocusTest
   @Test()
   public test() {
     Expect({ notTest: undefined, testTwo: 2 }).toEqual({ test: undefined });
   }
 
-  @FocusTest
+  ///@FocusTest
   @Test()
   public test2() {
+    // console.log("to be or not to be, that is the question")
+
     Expect("abd").toEqual("ace");
   }
 
@@ -33,7 +41,7 @@ export class ToEqualTests {
   @TestCase("something")
   public identicalSimpleTypesReportsMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(value);
 
@@ -50,7 +58,7 @@ export class ToEqualTests {
   @TestCase("something", "something")
   public matchingSimpleTypesReportsMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toEqual(expected);
 
@@ -60,7 +68,7 @@ export class ToEqualTests {
   @Test()
   public differentValuesReportsNonMatch() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(1, testItem);
+    const matcher = new Matcher(1);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(2);
 
@@ -78,7 +86,7 @@ export class ToEqualTests {
   @TestCase(42, 0)
   public differentSimpleValuesReportsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -98,7 +106,7 @@ export class ToEqualTests {
   @TestCase(null, undefined)
   public nullAndUndefinedReportsMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toEqual(expected);
 
@@ -109,7 +117,7 @@ export class ToEqualTests {
   @TestCase("something", 42)
   public differentSimpleTypesReportsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -138,7 +146,7 @@ export class ToEqualTests {
   @TestCase([{ with: "something" }, { and: "something", else: "!" }])
   public identicalComplexTypesReportsMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(value);
 
@@ -159,7 +167,7 @@ export class ToEqualTests {
   )
   public matchingComplexTypesReportsMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -175,7 +183,7 @@ export class ToEqualTests {
     actual: any
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -200,7 +208,7 @@ export class ToEqualTests {
     actual: any
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -224,7 +232,7 @@ export class ToEqualTests {
     actual: any
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -248,7 +256,7 @@ export class ToEqualTests {
   @TestCase([1, 2, 3], {})
   public differentComplexTypesReportsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -268,7 +276,7 @@ export class ToEqualTests {
   @TestCase([{ this: "that" }], { with: "something" })
   public differentDeepComplexTypesReportsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -291,7 +299,7 @@ export class ToEqualTests {
   @TestCase([{ this: "that" }], [{ this: "and that" }])
   public differentDeepComplexReportsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -319,7 +327,7 @@ export class ToEqualTests {
   })
   public canMatchWithAny(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -338,7 +346,7 @@ export class ToEqualTests {
   })
   public reportsNonMatchForNonMatchesWithAny(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -378,7 +386,7 @@ export class ToEqualTests {
     errorMessage: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -396,7 +404,7 @@ export class ToEqualTests {
   @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, 2: 3, length: 3 }) // ArrayLike
   public canMatchWithBuffer(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 
@@ -443,7 +451,7 @@ export class ToEqualTests {
     errorMessage: string
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toEqual(expected);
 

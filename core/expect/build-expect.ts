@@ -18,7 +18,7 @@ export function buildExpect(): IExpect {
   EXPECT.fail = fail;
   EXPECT.extend = (<P, S extends Matcher<P>>(
     a: new (...args: Array<any>) => P,
-    b: new (value: P, testItem: any) => S
+    b: new (value: P) => S
   ) => {
     MATCHER_MAP.push([a, b]);
     return EXPECT;
@@ -29,7 +29,7 @@ export function buildExpect(): IExpect {
 
 type MatcherDictionary<T> = [
   new (...args: Array<any>) => T,
-  new (value: T, testItem: any) => Matcher<T>
+  new (value: T) => Matcher<T>
 ];
 
 const MATCHER_MAP: Array<MatcherDictionary<any>> = [
@@ -42,27 +42,8 @@ const MATCHER_MAP: Array<MatcherDictionary<any>> = [
 function ExpectFunction<ActualType>(
   actualValue: ActualType
 ): Matcher<ActualType> {
-  const TEST_PLAN = Reflect.getMetadata(
-    "alsatian:test-plan",
-    ExpectFunction
-  ) as TestPlan;
-  const STACK = getStack();
-
-  const TEST_ITEM = TEST_PLAN.testItems.find(testItem => {
-    const FIXTURE_CLASS_NAME = Object.getPrototypeOf(
-      testItem.testFixture.fixture
-    ).constructor.name;
-    return STACK.some(
-      stackLine =>
-        stackLine.filePath ===
-          testItem.testFixture.filePath.replace(/\//g, "\\") &&
-        stackLine.functionName.split(".")[0] === FIXTURE_CLASS_NAME &&
-        testItem.isRunning
-    );
-  });
-
   const MATCHER = findMatcher(actualValue);
-  return new MATCHER(actualValue, TEST_ITEM);
+  return new MATCHER(actualValue);
 }
 
 function getStack() {
@@ -80,7 +61,7 @@ function getStack() {
 
 function findMatcher<T>(
   actualValue: T
-): new (value: T, testItem: any) => Matcher<T> {
+): new (value: T) => Matcher<T> {
   if (typeof actualValue === "function") {
     return FunctionMatcher;
   }

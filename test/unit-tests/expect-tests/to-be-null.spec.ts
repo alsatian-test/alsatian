@@ -12,7 +12,7 @@ export class ToBeNullTests {
   @Test()
   public nullShouldRecordMatch() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(null, testItem);
+    const matcher = new Matcher(null);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeNull();
 
@@ -32,7 +32,7 @@ export class ToBeNullTests {
   @TestCase([1, 2])
   public nullShouldRecordNonMatchForNonNullValues(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeNull();
 
@@ -52,7 +52,7 @@ export class ToBeNullTests {
   @TestCase([1, 2])
   public nullShouldRecordNonMatchWithCorrectMessageNonNullValues(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     let stringifiedArgument = JSON.stringify(value);
 
     if (stringifiedArgument) {
@@ -77,7 +77,7 @@ export class ToBeNullTests {
   @Test()
   public notNullShouldRecordNonMatch() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(null, testItem);
+    const matcher = new Matcher(null);
     SpyOn(testItem, "registerMatcher");
 
     const expectedErrorMessage = "Expected null not to be null.";
@@ -105,7 +105,7 @@ export class ToBeNullTests {
   @TestCase([1, 2])
   public notNullShouldRecordMatchForNonNullValues(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeNull();
 

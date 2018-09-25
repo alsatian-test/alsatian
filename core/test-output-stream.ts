@@ -24,6 +24,18 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`# FIXTURE ${fixture.description}\n`);
   }
 
+  public emitLog(...log: Array<string>): void {
+    this._writeOut(`# LOG: ${log.join(" ")}\n`);
+  }
+
+  public emitWarning(...warning: Array<string>): void {
+    this._writeOut(`# WARN: ${warning.join(" ")}\n`);
+  }
+
+  public emitError(...error: Array<string>): void {
+    this._writeOut(`# ERROR: ${error.join(" ")}\n`);
+  }
+
   public emitResult(testId: number, result: TestCaseResult): void {
     const outcome = result.outcome;
     const test = result.test;
@@ -84,7 +96,7 @@ export class TestOutputStream extends ReadableStream {
     // TODO this is WRONG and just for test purposes
     // should be !result.error but for some reason error is
     // populated need to track down why
-    if (result.error) {
+    if (!result.error && !result.extras) {
       this._writeFailure(result.extras.message, "", "", result.extras.extras);
     }
     // if it's a match error then log it properly, otherwise log it as unhandled
@@ -143,6 +155,10 @@ export class TestOutputStream extends ReadableStream {
         details
       }
     };
+
+    if (output.data.details === undefined) {
+      delete output.data.details;
+    }
 
     this._writeOut(` ---\n${safeDump(output).split("\n").map(s => ` ${s}`).join("\n")}\n ...\n`);
   }

@@ -19,7 +19,7 @@ export class ToBeTests {
   @TestCase("something")
   public identicalSimpleTypesRecordsMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(value);
 
@@ -36,7 +36,7 @@ export class ToBeTests {
   @TestCase("something", "something")
   public matchingSimpleTypesRecordsMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(expected);
 
@@ -46,7 +46,7 @@ export class ToBeTests {
   @Test()
   public differentValuesRecordsNonMatch() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(1, testItem);
+    const matcher = new Matcher(1);
     SpyOn(testItem, "registerMatcher");
 
     matcher.toBe(2);
@@ -65,7 +65,7 @@ export class ToBeTests {
   @TestCase(42, 0)
   public differentSimpleValuesRecordNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(expected);
 
@@ -81,7 +81,7 @@ export class ToBeTests {
     actual: any
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
 
     matcher.toBe(expected);
@@ -100,7 +100,7 @@ export class ToBeTests {
   @TestCase("something", 42)
   public differentSimpleTypesRecordsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(expected);
 
@@ -120,7 +120,7 @@ export class ToBeTests {
   @TestCase([{ with: "something" }, { and: "something", else: "!" }])
   public identicalComplexTypesRecordsMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(value);
 
@@ -141,7 +141,7 @@ export class ToBeTests {
   )
   public matchingComplexTypesRecordsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(expected);
 
@@ -157,7 +157,7 @@ export class ToBeTests {
     actual: any
   ) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
 
     matcher.toBe(expected);
@@ -179,7 +179,7 @@ export class ToBeTests {
   @TestCase([1, 2, 3], {})
   public differentComplexTypesRecordsNonMatch(expected: any, actual: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual, testItem);
+    const matcher = new Matcher(actual);
     SpyOn(testItem, "registerMatcher");
     matcher.toBe(expected);
 

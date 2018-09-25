@@ -1,4 +1,4 @@
-import { TruthyMatchError } from "../errors";
+import { TruthyMatchError, MatchError } from "../errors";
 import { TypeMatcher } from "../spying";
 import { TestItem } from "../running";
 import { stringify } from "../stringification";
@@ -28,7 +28,7 @@ export class Matcher<T> {
 
   private _shouldMatch: boolean = true;
 
-  public constructor(actualValue: T, private testItem: TestItem) {
+  public constructor(actualValue: T) {
     this._actualValue = actualValue;
   }
 
@@ -125,13 +125,9 @@ export class Matcher<T> {
     expectedValue: any,
     extras?: { [prop: string]: any }
   ) {
-    this.testItem.registerMatcher(
-      isMatch,
-      failureMessage,
-      expectedValue,
-      this._actualValue,
-      extras
-    );
+    if (isMatch === false) {
+      throw new MatchError(failureMessage, expectedValue, this._actualValue, extras);
+    }
   }
 
   private _diff(a: any, b: any) {
@@ -148,7 +144,7 @@ export class Matcher<T> {
         .join("");
     }
 
-    return diff(a, b)
+    return (diff(a, b) || [])
       .map(d => {
         if (d.kind === "N") {
           return chalk.green(`+ ${d.path.join(".")}: ${JSON.stringify(d.rhs)}`);

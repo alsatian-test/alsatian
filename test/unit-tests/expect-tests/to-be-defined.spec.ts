@@ -23,7 +23,7 @@ export class ToBeDefinedTests {
   @TestCase([1, 2])
   public definedShouldRecordMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeDefined();
 
@@ -33,7 +33,7 @@ export class ToBeDefinedTests {
   @Test()
   public definedShouldRecordNonMatchForUndefined() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(undefined, testItem);
+    const matcher = new Matcher(undefined);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeDefined();
 
@@ -43,7 +43,7 @@ export class ToBeDefinedTests {
   @Test()
   public definedShouldRecordNonMatchWithCorrectMessageForUndefined() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(undefined, testItem);
+    const matcher = new Matcher(undefined);
 
     SpyOn(testItem, "registerMatcher");
 
@@ -70,7 +70,7 @@ export class ToBeDefinedTests {
   @TestCase([1, 2])
   public notDefinedShouldRecordNonMatch(value: any) {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value, testItem);
+    const matcher = new Matcher(value);
 
     const expectedErrorMessage =
       "Expected " +
@@ -92,7 +92,7 @@ export class ToBeDefinedTests {
   @Test()
   public notDefinedShouldRecordNonMatchForUndefined() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(undefined, testItem);
+    const matcher = new Matcher(undefined);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeDefined();
 

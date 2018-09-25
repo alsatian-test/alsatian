@@ -11,7 +11,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportMatchForEmptyArray() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher([], testItem);
+    const matcher = new EmptyMatcher([]);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -21,7 +21,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportNonMatchForNonEmptyArray() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher([0], testItem);
+    const matcher = new EmptyMatcher([0]);
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -36,7 +36,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportNonMatchForEmptyArray() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher([], testItem);
+    const matcher = new EmptyMatcher([]);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -51,7 +51,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportMatchForNonEmptyArray() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher([0], testItem);
+    const matcher = new EmptyMatcher([0]);
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -61,7 +61,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportMatchForEmptyString() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher("", testItem);
+    const matcher = new EmptyMatcher("");
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -71,7 +71,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportNonMatchForNonEmptyString() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher("string", testItem);
+    const matcher = new EmptyMatcher("string");
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -86,7 +86,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportNonMatchForEmptyString() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher("", testItem);
+    const matcher = new EmptyMatcher("");
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -101,7 +101,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportMatchForNonEmptyString() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher("string", testItem);
+    const matcher = new EmptyMatcher("string");
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -111,7 +111,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportMatchForEmptyObject() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher({}, testItem);
+    const matcher = new EmptyMatcher({});
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -121,7 +121,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportNonMatchForNonEmptyObject() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher({ a: true }, testItem);
+    const matcher = new EmptyMatcher({ a: true });
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -136,7 +136,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportNonMatchForEmptyObject() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher({}, testItem);
+    const matcher = new EmptyMatcher({});
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -151,7 +151,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportMatchForNonEmptyObject() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher({ a: true }, testItem);
+    const matcher = new EmptyMatcher({ a: true });
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -161,7 +161,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportMatchForEmptyMap() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher(new Map(), testItem);
+    const matcher = new EmptyMatcher(new Map());
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -171,7 +171,7 @@ export class ToBeEmptyTests {
   @Test()
   public emptyShouldReportNonMatchForNonEmptyMap() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher(new Map([["key", "value"]]), testItem);
+    const matcher = new EmptyMatcher(new Map([["key", "value"]]));
     SpyOn(testItem, "registerMatcher");
     matcher.toBeEmpty();
 
@@ -186,7 +186,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportNonMatchForEmptyMap() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher(new Map(), testItem);
+    const matcher = new EmptyMatcher(new Map());
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
@@ -201,7 +201,7 @@ export class ToBeEmptyTests {
   @Test()
   public notEmptyShouldReportMatchForNonEmptyMap() {
     const testItem = new TestItemBuilder().build();
-    const matcher = new EmptyMatcher(new Map([["key", "value"]]), testItem);
+    const matcher = new EmptyMatcher(new Map([["key", "value"]]));
     SpyOn(testItem, "registerMatcher");
     matcher.not.toBeEmpty();
 
