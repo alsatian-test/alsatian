@@ -3,34 +3,12 @@ import {
   Test,
   TestCase,
   Any,
-  Matcher,
-  SpyOn,
   FocusTest
 } from "../../../core/alsatian-core";
+import { MatchError } from "../../../core/errors/match-error";
 import { stringify } from "../../../core/stringification";
-import { TestItemBuilder } from "../../builders/test-item-builder";
 
 export class ToEqualTests {
-  // @FocusTest
-  @Test()
-  public noExpectTest() {
-    // console.log("I ain't doing anything")
-  }
-
-  //@FocusTest
-  @Test()
-  public test() {
-    Expect({ notTest: undefined, testTwo: 2 }).toEqual({ test: undefined });
-  }
-
-  ///@FocusTest
-  @Test()
-  public test2() {
-    // console.log("to be or not to be, that is the question")
-
-    Expect("abd").toEqual("ace");
-  }
-
   @TestCase(undefined)
   @TestCase(null)
   @TestCase(0)
@@ -39,13 +17,10 @@ export class ToEqualTests {
   @TestCase(-4.2)
   @TestCase("")
   @TestCase("something")
-  public identicalSimpleTypesReportsMatch(value: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(value);
+  public identicalSimpleTypesDontThrow(value: any) {
+    const expect = Expect(value);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(value)).not.toThrow();
   }
 
   @TestCase(undefined, undefined)
@@ -56,27 +31,19 @@ export class ToEqualTests {
   @TestCase(-4.2, -4.2)
   @TestCase("", "")
   @TestCase("something", "something")
-  public matchingSimpleTypesReportsMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toEqual(expected);
+  public matchingSimpleTypesDontThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
   @Test()
-  public differentValuesReportsNonMatch() {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(1);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(2);
+  public differentValuesThrowsExactMatchError() {
+    const expect = Expect(1);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      true,
-      "Expected 1 to be equal to 2.",
-      2,
-      1
+    Expect(() => expect.toEqual(2)).toThrowError(
+      MatchError,
+      "Expected 1 to be equal to 2."
     );
   }
 
@@ -84,53 +51,46 @@ export class ToEqualTests {
   @TestCase("", "something")
   @TestCase(0, 42)
   @TestCase(42, 0)
-  public differentSimpleValuesReportsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public differentSimpleValuesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
+    Expect(() => expect.toEqual(expected)).toThrow();
+  }
+
+  @TestCase("something", "something else")
+  @TestCase("", "something")
+  @TestCase(0, 42)
+  @TestCase(42, 0)
+  public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(
+    expected: any,
+    actual: any
+  ) {
+    const expect = Expect(actual);
+
+    Expect(() => expect.toEqual(expected)).toThrowError(
+      MatchError,
       "Expected " +
         stringify(actual) +
         " to be equal to " +
         stringify(expected) +
-        ".",
-      expected,
-      actual
+        "."
     );
   }
 
   @TestCase(undefined, null)
   @TestCase(null, undefined)
-  public nullAndUndefinedReportsMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toEqual(expected);
+  public nullAndUndefinedNotToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
   @TestCase(42, "something")
   @TestCase("something", 42)
-  public differentSimpleTypesReportsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public differentSimpleTypesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
-    );
+    Expect(() => expect.toEqual(expected)).toThrow();
   }
 
   @TestCase({})
@@ -144,13 +104,10 @@ export class ToEqualTests {
   @TestCase([])
   @TestCase([1, 2, 3])
   @TestCase([{ with: "something" }, { and: "something", else: "!" }])
-  public identicalComplexTypesReportsMatch(value: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(value);
+  public identicalComplexTypesDontThrow(value: any) {
+    const expect = Expect(value);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(value)).not.toThrow();
   }
 
   @TestCase({}, {})
@@ -165,37 +122,26 @@ export class ToEqualTests {
     [{ with: "something" }, { and: "something", else: "!" }],
     [{ with: "something" }, { and: "something", else: "!" }]
   )
-  public matchingComplexTypesReportsMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public matchingComplexTypesNotThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
   @TestCase({}, { with: "something" })
   @TestCase({ with: "something" }, {})
   @TestCase([], [1, 2, 3])
   @TestCase([1, 2, 3], [])
-  public differentComplexValuesReportsNonMatchWithCorrectMessage(
+  public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(
     expected: any,
     actual: any
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
+    Expect(() => expect.toEqual(expected)).toThrowError(
+      MatchError,
+      `Expected ${stringify(actual)} ` +
+        `to be equal to ${stringify(expected)}.`
     );
   }
 
@@ -203,16 +149,13 @@ export class ToEqualTests {
   @TestCase({ with: "something" }, {})
   @TestCase([], [1, 2, 3])
   @TestCase([1, 2, 3], [])
-  public differentComplexValuesReportsMatchIfNotEqualRequested(
+  public differentComplexValuesDoNotThrowIfNotEqualRequested(
     expected: any,
     actual: any
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.not.toEqual(expected)).not.toThrow();
   }
 
   @TestCase({}, {})
@@ -227,24 +170,16 @@ export class ToEqualTests {
     [{ with: "something" }, { and: "something", else: "!" }],
     [{ with: "something" }, { and: "something", else: "!" }]
   )
-  public matchingComplexTypesReportsNonMatchWithCorrectMessage(
+  public matchingComplexTypesThrowsExactMatchErrorWithCorrectMessage(
     expected: any,
     actual: any
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
+    Expect(() => expect.not.toEqual(expected)).toThrowError(
+      MatchError,
+      `Expected ${stringify(actual)} ` +
+        `not to be equal to ${stringify(expected)}.`
     );
   }
 
@@ -254,42 +189,18 @@ export class ToEqualTests {
   @TestCase([1, 2, 3], { with: "something" })
   @TestCase([], { with: "something" })
   @TestCase([1, 2, 3], {})
-  public differentComplexTypesReportsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public differentComplexTypesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
-    );
+    Expect(() => expect.toEqual(expected)).toThrow();
   }
 
   @TestCase({ with: { something: "deep" } }, [1, 2, 3])
   @TestCase([{ this: "that" }], { with: "something" })
-  public differentDeepComplexTypesReportsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public differentDeepComplexTypesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
-    );
+    Expect(() => expect.toEqual(expected)).toThrow();
   }
 
   @TestCase(
@@ -297,22 +208,10 @@ export class ToEqualTests {
     { with: { something: "different" } }
   )
   @TestCase([{ this: "that" }], [{ this: "and that" }])
-  public differentDeepComplexReportsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public differentDeepComplexToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
-    );
+    Expect(() => expect.toEqual(expected)).toThrow();
   }
 
   @TestCase(Any(Number), 42)
@@ -326,12 +225,9 @@ export class ToEqualTests {
     anotherProperty: "something"
   })
   public canMatchWithAny(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
   @TestCase(Any(Number), "something")
@@ -344,22 +240,10 @@ export class ToEqualTests {
     property: "something",
     anotherProperty: 42
   })
-  public reportsNonMatchForNonMatchesWithAny(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+  public throwsErrorsForNonMatchesWithAny(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        ".",
-      expected,
-      actual
-    );
+    Expect(() => expect.toEqual(expected)).toThrow();
   }
 
   @TestCase(
@@ -380,21 +264,16 @@ export class ToEqualTests {
     `Expected {"property":"something","anotherProperty":42} ` +
       `to be equal to Any Object and matches '{"anotherProperty":"something"}'.`
   )
-  public reportsCorrectMessageNonMatchesWithAny(
+  public throwsCorrectErrorMessageForNonMatchesWithAny(
     expected: any,
     actual: any,
     errorMessage: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      errorMessage,
-      expected,
-      actual
+    Expect(() => expect.toEqual(expected)).toThrowError(
+      MatchError,
+      errorMessage
     );
   }
 
@@ -403,12 +282,9 @@ export class ToEqualTests {
   @TestCase(Buffer.from([1, 2, 3]), "") // String, "" was retrieved from Buffer.from([1, 2, 3]).toString()
   @TestCase(Buffer.from([1, 2, 3]), { 0: 1, 1: 2, 2: 3, length: 3 }) // ArrayLike
   public canMatchWithBuffer(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toEqual(expected)).not.toThrow();
   }
 
   @TestCase(Buffer.from([1, 2, 3]), null)
@@ -445,21 +321,16 @@ export class ToEqualTests {
     {},
     `Expected {} to be equal to {"type":"Buffer","data":[1,2,3]}.`
   )
-  public reportsNonMatchWithMessageForNonMatchesWithBuffer(
+  public throwsCorrectErrorMessageForNonMatchesWithBuffer(
     expected: any,
     actual: any,
     errorMessage: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toEqual(expected);
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      errorMessage,
-      expected,
-      actual
+    Expect(() => expect.toEqual(expected)).toThrowError(
+      MatchError,
+      errorMessage
     );
   }
 }

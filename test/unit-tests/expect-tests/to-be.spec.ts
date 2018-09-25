@@ -1,12 +1,5 @@
-import {
-  Expect,
-  Test,
-  TestCase,
-  SpyOn,
-  Matcher,
-  Any
-} from "../../../core/alsatian-core";
-import { TestItemBuilder } from "../../builders/test-item-builder";
+import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToBeTests {
   @TestCase(undefined)
@@ -17,13 +10,10 @@ export class ToBeTests {
   @TestCase(-4.2)
   @TestCase("")
   @TestCase("something")
-  public identicalSimpleTypesRecordsMatch(value: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(value);
+  public identicalSimpleTypesDontThrow(value: any) {
+    const expect = Expect(value);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toBe(value)).not.toThrow();
   }
 
   @TestCase(undefined, undefined)
@@ -34,28 +24,19 @@ export class ToBeTests {
   @TestCase(-4.2, -4.2)
   @TestCase("", "")
   @TestCase("something", "something")
-  public matchingSimpleTypesRecordsMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(expected);
+  public matchingSimpleTypesDontThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toBe(expected)).not.toThrow();
   }
 
   @Test()
-  public differentValuesRecordsNonMatch() {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(1);
-    SpyOn(testItem, "registerMatcher");
+  public differentValuesThrowsExactMatchError() {
+    const expect = Expect(1);
 
-    matcher.toBe(2);
-
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      "Expected 1 to be 2.",
-      2,
-      1
+    Expect(() => expect.toBe(2)).toThrowError(
+      MatchError,
+      "Expected 1 to be 2."
     );
   }
 
@@ -63,34 +44,25 @@ export class ToBeTests {
   @TestCase("", "something")
   @TestCase(0, 42)
   @TestCase(42, 0)
-  public differentSimpleValuesRecordNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(expected);
+  public differentSimpleValuesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
+    Expect(() => expect.toBe(expected)).toThrow();
   }
 
   @TestCase("something", "something else")
   @TestCase("", "something")
   @TestCase(0, 42)
   @TestCase(42, 0)
-  public differentSimpleValuesRecordsNonMatchWithMessage(
+  public differentSimpleValuesThrowsExactMatchErrorWithCorrectMessage(
     expected: any,
     actual: any
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
+    const expect = Expect(actual);
 
-    matcher.toBe(expected);
-
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}.`,
-      expected,
-      actual
+    Expect(() => expect.toBe(expected)).toThrowError(
+      MatchError,
+      `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}.`
     );
   }
 
@@ -98,13 +70,10 @@ export class ToBeTests {
   @TestCase(null, undefined)
   @TestCase(42, "something")
   @TestCase("something", 42)
-  public differentSimpleTypesRecordsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(expected);
+  public differentSimpleTypesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
+    Expect(() => expect.toBe(expected)).toThrow();
   }
 
   @TestCase({})
@@ -118,13 +87,10 @@ export class ToBeTests {
   @TestCase([])
   @TestCase([1, 2, 3])
   @TestCase([{ with: "something" }, { and: "something", else: "!" }])
-  public identicalComplexTypesRecordsMatch(value: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(value);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(value);
+  public identicalComplexTypesDontThrow(value: any) {
+    const expect = Expect(value);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toBe(value)).not.toThrow();
   }
 
   @TestCase({}, {})
@@ -139,35 +105,26 @@ export class ToBeTests {
     [{ with: "something" }, { and: "something", else: "!" }],
     [{ with: "something" }, { and: "something", else: "!" }]
   )
-  public matchingComplexTypesRecordsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(expected);
+  public matchingComplexTypesThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
+    Expect(() => expect.toBe(expected)).toThrow();
   }
 
   @TestCase({}, { with: "something" })
   @TestCase({ with: "something" }, {})
   @TestCase([], [1, 2, 3])
   @TestCase([1, 2, 3], [])
-  public differentComplexValuesRecordsNonMatchWithCorrectError(
+  public differentComplexValuesThrowsExactMatchErrorWithCorrectMessage(
     expected: any,
     actual: any
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
+    const expect = Expect(actual);
 
-    matcher.toBe(expected);
-
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
+    Expect(() => expect.toBe(expected)).toThrowError(
+      MatchError,
       `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
-        `to be ${JSON.stringify(expected).replace(/,/g, ", ")}.`,
-      expected,
-      actual
+        `to be ${JSON.stringify(expected).replace(/,/g, ", ")}.`
     );
   }
 
@@ -177,12 +134,9 @@ export class ToBeTests {
   @TestCase([1, 2, 3], { with: "something" })
   @TestCase([], { with: "something" })
   @TestCase([1, 2, 3], {})
-  public differentComplexTypesRecordsNonMatch(expected: any, actual: any) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new Matcher(actual);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toBe(expected);
+  public differentComplexTypesToThrow(expected: any, actual: any) {
+    const expect = Expect(actual);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(false, Any, Any, Any);
+    Expect(() => expect.toBe(expected)).toThrow();
   }
 }

@@ -1,111 +1,83 @@
-import {
-  Expect,
-  TestCase,
-  ContainerMatcher,
-  SpyOn,
-  Any
-} from "../../../core/alsatian-core";
-import { TestItemBuilder } from "../../builders/test-item-builder";
+import { Expect, TestCase } from "../../../core/alsatian-core";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToContainTests {
   @TestCase([], 1)
   @TestCase([1, 2], 42)
-  public shouldContainArrayItemAndDoesNotReportsNonMatch<T>(
+  public shouldContainArrayItemAndDoesNotThrows<T>(
     actualValue: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
+    Expect(() => expect.toContain(expectedContent)).toThrowError(
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(
         ",",
         ", "
-      )} to contain ${JSON.stringify(expectedContent)}.`,
-      expectedContent,
-      actualValue
+      )} to contain ${JSON.stringify(expectedContent)}.`
     );
   }
 
   @TestCase("", "something")
   @TestCase("something", "another thing")
-  public shouldContainStringAndDoesNotReportsNonMatch(
+  public shouldContainStringAndDoesNotThrow(
     actualValue: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
+    Expect(() => expect.toContain(expectedContent)).toThrowError(
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(
         ",",
         ", "
-      )} to contain ${JSON.stringify(expectedContent)}.`,
-      expectedContent,
-      actualValue
+      )} to contain ${JSON.stringify(expectedContent)}.`
     );
   }
 
   @TestCase([1], 1)
   @TestCase([1, 42], 42)
-  public shouldContainArrayItemAndDoesReportsMatch<T>(
+  public shouldContainArrayItemAndDoesDoesNotThrow<T>(
     actualValue: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toContain(expectedContent)).not.toThrow();
   }
 
   @TestCase("something", "something")
   @TestCase("something", "thing")
-  public shouldContainStringAndDoesReportsMatch(
+  public shouldContainStringAndDoesDoesNotThrow(
     actualValue: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.toContain(expectedContent)).not.toThrow();
   }
 
   @TestCase([], 1)
   @TestCase([1, 2], 42)
-  public shouldNotContainArrayItemAndDoesNotReportsMatch<T>(
+  public shouldNotContainArrayItemAndDoesNotDoesNotThrow<T>(
     actualValue: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.not.toContain(expectedContent)).not.toThrow();
   }
 
   @TestCase("", "something")
   @TestCase("something", "another thing")
-  public shouldNotContainStringAndDoesNotReportsMatch(
+  public shouldNotContainStringAndDoesNotDoesNotThrow(
     actualValue: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(true, Any, Any, Any);
+    Expect(() => expect.not.toContain(expectedContent)).not.toThrow();
   }
 
   @TestCase([1], 1)
@@ -114,19 +86,12 @@ export class ToContainTests {
     actualValue: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      `Expected ${JSON.stringify(actualValue).replace(
-        ",",
-        ", "
-      )} not to contain ${JSON.stringify(expectedContent)}.`,
-      expectedContent,
-      actualValue
+    Expect(() => expect.not.toContain(expectedContent)).toThrowError(
+      MatchError,
+      `Expected ${JSON.stringify(actualValue).replace(",", ", ")} ` +
+        `not to contain ${JSON.stringify(expectedContent)}.`
     );
   }
 
@@ -136,19 +101,12 @@ export class ToContainTests {
     actualValue: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(actualValue);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    const expect = Expect(actualValue);
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      `Expected ${JSON.stringify(actualValue).replace(
-        ",",
-        ", "
-      )} not to contain ${JSON.stringify(expectedContent)}.`,
-      expectedContent,
-      actualValue
+    Expect(() => expect.not.toContain(expectedContent)).toThrowError(
+      MatchError,
+      `Expected ${JSON.stringify(actualValue).replace(",", ", ")} ` +
+        `not to contain ${JSON.stringify(expectedContent)}.`
     );
   }
 
@@ -158,17 +116,17 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      Any,
-      container
-    );
+    try {
+      Expect(container).toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.actual).toBe(container);
   }
 
   @TestCase("", "something")
@@ -177,17 +135,17 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      Any,
-      container
-    );
+    try {
+      Expect(container).toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.actual).toBe(container);
   }
 
   @TestCase([1], 1)
@@ -196,17 +154,17 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      Any,
-      container
-    );
+    try {
+      Expect(container).not.toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.actual).toBe(container);
   }
 
   @TestCase("something", "something")
@@ -215,17 +173,17 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      Any,
-      container
-    );
+    try {
+      Expect(container).not.toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.actual).toBe(container);
   }
 
   @TestCase([], 1)
@@ -234,17 +192,17 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      expectedContent,
-      Any
-    );
+    try {
+      Expect(container).toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.expected).toBe(expectedContent);
   }
 
   @TestCase("", "something")
@@ -253,17 +211,17 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      expectedContent,
-      Any
-    );
+    try {
+      Expect(container).toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.expected).toBe(expectedContent);
   }
 
   @TestCase([1], 1)
@@ -272,17 +230,17 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      expectedContent,
-      Any
-    );
+    try {
+      Expect(container).not.toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.expected).toBe(expectedContent);
   }
 
   @TestCase("something", "something")
@@ -291,16 +249,50 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    const testItem = new TestItemBuilder().build();
-    const matcher = new ContainerMatcher(container);
-    SpyOn(testItem, "registerMatcher");
-    matcher.not.toContain(expectedContent);
+    let contentsError: MatchError;
 
-    Expect(testItem.registerMatcher).toHaveBeenCalledWith(
-      false,
-      Any,
-      expectedContent,
-      Any
+    try {
+      Expect(container).not.toContain(expectedContent);
+    } catch (error) {
+      contentsError = error;
+    }
+
+    Expect(contentsError).toBeDefined();
+    Expect(contentsError).not.toBeNull();
+    Expect(contentsError.expected).toBe(expectedContent);
+  }
+
+  @TestCase(undefined)
+  @TestCase(null)
+  @TestCase(0)
+  @TestCase(1)
+  @TestCase(42)
+  @TestCase({})
+  @TestCase({ an: "object" })
+  public checkingNonStringOrArraysContainShouldThrow(container: any) {
+    const EXPECT = Expect([]);
+    (EXPECT as any)._actualValue = container;
+
+    Expect(() => EXPECT.toContain("something")).toThrowError(
+      TypeError,
+      "toContain must only be used to check whether strings or arrays contain given contents."
+    );
+  }
+
+  @TestCase(undefined)
+  @TestCase(null)
+  @TestCase(0)
+  @TestCase(1)
+  @TestCase(42)
+  @TestCase({})
+  @TestCase({ an: "object" })
+  public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
+    const EXPECT = Expect([]);
+    (EXPECT as any)._actualValue = container;
+
+    Expect(() => EXPECT.not.toContain("something")).toThrowError(
+      TypeError,
+      "toContain must only be used to check whether strings or arrays contain given contents."
     );
   }
 
