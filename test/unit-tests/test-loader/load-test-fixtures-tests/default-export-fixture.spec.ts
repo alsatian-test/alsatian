@@ -8,19 +8,20 @@ import {
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
+class FakeFixture {
+  constructor () {        
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
+  }
+}
+
 export class DefaultExportFixtureTests {
   @Test()
   public ignoredShouldBeFalseByDefault() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(FakeFixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -31,16 +32,17 @@ export class DefaultExportFixtureTests {
   public ignoredShouldBeTrueIfMetadataSet() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    class IgnoredFakeFixture {
+      constructor () {        
+        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
+      }
+    }
 
-    const testFixtureConstructor = () => testFixtureInstance;
-
-    Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, testFixtureConstructor);
+    Reflect.defineMetadata(METADATA_KEYS.IGNORE, true, IgnoredFakeFixture);
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(IgnoredFakeFixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -51,14 +53,9 @@ export class DefaultExportFixtureTests {
   public focussedShouldBeFalseByDefault() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(FakeFixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -69,16 +66,17 @@ export class DefaultExportFixtureTests {
   public focussedShouldBeTrueIfMetadataSet() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    class FocusedFakeFixture {
+      constructor () {        
+        Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
+      }
+    }
 
-    const testFixtureConstructor = () => testFixtureInstance;
-
-    Reflect.defineMetadata(METADATA_KEYS.FOCUS, true, testFixtureConstructor);
+    Reflect.defineMetadata(METADATA_KEYS.FOCUS, true, FocusedFakeFixture);
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(FocusedFakeFixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -89,13 +87,11 @@ export class DefaultExportFixtureTests {
   public noTestsReturnsEmptyArray() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-
-    const testFixtureConstructor = () => testFixtureInstance;
+    class NotAFixture { }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(NotAFixture);
 
     const testLoader = new TestLoader(fileRequirer);
 

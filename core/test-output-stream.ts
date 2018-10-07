@@ -93,10 +93,8 @@ export class TestOutputStream extends ReadableStream {
 
     this._writeOut(`not ok ${testId} ${description}\n`);
 
-    // TODO this is WRONG and just for test purposes
-    // should be !result.error but for some reason error is
-    // populated need to track down why
-    if (!result.error && !result.extras) {
+    //TODO: confirm whether this is still required
+    if (!result.error && result.extras) {
       this._writeFailure(result.extras.message, "", "", result.extras.extras);
     }
     // if it's a match error then log it properly, otherwise log it as unhandled

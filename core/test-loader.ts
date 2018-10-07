@@ -31,6 +31,7 @@ export class TestLoader {
       }
     };
 
+    //TODO: replace with is constructor check not is function
     if (typeof testFixtureModule === "function") {
       // if the default export is class constructor
       loadFixture(testFixtureModule, testFixtureModule.name);
@@ -45,7 +46,7 @@ export class TestLoader {
   }
 
   private _loadTestFixture(
-    testFixtureConstructor: any,
+    testFixtureConstructor: new () => any,
     defaultFixtureDescription: string,
     filePath: string
   ): ITestFixture | null {

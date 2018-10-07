@@ -132,7 +132,7 @@ export class TestRunner {
 
     try {
       testItem.isRunning = true;
-      await testItem.run(testSetRunInfo.timeout, this._outputStream);
+      await testItem.run(testSetRunInfo.timeout);
 
       return testResults.addTestCaseResult(
         testItem.testCase.caseArguments

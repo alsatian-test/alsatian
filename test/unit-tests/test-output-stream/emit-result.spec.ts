@@ -15,45 +15,49 @@ import { TestOutcome } from "../../../core/results/test-outcome";
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
   return (
     ` ---\n` +
-    `   message: "${error.message
+    ` message: ${error.message
       .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')}"\n` +
-    `   severity: fail\n` +
-    `   data:\n` +
-    `     got: ${JSON.stringify(error.actual)}\n` +
-    `     expect: ${JSON.stringify(error.expected)}\n ...\n`
+      .replace(/"/g, '\\"')}\n` +
+    ` severity: fail\n` +
+    ` data:\n` +
+    `   got: ${yamlStringify(error.actual)}\n` +
+    `   expect: ${yamlStringify(error.expected)}\n \n ...\n`
   );
 };
+
+function yamlStringify(value: any) {
+  return `'${JSON.stringify(value)}'`;
+}
 
 const _getUnhandledErrorMessage: (stack: string) => string = (
   stack: string
 ) => {
   return (
     " ---\n" +
-    '   message: "The test threw an unhandled error."\n' +
-    "   severity: fail\n" +
-    "   data:\n" +
-    "     got: an unhandled error\n" +
-    "     expect: no unhandled errors to be thrown\n" +
-    "     stack: |\n" +
+    ' message: The test threw an unhandled error.\n' +
+    " severity: fail\n" +
+    " data:\n" +
+    "   got: an unhandled error\n" +
+    "   expect: no unhandled errors to be thrown\n" +
+    "   details:\n" +
+    "     stack: |-\n" +
     stack
       .split("\n")
       .map(l => "       " + l)
       .join("\n") +
-    "\n" +
-    " ...\n"
+    "\n \n ...\n"
   );
 };
 
 function _getUnhandledErrorMessageNoStack(): string {
   return (
     " ---\n" +
-    '   message: "The test threw an unhandled error."\n' +
-    "   severity: fail\n" +
-    "   data:\n" +
-    "     got: an unhandled error\n" +
-    "     expect: no unhandled errors to be thrown\n" +
-    " ...\n"
+    ' message: The test threw an unhandled error.\n' +
+    " severity: fail\n" +
+    " data:\n" +
+    "   got: an unhandled error\n" +
+    "   expect: no unhandled errors to be thrown\n" +
+    " \n ...\n"
   );
 }
 
@@ -241,13 +245,11 @@ export class EmitResultTests {
 
     const message = `Expected ${actualValue} to be equal to 2.`;
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const error = new MatchError(message, 2, actualValue);
 
-    const expected = _getErrorYaml({
-      message,
-      expected: 2,
-      actual: actualValue
-    } as any);
+    const testCaseResult = new TestCaseResult(test, [], error);
+
+    const expected = _getErrorYaml(error);
 
     testOutput.emitResult(1, testCaseResult);
 
@@ -265,13 +267,11 @@ export class EmitResultTests {
 
     const message = `Expected 1 to be equal to ${expectedValue}.`;
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const error = new MatchError(message, expectedValue, 1);
 
-    const expected = _getErrorYaml({
-      message,
-      expected: expectedValue,
-      actual: 1
-    } as any);
+    const testCaseResult = new TestCaseResult(test, [], error);
+
+    const expected = _getErrorYaml(error);
 
     testOutput.emitResult(1, testCaseResult);
 

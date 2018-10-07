@@ -73,16 +73,19 @@ export class TestItem {
     });
   }
 
-  public async run(timeout: number, outputStream: TestOutputStream) {
+  public async run(timeout: number/*, outputStream: TestOutputStream */) {
     if (this._test.ignored) {
-      return [{ outcome: TestOutcome.Skip }];
+      return;
     } else {
       await this._setup();
 
       try {
+        // this may be a bit dumb as variable name can be changed
+        /*
         if (/(\(|\s)Expect\(/.test(this._testFixture.fixture.toString())) {
           outputStream.emitWarning(`No calls to Expect in ${this.test.description}`);
         }
+        */
 
         await this._runTest(this._test.timeout || timeout);
       } catch (error) {

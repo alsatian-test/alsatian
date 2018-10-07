@@ -5,7 +5,7 @@ import { Output } from "./output/output";
 import { OutputProvider } from "./output-provider/output-provider";
 
 import { Assertion as TAPAssertion, Results as TAPResults } from "./external/tap-parser";
-import * as chalk from "chalk";
+import chalk from "chalk";
 
 const parser = require("tap-parser")();
 const duplexer = require("duplexer");
@@ -16,8 +16,7 @@ class TapBarkOutput extends Component {
     private FIXTURE_REGEXP: RegExp = /# FIXTURE (.*)/g;
     private CONSOLE_ERROR_REGEXP: RegExp = /# ERROR: (.*)/g;
     private CONSOLE_WARNING_REGEXP: RegExp = /# WARN: (.*)/g;
-
-    private cachedState: any = {};
+    private _completeCalled = false;
 
     public constructor() {
         super();
@@ -26,8 +25,6 @@ class TapBarkOutput extends Component {
         };
 
         this.setupListeners();
-
-        setInterval(this.update.bind(this), 50);
     }
 
     public getResults() {
@@ -71,50 +68,34 @@ class TapBarkOutput extends Component {
         const results = this.state.results;
         const total = this.state.totalTests;
 
-        
-        if (this.state.progress === ".  ") {
-            this.state.progress = " . ";
-        }
-        else if (this.state.progress === " . ") {
-            this.state.progress = "  .";
-        }
-        else {
-            this.state.progress = ".  ";
-        }
-
-        /*
-                {`${this.state.fixtureName}\n`}
-                {`${this.state.testName}\n`}
-                {`${this.state.currentTest} / ${total}\n`}*/
-
         return (
         <Indent>
-                {`${Math.round(this.state.currentTest / total)}\n`}
+                {`${Math.floor(this.state.currentTest / total * 100)}\n`}
                 {this.state.results && 
                 <Indent>
                     <Color green>Pass: {results.pass} / {total}{"\n"}</Color>
                     <Color red>Fail: {results.fail} / {total}{"\n"}</Color>
                     <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
-                    {/* results.failures.map(this.getFailureMessage.bind(this)).join("\n") */}
+                    {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
                 </Indent>
                 }
             </Indent>);
     }
 
-    private update() {
-        this.setState(this.cachedState);
-    }
-
     private setupListeners(): void {
         parser.on("plan", (plan: any) => {
-            this.cachedState.totalTests = plan.end;
+            this.setState({
+                totalTests: plan.end
+            });
         });
 
         parser.on("comment", (comment: string) => {
             let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
 
             if (fixtureParse !== null) {
-                this.cachedState.fixtureName = fixtureParse[1];
+                this.setState({
+                    fixtureName: fixtureParse[1]
+                });
             }
             else {
                 // TEMP: DISABLE LOGS
@@ -135,8 +116,10 @@ class TapBarkOutput extends Component {
         });
 
         parser.on("assert", (assertion: TAPAssertion) => {
-            this.cachedState.currentTest = assertion.id;
-            this.cachedState.testName = assertion.name;
+            this.setState({
+                currentTest: assertion.id,
+                testName: assertion.name
+            });
         });
 
         parser.on("complete", (results: TAPResults) => {
@@ -147,16 +130,21 @@ class TapBarkOutput extends Component {
                 failures: results.failures || []
             };
 
-            this.setState({
-                ... this.state,
-                results: _results
-            }, setTimeout(() => {
-                if (results.ok) {
-                    process.exit(0);
-                } else {
-                    process.exit(1);
-                }
-            }, 100));
+            // getting called multiple times for whatever reason
+            if (this._completeCalled === false) {
+                this._completeCalled = true;
+                
+                this.setState({
+                    ... this.state,
+                    results: _results
+                }, setTimeout(() => {
+                    if (results.ok) {
+                        process.exit(0);
+                    } else {
+                        process.exit(1);
+                    }
+                }, 100));
+            }
         });
     }
 

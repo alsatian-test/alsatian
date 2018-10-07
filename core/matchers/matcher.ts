@@ -70,7 +70,7 @@ export class Matcher<T> {
     }
 
     this._registerMatcher(
-      valueMatch,
+      valueMatch === this._shouldMatch,
       `Expected ${stringify(this.actualValue)} ${
         !this.shouldMatch ? "not " : ""
       }` + `to be equal to ${stringify(expectedValue)}.`,
@@ -147,9 +147,9 @@ export class Matcher<T> {
     return (diff(a, b) || [])
       .map(d => {
         if (d.kind === "N") {
-          return chalk.green(`+ ${d.path.join(".")}: ${JSON.stringify(d.rhs)}`);
+          return chalk.green(`+ ${d.path ? d.path.join(".") : ""}: ${JSON.stringify(d.rhs)}`);
         } else if (d.kind === "D") {
-          return chalk.red(`- ${d.path.join(".")}: ${JSON.stringify(d.lhs)}`);
+          return chalk.red(`- ${d.path ? d.path.join(".") : ""}: ${JSON.stringify(d.lhs)}`);
         }
       })
       .join("\n");

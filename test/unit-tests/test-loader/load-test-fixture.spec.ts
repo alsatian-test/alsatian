@@ -4,18 +4,26 @@ import {
   Expect,
   METADATA_KEYS,
   SpyOn,
+  
   SpyOnProperty,
   Test,
   TestCase,
   TestFixture,
   Setup,
-  Teardown
+  Teardown,
+  IgnoreTests
 } from "../../../core/alsatian-core";
 import { FileRequirer } from "../../../core/file-requirer";
 import { TestLoader } from "../../../core/test-loader";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
+
+class FakeFixture {
+  constructor () {        
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
+  }
+}
 
 @TestFixture("Load Tests")
 export class LoadTestTests {
@@ -41,11 +49,8 @@ export class LoadTestTests {
   public ignoredShouldBeFalseByDefault() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -61,18 +66,18 @@ export class LoadTestTests {
   public ignoredShouldBeTrueIfMetadataSet() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    @TestFixture()
+    @IgnoreTests()
+    class IgnoredFixture { 
+      @Test()
+      public test() {
+
+      }
+    }
 
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: IgnoredFixture
     };
-
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE,
-      true,
-      testFixtureSet.testFixture
-    );
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
@@ -88,11 +93,8 @@ export class LoadTestTests {
   public ignoreReasonShouldBeSetFromMetadata(reason: string) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: FakeFixture
     };
 
     Reflect.defineMetadata(
@@ -119,11 +121,8 @@ export class LoadTestTests {
   public focussedShouldBeFalseByDefault() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -139,11 +138,8 @@ export class LoadTestTests {
   public focussedShouldBeTrueIfMetadataSet() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: FakeFixture
     };
 
     Reflect.defineMetadata(
@@ -165,10 +161,10 @@ export class LoadTestTests {
   public noTestsReturnsEmptyArray() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
+    class NotAFixture { };
 
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: NotAFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -186,12 +182,9 @@ export class LoadTestTests {
   public descriptionShouldBeSetWhenNotConstructor(propertyName: string) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
+    const testFixtureSet: { [propertyName: string]: new () => any } = {};
 
-    const testFixtureSet: { [propertyName: string]: () => any } = {};
-
-    testFixtureSet[propertyName] = () => testFixtureInstance;
+    testFixtureSet[propertyName] = FakeFixture;
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
@@ -211,10 +204,7 @@ export class LoadTestTests {
   ) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureSet = () => testFixtureInstance;
+    const testFixtureSet = FakeFixture;
     SpyOnProperty(testFixtureSet, "name").andReturnValue(constructorName);
 
     const spy = SpyOn(fileRequirer, "require");
@@ -236,10 +226,7 @@ export class LoadTestTests {
   ) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureSet = () => testFixtureInstance;
+    const testFixtureSet = FakeFixture;
 
     const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
     Reflect.defineMetadata(
@@ -267,11 +254,8 @@ export class LoadTestTests {
   ) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
     const testFixtureSet = {
-      testFixture: () => testFixtureInstance
+      testFixture: FakeFixture
     };
 
     const testFixtureMetadata = new TestFixtureMetadata(testFixtureDescription);
@@ -338,36 +322,24 @@ export class LoadTestTests {
   public shouldIgnoreTestsWithReasonIfFixtureIgnored(reason: string) {
     const fileRequirer = new FileRequirer();
 
-    const testOne = new TestBuilder()
-      .withKey("testOne")
-      .addTestCase(new TestCaseBuilder().build())
-      .build();
+    
+    @TestFixture()
+    @IgnoreTests(reason)
+    class IgnoredFixture { 
+      @Test()
+      public testOne() {
+        
+      }
 
-    const testTwo = new TestBuilder()
-      .withKey("testTwo")
-      .addTestCase(new TestCaseBuilder().build())
-      .build();
-
-    const fixture = new TestFixtureBuilder()
-      .addTest(testOne)
-      .addTest(testTwo)
-      .build();
+      @Test()
+      public testTwo() {
+        
+      }
+    }
 
     const testFixtureSet = {
-      testFixture: () => fixture
+      testFixture: IgnoredFixture
     };
-
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE,
-      true,
-      testFixtureSet.testFixture
-    );
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE_REASON,
-      reason,
-      testFixtureSet.testFixture
-    );
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [testOne, testTwo], fixture);
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();

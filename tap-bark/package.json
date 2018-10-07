@@ -33,7 +33,6 @@
     "homepage": "https://github.com/alsatian-test/alsatian/tree/master/tap-bark#readme",
     "dependencies": {
         "@types/node": ">=0.0.2",
-        "chalk": "^1.1.3",
         "duplexer": "^0.1.1",
         "ink": "^0.5.1",
         "tap-parser": "^5.0.0",
@@ -41,6 +40,7 @@
     },
     "devDependencies": {
         "alsatian": "^1.0.0-beta.4",
+        "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",
         "coveralls": "^2.11.15",
         "in-publish": "^2.0.0",

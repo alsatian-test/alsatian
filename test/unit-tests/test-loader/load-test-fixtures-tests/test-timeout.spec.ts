@@ -4,7 +4,9 @@ import {
   METADATA_KEYS,
   SpyOn,
   Test,
-  TestCase
+  TestCase,
+  TestFixture,
+  Timeout
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
@@ -14,23 +16,17 @@ export class TestTimeoutTests {
   public noTimeoutSetToNullTest() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {
-      noTimeoutTest: () => {}
-    };
-    const noTimeoutTest = {
-      key: "noTimeoutTest"
-    };
-    Reflect.defineMetadata(
-      METADATA_KEYS.TESTS,
-      [noTimeoutTest],
-      testFixtureInstance
-    );
+    @TestFixture()
+    class Fixture {
+      @Test()
+      public noTimeoutTest() {
 
-    const testFixtureConstructor = () => testFixtureInstance;
+      }
+    }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(Fixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -43,29 +39,18 @@ export class TestTimeoutTests {
   public timeoutSetTest(timeoutPeriod: number) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {
-      timeoutTest: () => {}
-    };
-    const timeoutTest = {
-      key: "timeoutTest"
-    };
-    Reflect.defineMetadata(
-      METADATA_KEYS.TESTS,
-      [timeoutTest],
-      testFixtureInstance
-    );
-    Reflect.defineMetadata(
-      METADATA_KEYS.TIMEOUT,
-      timeoutPeriod,
-      testFixtureInstance,
-      "timeoutTest"
-    );
+    @TestFixture()
+    class Fixture {
+      @Test()
+      @Timeout(timeoutPeriod)
+      public timeoutTest() {
 
-    const testFixtureConstructor = () => testFixtureInstance;
+      }
+    }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(Fixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
