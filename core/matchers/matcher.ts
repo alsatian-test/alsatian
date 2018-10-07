@@ -1,6 +1,5 @@
 import { TruthyMatchError, MatchError } from "../errors";
 import { TypeMatcher } from "../spying";
-import { TestItem } from "../running";
 import { stringify } from "../stringification";
 import { diff } from "deep-diff";
 import { diffChars } from "diff";
