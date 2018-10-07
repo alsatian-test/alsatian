@@ -3,7 +3,6 @@ import { TestCaseResult } from "./test-case-result";
 import { TestOutcome } from "./test-outcome";
 import { IResultWithOutcome } from "./result-with-outcome.i";
 import { getOverallOutcome } from "./get-overall-outcome";
-import { IMatcher } from "../running/test-item";
 
 export class TestResults implements IResultWithOutcome {
   private _testCaseResults: Array<TestCaseResult> = [];
@@ -20,10 +19,9 @@ export class TestResults implements IResultWithOutcome {
 
   public addTestCaseResult(
     args: Array<any>,
-    error: Error | null = null,
-    extras?: IMatcher
+    error: Error | null = null
   ): TestCaseResult {
-    const testCaseResult = new TestCaseResult(this._test, args, error, extras);
+    const testCaseResult = new TestCaseResult(this._test, args, error);
     this._testCaseResults.push(testCaseResult);
     return testCaseResult;
   }

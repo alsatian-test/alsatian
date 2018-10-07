@@ -93,12 +93,7 @@ export class TestOutputStream extends ReadableStream {
 
     this._writeOut(`not ok ${testId} ${description}\n`);
 
-    //TODO: confirm whether this is still required
-    if (!result.error && result.extras) {
-      this._writeFailure(result.extras.message, "", "", result.extras.extras);
-    }
-    // if it's a match error then log it properly, otherwise log it as unhandled
-    else if (result.error instanceof MatchError) {
+    if (result.error instanceof MatchError) {
       this._writeMatchErrorOutput(result.error);
     } else {
       this._writeUnhandledErrorOutput(result.error);
@@ -125,7 +120,7 @@ export class TestOutputStream extends ReadableStream {
     const sanitisedActual = stringify(error.actual);
     const sanitisedExpected = stringify(error.expected);
 
-    this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
+    this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected, error.extras);
   }
 
   private _writeUnhandledErrorOutput(error: Error | null): void {

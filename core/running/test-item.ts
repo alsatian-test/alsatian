@@ -2,17 +2,6 @@ import { ITest, ITestCase, ITestFixture } from "../_interfaces";
 import { METADATA_KEYS } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
-import { TestOutcome } from "../results";
-import { TestOutputStream } from "../test-output-stream";
-import { SpyOn } from "../spying";
-
-export interface IMatcher {
-  isValid: boolean | (() => Promise<boolean>);
-  message: string;
-  expected: any;
-  actual: any;
-  extras?: { [prop: string]: any };
-}
 
 export class TestItem {
   public get testCase() {
@@ -26,8 +15,6 @@ export class TestItem {
   }
 
   public isRunning = false;
-
-  public readonly matchers: Array<IMatcher> = [];
 
   private _testCase: ITestCase;
 
@@ -55,22 +42,6 @@ export class TestItem {
     this._testFixture = testFixture;
     this._test = test;
     this._testCase = testCase;
-  }
-
-  public registerMatcher(
-    isValid: boolean | (() => Promise<boolean>),
-    message: string,
-    expected: any,
-    actual: any,
-    extras?: { [prop: string]: any }
-  ): any {
-    this.matchers.push({
-      isValid,
-      message,
-      expected,
-      actual,
-      extras
-    });
   }
 
   public async run(timeout: number/*, outputStream: TestOutputStream */) {
