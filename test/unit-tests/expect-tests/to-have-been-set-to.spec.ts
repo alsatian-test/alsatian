@@ -1,6 +1,5 @@
 import {
   Expect,
-  FocusTests,
   SpyOnProperty,
   Test,
   TestCase

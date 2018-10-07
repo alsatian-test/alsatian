@@ -1,6 +1,5 @@
 import {
   Expect,
-  FocusTests,
   Test,
   TestCase,
   TestFixture

@@ -16,9 +16,11 @@ import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
 import { TestItem } from "./test-item";
 import { MatchError } from "../errors";
+import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
   private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
+  private _flushedWarnings: Array<string> = [];
   private _outputStream: TestOutputStream;
   public get outputStream() {
     return this._outputStream;
@@ -140,6 +142,13 @@ export class TestRunner {
     } catch (e) {
       return testResults.addTestCaseResult(testItem.testCase.caseArguments, e);
     } finally {
+      const newWarnings = Warner.warnings.filter(message => this._flushedWarnings.indexOf(message) === -1);
+
+      newWarnings.forEach(warning => {
+        this._flushedWarnings.push(warning);
+        this.outputStream.emitWarning(warning);
+      });
+
       testItem.isRunning = false;
     }
   }

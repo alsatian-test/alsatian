@@ -44,20 +44,13 @@ export class TestItem {
     this._testCase = testCase;
   }
 
-  public async run(timeout: number/*, outputStream: TestOutputStream */) {
+  public async run(timeout: number) {
     if (this._test.ignored) {
       return;
     } else {
       await this._setup();
 
       try {
-        // this may be a bit dumb as variable name can be changed
-        /*
-        if (/(\(|\s)Expect\(/.test(this._testFixture.fixture.toString())) {
-          outputStream.emitWarning(`No calls to Expect in ${this.test.description}`);
-        }
-        */
-
         await this._runTest(this._test.timeout || timeout);
       } catch (error) {
         throw error;

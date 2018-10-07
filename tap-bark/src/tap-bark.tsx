@@ -17,7 +17,8 @@ class TapBarkOutput extends Component {
     public constructor() {
         super();
         this.state = {
-            logs: []
+            logs: [],
+            warnings: []
         };
 
         this.setupListeners();
@@ -52,6 +53,7 @@ class TapBarkOutput extends Component {
 
         if (this.state.results) {
             return <Indent>
+                        {this.state.warnings.join("\n")}
                         <Color green>Pass: {results.pass} / {total}{"\n"}</Color>
                         <Color red>Fail: {results.fail} / {total}{"\n"}</Color>
                         <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
@@ -69,6 +71,9 @@ class TapBarkOutput extends Component {
             });
         });
 
+        // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
+        const warnings = [] as Array<string>;
+
         parser.on("comment", (comment: string) => {
             let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
 
@@ -78,10 +83,18 @@ class TapBarkOutput extends Component {
                 });
             }
             else {
+                const message = comment.replace("# ", "");
+
+                if (this.CONSOLE_WARNING_REGEXP.test(comment)) {
+                    
+                    // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
+                    warnings.push(chalk.yellow(message));
+                    this.setState({
+                        warnings
+                    });
+                }
                 // TEMP: DISABLE LOGS
                 return;
-
-                const message = comment.replace("# ", "");
 
                 if (this.CONSOLE_ERROR_REGEXP.test(comment)) {
                     this.cachedState.logs = [ ...this.cachedState.logs, chalk.red(message) ];
