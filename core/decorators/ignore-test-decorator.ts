@@ -3,7 +3,7 @@ import { IGNORE, IGNORE_REASON } from "./_metadata-keys";
 import { Unused } from "../unused";
 
 export function IgnoreTest(reason?: string) {
-  return (
+  return ((
     target: object,
     propertyKey: string,
     descriptor?: TypedPropertyDescriptor<any>
@@ -15,5 +15,5 @@ export function IgnoreTest(reason?: string) {
 
     // add the reason
     Reflect.defineMetadata(IGNORE_REASON, reason, target, propertyKey);
-  };
+  });
 }
