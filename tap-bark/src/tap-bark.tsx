@@ -35,7 +35,7 @@ class TapBarkOutput extends Component {
             if (details && Object.keys(details).length > 0) {
                 return `${title}${
                     Object.keys(details)
-                            .map(key => `\n${key}:\n${details[key]}`)
+                            .map(key => `\n${chalk.underline(key)}:\n${details[key]}`)
                             .join("\n")
                     }`;
             }

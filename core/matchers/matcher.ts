@@ -2,8 +2,55 @@ import { TruthyMatchError, MatchError } from "../errors";
 import { TypeMatcher } from "../spying";
 import { stringify } from "../stringification";
 import { diff } from "deep-diff";
-import { diffChars } from "diff";
+import { diffChars, diffWords } from "diff";
 import chalk from "chalk";
+
+function diffString(a: string, b: string) {
+  var diff = /\s/.test(a) || /\s/.test(b) ? diffWords(a, b) : diffChars(a, b);
+  return diff.map(
+          x =>
+            x.added
+              ? chalk.green(x.value)
+              : x.removed
+                ? chalk.red(x.value)
+                : x.value
+        )
+        .join("")
+}
+
+function buildDiff(diffs: Array<deepDiff.IDiff>, parentProperty: string): string {
+  const depth = (parentProperty.match(/\./g) || []).length + 1;
+  const padding = new Array(depth).join("  ");
+
+  const deeperDiffs = 
+  diffs
+      .filter(diff => diff.path.length - 1 !== depth)
+      .reduce((concat, diff) => {
+        const prop = diff.path[depth];
+        const value = concat[prop];
+        concat[prop] = value ? [ ...value, diff ] : [ diff ];
+        return concat;
+      }, {} as {[p: string]: Array<deepDiff.IDiff>});
+
+  return `${padding}${diffs[0].path[depth - 1]}: {\n` +
+    diffs
+        .filter(diff => diff.path.length - 1 === depth)
+        .map(diff => stringifyDiffProp(diff, padding + "  "))
+        .join(",\n") + 
+    Object.keys(deeperDiffs).map(key => buildDiff(deeperDiffs[key], parentProperty + "." + key)) +
+  `\n${padding}}\n`;
+}
+
+function stringifyDiffProp(diff: deepDiff.IDiff, padding: string) {
+  if (diff.kind === "N") {
+    return chalk.green(`+ ${padding}${diff.path[diff.path.length - 1] || ""}: ${JSON.stringify(diff.rhs)}`);
+  } else if (diff.kind === "D") {
+    return chalk.red(`- ${padding}${diff.path[diff.path.length - 1] || ""}: ${JSON.stringify(diff.lhs)}`);
+  }
+  else if (diff.kind === "E") {
+    return chalk.bold(`  ${padding}${diff.path[diff.path.length - 1] || ""}: ${diffString(diff.lhs, diff.rhs)}`)
+  }
+}
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
@@ -131,18 +178,12 @@ export class Matcher<T> {
 
   private _diff(a: any, b: any) {
     if (typeof a === "string") {
-      return diffChars(a, b)
-        .map(
-          x =>
-            x.added
-              ? chalk.green(x.value)
-              : x.removed
-                ? chalk.red(x.value)
-                : x.value
-        )
-        .join("");
+      return diffString(a, b);
     }
 
+    return buildDiff(diff(a,b) || [], "");
+
+    /*
     return (diff(a, b) || [])
       .map(d => {
         if (d.kind === "N") {
@@ -152,6 +193,7 @@ export class Matcher<T> {
         }
       })
       .join("\n");
+    */
   }
 
   private _checkBuffersAreEqual(buffer: Buffer, other: any): boolean {
