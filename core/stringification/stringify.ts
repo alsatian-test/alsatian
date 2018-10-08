@@ -1,5 +1,7 @@
 import { Any, TypeMatcher } from "../spying";
 
+const undefinedPlaceholder = "__UNDEFINED__";
+
 export function stringify(data: any): string {
   if (data instanceof Array) {
     return stringifyArray(data);
@@ -29,7 +31,8 @@ export function stringify(data: any): string {
     return "undefined";
   }
 
-  return JSON.stringify(data, createCircularReplacer(data));
+  const json = JSON.stringify(data, createCircularReplacer(data));
+  return json.replace(`"${undefinedPlaceholder}"`, "undefined");
 }
 
 function createCircularReplacer(rootObject: object) {
@@ -48,6 +51,10 @@ function circularReplacer(
   // Unused(key);
   if (typeof value === "function") {
     return value.toString();
+  }
+
+  if (value === undefined) {
+    return undefinedPlaceholder;
   }
 
   return value;

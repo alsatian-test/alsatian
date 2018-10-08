@@ -24,6 +24,11 @@ export class StringifyTests {
     Expect(stringify(undefined)).toBe("undefined");
   }
 
+  @Test("undefined object properties are stringified")
+  public undefinedPropertiesStringified() {
+    Expect(stringify({ foo: undefined })).toBe('{"foo":undefined}');
+  }
+
   @Test(`Any returns "Anything"`)
   public anyReturnsAnything() {
     Expect(stringify(Any)).toBe("Anything");
