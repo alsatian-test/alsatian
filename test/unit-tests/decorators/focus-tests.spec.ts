@@ -12,7 +12,7 @@ export class FocusTestsDecoratorTests {
   public focusTestKeyMetaDataAdded(key: string) {
     class TestFixtureClass {}
 
-    // FocusTestsDecorator(TestFixtureClass);
+    FocusTestsDecorator(TestFixtureClass);
 
     Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixtureClass)).toBe(
       true

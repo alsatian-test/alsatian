@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { TESTS } from "./_metadata-keys";
 import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
+import { deprecate } from "../maintenance/deprecate";
 
 export function AsyncTest(description?: string) {
   return (
@@ -10,6 +11,8 @@ export function AsyncTest(description?: string) {
     descriptor?: TypedPropertyDescriptor<(...args: Array<any>) => Promise<any>>
   ) => {
     Unused(descriptor);
+
+    deprecate("AsyncTest", "4.0.0", "Use the Test decorator instead.");
 
     // check if this has been registered as a test already
     markPropertyAsTest(propertyKey, target);

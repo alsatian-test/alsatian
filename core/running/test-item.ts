@@ -61,23 +61,22 @@ export class TestItem {
   }
 
   private async _runTest(timeout: number) {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>(async (resolve, reject) => {
       setTimeout(() => {
         reject(new TestTimeoutError(timeout));
       }, timeout);
 
-      if (this._test.isAsync) {
-        this._execute()
-          .then(resolve)
-          .catch(reject);
-      } else {
-        this._execute();
+      try {        
+        await this._execute();
         resolve();
+      }
+      catch (exception) {
+        reject(exception);
       }
     });
   }
 
-  private _execute() {
+  private async _execute() {
     return this._testFixture.fixture[this._test.key].apply(
       this._testFixture.fixture,
       this._testCase.caseArguments
@@ -106,14 +105,8 @@ export class TestItem {
   }
 
   private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
-    if (funcMetadata.isAsync) {
-      await this._testFixture.fixture[funcMetadata.propertyKey].call(
-        this.testFixture.fixture
-      );
-    } else {
-      this._testFixture.fixture[funcMetadata.propertyKey].call(
-        this.testFixture.fixture
-      );
-    }
+    await this._testFixture.fixture[funcMetadata.propertyKey].call(
+      this.testFixture.fixture
+    );
   }
 }

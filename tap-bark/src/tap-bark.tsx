@@ -9,9 +9,8 @@ const { h, render, Component, Color, Indent } = require("ink");
 
 class TapBarkOutput extends Component {
 
-    private FIXTURE_REGEXP: RegExp = /# FIXTURE (.*)/g;
-    private CONSOLE_ERROR_REGEXP: RegExp = /# ERROR: (.*)/g;
-    private CONSOLE_WARNING_REGEXP: RegExp = /# WARN: (.*)/g;
+    private FIXTURE_REGEXP: RegExp = /^# FIXTURE (.*)/;
+    private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
     private _completeCalled = false;
 
     public constructor() {
@@ -92,18 +91,6 @@ class TapBarkOutput extends Component {
                     this.setState({
                         warnings
                     });
-                }
-                // TEMP: DISABLE LOGS
-                return;
-
-                if (this.CONSOLE_ERROR_REGEXP.test(comment)) {
-                    this.cachedState.logs = [ ...this.cachedState.logs, chalk.red(message) ];
-                }
-                else if (this.CONSOLE_WARNING_REGEXP.test(comment)) {
-                    this.cachedState.logs = [ ...this.cachedState.logs, chalk.yellow(message) ];
-                }
-                else {
-                    this.cachedState.logs = [ ...this.cachedState.logs, message ];
                 }
             }
         });

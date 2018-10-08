@@ -142,7 +142,9 @@ export class TestRunner {
     } catch (e) {
       return testResults.addTestCaseResult(testItem.testCase.caseArguments, e);
     } finally {
-      const newWarnings = Warner.warnings.filter(message => this._flushedWarnings.indexOf(message) === -1);
+      const newWarnings = Warner.warnings
+                                  .filter((message, index, array) => array.indexOf(message, index + 1) === -1)
+                                  .filter(message => this._flushedWarnings.indexOf(message) === -1);
 
       newWarnings.forEach(warning => {
         this._flushedWarnings.push(warning);
@@ -172,11 +174,7 @@ export class TestRunner {
 
     if (fixtureFunctions) {
       for (const fixtureFunction of fixtureFunctions) {
-        if (fixtureFunction.isAsync) {
-          await fixture[fixtureFunction.propertyKey].call(fixture);
-        } else {
-          fixture[fixtureFunction.propertyKey].call(fixture);
-        }
+        await fixture[fixtureFunction.propertyKey].call(fixture);
       }
     }
   }
