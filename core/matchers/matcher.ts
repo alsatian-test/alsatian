@@ -48,7 +48,7 @@ function stringifyDiffProp(diff: deepDiff.IDiff, padding: string) {
     return chalk.red(`- ${padding}${diff.path[diff.path.length - 1] || ""}: ${JSON.stringify(diff.lhs)}`);
   }
   else if (diff.kind === "E") {
-    return chalk.bold(`  ${padding}${diff.path[diff.path.length - 1] || ""}: ${diffString(diff.lhs, diff.rhs)}`)
+    return `  ${padding}${diff.path[diff.path.length - 1] || ""}: "${diffString(diff.lhs, diff.rhs)}"`;
   }
 }
 
