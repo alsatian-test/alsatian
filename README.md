@@ -29,6 +29,12 @@
     </a>
 </p>
 
+## v3.0.0 is in ALPHA
+
+We're getting ready to release 3.0.0 and we'd love your feedback. We are still developing features fully but for the most part they should be there but perhaps with some bugs. The goal of alpha is to get feedback about API changes and finish features so if you've got any feedback or would like to help please raise an issue or get in touch :) Info about the release can be found on our [Roadmap](https://github.com/alsatian-test/alsatian/wiki/roadmap)
+
+You can install via `npm install alsatian@alpha`. We hope you love the new features and look forward to hearing from you guys
+
 ## Quick Start
 
 If you're loving TypeScript then pop on down to our [TypeScript Quick Start](https://github.com/alsatian-test/alsatian/wiki/typescript-setup).
