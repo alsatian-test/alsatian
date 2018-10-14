@@ -1,14 +1,17 @@
 TAP version 13
 1..16
 # FIXTURE asynchronous tests
+# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead. Please check the migration guide on the Alsatian Github repo for more information.
+# WARN: AsyncSetup has been depreacated and will be removed in version 4.0.0. Use the Setup decorator instead. Please check the migration guide on the Alsatian Github repo for more information.
+# WARN: AsyncTeardown has been depreacated and will be removed in version 4.0.0. Use the Teardown decorator instead. Please check the migration guide on the Alsatian Github repo for more information.
 ok 1 simple passing asynchronous test
 not ok 2 simple failing asynchronous test
  ---
-   message: "Expected 4 to be 5."
-   severity: fail
-   data:
-     got: 4
-     expect: 5
+ message: Expected 4 to be 5.
+ severity: fail
+ data:
+   got: '4'
+   expect: '5'
  ...
 # FIXTURE CaseArgumentTestsTests
 ok 3 AddNumbers ( 1, 2, 3 )
