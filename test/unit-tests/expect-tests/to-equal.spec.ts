@@ -1,14 +1,8 @@
-import {
-  Expect,
-  Test,
-  TestCase,
-  Any
-} from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
 import { MatchError } from "../../../core/errors/match-error";
 import { stringify } from "../../../core/stringification";
 
 export class ToEqualTests {
-
   @TestCase(undefined)
   @TestCase(null)
   @TestCase(0)
