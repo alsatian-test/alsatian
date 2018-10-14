@@ -4,7 +4,6 @@ import { MatchError } from "../../../core/errors/match-error";
 class DummyClass {}
 
 export class ToBeEmptyTests {
-
   @Test()
   public emptyShouldNotThrowErrorForEmptyArray() {
     const expect = Expect([]);

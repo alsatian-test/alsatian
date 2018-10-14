@@ -1,5 +1,5 @@
 export enum ResultType {
-    PASS,
-    FAIL,
-    IGNORE
+  PASS,
+  FAIL,
+  IGNORE
 }

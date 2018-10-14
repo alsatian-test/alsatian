@@ -19,9 +19,7 @@ export class TestTimeoutTests {
     @TestFixture()
     class Fixture {
       @Test()
-      public noTimeoutTest() {
-
-      }
+      public noTimeoutTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");
@@ -43,9 +41,7 @@ export class TestTimeoutTests {
     class Fixture {
       @Test()
       @Timeout(timeoutPeriod)
-      public timeoutTest() {
-
-      }
+      public timeoutTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");

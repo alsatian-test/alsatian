@@ -4,7 +4,6 @@ import {
   Expect,
   METADATA_KEYS,
   SpyOn,
-  
   SpyOnProperty,
   Test,
   TestCase,
@@ -20,7 +19,7 @@ import { TestCaseBuilder } from "../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 class FakeFixture {
-  constructor () {        
+  constructor() {
     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
   }
 }
@@ -68,11 +67,9 @@ export class LoadTestTests {
 
     @TestFixture()
     @IgnoreTests()
-    class IgnoredFixture { 
+    class IgnoredFixture {
       @Test()
-      public test() {
-
-      }
+      public test() {}
     }
 
     const testFixtureSet = {
@@ -161,7 +158,7 @@ export class LoadTestTests {
   public noTestsReturnsEmptyArray() {
     const fileRequirer = new FileRequirer();
 
-    class NotAFixture { };
+    class NotAFixture {}
 
     const testFixtureSet = {
       testFixture: NotAFixture
@@ -322,19 +319,14 @@ export class LoadTestTests {
   public shouldIgnoreTestsWithReasonIfFixtureIgnored(reason: string) {
     const fileRequirer = new FileRequirer();
 
-    
     @TestFixture()
     @IgnoreTests(reason)
-    class IgnoredFixture { 
+    class IgnoredFixture {
       @Test()
-      public testOne() {
-        
-      }
+      public testOne() {}
 
       @Test()
-      public testTwo() {
-        
-      }
+      public testTwo() {}
     }
 
     const testFixtureSet = {

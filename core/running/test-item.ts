@@ -62,16 +62,17 @@ export class TestItem {
 
   private async _runTest(timeout: number) {
     return new Promise<any>(async (resolve, reject) => {
-      setTimeout(() => {
+      const timeoutCheck = setTimeout(() => {
         reject(new TestTimeoutError(timeout));
       }, timeout);
 
-      try {        
+      try {
         await this._execute();
         resolve();
-      }
-      catch (exception) {
+      } catch (exception) {
         reject(exception);
+      } finally {
+        clearTimeout(timeoutCheck);
       }
     });
   }

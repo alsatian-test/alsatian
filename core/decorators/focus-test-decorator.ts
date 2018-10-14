@@ -9,7 +9,7 @@ export function FocusTest(
   descriptor?: TypedPropertyDescriptor<any>
 ) {
   Unused(descriptor);
-  
+
   deprecate("FocusTest", "4.0.0", "Use the Focus decorator instead.");
 
   // mark test method as focussed

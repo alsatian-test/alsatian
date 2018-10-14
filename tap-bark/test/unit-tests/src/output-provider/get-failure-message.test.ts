@@ -5,87 +5,118 @@ import { Assertion } from "../../../../src/external/tap-parser";
 const chalk = require("chalk");
 
 export class GetFailureMessageTests {
+  @TestCase(
+    "Some failing test",
+    "something went really wrong",
+    "null",
+    "undefined"
+  )
+  @TestCase(
+    "Another failing test",
+    "this should have happened but it didn't",
+    "should have happened",
+    "it didn't"
+  )
+  @TestCase("Number test", "expected 1 to be 3.", "1", "3")
+  public shouldReturnCorrectMessage(
+    name: string,
+    message: string,
+    expect: string,
+    got: string
+  ) {
+    const provider = new OutputProviderBuilder().build();
 
-    @TestCase("Some failing test", "something went really wrong", "null", "undefined")
-    @TestCase("Another failing test", "this should have happened but it didn't", "should have happened", "it didn't")
-    @TestCase("Number test", "expected 1 to be 3.", "1", "3")
-    public shouldReturnCorrectMessage(name: string, message: string, expect: string, got: string) {
-        let provider = new OutputProviderBuilder().build();
+    const assertion: Assertion = {
+      id: 0,
+      ok: false,
+      name,
+      diag: {
+        message,
+        data: {
+          expect,
+          got
+        }
+      }
+    };
 
-        let assertion: Assertion = {
-            id: 0,
-            ok: false,
-            name: name,
-            diag: {
-                message: message,
-                data: {
-                   expect: expect,
-                   got: got
-                }
-            }
-        };
+    const expected =
+      chalk.red("FAIL: ") +
+      chalk.bold(name) +
+      "\n" +
+      message +
+      "\nExpected: " +
+      expect +
+      "\n  Actual: " +
+      got;
+    const actual = provider.getFailureMessage(assertion);
 
-        let expected = chalk.red("FAIL: ") + chalk.bold(name) + "\n" + message + "\nExpected: " + expect + "\n  Actual: " + got;
-        let actual = provider.getFailureMessage(assertion);
+    Expect(actual).toBe(expected);
+  }
 
-        Expect(actual).toBe(expected);
-    }
+  @TestCase("some stack")
+  @TestCase("some other stack")
+  public shouldReturnMessageWithCorrectStack(stack: string) {
+    const provider = new OutputProviderBuilder().build();
 
-    @TestCase("some stack")
-    @TestCase("some other stack")
-    public shouldReturnMessageWithCorrectStack(stack: string) {
-        let provider = new OutputProviderBuilder().build();
+    const name = "test";
+    const message = "bla bla";
+    const expect = "good";
+    const got = "evil";
 
-        let name = "test";
-        let message = "bla bla";
-        let expect = "good";
-        let got = "evil";
+    const assertion: Assertion = {
+      id: 0,
+      ok: false,
+      name,
+      diag: {
+        message,
+        data: {
+          expect,
+          got,
+          stack
+        }
+      }
+    };
 
-        let assertion: Assertion = {
-            id: 0,
-            ok: false,
-            name: name,
-            diag: {
-                message: message,
-                data: {
-                   expect: expect,
-                   got: got,
-                   stack: stack
-                }
-            }
-        };
+    const expected =
+      chalk.red("FAIL: ") +
+      chalk.bold(name) +
+      "\n" +
+      message +
+      "\n" +
+      "Expected: " +
+      expect +
+      "\n" +
+      "  Actual: " +
+      got +
+      "\n" +
+      "=====\n" +
+      chalk.bold.white("Stack Trace") +
+      "\n\n" +
+      stack +
+      "\n" +
+      "=====";
 
-        let expected =
-            chalk.red("FAIL: ") + chalk.bold(name) + "\n"
-            + message + "\n"
-            + "Expected: " + expect + "\n"
-            + "  Actual: " + got + "\n"
-            + "=====\n"
-            + chalk.bold.white("Stack Trace") + "\n\n"
-            + stack + "\n"
-            + "=====";
+    const actual = provider.getFailureMessage(assertion);
 
-        let actual = provider.getFailureMessage(assertion);
+    Expect(actual).toBe(expected);
+  }
 
-        Expect(actual).toBe(expected);
-    }
+  @TestCase("Some failing test")
+  @TestCase("Another failing test")
+  @TestCase("Number test")
+  public shouldReturnUnknownMessageWithMissingDiag(name: string) {
+    const provider = new OutputProviderBuilder().build();
 
-    @TestCase("Some failing test")
-    @TestCase("Another failing test")
-    @TestCase("Number test")
-    public shouldReturnUnknownMessageWithMissingDiag(name: string) {
-        let provider = new OutputProviderBuilder().build();
+    const assertion: Assertion = {
+      id: 0,
+      ok: false,
+      name
+    };
 
-        let assertion: Assertion = {
-            id: 0,
-            ok: false,
-            name: name
-        };
+    const expected =
+      chalk.red("FAIL: ") + chalk.bold(name) + "\nFailure reason unknown.";
+    const actual = provider.getFailureMessage(assertion);
 
-        let expected = chalk.red("FAIL: ") + chalk.bold(name) + "\nFailure reason unknown.";
-        let actual = provider.getFailureMessage(assertion);
-
-        Expect(actual).toBe(expected);
-    }
-
+    Expect(actual).toBe(expected);
+  }
 }

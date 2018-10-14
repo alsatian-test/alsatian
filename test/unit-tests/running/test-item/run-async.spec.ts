@@ -4,7 +4,8 @@ import {
   METADATA_KEYS,
   SpyOn,
   TestCase,
-  Timeout
+  Timeout,
+  Focus
 } from "../../../../core/alsatian-core";
 import { MatchError } from "../../../../core/errors";
 import { TestItem } from "../../../../core/running/test-item";

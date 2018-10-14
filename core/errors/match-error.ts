@@ -16,7 +16,12 @@ export class MatchError extends ExtendoError {
     return this._extras;
   }
 
-  public constructor(message?: string, expectedValue?: any, actualValue?: any, extras?: { [prop: string]: any }) {
+  public constructor(
+    message?: string,
+    expectedValue?: any,
+    actualValue?: any,
+    extras?: { [prop: string]: any }
+  ) {
     super(message);
 
     this._actual = actualValue;

@@ -60,7 +60,7 @@ class TapBarkOutput extends Component {
                     </Indent>;
         }
 
-        return <Indent>{Math.floor(this.state.currentTest / total * 100)}</Indent>;
+        return <Indent>{Math.floor(this.state.currentTest / total * 100 || 0)}% complete</Indent>;
     }
 
     private setupListeners(): void {

@@ -59,9 +59,7 @@ function getStack() {
   });
 }
 
-function findMatcher<T>(
-  actualValue: T
-): new (value: T) => Matcher<T> {
+function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
   if (typeof actualValue === "function") {
     return FunctionMatcher;
   }

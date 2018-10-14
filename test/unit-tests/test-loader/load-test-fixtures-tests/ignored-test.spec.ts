@@ -19,9 +19,7 @@ export class IgnoredTestTests {
     @TestFixture()
     class Fixture {
       @Test()
-      public singleUnignoredTest() {
-
-      }
+      public singleUnignoredTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");
@@ -41,9 +39,7 @@ export class IgnoredTestTests {
     class Fixture {
       @Test()
       @IgnoreTest()
-      public singleIgnoredTest() {
-
-      }
+      public singleIgnoredTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");
@@ -65,9 +61,7 @@ export class IgnoredTestTests {
     class Fixture {
       @Test()
       @IgnoreTest(reason)
-      public singleIgnoredTest() {
-
-      }
+      public singleIgnoredTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");

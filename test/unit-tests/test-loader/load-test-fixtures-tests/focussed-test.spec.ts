@@ -18,9 +18,7 @@ export class FocussedTestTests {
     @TestFixture()
     class SingleUnfocussedTest {
       @Test()
-      public unfocussedTest() {
-
-      }
+      public unfocussedTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");
@@ -40,9 +38,7 @@ export class FocussedTestTests {
     class SingleFocussedTest {
       @Test()
       @FocusTest
-      public focussedTest() {
-
-      }
+      public focussedTest() {}
     }
 
     const spy = SpyOn(fileRequirer, "require");

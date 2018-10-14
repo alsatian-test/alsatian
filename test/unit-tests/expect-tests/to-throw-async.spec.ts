@@ -1,23 +1,30 @@
-import { AsyncTest, Expect, TestCase } from "../../../core/alsatian-core";
+import {
+  AsyncTest,
+  Expect,
+  TestCase,
+  Focus,
+  Test
+} from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { INameable } from "../../../core/_interfaces";
+
+async function wait(timeInMilliseconds: number) {
+  return new Promise<void>(resolve => setTimeout(resolve, timeInMilliseconds));
+}
 
 export class ToThrowAsyncTests {
   // Asynchronous throw
   private async asyncThrowFunction(delayMs: number): Promise<void> {
-    return new Promise<void>((_, reject) => {
-      setTimeout(() => reject(new Error("Timeout then reject")), delayMs);
-    });
+    await wait(delayMs);
+    throw new Error("Timeout then reject");
   }
 
   // Asynchronous non-throw
   private async asyncNonThrowFunction(delayMs: number): Promise<void> {
-    return new Promise<void>(resolve => {
-      setTimeout(() => resolve(), delayMs);
-    });
+    await wait(delayMs);
   }
 
-  @TestCase(0)
+  @TestCase(1)
   @TestCase(100)
   @AsyncTest("Test toThrowAsync catches thrown errors and does not rethrow")
   public async asyncFunctionThrowsErrorPasses(delayMs: number) {
@@ -28,7 +35,7 @@ export class ToThrowAsyncTests {
     }).not.toThrowAsync();
   }
 
-  @TestCase(0)
+  @TestCase(1)
   @TestCase(100)
   @AsyncTest("Test toThrowAsync throws and error if an error is not thrown")
   public async asyncFunctionThrowDoesNotErrorFails(delayMs: number) {

@@ -120,7 +120,12 @@ export class TestOutputStream extends ReadableStream {
     const sanitisedActual = stringify(error.actual);
     const sanitisedExpected = stringify(error.expected);
 
-    this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected, error.extras);
+    this._writeFailure(
+      sanitisedMessage,
+      sanitisedActual,
+      sanitisedExpected,
+      error.extras
+    );
   }
 
   private _writeUnhandledErrorOutput(error: Error | null): void {
@@ -138,7 +143,6 @@ export class TestOutputStream extends ReadableStream {
     expected: string,
     details?: { [props: string]: any }
   ): void {
-
     const output = {
       message,
       severity: "fail",
@@ -153,6 +157,11 @@ export class TestOutputStream extends ReadableStream {
       delete output.data.details;
     }
 
-    this._writeOut(` ---\n${safeDump(output).split("\n").map(s => ` ${s}`).join("\n")}\n ...\n`);
+    this._writeOut(
+      ` ---\n${safeDump(output)
+        .split("\n")
+        .map(s => ` ${s}`)
+        .join("\n")}...\n`
+    );
   }
 }

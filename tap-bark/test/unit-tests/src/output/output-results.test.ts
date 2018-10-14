@@ -7,191 +7,203 @@ import { ResultType } from "../../../../src/result-type";
 import { Assertion } from "../../../../src/external/tap-parser";
 
 export class OutputResultsTests {
+  @TestCase(5)
+  @TestCase(10)
+  public shouldEmitCorrectPassCount(passes: number) {
+    const results: IResults = {
+      pass: passes,
+      fail: 0,
+      ignore: 0,
+      failures: []
+    };
 
-    @TestCase(5)
-    @TestCase(10)
-    public shouldEmitCorrectPassCount(passes: number) {
-        let results: IResults = {
-            pass: passes,
-            fail: 0,
-            ignore: 0,
-            failures: []
-        };
+    const stream = new StreamBuilder().build();
+    SpyOn(stream, "writeLine");
 
-        let stream = new StreamBuilder().build();
-        SpyOn(stream, "writeLine");
+    const outputProvider = new OutputProviderBuilder().build();
+    SpyOn(outputProvider, "getResultMessage").andCall(
+      (type: ResultType, resultCount: number, totalCount: number) => {
+        if (type === ResultType.PASS) {
+          return `p ${resultCount} ${totalCount}`;
+        }
 
-        let outputProvider = new OutputProviderBuilder().build();
-        SpyOn(outputProvider, "getResultMessage").andCall((type: ResultType, resultCount: number, totalCount: number) => {
-            if (type === ResultType.PASS) {
-                return `p ${resultCount} ${totalCount}`;
-            }
+        return "";
+      }
+    );
 
-            return "";
-        });
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
+    output.outputResults(results);
 
-        output.outputResults(results);
+    Expect(stream.writeLine).toHaveBeenCalledWith(`p ${passes} ${passes}`);
+  }
 
-        Expect(stream.writeLine).toHaveBeenCalledWith(`p ${passes} ${passes}`);
-    }
+  @TestCase(5)
+  @TestCase(10)
+  public shouldEmitCorrectFailCount(fails: number) {
+    const results: IResults = {
+      pass: 0,
+      fail: fails,
+      ignore: 0,
+      failures: []
+    };
 
-    @TestCase(5)
-    @TestCase(10)
-    public shouldEmitCorrectFailCount(fails: number) {
-        let results: IResults = {
-            pass: 0,
-            fail: fails,
-            ignore: 0,
-            failures: []
-        };
+    const stream = new StreamBuilder().build();
+    SpyOn(stream, "writeLine");
 
-        let stream = new StreamBuilder().build();
-        SpyOn(stream, "writeLine");
+    const outputProvider = new OutputProviderBuilder().build();
+    SpyOn(outputProvider, "getResultMessage").andCall(
+      (type: ResultType, resultCount: number, totalCount: number) => {
+        if (type === ResultType.FAIL) {
+          return `f ${resultCount} ${totalCount}`;
+        }
 
-        let outputProvider = new OutputProviderBuilder().build();
-        SpyOn(outputProvider, "getResultMessage").andCall((type: ResultType, resultCount: number, totalCount: number) => {
-            if (type === ResultType.FAIL) {
-                return `f ${resultCount} ${totalCount}`;
-            }
+        return "";
+      }
+    );
 
-            return "";
-        });
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
+    output.outputResults(results);
 
-        output.outputResults(results);
+    Expect(stream.writeLine).toHaveBeenCalledWith(`f ${fails} ${fails}`);
+  }
 
-        Expect(stream.writeLine).toHaveBeenCalledWith(`f ${fails} ${fails}`);
-    }
+  @TestCase(5)
+  @TestCase(10)
+  public shouldEmitCorrectIgnoreCount(ignores: number) {
+    const results: IResults = {
+      pass: 0,
+      fail: 0,
+      ignore: ignores,
+      failures: []
+    };
 
-    @TestCase(5)
-    @TestCase(10)
-    public shouldEmitCorrectIgnoreCount(ignores: number) {
-        let results: IResults = {
-            pass: 0,
-            fail: 0,
-            ignore: ignores,
-            failures: []
-        };
+    const stream = new StreamBuilder().build();
+    SpyOn(stream, "writeLine");
 
-        let stream = new StreamBuilder().build();
-        SpyOn(stream, "writeLine");
+    const outputProvider = new OutputProviderBuilder().build();
+    SpyOn(outputProvider, "getResultMessage").andCall(
+      (type: ResultType, resultCount: number, totalCount: number) => {
+        if (type === ResultType.IGNORE) {
+          return `i ${resultCount} ${totalCount}`;
+        }
 
-        let outputProvider = new OutputProviderBuilder().build();
-        SpyOn(outputProvider, "getResultMessage").andCall((type: ResultType, resultCount: number, totalCount: number) => {
-            if (type === ResultType.IGNORE) {
-                return `i ${resultCount} ${totalCount}`;
-            }
+        return "";
+      }
+    );
 
-            return "";
-        });
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
+    output.outputResults(results);
 
-        output.outputResults(results);
+    Expect(stream.writeLine).toHaveBeenCalledWith(`i ${ignores} ${ignores}`);
+  }
 
-        Expect(stream.writeLine).toHaveBeenCalledWith(`i ${ignores} ${ignores}`);
-    }
+  @Test()
+  public shouldEmitCorrectFractions() {
+    const results: IResults = {
+      pass: 2,
+      fail: 3,
+      ignore: 4,
+      failures: []
+    };
 
-    @Test()
-    public shouldEmitCorrectFractions() {
-        let results: IResults = {
-            pass: 2,
-            fail: 3,
-            ignore: 4,
-            failures: []
-        };
+    const total = results.pass + results.fail + results.ignore;
 
-        let total = (results.pass + results.fail + results.ignore);
+    const stream = new StreamBuilder().build();
+    SpyOn(stream, "writeLine");
 
-        let stream = new StreamBuilder().build();
-        SpyOn(stream, "writeLine");
+    const outputProvider = new OutputProviderBuilder().build();
+    SpyOn(outputProvider, "getResultMessage").andCall(
+      (type: ResultType, resultCount: number, totalCount: number) => {
+        return `${type} ${resultCount} ${totalCount}`;
+      }
+    );
 
-        let outputProvider = new OutputProviderBuilder().build();
-        SpyOn(outputProvider, "getResultMessage").andCall((type: ResultType, resultCount: number, totalCount: number) => {
-            return `${type} ${resultCount} ${totalCount}`;
-        });
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
+    output.outputResults(results);
 
-        output.outputResults(results);
+    Expect(stream.writeLine).toHaveBeenCalledWith(
+      `${ResultType.PASS} ${results.pass} ${total}`
+    );
+    Expect(stream.writeLine).toHaveBeenCalledWith(
+      `${ResultType.FAIL} ${results.fail} ${total}`
+    );
+    Expect(stream.writeLine).toHaveBeenCalledWith(
+      `${ResultType.IGNORE} ${results.ignore} ${total}`
+    );
+  }
 
-        Expect(stream.writeLine).toHaveBeenCalledWith(`${ResultType.PASS} ${results.pass} ${total}`);
-        Expect(stream.writeLine).toHaveBeenCalledWith(`${ResultType.FAIL} ${results.fail} ${total}`);
-        Expect(stream.writeLine).toHaveBeenCalledWith(`${ResultType.IGNORE} ${results.ignore} ${total}`);
-    }
+  @Test()
+  public shouldEmitFailureInfo() {
+    const failureMessage = "failure failure!!!";
 
-    @Test()
-    public shouldEmitFailureInfo() {
-        const failureMessage = "failure failure!!!";
+    const results: IResults = {
+      pass: 2,
+      fail: 3,
+      ignore: 4,
+      failures: []
+    };
 
-        let results: IResults = {
-            pass: 2,
-            fail: 3,
-            ignore: 4,
-            failures: []
-        };
+    results.failures.push({
+      id: 1,
+      ok: false,
+      name: "Some failing assertion",
+      diag: {
+        message: "Bla bla bla"
+      }
+    });
 
-        results.failures.push({
-            id: 1,
-            ok: false,
-            name: "Some failing assertion",
-            diag: {
-                message: "Bla bla bla"
-            }
-        });
+    results.failures.push({
+      id: 2,
+      ok: false,
+      name: "More bla bla bla",
+      diag: {
+        message: "Boring diagnostics wabababa"
+      }
+    });
 
-        results.failures.push({
-            id: 2,
-            ok: false,
-            name: "More bla bla bla",
-            diag: {
-                message: "Boring diagnostics wabababa"
-            }
-        });
+    const stream = new StreamBuilder().build();
+    SpyOn(stream, "writeLine");
 
-        let stream = new StreamBuilder().build();
-        SpyOn(stream, "writeLine");
+    const outputProvider = new OutputProviderBuilder().build();
+    SpyOn(outputProvider, "getFailureMessage").andReturn(failureMessage);
 
-        let outputProvider = new OutputProviderBuilder().build();
-        SpyOn(outputProvider, "getFailureMessage").andReturn(failureMessage);
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
+    output.outputResults(results);
 
-        output.outputResults(results);
+    Expect(stream.writeLine).toHaveBeenCalledWith(failureMessage);
+  }
 
-        Expect(stream.writeLine).toHaveBeenCalledWith(failureMessage);
-    }
+  @Test()
+  public shouldNotThrowIfFailuresIsUndefined() {
+    const stream = new StreamBuilder().build();
 
-    @Test()
-    public shouldNotThrowIfFailuresIsUndefined() {
+    const outputProvider = new OutputProviderBuilder().build();
 
-        let stream = new StreamBuilder().build();
+    const output = new OutputBuilder()
+      .withStream(stream)
+      .withOutputProvider(outputProvider)
+      .build();
 
-        let outputProvider = new OutputProviderBuilder().build();
-
-        let output = new OutputBuilder()
-            .withStream(stream)
-            .withOutputProvider(outputProvider)
-            .build();
-
-        Expect(() => output.outputResults(<IResults>{})).not.toThrow();
-    }
+    Expect(() => output.outputResults({} as IResults)).not.toThrow();
+  }
 }

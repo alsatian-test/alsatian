@@ -3,39 +3,37 @@ import * as readline from "readline";
 const through = require("through2");
 
 export class Stream implements IStream {
+  private _stream: NodeJS.WritableStream = through();
 
-   private _stream: NodeJS.WritableStream = through();
+  public get stream() {
+    return this._stream;
+  }
 
-   public get stream() {
-      return this._stream;
-   }
+  public set stream(value) {
+    this._stream = value;
+  }
 
-   public set stream (value) {
-      this._stream = value;
-   }
+  public writeLine(message: string): void {
+    this._stream.write(message + "\n");
+  }
 
-    public writeLine(message: string): void {
-        this._stream.write(message + "\n");
-    }
+  public write(message: string): void {
+    this._stream.write(message);
+  }
 
-    public write(message: string): void {
-        this._stream.write(message);
-    }
+  public moveCursor(x: number, y: number): void {
+    readline.moveCursor(this._stream, x, y);
+  }
 
-    public moveCursor(x: number, y: number): void {
-        readline.moveCursor(this._stream, x, y);
-    }
+  public cursorTo(x: number, y: number): void {
+    readline.cursorTo(this._stream, x, y);
+  }
 
-    public cursorTo(x: number, y: number): void {
-        readline.cursorTo(this._stream, x, y);
-    }
+  public clearLine(): void {
+    readline.clearLine(this._stream, 0);
+  }
 
-    public clearLine(): void {
-        readline.clearLine(this._stream, 0);
-    }
-
-    public getUnderlyingStream(): NodeJS.WritableStream {
-        return this._stream;
-    }
-
+  public getUnderlyingStream(): NodeJS.WritableStream {
+    return this._stream;
+  }
 }

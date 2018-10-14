@@ -136,15 +136,15 @@ export class TestRunner {
       testItem.isRunning = true;
       await testItem.run(testSetRunInfo.timeout);
 
-      return testResults.addTestCaseResult(
-        testItem.testCase.caseArguments
-      );
+      return testResults.addTestCaseResult(testItem.testCase.caseArguments);
     } catch (e) {
       return testResults.addTestCaseResult(testItem.testCase.caseArguments, e);
     } finally {
       const newWarnings = Warner.warnings
-                                  .filter((message, index, array) => array.indexOf(message, index + 1) === -1)
-                                  .filter(message => this._flushedWarnings.indexOf(message) === -1);
+        .filter(
+          (message, index, array) => array.indexOf(message, index + 1) === -1
+        )
+        .filter(message => this._flushedWarnings.indexOf(message) === -1);
 
       newWarnings.forEach(warning => {
         this._flushedWarnings.push(warning);

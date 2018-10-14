@@ -4,7 +4,7 @@ import { Unused } from "../unused";
 import { deprecate } from "../maintenance/deprecate";
 
 export function IgnoreTest(reason?: string) {
-  return ((
+  return (
     target: object,
     propertyKey: string,
     descriptor?: TypedPropertyDescriptor<any>
@@ -18,5 +18,5 @@ export function IgnoreTest(reason?: string) {
 
     // add the reason
     Reflect.defineMetadata(IGNORE_REASON, reason, target, propertyKey);
-  });
+  };
 }

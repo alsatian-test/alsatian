@@ -11,7 +11,7 @@ import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 class FakeFixture {
-  constructor () {        
+  constructor() {
     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
   }
 }
@@ -46,7 +46,7 @@ export class MultipleExportedFixtureTests {
     const fileRequirer = new FileRequirer();
 
     const testFixtureWrapper = {
-      firstThing: class NotAFixture { },
+      firstThing: class NotAFixture {},
       secondThing: FakeFixture,
       thirdThing: FakeFixture
     };
@@ -85,7 +85,7 @@ export class MultipleExportedFixtureTests {
 
     const testFixtureWrapper = {
       firstThing: FakeFixture,
-      secondThing: class NotAFixture { },
+      secondThing: class NotAFixture {},
       thirdThing: FakeFixture
     };
 
@@ -124,7 +124,7 @@ export class MultipleExportedFixtureTests {
     const testFixtureWrapper = {
       firstThing: FakeFixture,
       secondThing: FakeFixture,
-      thirdThing: class NotAFixture { }
+      thirdThing: class NotAFixture {}
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -143,7 +143,7 @@ export class MultipleExportedFixtureTests {
     const testFixtureWrapper = {
       firstThing: FakeFixture,
       secondThing: FakeFixture,
-      thirdThing: class NotAFixture { }
+      thirdThing: class NotAFixture {}
     };
 
     const spy = SpyOn(fileRequirer, "require");

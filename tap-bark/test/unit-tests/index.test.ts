@@ -2,61 +2,58 @@ import { Test, Expect, SpyOn } from "alsatian";
 import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
+  @Test("process.stdin stream piped to Tap Bark")
+  public stdInPipedToTapBark() {
+    const chainedPipe = { pipe: () => {} };
 
-    @Test("process.stdin stream piped to Tap Bark")
-    public stdInPipedToTapBark() {
+    SpyOn(process.stdin, "pipe").andReturn(chainedPipe);
 
-        const chainedPipe = { pipe: () => {} };
+    const fakeTapBarkPipeable = {
+      on: () => {},
+      once: () => {},
+      emit: () => {}
+    };
 
-        SpyOn(process.stdin, "pipe").andReturn(chainedPipe);
+    const fakeTapBark = { getPipeable: () => fakeTapBarkPipeable };
 
-        const fakeTapBarkPipeable = {
-            on: () => {},
-            once: () => {},
-            emit: () => {}
-        };
+    SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
-        const fakeTapBark = { getPipeable: () => fakeTapBarkPipeable };
+    // clear cache for index
+    delete require.cache[require.resolve("../../index")];
 
-        SpyOn(TapBark, "create").andReturn(fakeTapBark);
+    // call the index
+    require("../../index");
 
-        // clear cache for index
-        delete require.cache[require.resolve("../../index")];
+    Expect(process.stdin.pipe).toHaveBeenCalledWith(fakeTapBarkPipeable);
 
-        // call the index
-        require("../../index");
+    (TapBark.create as any).restore();
+  }
 
-        Expect(process.stdin.pipe).toHaveBeenCalledWith(fakeTapBarkPipeable);
+  @Test("Tap Bark stream piped to process.stdout")
+  public tapBarkPipedToStdOut() {
+    const chainedPipe = { pipe: () => {} };
+    SpyOn(chainedPipe, "pipe");
 
-        (<any>TapBark.create).restore();
-    }
+    SpyOn(process.stdin, "pipe").andReturn(chainedPipe);
 
-    @Test("Tap Bark stream piped to process.stdout")
-    public tapBarkPipedToStdOut() {
+    const fakeTapBarkPipeable = {
+      on: () => {},
+      once: () => {},
+      emit: () => {}
+    };
 
-        const chainedPipe = { pipe: () => {} };
-        SpyOn(chainedPipe, "pipe");
+    const fakeTapBark = { getPipeable: () => fakeTapBarkPipeable };
 
-        SpyOn(process.stdin, "pipe").andReturn(chainedPipe);
+    SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
-        const fakeTapBarkPipeable = {
-            on: () => {},
-            once: () => {},
-            emit: () => {}
-        };
+    // clear cache for index
+    delete require.cache[require.resolve("../../index")];
 
-        const fakeTapBark = { getPipeable: () => fakeTapBarkPipeable };
+    // call the index
+    require("../../index");
 
-        SpyOn(TapBark, "create").andReturn(fakeTapBark);
+    Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
 
-        // clear cache for index
-        delete require.cache[require.resolve("../../index")];
-
-        // call the index
-        require("../../index");
-
-        Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
-
-        (<any>TapBark.create).restore();
-    }
+    (TapBark.create as any).restore();
+  }
 }

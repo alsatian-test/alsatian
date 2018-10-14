@@ -15,13 +15,11 @@ import { TestOutcome } from "../../../core/results/test-outcome";
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
   return (
     ` ---\n` +
-    ` message: ${error.message
-      .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')}\n` +
+    ` message: ${error.message.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}\n` +
     ` severity: fail\n` +
     ` data:\n` +
     `   got: ${yamlStringify(error.actual)}\n` +
-    `   expect: ${yamlStringify(error.expected)}\n \n ...\n`
+    `   expect: ${yamlStringify(error.expected)}\n ...\n`
   );
 };
 
@@ -34,7 +32,7 @@ const _getUnhandledErrorMessage: (stack: string) => string = (
 ) => {
   return (
     " ---\n" +
-    ' message: The test threw an unhandled error.\n' +
+    " message: The test threw an unhandled error.\n" +
     " severity: fail\n" +
     " data:\n" +
     "   got: an unhandled error\n" +
@@ -45,19 +43,19 @@ const _getUnhandledErrorMessage: (stack: string) => string = (
       .split("\n")
       .map(l => "       " + l)
       .join("\n") +
-    "\n \n ...\n"
+    "\n ...\n"
   );
 };
 
 function _getUnhandledErrorMessageNoStack(): string {
   return (
     " ---\n" +
-    ' message: The test threw an unhandled error.\n' +
+    " message: The test threw an unhandled error.\n" +
     " severity: fail\n" +
     " data:\n" +
     "   got: an unhandled error\n" +
     "   expect: no unhandled errors to be thrown\n" +
-    " \n ...\n"
+    " ...\n"
   );
 }
 

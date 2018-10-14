@@ -9,7 +9,7 @@ import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
 
 class FakeFixture {
-  constructor () {        
+  constructor() {
     Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
   }
 }
@@ -33,7 +33,7 @@ export class DefaultExportFixtureTests {
     const fileRequirer = new FileRequirer();
 
     class IgnoredFakeFixture {
-      constructor () {        
+      constructor() {
         Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
       }
     }
@@ -67,7 +67,7 @@ export class DefaultExportFixtureTests {
     const fileRequirer = new FileRequirer();
 
     class FocusedFakeFixture {
-      constructor () {        
+      constructor() {
         Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
       }
     }
@@ -87,7 +87,7 @@ export class DefaultExportFixtureTests {
   public noTestsReturnsEmptyArray() {
     const fileRequirer = new FileRequirer();
 
-    class NotAFixture { }
+    class NotAFixture {}
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();

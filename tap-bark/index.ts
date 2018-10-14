@@ -2,8 +2,6 @@
 
 import { TapBark } from "./src/tap-bark";
 
-let bark = TapBark.create();
+const bark = TapBark.create();
 
-process.stdin
-    .pipe(bark.getPipeable())
-    .pipe(process.stdout);
+process.stdin.pipe(bark.getPipeable()).pipe(process.stdout);
