@@ -6,18 +6,18 @@ export function Ignore<T>(reason: string) {
     propertyKey?: string | symbol,
     descriptor?: TypedPropertyDescriptor<T>
   ) => {
-    if (typeof target === "function") {
-      // mark test method as ignored
-      Reflect.defineMetadata(IGNORE, true, target);
-
-      // add the reason
-      Reflect.defineMetadata(IGNORE_REASON, reason, target);
-    } else {
+    if (propertyKey) {
       // mark test method as ignored
       Reflect.defineMetadata(IGNORE, true, target, propertyKey);
 
       // add the reason
       Reflect.defineMetadata(IGNORE_REASON, reason, target, propertyKey);
+    } else {
+      // mark test method as ignored
+      Reflect.defineMetadata(IGNORE, true, target);
+
+      // add the reason
+      Reflect.defineMetadata(IGNORE_REASON, reason, target);
     }
   };
 }

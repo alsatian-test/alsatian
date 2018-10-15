@@ -46,7 +46,7 @@ export class TestLoader {
   }
 
   private _loadTestFixture(
-    testFixtureConstructor: new () => any,
+    testFixtureConstructor: new () => object,
     defaultFixtureDescription: string,
     filePath: string
   ): ITestFixture | null {

@@ -1,7 +1,7 @@
 TAP version 13
 1..5
 # FIXTURE teardown fixtures
-# WARN: AsyncTeardown has been depreacated and will be removed in version 4.0.0. Use the Teardown decorator instead. Please check the migration guide on the Alsatian Github repo for more information.
+# WARN: AsyncTeardown has been depreacated and will be removed in version 4.0.0. Use the Teardown decorator instead.
 ok 1 teardown fixture not called before first test
 ok 2 teardown fixture has still not been called after first test or before second
 # FIXTURE teardown tests

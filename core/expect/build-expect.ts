@@ -11,25 +11,24 @@ import { IExpect } from "./expect.i";
 import { fail } from "./fail";
 import { Matcher } from "../matchers";
 import { PropertySpy, FunctionSpy } from "../spying";
-import { TestPlan } from "../running";
 
 export function buildExpect(): IExpect {
   const EXPECT = ExpectFunction as IExpect;
   EXPECT.fail = fail;
-  EXPECT.extend = (<P, S extends Matcher<P>>(
-    a: new (...args: Array<any>) => P,
-    b: new (value: P) => S
+  EXPECT.extend = (<ExpectedType, MatcherType extends Matcher<ExpectedType>>(
+    expectedTypeConstructor: new (...args: Array<any>) => ExpectedType,
+    matcherConstructor: new (value: ExpectedType) => MatcherType
   ) => {
-    MATCHER_MAP.push([a, b]);
+    MATCHER_MAP.push([expectedTypeConstructor, matcherConstructor]);
     return EXPECT;
   }) as any;
 
   return EXPECT;
 }
 
-type MatcherDictionary<T> = [
-  new (...args: Array<any>) => T,
-  new (value: T) => Matcher<T>
+type MatcherDictionary<ExpectedType> = [
+  new (...args: Array<any>) => ExpectedType,
+  new (value: ExpectedType) => Matcher<ExpectedType>
 ];
 
 const MATCHER_MAP: Array<MatcherDictionary<any>> = [
@@ -44,19 +43,6 @@ function ExpectFunction<ActualType>(
 ): Matcher<ActualType> {
   const MATCHER = findMatcher(actualValue);
   return new MATCHER(actualValue);
-}
-
-function getStack() {
-  return new Error().stack.split("\n").map(stackLine => {
-    const STACK_ITEMS = stackLine
-      .replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$1 $2")
-      .split(" ");
-
-    return {
-      functionName: STACK_ITEMS[0],
-      filePath: STACK_ITEMS[1]
-    };
-  });
 }
 
 function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
@@ -82,7 +68,9 @@ function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
     return Matcher;
   }
 
-  const match = MATCHER_MAP.find(x => x[0] === proto.constructor);
+  const match = MATCHER_MAP.find(
+    matchPair => matchPair[0] === proto.constructor
+  );
 
   return match ? match[1] : findMatcher(proto);
 }

@@ -7,7 +7,6 @@ export function deprecate(
 ) {
   Warner.warn(
     `${featureName} has been depreacated and will be removed in version ${versionToBeRemoved}.` +
-      (prompt ? ` ${prompt} ` : "") +
-      `Please check the migration guide on the Alsatian Github repo for more information.`
+      (prompt ? ` ${prompt}` : "")
   );
 }

@@ -39,6 +39,7 @@
         "through2": "^2.0.1"
     },
     "devDependencies": {
+        "@types/through2": "^2.0.34",
         "alsatian": "^1.0.0-beta.4",
         "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",

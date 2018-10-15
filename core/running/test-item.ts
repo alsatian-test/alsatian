@@ -14,8 +14,6 @@ export class TestItem {
     return this._testFixture;
   }
 
-  public isRunning = false;
-
   private _testCase: ITestCase;
 
   private _test: ITest;

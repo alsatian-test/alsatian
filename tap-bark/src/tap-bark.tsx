@@ -1,11 +1,13 @@
 import { IResults } from "./results.i";
-import { Stream } from "./stream/stream";
-import { Assertion as TAPAssertion, Results as TAPResults } from "./external/tap-parser";
+import { Assertion as TAPAssertion, Results as TAPResults, Assertion } from "./external/tap-parser";
 import chalk from "chalk";
+import * as through from "through2";
 
-const parser = require("tap-parser")();
+const parser = require("tap-parser");
 const duplexer = require("duplexer");
 const { h, render, Component, Color, Indent } = require("ink");
+
+const TAP_PARSER = parser();
 
 class TapBarkOutput extends Component {
 
@@ -23,7 +25,7 @@ class TapBarkOutput extends Component {
         this.setupListeners();
     }
 
-    public getFailureMessage(assertion: any): string {
+    public getFailureMessage(assertion: Assertion): string {
 
         const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
 
@@ -64,7 +66,7 @@ class TapBarkOutput extends Component {
     }
 
     private setupListeners(): void {
-        parser.on("plan", (plan: any) => {
+        TAP_PARSER.on("plan", (plan: any) => {
             this.setState({
                 totalTests: plan.end
             });
@@ -73,7 +75,7 @@ class TapBarkOutput extends Component {
         // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
         const warnings = [] as Array<string>;
 
-        parser.on("comment", (comment: string) => {
+        TAP_PARSER.on("comment", (comment: string) => {
             let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
 
             if (fixtureParse !== null) {
@@ -95,14 +97,14 @@ class TapBarkOutput extends Component {
             }
         });
 
-        parser.on("assert", (assertion: TAPAssertion) => {
+        TAP_PARSER.on("assert", (assertion: TAPAssertion) => {
             this.setState({
                 currentTest: assertion.id,
                 testName: assertion.name
             });
         });
 
-        parser.on("complete", (results: TAPResults) => {
+        TAP_PARSER.on("complete", (results: TAPResults) => {
             let _results: IResults = {
                 pass: results.pass || 0,
                 fail: (results.fail || (results.failures || []).length),
@@ -131,12 +133,11 @@ class TapBarkOutput extends Component {
 
 export class TapBark {
     public static create(): any {
-        const stream = new Stream();
         render(<TapBarkOutput />);
 
         return {
             getPipeable(): any {
-                return duplexer(parser, stream.getUnderlyingStream());
+                return duplexer(TAP_PARSER, through());
             }
         }
     }

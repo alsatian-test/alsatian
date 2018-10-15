@@ -2,20 +2,16 @@ import "reflect-metadata";
 import {
   Expect,
   METADATA_KEYS,
-  TestCaseResult,
   TestFixtureResults,
   TestOutputStream,
-  TestResults,
   TestSet,
-  TestSetResults,
-  TestOutcome
+  TestSetResults
 } from "../alsatian-core";
 import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
 import { TestItem } from "./test-item";
-import { MatchError } from "../errors";
 import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
@@ -40,8 +36,6 @@ export class TestRunner {
     if (testPlan.testItems.length === 0) {
       throw new Error("no tests to run.");
     }
-
-    Reflect.defineMetadata("alsatian:test-plan", testPlan, Expect);
 
     if (!timeout) {
       timeout = 500;
@@ -133,7 +127,6 @@ export class TestRunner {
     }
 
     try {
-      testItem.isRunning = true;
       await testItem.run(testSetRunInfo.timeout);
 
       return testResults.addTestCaseResult(testItem.testCase.caseArguments);
@@ -150,8 +143,6 @@ export class TestRunner {
         this._flushedWarnings.push(warning);
         this.outputStream.emitWarning(warning);
       });
-
-      testItem.isRunning = false;
     }
   }
 

@@ -1,7 +1,7 @@
 TAP version 13
 1..2
 # FIXTURE asynchronous tests
-# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead. Please check the migration guide on the Alsatian Github repo for more information.
+# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
 ok 1 simple passing asynchronous test
 not ok 2 simple failing asynchronous test
  ---

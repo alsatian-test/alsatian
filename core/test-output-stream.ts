@@ -32,10 +32,6 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`# WARN: ${warning.join(" ")}\n`);
   }
 
-  public emitError(...error: Array<string>): void {
-    this._writeOut(`# ERROR: ${error.join(" ")}\n`);
-  }
-
   public emitResult(testId: number, result: TestCaseResult): void {
     const outcome = result.outcome;
     const test = result.test;

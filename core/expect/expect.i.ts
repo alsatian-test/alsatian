@@ -23,7 +23,7 @@ export interface IExpect {
   <T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
   (actualValue: object): EmptyMatcher<object>;
   (actualValue: string): StringMatcher;
-  (actualValue: any): Matcher<any>;
+  <T>(actualValue: T): Matcher<T>;
 
   /**
    * Fails the test with the given message
@@ -31,13 +31,13 @@ export interface IExpect {
    */
   fail(message: string): void;
 
-  extend<R, S extends Matcher<R>>(
-    type: new (...a: Array<any>) => R,
-    matcher: new (value: R, testItem: any) => S
-  ): IExtendedExpect<R, S> & this;
+  extend<ExpectedType, MatcherType extends Matcher<ExpectedType>>(
+    type: new (...args: Array<any>) => ExpectedType,
+    matcher: new (value: ExpectedType, testItem: any) => MatcherType
+  ): IExtendedExpect<ExpectedType, MatcherType> & this;
 }
 
 export type IExtendedExpect<
   ExpectType,
   MatcherType extends Matcher<ExpectType>
-> = <N extends ExpectType>(actualValue: N) => Matcher<N> & MatcherType;
+> = <T extends ExpectType>(actualValue: T) => Matcher<T> & MatcherType;
