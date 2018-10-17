@@ -1,5 +1,5 @@
 import { IResults } from "./results.i";
-import { Assertion as TAPAssertion, Results as TAPResults, Assertion } from "./external/tap-parser";
+import { Assertion as TAPAssertion, Results as TAPResults, Assertion, Plan } from "./external/tap-parser";
 import chalk from "chalk";
 import * as through from "through2";
 
@@ -65,69 +65,74 @@ class TapBarkOutput extends Component {
         return <Indent>{Math.floor(this.state.currentTest / total * 100 || 0)}% complete</Indent>;
     }
 
-    private setupListeners(): void {
-        TAP_PARSER.on("plan", (plan: any) => {
-            this.setState({
-                totalTests: plan.end
-            });
+    private handleNewPlan(plan: Plan) {
+        this.setState({
+            totalTests: plan.end
         });
+    }
 
-        // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
-        const warnings = [] as Array<string>;
+    // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
+    private readonly warnings = [] as Array<string>;
 
-        TAP_PARSER.on("comment", (comment: string) => {
-            let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
+    private handleComment(comment: string) {
+        let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
 
-            if (fixtureParse !== null) {
+        if (fixtureParse !== null) {
+            this.setState({
+                fixtureName: fixtureParse[1]
+            });
+        }
+        else {
+            const message = comment.replace("# ", "");
+
+            if (this.CONSOLE_WARNING_REGEXP.test(comment)) {
+                
+                // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
+                this.warnings.push(chalk.yellow(message));
                 this.setState({
-                    fixtureName: fixtureParse[1]
+                    warnings: this.warnings
                 });
             }
-            else {
-                const message = comment.replace("# ", "");
+        }
+    }
 
-                if (this.CONSOLE_WARNING_REGEXP.test(comment)) {
-                    
-                    // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
-                    warnings.push(chalk.yellow(message));
-                    this.setState({
-                        warnings
-                    });
-                }
-            }
+    private handleAssert(assertion: TAPAssertion) {
+        this.setState({
+            currentTest: assertion.id,
+            testName: assertion.name
         });
+    }
 
-        TAP_PARSER.on("assert", (assertion: TAPAssertion) => {
+    private handleComplete(results: TAPResults) {
+        let _results: IResults = {
+            pass: results.pass || 0,
+            fail: (results.fail || (results.failures || []).length),
+            ignore: (results.skip || 0) + (results.todo || 0),
+            failures: results.failures || []
+        };
+
+        // getting called multiple times for whatever reason
+        if (this._completeCalled === false) {
+            this._completeCalled = true;
+            
             this.setState({
-                currentTest: assertion.id,
-                testName: assertion.name
-            });
-        });
+                ... this.state,
+                results: _results
+            }, setTimeout(() => {
+                if (results.ok) {
+                    process.exit(0);
+                } else {
+                    process.exit(1);
+                }
+            }, 100));
+        }
+    }
 
-        TAP_PARSER.on("complete", (results: TAPResults) => {
-            let _results: IResults = {
-                pass: results.pass || 0,
-                fail: (results.fail || (results.failures || []).length),
-                ignore: (results.skip || 0) + (results.todo || 0),
-                failures: results.failures || []
-            };
-
-            // getting called multiple times for whatever reason
-            if (this._completeCalled === false) {
-                this._completeCalled = true;
-                
-                this.setState({
-                    ... this.state,
-                    results: _results
-                }, setTimeout(() => {
-                    if (results.ok) {
-                        process.exit(0);
-                    } else {
-                        process.exit(1);
-                    }
-                }, 100));
-            }
-        });
+    private setupListeners(): void {
+        TAP_PARSER.on("plan", this.handleNewPlan.bind(this));
+        TAP_PARSER.on("comment", this.handleComment.bind(this));
+        TAP_PARSER.on("assert", this.handleAssert.bind(this));
+        TAP_PARSER.on("complete", this.handleComplete.bind(this));
     }
 }
 

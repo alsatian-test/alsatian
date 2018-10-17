@@ -15,6 +15,11 @@ function diffString(firstString: string, secondString: string) {
     /\s/.test(firstString) || /\s/.test(secondString)
       ? diffWords(firstString, secondString)
       : diffChars(firstString, secondString);
+
+  if (diffs.every(d => !d.added && !d.removed)) {
+    return "no differences";
+  }
+  
   return diffs
     .map(
       diffItem =>
@@ -53,10 +58,10 @@ function buildDiff(
   }
 
   const depth = (parentProperty.match(/\./g) || []).length + 1;
-  const padding = new Array(depth).join("  ");
+  const padding = new Array(depth + 1).join("  ");
 
   const deeperDiffs = diffs
-    .filter(diffItem => diffItem.path && diffItem.path.length - 1 > depth)
+    .filter(diffItem => diffItem.path && diffItem.path.length > depth)
     .reduce(
       (concat, diffItem) => {
         const prop = diffItem.path[depth];
@@ -67,32 +72,35 @@ function buildDiff(
       {} as { [property: string]: Array<deepDiff.IDiff> }
     );
 
+  const properties = 
+  diffs
+    .filter(diffItem => diffItem.path.length === depth)
+    .map(diffItem => stringifyDiffProp(diffItem, padding))
+    .concat(
+      Object.keys(deeperDiffs).map(key => {
+        const diffItems = deeperDiffs[key];
+        return `  ${padding}${diffItems[0].path[depth - 1]}: ${buildDiff(diffItems, parentProperty + "." + key)}`
+      })
+    ).join(",\n");
+
   return (
-    `${padding}${diffs[0].path[depth - 1]}: {\n` +
-    diffs
-      .filter(diffItem => diffItem.path.length - 1 === depth)
-      .map(diffItem => stringifyDiffProp(diffItem, padding + "  "))
-      .join(",\n") +
-    Object.keys(deeperDiffs).map(key =>
-      buildDiff(deeperDiffs[key], parentProperty + "." + key)
-    ) +
-    `\n${padding}}\n`
+    `{\n` +
+    properties +
+    `\n${depth === 1 ? "" : padding}}`
   );
+}
+
+function buildDiffProp(diffInfo: deepDiff.IDiff, value: any, padding: string) {
+  return `${padding}${diffInfo.path[diffInfo.path.length - 1] ||
+    ""}: ${typeof value === "string" ? `"${value}"` : JSON.stringify(value)}`;
 }
 
 function stringifyDiffProp(diffInfo: deepDiff.IDiff, padding: string) {
   if (diffInfo.kind === "N") {
-    return chalk.green(
-      `+ ${padding}${diffInfo.path[diffInfo.path.length - 1] ||
-        ""}: ${JSON.stringify(diffInfo.rhs)}`
-    );
+    return chalk.green(`+ ${buildDiffProp(diffInfo, diffInfo.rhs, padding)}`);
   } else if (diffInfo.kind === "D") {
-    return chalk.red(
-      `- ${padding}${diffInfo.path[diffInfo.path.length - 1] ||
-        ""}: ${JSON.stringify(diffInfo.lhs)}`
-    );
+    return chalk.red(`- ${buildDiffProp(diffInfo, diffInfo.lhs, padding)}`);
   } else if (diffInfo.kind === "E") {
-    return `  ${padding}${diffInfo.path[diffInfo.path.length - 1] ||
-      ""}: "${diffString(diffInfo.lhs, diffInfo.rhs)}"`;
+    return `  ${buildDiffProp(diffInfo, diffString(diffInfo.lhs, diffInfo.rhs), padding)}`;
   }
 }
