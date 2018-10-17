@@ -24,12 +24,12 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`# FIXTURE ${fixture.description}\n`);
   }
 
-  public emitLog(...log: Array<string>): void {
-    this._writeOut(`# LOG: ${log.join(" ")}\n`);
+  public emitLog(...logs: Array<string>): void {
+    this._writeLogs(logs, "LOG");
   }
 
-  public emitWarning(...warning: Array<string>): void {
-    this._writeOut(`# WARN: ${warning.join(" ")}\n`);
+  public emitWarning(...warnings: Array<string>): void {
+    this._writeLogs(warnings, "WARN");
   }
 
   public emitResult(testId: number, result: TestCaseResult): void {
@@ -46,6 +46,10 @@ export class TestOutputStream extends ReadableStream {
     } else {
       throw new TypeError(`Invalid test outcome: ${outcome}`);
     }
+  }
+
+  private _writeLogs(logs: Array<string>, level: string) {
+    this._writeOut(`# ${level}: ${logs.join(" ")}\n`);
   }
 
   private _writeOut(message: string): void {

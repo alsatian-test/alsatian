@@ -68,9 +68,7 @@ export class Matcher<T> {
 
     this._registerMatcher(
       valueMatch === this._shouldMatch,
-      `Expected ${stringify(this.actualValue)} ${
-        !this.shouldMatch ? "not " : ""
-      }` + `to be equal to ${stringify(expectedValue)}.`,
+      `Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
       expectedValue,
       {
         diff: diff(expectedValue, this._actualValue)
