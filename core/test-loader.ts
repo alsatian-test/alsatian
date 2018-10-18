@@ -8,7 +8,6 @@ export class TestLoader {
   public loadTestFixture(filePath: string): Array<ITestFixture> {
     try {
       const testFixtureModule = this._fileRequirer.require(filePath);
-      const testFixtureKeys = Object.keys(testFixtureModule);
       const testFixtures: Array<ITestFixture> = [];
 
       const loadFixture = (constructor: any, description: string) => {
@@ -27,15 +26,14 @@ export class TestLoader {
         loadFixture(testFixtureModule, testFixtureModule.name);
       } else {
         // otherwise there are multiple exports and we must handle all of them
-        testFixtureKeys
+        Object.keys(testFixtureModule)
           .filter(key => typeof testFixtureModule[key] === "function")
           .forEach(key => loadFixture(testFixtureModule[key], key));
       }
 
       return testFixtures;
     } catch (e) {
-      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n`);
-      process.stderr.write(e.stack);
+      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n${e.stack}`);
       process.exit(1);
     }
   }
