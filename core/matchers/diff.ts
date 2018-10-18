@@ -15,11 +15,9 @@ export function diff(firstItem: any, secondItem: any) {
 function diffString(firstString: string, secondString: string) {
   if (firstString === secondString) {
     return "no differences";
-  }
-  else if (!firstString) {
+  } else if (!firstString) {
     return chalk.green(secondString);
-  }
-  else if (!secondString) {
+  } else if (!secondString) {
     return chalk.red(firstString);
   }
 
@@ -71,17 +69,7 @@ function buildObjectDiff(
 ): string {
   const padding = new Array(depth + 1).join("  ");
 
-  const deeperDiffs = diffs
-    .filter(diffItem => diffItem.path && diffItem.path.length > depth)
-    .reduce(
-      (concat, diffItem) => {
-        const prop = diffItem.path[depth];
-        const value = concat[prop];
-        concat[prop] = value ? [...value, diffItem] : [diffItem];
-        return concat;
-      },
-      {} as { [property: string]: Array<deepDiff.IDiff> }
-    );
+  const deeperDiffs = groupDiffsByProperty(diffs, depth);
 
   const properties = diffs
     .filter(diffItem => diffItem.path.length === depth)
@@ -98,6 +86,20 @@ function buildObjectDiff(
     .join(",\n");
 
   return `{\n` + properties + `\n${depth === 1 ? "" : padding}}`;
+}
+
+function groupDiffsByProperty(diffs: Array<deepDiff.IDiff>, depth: number) {
+  return diffs
+    .filter(diffItem => diffItem.path && diffItem.path.length > depth)
+    .reduce(
+      (concat, diffItem) => {
+        const prop = diffItem.path[depth];
+        const value = concat[prop];
+        concat[prop] = value ? [...value, diffItem] : [diffItem];
+        return concat;
+      },
+      {} as { [property: string]: Array<deepDiff.IDiff> }
+    );
 }
 
 function buildDiffProp(diffInfo: deepDiff.IDiff, value: any, padding: string) {
