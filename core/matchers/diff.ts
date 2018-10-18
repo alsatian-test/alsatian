@@ -7,7 +7,9 @@ export function diff(firstItem: any, secondItem: any) {
     return diffString(firstItem, secondItem);
   }
 
-  return buildDiff(deepDiff(firstItem, secondItem) || [], "");
+  const diffs = deepDiff(firstItem, secondItem) || [];
+
+  return buildDiff(diffs);
 }
 
 function diffString(firstString: string, secondString: string) {
@@ -32,10 +34,15 @@ function diffString(firstString: string, secondString: string) {
     .join("");
 }
 
-function buildDiff(
-  diffs: Array<deepDiff.IDiff>,
-  parentProperty: string
-): string {
+function buildDiff(diffs: Array<deepDiff.IDiff>) {
+  if (diffs.every(d => d.path === undefined)) {
+    return buildNonObjectDiff(diffs);
+  }
+
+  return buildObjectDiff(diffs);
+}
+
+function buildNonObjectDiff(diffs: Array<deepDiff.IDiff>): string {
   if (diffs.length === 0) {
     return "no differences";
   } else if (diffs.length === 1 && diffs[0].path === undefined) {
@@ -51,13 +58,15 @@ function buildDiff(
     return chalk.green(onlyDiff.lhs || onlyDiff.rhs);
   }
   // probably an array
-  else if (diffs.every(diffItem => diffItem.path === undefined)) {
-    return `[\n${diffs
-      .map(diffItem => buildDiff([diffItem], `[${diffItem.index}]`))
-      .join("\n")}\n]`;
+  else {
+    return `[\n${diffs.map(diffItem => buildDiff([diffItem])).join("\n")}\n]`;
   }
+}
 
-  const depth = (parentProperty.match(/\./g) || []).length + 1;
+function buildObjectDiff(
+  diffs: Array<deepDiff.IDiff>,
+  depth: number = 1
+): string {
   const padding = new Array(depth + 1).join("  ");
 
   const deeperDiffs = diffs
@@ -78,9 +87,9 @@ function buildDiff(
     .concat(
       Object.keys(deeperDiffs).map(key => {
         const diffItems = deeperDiffs[key];
-        return `  ${padding}${diffItems[0].path[depth - 1]}: ${buildDiff(
+        return `  ${padding}${diffItems[0].path[depth - 1]}: ${buildObjectDiff(
           diffItems,
-          parentProperty + "." + key
+          depth + 1
         )}`;
       })
     )
