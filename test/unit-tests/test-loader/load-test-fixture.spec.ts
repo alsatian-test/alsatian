@@ -364,9 +364,8 @@ export class LoadTestTests {
     testLoader.loadTestFixture(path);
 
     Expect(process.stderr.write).toHaveBeenCalledWith(
-      `ERROR LOADING FILE: ${path}\n`
+      `ERROR LOADING FILE: ${path}\n${error.stack}`
     );
-    Expect(process.stderr.write).toHaveBeenCalledWith(error.stack);
     Expect(process.exit).toHaveBeenCalledWith(1);
   }
 }

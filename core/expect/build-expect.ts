@@ -54,15 +54,7 @@ function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
     return FunctionMatcher;
   }
 
-  if (typeof actualValue === "string") {
-    return StringMatcher as any;
-  }
-
-  if (typeof actualValue === "number") {
-    return NumberMatcher as any;
-  }
-
-  return Matcher;
+  return getPrimitiveMatcher(actualValue);
 }
 
 function getObjectMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
@@ -81,4 +73,16 @@ function getObjectMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
   );
 
   return match ? match[1] : findMatcher(proto);
+}
+
+function getPrimitiveMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
+  if (typeof actualValue === "string") {
+    return StringMatcher as any;
+  }
+
+  if (typeof actualValue === "number") {
+    return NumberMatcher as any;
+  }
+
+  return Matcher;
 }
