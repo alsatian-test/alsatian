@@ -1,8 +1,8 @@
 import { IResults } from "./results.i";
 import { Assertion as TAPAssertion, Results as TAPResults, Assertion, Plan } from "./external/tap-parser";
 import chalk from "chalk";
-import * as through from "through2";
 
+const through = require("through2");
 const parser = require("tap-parser");
 const duplexer = require("duplexer");
 const { h, render, Component, Color, Indent } = require("ink");
