@@ -46,6 +46,10 @@ function ExpectFunction<ActualType>(
 }
 
 function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
+  if (typeof actualValue === "object") {
+    return getObjectMatcher(actualValue);
+  }
+
   if (typeof actualValue === "function") {
     return FunctionMatcher;
   }
@@ -58,6 +62,10 @@ function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
     return NumberMatcher as any;
   }
 
+  return Matcher;
+}
+
+function getObjectMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
   if (actualValue === null || actualValue === undefined) {
     return Matcher;
   }
