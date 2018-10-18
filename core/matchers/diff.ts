@@ -13,14 +13,20 @@ export function diff(firstItem: any, secondItem: any) {
 }
 
 function diffString(firstString: string, secondString: string) {
+  if (firstString === secondString) {
+    return "no differences";
+  }
+  else if (!firstString) {
+    return chalk.green(secondString);
+  }
+  else if (!secondString) {
+    return chalk.red(firstString);
+  }
+
   const diffs =
     /\s/.test(firstString) || /\s/.test(secondString)
       ? diffWords(firstString, secondString)
       : diffChars(firstString, secondString);
-
-  if (diffs.every(d => !d.added && !d.removed)) {
-    return "no differences";
-  }
 
   return diffs
     .map(
@@ -45,17 +51,13 @@ function buildDiff(diffs: Array<deepDiff.IDiff>) {
 function buildNonObjectDiff(diffs: Array<deepDiff.IDiff>): string {
   if (diffs.length === 0) {
     return "no differences";
-  } else if (diffs.length === 1 && diffs[0].path === undefined) {
+  } else if (diffs.length === 1) {
     const onlyDiff = diffs[0];
 
-    if (onlyDiff.kind === "E") {
-      return diffString(
-        JSON.stringify(onlyDiff.lhs),
-        JSON.stringify(onlyDiff.rhs)
-      );
-    }
-
-    return chalk.green(onlyDiff.lhs || onlyDiff.rhs);
+    return diffString(
+      JSON.stringify(onlyDiff.lhs),
+      JSON.stringify(onlyDiff.rhs)
+    );
   }
   // probably an array
   else {
