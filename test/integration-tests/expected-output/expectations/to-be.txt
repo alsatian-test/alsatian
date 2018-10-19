@@ -5,17 +5,17 @@ ok 1 twoPlusTwoMakeFour
 ok 2 twoPlusTwoDoNotMakeFive
 not ok 3 twoPlusTwoDoNotMakeFour
  ---
-   message: "Expected 4 not to be 4."
-   severity: fail
-   data:
-     got: 4
-     expect: 4
+ message: Expected 4 not to be 4.
+ severity: fail
+ data:
+   got: '4'
+   expect: '4'
  ...
 not ok 4 twoPlusTwoMakeFive
  ---
-   message: "Expected 4 to be 5."
-   severity: fail
-   data:
-     got: 4
-     expect: 5
+ message: Expected 4 to be 5.
+ severity: fail
+ data:
+   got: '4'
+   expect: '5'
  ...

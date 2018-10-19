@@ -1,6 +1,5 @@
 import {
   Expect,
-  FocusTests,
   SpyOnProperty,
   Test,
   TestCase
@@ -200,62 +199,6 @@ export class ToHaveBeenSetToTests {
     ).toThrowError(
       PropertySetMatchError,
       `Expected property to be set to ${JSON.stringify(expectedValue)}.`
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @TestCase(() => {})
-  @TestCase((thisCouldBe: any) => "function")
-  public checkingWhetherNonPropertySpyHasBeenSetToAValueShouldThrow(
-    actualValue: any
-  ) {
-    const some = {
-      set property(value: any) {}
-    };
-
-    const propertySpy = SpyOnProperty(some, "property");
-    const EXPECT = Expect(propertySpy);
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.toHaveBeenSetTo("something")).toThrowError(
-      TypeError,
-      "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @TestCase(() => {})
-  @TestCase((thisCouldBe: any) => "function")
-  public checkingWhetherNonPropertySpyHasNotBeenSetToAValueShouldThrow(
-    actualValue: any
-  ) {
-    const some = {
-      set property(value: any) {}
-    };
-
-    const propertySpy = SpyOnProperty(some, "property");
-    const EXPECT = Expect(propertySpy);
-    (EXPECT as any)._actualValue = actualValue;
-
-    Expect(() => EXPECT.not.toHaveBeenSetTo("something")).toThrowError(
-      TypeError,
-      "toHaveBeenSetTo requires value passed in to Expect to be a PropertySpy."
     );
   }
 

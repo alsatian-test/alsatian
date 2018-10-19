@@ -7,3 +7,4 @@ ratings:
     - "core/**/*.ts"
 exclude_paths:
   - test/
+  - tap-bark/test/

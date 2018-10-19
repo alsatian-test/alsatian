@@ -16,10 +16,6 @@ export class StringMatcher extends ContainerMatcher<string, string> {
       );
     }
 
-    if (typeof this.actualValue !== "string") {
-      throw new TypeError("toMatch must only be used to match on strings.");
-    }
-
     if (!regex.test(this.actualValue) === this.shouldMatch) {
       throw new RegexMatchError(this.actualValue, regex, this.shouldMatch);
     }

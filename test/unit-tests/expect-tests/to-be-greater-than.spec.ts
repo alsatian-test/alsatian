@@ -1,4 +1,4 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import { Expect, TestCase } from "../../../core/alsatian-core";
 import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
 
 export class ToBeGreaterThanTests {
@@ -148,21 +148,6 @@ export class ToBeGreaterThanTests {
     Expect(() => Expect(42).toBeGreaterThan(lowerLimit)).toThrowError(
       TypeError,
       "toBeGreaterThan lower limit must not be null or undefined."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public checkingNonNumberGreaterThanSomethingShouldThrow(value: number) {
-    Expect(() => Expect(value).toBeGreaterThan(42)).toThrowError(
-      TypeError,
-      "toBeGreaterThan can only check numbers."
     );
   }
 }

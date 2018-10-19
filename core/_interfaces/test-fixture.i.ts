@@ -10,5 +10,7 @@ export interface ITestFixture {
   tests: Array<ITest>;
 
   description: string;
+
+  filePath: string;
   addTest(test: ITest): void;
 }

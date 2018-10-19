@@ -1,4 +1,4 @@
-import { SETUP_FIXTURE, SETUP } from "./_metadata-keys";
+import { SETUP_FIXTURE } from "./_metadata-keys";
 import { createSetupTeardownDecorator } from "./create-setup-teardown-decorator";
 
 // tslint:disable-next-line:variable-name

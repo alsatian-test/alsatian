@@ -1,5 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { ExactMatchError } from "../../../core/errors/exact-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToBeTests {
   @TestCase(undefined)
@@ -35,7 +35,7 @@ export class ToBeTests {
     const expect = Expect(1);
 
     Expect(() => expect.toBe(2)).toThrowError(
-      ExactMatchError,
+      MatchError,
       "Expected 1 to be 2."
     );
   }
@@ -61,7 +61,7 @@ export class ToBeTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toBe(expected)).toThrowError(
-      ExactMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}.`
     );
   }
@@ -122,7 +122,7 @@ export class ToBeTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toBe(expected)).toThrowError(
-      ExactMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actual).replace(/,/g, ", ")} ` +
         `to be ${JSON.stringify(expected).replace(/,/g, ", ")}.`
     );

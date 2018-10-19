@@ -1,87 +1,9 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { EmptyMatchError } from "../../../core/errors/empty-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 
 class DummyClass {}
 
 export class ToBeEmptyTests {
-  private readonly _typeErrorMessage: string =
-    "toBeEmpty requires value passed in to Expect to be " +
-    "an array, string, object literal or map";
-
-  @TestCase([])
-  @TestCase([1])
-  @TestCase([1, 2])
-  public emptyShouldNotThrowTypeErrorForArrays(value: Array<any>) {
-    const expect = Expect(value);
-
-    Expect(() => expect.toBeEmpty()).not.toThrowError(
-      TypeError,
-      this._typeErrorMessage
-    );
-  }
-
-  @TestCase("")
-  @TestCase("string")
-  public emptyShouldNotThrowTypeErrorForStrings(value: string) {
-    const expect = Expect(value);
-
-    Expect(() => expect.toBeEmpty()).not.toThrowError(
-      TypeError,
-      this._typeErrorMessage
-    );
-  }
-
-  @TestCase({})
-  @TestCase({ a: true })
-  public emptyShouldNotThrowTypeErrorForObjectLiterals(value: object) {
-    const expect = Expect(value);
-
-    Expect(() => expect.toBeEmpty()).not.toThrowError(
-      TypeError,
-      this._typeErrorMessage
-    );
-  }
-
-  @TestCase(new Map())
-  @TestCase(new Map([["keyOne", "valueOne"]]))
-  public emptyShouldNotThrowTypeErrorForMaps(value: Map<any, any>) {
-    const expect = Expect(value);
-
-    Expect(() => expect.toBeEmpty()).not.toThrowError(
-      TypeError,
-      this._typeErrorMessage
-    );
-  }
-
-  @TestCase(null)
-  @TestCase(undefined)
-  public emptyShouldThrowTypeErrorForNullTypes(value: any) {
-    const EXPECT = Expect("");
-    (EXPECT as any)._actualValue = value;
-
-    Expect(() => EXPECT.toBeEmpty()).toThrowError(
-      TypeError,
-      "toBeEmpty requires value passed in to Expect not to be null or undefined"
-    );
-  }
-
-  @TestCase(0)
-  @TestCase(42)
-  @TestCase(-42)
-  @TestCase(true)
-  @TestCase(new Date())
-  @TestCase(new Error())
-  @TestCase(new DummyClass())
-  public emptyShouldThrowTypeErrorForInvalidTypes(value: any) {
-    const EXPECT = Expect("");
-    (EXPECT as any)._actualValue = value;
-
-    Expect(() => EXPECT.toBeEmpty()).toThrowError(
-      TypeError,
-      this._typeErrorMessage
-    );
-  }
-
   @Test()
   public emptyShouldNotThrowErrorForEmptyArray() {
     const expect = Expect([]);
@@ -94,7 +16,7 @@ export class ToBeEmptyTests {
     const expect = Expect([0]);
 
     Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "[0]" to be empty.'
     );
   }
@@ -104,7 +26,7 @@ export class ToBeEmptyTests {
     const expect = Expect([]);
 
     Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "[]" not to be empty.'
     );
   }
@@ -128,7 +50,7 @@ export class ToBeEmptyTests {
     const expect = Expect("string");
 
     Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "string" to be empty.'
     );
   }
@@ -138,7 +60,7 @@ export class ToBeEmptyTests {
     const expect = Expect("");
 
     Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "" not to be empty.'
     );
   }
@@ -162,7 +84,7 @@ export class ToBeEmptyTests {
     const expect = Expect({ a: true });
 
     Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "{"a":true}" to be empty.'
     );
   }
@@ -172,7 +94,7 @@ export class ToBeEmptyTests {
     const expect = Expect({});
 
     Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "{}" not to be empty.'
     );
   }
@@ -196,7 +118,7 @@ export class ToBeEmptyTests {
     const expect = Expect(new Map([["key", "value"]]));
 
     Expect(() => expect.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "Map<1>" to be empty.'
     );
   }
@@ -206,7 +128,7 @@ export class ToBeEmptyTests {
     const expect = Expect(new Map());
 
     Expect(() => expect.not.toBeEmpty()).toThrowError(
-      EmptyMatchError,
+      MatchError,
       'Expected "Map<0>" not to be empty.'
     );
   }

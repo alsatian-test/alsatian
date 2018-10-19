@@ -7,16 +7,35 @@ import {
   METADATA_KEYS,
   SpyOn,
   TestCase,
-  TestFixture
+  TestFixture,
+  Setup,
+  Teardown
 } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
+import { TestPlan } from "../../../../core/running";
 
 @TestFixture("tearing down tests")
 export class TeardownTests {
+  private _originalTestPlan: TestPlan;
+
+  @Setup
+  private _recordOriginalTestPlan() {
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
+  }
+
+  @Teardown
+  private _restoreOriginalTestPlan() {
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
+  }
+
   private _createTestFixture() {
     const test = new TestBuilder()
       .withTestCaseCount(1)

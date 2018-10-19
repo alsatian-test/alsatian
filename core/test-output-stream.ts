@@ -3,6 +3,7 @@ import { ITest, ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 import { stringify } from "./stringification";
+import { safeDump } from "js-yaml";
 
 export class TestOutputStream extends ReadableStream {
   public _read() {} // tslint:disable-line:no-empty
@@ -23,6 +24,14 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`# FIXTURE ${fixture.description}\n`);
   }
 
+  public emitLog(...logs: Array<string>): void {
+    this._writeLogs(logs, "LOG");
+  }
+
+  public emitWarning(...warnings: Array<string>): void {
+    this._writeLogs(warnings, "WARN");
+  }
+
   public emitResult(testId: number, result: TestCaseResult): void {
     const outcome = result.outcome;
     const test = result.test;
@@ -31,12 +40,16 @@ export class TestOutputStream extends ReadableStream {
     if (outcome === TestOutcome.Pass) {
       this._emitPass(testId, test, testCaseArguments);
     } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
-      this._emitFail(testId, test, testCaseArguments, result.error);
+      this._emitFail(testId, test, testCaseArguments, result);
     } else if (outcome === TestOutcome.Skip) {
       this._emitSkip(testId, test, testCaseArguments);
     } else {
       throw new TypeError(`Invalid test outcome: ${outcome}`);
     }
+  }
+
+  private _writeLogs(logs: Array<string>, level: string) {
+    this._writeOut(`# ${level}: ${logs.join(" ")}\n`);
   }
 
   private _writeOut(message: string): void {
@@ -74,17 +87,16 @@ export class TestOutputStream extends ReadableStream {
     testId: number,
     test: ITest,
     testCaseArguments: Array<any>,
-    error: Error | null
+    result: TestCaseResult
   ): void {
     const description = this._getTestDescription(test, testCaseArguments);
 
     this._writeOut(`not ok ${testId} ${description}\n`);
 
-    // if it's a match error then log it properly, otherwise log it as unhandled
-    if (error instanceof MatchError) {
-      this._writeMatchErrorOutput(error);
+    if (result.error instanceof MatchError) {
+      this._writeMatchErrorOutput(result.error);
     } else {
-      this._writeUnhandledErrorOutput(error);
+      this._writeUnhandledErrorOutput(result.error);
     }
   }
 
@@ -108,7 +120,12 @@ export class TestOutputStream extends ReadableStream {
     const sanitisedActual = stringify(error.actual);
     const sanitisedExpected = stringify(error.expected);
 
-    this._writeFailure(sanitisedMessage, sanitisedActual, sanitisedExpected);
+    this._writeFailure(
+      sanitisedMessage,
+      sanitisedActual,
+      sanitisedExpected,
+      error.extras
+    );
   }
 
   private _writeUnhandledErrorOutput(error: Error | null): void {
@@ -116,7 +133,7 @@ export class TestOutputStream extends ReadableStream {
       "The test threw an unhandled error.",
       "an unhandled error",
       "no unhandled errors to be thrown",
-      error instanceof Error ? error.stack : undefined
+      error instanceof Error ? { stack: error.stack } : undefined
     );
   }
 
@@ -124,36 +141,27 @@ export class TestOutputStream extends ReadableStream {
     message: string,
     actual: string,
     expected: string,
-    stack?: string
+    details?: { [props: string]: any }
   ): void {
-    let output =
-      " ---\n" +
-      '   message: "' +
-      message +
-      '"\n' +
-      "   severity: fail\n" +
-      "   data:\n" +
-      "     got: " +
-      actual +
-      "\n" +
-      "     expect: " +
-      expected +
-      "\n";
+    const output = {
+      message,
+      severity: "fail",
+      data: {
+        got: actual,
+        expect: expected,
+        details
+      }
+    };
 
-    if (stack) {
-      output = output + "     stack: |\n";
-
-      output =
-        output +
-        stack
-          .split("\n")
-          .map(l => "       " + l)
-          .join("\n") +
-        "\n";
+    if (output.data.details === undefined) {
+      delete output.data.details;
     }
 
-    output = output + " ...\n";
-
-    this._writeOut(output);
+    this._writeOut(
+      ` ---\n${safeDump(output)
+        .split("\n")
+        .map(s => ` ${s}`)
+        .join("\n")}...\n`
+    );
   }
 }

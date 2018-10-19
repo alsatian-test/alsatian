@@ -30,4 +30,14 @@ export interface IExpect {
    * @param message - the message that will be shown in the failure
    */
   fail(message: string): void;
+
+  extend<ExpectedType, MatcherType extends Matcher<ExpectedType>>(
+    type: new (...args: Array<any>) => ExpectedType,
+    matcher: new (value: ExpectedType, testItem: any) => MatcherType
+  ): IExtendedExpect<ExpectedType, MatcherType> & this;
 }
+
+export type IExtendedExpect<
+  ExpectType,
+  MatcherType extends Matcher<ExpectType>
+> = <T extends ExpectType>(actualValue: T) => Matcher<T> & MatcherType;

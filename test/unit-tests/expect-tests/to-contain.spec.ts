@@ -1,5 +1,5 @@
 import { Expect, TestCase } from "../../../core/alsatian-core";
-import { ContentsMatchError } from "../../../core/errors/contents-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToContainTests {
   @TestCase([], 1)
@@ -11,7 +11,7 @@ export class ToContainTests {
     const expect = Expect(actualValue);
 
     Expect(() => expect.toContain(expectedContent)).toThrowError(
-      ContentsMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(
         ",",
         ", "
@@ -28,7 +28,7 @@ export class ToContainTests {
     const expect = Expect(actualValue);
 
     Expect(() => expect.toContain(expectedContent)).toThrowError(
-      ContentsMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(
         ",",
         ", "
@@ -89,7 +89,7 @@ export class ToContainTests {
     const expect = Expect(actualValue);
 
     Expect(() => expect.not.toContain(expectedContent)).toThrowError(
-      ContentsMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(",", ", ")} ` +
         `not to contain ${JSON.stringify(expectedContent)}.`
     );
@@ -104,7 +104,7 @@ export class ToContainTests {
     const expect = Expect(actualValue);
 
     Expect(() => expect.not.toContain(expectedContent)).toThrowError(
-      ContentsMatchError,
+      MatchError,
       `Expected ${JSON.stringify(actualValue).replace(",", ", ")} ` +
         `not to contain ${JSON.stringify(expectedContent)}.`
     );
@@ -116,7 +116,7 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).toContain(expectedContent);
@@ -135,7 +135,7 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).toContain(expectedContent);
@@ -154,7 +154,7 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).not.toContain(expectedContent);
@@ -173,7 +173,7 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).not.toContain(expectedContent);
@@ -192,7 +192,7 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).toContain(expectedContent);
@@ -211,7 +211,7 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).toContain(expectedContent);
@@ -230,7 +230,7 @@ export class ToContainTests {
     container: Array<T>,
     expectedContent: T
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).not.toContain(expectedContent);
@@ -249,7 +249,7 @@ export class ToContainTests {
     container: string,
     expectedContent: string
   ) {
-    let contentsError: ContentsMatchError;
+    let contentsError: MatchError;
 
     try {
       Expect(container).not.toContain(expectedContent);
@@ -260,75 +260,5 @@ export class ToContainTests {
     Expect(contentsError).toBeDefined();
     Expect(contentsError).not.toBeNull();
     Expect(contentsError.expected).toBe(expectedContent);
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  public checkingNonStringOrArraysContainShouldThrow(container: any) {
-    const EXPECT = Expect([]);
-    (EXPECT as any)._actualValue = container;
-
-    Expect(() => EXPECT.toContain("something")).toThrowError(
-      TypeError,
-      "toContain must only be used to check whether strings or arrays contain given contents."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  public checkingNonStringOrArraysDoNotContainShouldThrow(container: any) {
-    const EXPECT = Expect([]);
-    (EXPECT as any)._actualValue = container;
-
-    Expect(() => EXPECT.not.toContain("something")).toThrowError(
-      TypeError,
-      "toContain must only be used to check whether strings or arrays contain given contents."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public checkingStringContainsNonStringShouldThrow(expectedContent: any) {
-    Expect(() => Expect("something").toContain(expectedContent)).toThrowError(
-      TypeError,
-      "toContain cannot check whether a string contains a non string value."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public checkingStringDoesNotContainsNonStringShouldThrow(
-    expectedContent: any
-  ) {
-    Expect(() =>
-      Expect("something").not.toContain(expectedContent)
-    ).toThrowError(
-      TypeError,
-      "toContain cannot check whether a string contains a non string value."
-    );
   }
 }

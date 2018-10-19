@@ -1,9 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import {
-  EqualMatchError,
-  ExactMatchError,
-  MatchError
-} from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResults } from "../../../core/results/test-results";
 import { TestBuilder } from "../../builders/test-builder";
@@ -46,8 +42,6 @@ export class TestResultsTests {
   }
 
   @TestCase(MatchError)
-  @TestCase(ExactMatchError)
-  @TestCase(EqualMatchError)
   public oneTestCaseMatchErrorOutcomeError(errorType: new () => Error) {
     const test = new TestBuilder().build();
 
@@ -59,8 +53,6 @@ export class TestResultsTests {
   }
 
   @TestCase(MatchError)
-  @TestCase(ExactMatchError)
-  @TestCase(EqualMatchError)
   public twoTestCasesOnePassOneMatchErrorOutcomeFail(
     errorType: new () => Error
   ) {
@@ -89,8 +81,6 @@ export class TestResultsTests {
   }
 
   @TestCase(EvalError, MatchError)
-  @TestCase(ExactMatchError, RangeError)
-  @TestCase(TypeError, EqualMatchError)
   public twoTestCasesOneMatchErrorOneErrorOutcomeError(
     errorTypeA: new () => Error,
     errorTypeB: new () => Error

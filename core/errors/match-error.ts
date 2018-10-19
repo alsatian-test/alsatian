@@ -11,10 +11,21 @@ export class MatchError extends ExtendoError {
     return this._expected;
   }
 
-  public constructor(message?: string, expectedValue?: any, actualValue?: any) {
+  protected _extras: { [prop: string]: any };
+  public get extras(): { [prop: string]: any } {
+    return this._extras;
+  }
+
+  public constructor(
+    message?: string,
+    expectedValue?: any,
+    actualValue?: any,
+    extras?: { [prop: string]: any }
+  ) {
     super(message);
 
     this._actual = actualValue;
     this._expected = expectedValue;
+    this._extras = extras;
   }
 }

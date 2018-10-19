@@ -3,14 +3,28 @@ import {
   Matcher,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  MatchError
 } from "../../../core/alsatian-core";
 
-class ExtendedExpect<T> extends Matcher<T> {
-  public get exposedActualValue() {
-    return this.actualValue;
+class ExampleExtension {
+  public theAnswer() {
+    return 42;
   }
 }
+
+class ExampleExtensionMatcher extends Matcher<ExampleExtension> {
+  public checkTheAnswer() {
+    if (this.actualValue.theAnswer() !== 42) {
+      throw new MatchError("the answer is wrong");
+    }
+  }
+}
+
+const EXTENDED_EXPECT = Expect.extend(
+  ExampleExtension,
+  ExampleExtensionMatcher
+);
 
 @TestFixture("extending expect")
 export class ExtendingExpectTests {
@@ -24,8 +38,6 @@ export class ExtendingExpectTests {
   @TestCase("something")
   @Test("actual value can be accessed")
   public canReferenceActualValue(expectedActualValue: any) {
-    Expect(new ExtendedExpect(expectedActualValue).exposedActualValue).toBe(
-      expectedActualValue
-    );
+    EXTENDED_EXPECT(new ExampleExtension()).checkTheAnswer();
   }
 }

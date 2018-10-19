@@ -1,75 +1,84 @@
 TAP version 13
 1..16
 # FIXTURE error throwing
+# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
 ok 1 errorThrown
 not ok 2 errorNotThrown
  ---
-   message: "Expected an error to be thrown but no errors were thrown."
-   severity: fail
-   data:
-     got: "error was not thrown."
-     expect: "error to be thrown."
+ message: Expected an error to be thrown but no errors were thrown.
+ severity: fail
+ data:
+   got: '"error was not thrown."'
+   expect: '"error to be thrown."'
  ...
 ok 3 noErrorThrown
 not ok 4 errorUnexpectedlyThrown
  ---
-   message: "Expected an error not to be thrown but an error was thrown."
-   severity: fail
-   data:
-     got: "Error error was thrown with message \"error\"."
-     expect: "error not to be thrown."
+ message: Expected an error not to be thrown but an error was thrown.
+ severity: fail
+ data:
+   got: '"Error error was thrown with message \"error\"."'
+   expect: '"error not to be thrown."'
  ...
 ok 5 exactErrorThrown
 not ok 6 exactErrorNotThrown
  ---
-   message: "Expected an error with message \"specific error\" and type TypeError to have been thrown, but it wasn't."
-   severity: fail
-   data:
-     got: "Error error was thrown with message \"any old error\"."
-     expect: "TypeError error to be thrown with message \"specific error\"."
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to have
+   been thrown, but it wasn't.
+ severity: fail
+ data:
+   got: '"Error error was thrown with message \"any old error\"."'
+   expect: '"TypeError error to be thrown with message \"specific error\"."'
  ...
 ok 7 notExactErrorThrown
 not ok 8 exactErrorThrownUnexpectedly
  ---
-   message: "Expected an error with message \"specific error\" and type TypeError to not have been thrown, but it was."
-   severity: fail
-   data:
-     got: "TypeError error was thrown with message \"specific error\"."
-     expect: "TypeError error not to be thrown with message \"specific error\"."
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to not
+   have been thrown, but it was.
+ severity: fail
+ data:
+   got: '"TypeError error was thrown with message \"specific error\"."'
+   expect: '"TypeError error not to be thrown with message \"specific error\"."'
  ...
 ok 9 asyncErrorThrown
 not ok 10 asyncErrorNotThrown
  ---
-   message: "Expected an error to be thrown but no errors were thrown."
-   severity: fail
-   data:
-     got: "error was not thrown."
-     expect: "error to be thrown."
+ message: Expected an error to be thrown but no errors were thrown.
+ severity: fail
+ data:
+   got: '"error was not thrown."'
+   expect: '"error to be thrown."'
  ...
 ok 11 asyncNoErrorThrown
 not ok 12 asyncErrorUnexpectedly
  ---
-   message: "Expected an error not to be thrown but an error was thrown."
-   severity: fail
-   data:
-     got: "Error error was thrown with message \"error\"."
-     expect: "error not to be thrown."
+ message: Expected an error not to be thrown but an error was thrown.
+ severity: fail
+ data:
+   got: '"Error error was thrown with message \"error\"."'
+   expect: '"error not to be thrown."'
  ...
 ok 13 asnycExactErrorThrown
 not ok 14 asnycExactErrorNotThrown
  ---
-   message: "Expected an error with message \"specific error\" and type TypeError to have been thrown, but it wasn't."
-   severity: fail
-   data:
-     got: "Error error was thrown with message \"error\"."
-     expect: "TypeError error to be thrown with message \"specific error\"."
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to have
+   been thrown, but it wasn't.
+ severity: fail
+ data:
+   got: '"Error error was thrown with message \"error\"."'
+   expect: '"TypeError error to be thrown with message \"specific error\"."'
  ...
 ok 15 asyncNotExactErrorThrown
 not ok 16 asyncExactErrorThrownUnexpectedly
  ---
-   message: "Expected an error with message \"specific error\" and type TypeError to not have been thrown, but it was."
-   severity: fail
-   data:
-     got: "TypeError error was thrown with message \"specific error\"."
-     expect: "TypeError error not to be thrown with message \"specific error\"."
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to not
+   have been thrown, but it was.
+ severity: fail
+ data:
+   got: '"TypeError error was thrown with message \"specific error\"."'
+   expect: '"TypeError error not to be thrown with message \"specific error\"."'
  ...

@@ -2,18 +2,16 @@ import {
   Expect,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  IgnoreTests
 } from "../../../core/alsatian-core";
 
+@IgnoreTests("ignoring temporarily as likely to be redundant soon")
 @TestFixture("temporary tests to satisfy TypeScript quirk")
 export class TempTests {
   private _setErrorMessage() {}
 
-  @TestCase("contents-match-error", "ContentsMatchError")
-  @TestCase("empty-match-error", "EmptyMatchError")
   @TestCase("error-match-error", "ErrorMatchError")
-  @TestCase("equal-match-error", "EqualMatchError")
-  @TestCase("exact-match-error", "ExactMatchError")
   @TestCase("function-call-count-match-error", "FunctionCallCountMatchError")
   @TestCase("function-call-match-error", "FunctionCallMatchError")
   @TestCase("greater-than-match-error", "GreaterThanMatchError")

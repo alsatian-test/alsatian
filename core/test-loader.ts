@@ -6,43 +6,42 @@ export class TestLoader {
   public constructor(private _fileRequirer: FileRequirer) {}
 
   public loadTestFixture(filePath: string): Array<ITestFixture> {
-    let testFixtureModule: any;
-
     try {
-      testFixtureModule = this._fileRequirer.require(filePath);
-    } catch (e) {
-      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n`);
-      process.stderr.write(e.stack);
-      process.exit(1);
-      return;
-    }
+      const testFixtureModule = this._fileRequirer.require(filePath);
+      const testFixtures: Array<ITestFixture> = [];
 
-    const testFixtureKeys = Object.keys(testFixtureModule);
-    const testFixtures: Array<ITestFixture> = [];
+      const loadFixture = (constructor: any, description: string) => {
+        const testFixture = this._loadTestFixture(
+          constructor,
+          description,
+          filePath
+        );
+        if (testFixture !== null) {
+          testFixtures.push(testFixture);
+        }
+      };
 
-    const loadFixture = (constructor: any, description: string) => {
-      const testFixture = this._loadTestFixture(constructor, description);
-      if (testFixture !== null) {
-        testFixtures.push(testFixture);
+      if (typeof testFixtureModule === "function") {
+        // if the default export is class constructor
+        loadFixture(testFixtureModule, testFixtureModule.name);
+      } else {
+        // otherwise there are multiple exports and we must handle all of them
+        Object.keys(testFixtureModule)
+          .filter(key => typeof testFixtureModule[key] === "function")
+          .forEach(key => loadFixture(testFixtureModule[key], key));
       }
-    };
 
-    if (typeof testFixtureModule === "function") {
-      // if the default export is class constructor
-      loadFixture(testFixtureModule, testFixtureModule.name);
-    } else {
-      // otherwise there are multiple exports and we must handle all of them
-      testFixtureKeys
-        .filter(key => typeof testFixtureModule[key] === "function")
-        .forEach(key => loadFixture(testFixtureModule[key], key));
+      return testFixtures;
+    } catch (e) {
+      process.stderr.write(`ERROR LOADING FILE: ${filePath}\n${e.stack}`);
+      process.exit(1);
     }
-
-    return testFixtures;
   }
 
   private _loadTestFixture(
-    testFixtureConstructor: any,
-    defaultFixtureDescription: string
+    testFixtureConstructor: new () => object,
+    defaultFixtureDescription: string,
+    filePath: string
   ): ITestFixture | null {
     // get test fixture metadata or create new metadata
     // to support not requiring the TestFixture decorator.
@@ -53,6 +52,8 @@ export class TestLoader {
       new TestFixture(defaultFixtureDescription);
 
     testFixture.ignored = false;
+
+    testFixture.filePath = filePath;
 
     if (Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixtureConstructor)) {
       // fixture should be ignored

@@ -3,13 +3,11 @@ import {
   Expect,
   Setup,
   SpyOn,
-  Teardown,
-  TestCase
+  Teardown
 } from "../../../../core/alsatian-core";
 import { MatchError } from "../../../../core/errors/match-error";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
-import { TestSet } from "../../../../core/test-set";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
@@ -18,11 +16,13 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 export class FailingTestsTests {
   private _originalStdErr: any;
   private _originalProcessExit: any;
+  private _originalTestPlan: any;
 
   @Setup
   private _spyProcess() {
     this._originalProcessExit = process.exit;
     this._originalStdErr = process.stderr.write;
+    this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
 
     SpyOn(process, "exit").andStub();
     SpyOn(process.stderr, "write").andStub();
@@ -32,6 +32,11 @@ export class FailingTestsTests {
   private _resetProcess() {
     process.exit = this._originalProcessExit;
     process.stderr.write = this._originalStdErr;
+    Reflect.defineMetadata(
+      "alsatian:test-plan",
+      this._originalTestPlan,
+      Expect
+    );
   }
 
   @AsyncTest()

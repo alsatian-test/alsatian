@@ -1,23 +1,30 @@
-import { AsyncTest, Expect, TestCase } from "../../../core/alsatian-core";
+import {
+  AsyncTest,
+  Expect,
+  TestCase,
+  Focus,
+  Test
+} from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { INameable } from "../../../core/_interfaces";
+
+async function wait(timeInMilliseconds: number) {
+  return new Promise<void>(resolve => setTimeout(resolve, timeInMilliseconds));
+}
 
 export class ToThrowAsyncTests {
   // Asynchronous throw
   private async asyncThrowFunction(delayMs: number): Promise<void> {
-    return new Promise<void>((_, reject) => {
-      setTimeout(() => reject(new Error("Timeout then reject")), delayMs);
-    });
+    await wait(delayMs);
+    throw new Error("Timeout then reject");
   }
 
   // Asynchronous non-throw
   private async asyncNonThrowFunction(delayMs: number): Promise<void> {
-    return new Promise<void>(resolve => {
-      setTimeout(() => resolve(), delayMs);
-    });
+    await wait(delayMs);
   }
 
-  @TestCase(0)
+  @TestCase(1)
   @TestCase(100)
   @AsyncTest("Test toThrowAsync catches thrown errors and does not rethrow")
   public async asyncFunctionThrowsErrorPasses(delayMs: number) {
@@ -28,7 +35,7 @@ export class ToThrowAsyncTests {
     }).not.toThrowAsync();
   }
 
-  @TestCase(0)
+  @TestCase(1)
   @TestCase(100)
   @AsyncTest("Test toThrowAsync throws and error if an error is not thrown")
   public async asyncFunctionThrowDoesNotErrorFails(delayMs: number) {
@@ -94,58 +101,6 @@ export class ToThrowAsyncTests {
     }).toThrowErrorAsync(
       ErrorMatchError,
       "Expected an error not to be thrown but an error was thrown."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @AsyncTest("Test toThrowAsync throws a TypeError when it should")
-  public async asyncCheckingWhetherNonFunctionThrowsShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    await Expect(async () => {
-      await EXPECT.toThrowAsync();
-    }).toThrowErrorAsync(
-      TypeError,
-      "toThrowAsync requires value passed in to Expect to be a function."
-    );
-  }
-
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  @AsyncTest("Test not.toThrowAsync throws a TypeError when it should")
-  public async asyncCheckingWhetherNonFunctionDoesNotThrowShouldThrow(
-    actualValue: any
-  ) {
-    const EXPECT = Expect(() => {});
-    (EXPECT as any)._actualValue = actualValue;
-
-    await Expect(async () => {
-      await EXPECT.not.toThrowAsync();
-    }).toThrowErrorAsync(
-      TypeError,
-      "toThrowAsync requires value passed in to Expect to be a function."
     );
   }
 

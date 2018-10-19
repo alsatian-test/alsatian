@@ -4,7 +4,9 @@ import {
   METADATA_KEYS,
   SpyOn,
   Test,
-  TestCase
+  TestCase,
+  TestFixture,
+  IgnoreTest
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
@@ -14,23 +16,15 @@ export class IgnoredTestTests {
   public singleUnignoredTest() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {
-      unignoredTest: () => {}
-    };
-    const unignoredTest = {
-      key: "unignoredTest"
-    };
-    Reflect.defineMetadata(
-      METADATA_KEYS.TESTS,
-      [unignoredTest],
-      testFixtureInstance
-    );
-
-    const testFixtureConstructor = () => testFixtureInstance;
+    @TestFixture()
+    class Fixture {
+      @Test()
+      public singleUnignoredTest() {}
+    }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(Fixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -41,29 +35,16 @@ export class IgnoredTestTests {
   public singleIgnoredTest() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {
-      ignoredTest: () => {}
-    };
-    const unignoredTest = {
-      key: "ignoredTest"
-    };
-    Reflect.defineMetadata(
-      METADATA_KEYS.TESTS,
-      [unignoredTest],
-      testFixtureInstance
-    );
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE,
-      true,
-      testFixtureInstance,
-      "ignoredTest"
-    );
-
-    const testFixtureConstructor = () => testFixtureInstance;
+    @TestFixture()
+    class Fixture {
+      @Test()
+      @IgnoreTest()
+      public singleIgnoredTest() {}
+    }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(Fixture);
 
     const testLoader = new TestLoader(fileRequirer);
 
@@ -76,35 +57,16 @@ export class IgnoredTestTests {
   public singleIgnoredTestWithReason(reason: string) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {
-      ignoredTest: () => {}
-    };
-    const unignoredTest = {
-      key: "ignoredTest"
-    };
-    Reflect.defineMetadata(
-      METADATA_KEYS.TESTS,
-      [unignoredTest],
-      testFixtureInstance
-    );
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE,
-      true,
-      testFixtureInstance,
-      "ignoredTest"
-    );
-    Reflect.defineMetadata(
-      METADATA_KEYS.IGNORE_REASON,
-      reason,
-      testFixtureInstance,
-      "ignoredTest"
-    );
-
-    const testFixtureConstructor = () => testFixtureInstance;
+    @TestFixture()
+    class Fixture {
+      @Test()
+      @IgnoreTest(reason)
+      public singleIgnoredTest() {}
+    }
 
     const spy = SpyOn(fileRequirer, "require");
     spy.andStub();
-    spy.andReturn(testFixtureConstructor);
+    spy.andReturn(Fixture);
 
     const testLoader = new TestLoader(fileRequirer);
 

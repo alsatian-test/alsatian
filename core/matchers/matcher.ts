@@ -1,22 +1,17 @@
-import { EqualMatchError, ExactMatchError, TruthyMatchError } from "../errors";
-import { Any, TypeMatcher } from "../spying";
+import { MatchError } from "../errors";
+import { TypeMatcher } from "../spying";
+import { stringify } from "../stringification";
+import { diff } from "./diff";
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher<T> {
-  private _actualValue: T;
   protected get actualValue(): T {
     return this._actualValue;
   }
-
-  private _shouldMatch: boolean = true;
   protected get shouldMatch(): boolean {
     return this._shouldMatch;
-  }
-
-  public constructor(actualValue: T) {
-    this._actualValue = actualValue;
   }
 
   /**
@@ -26,19 +21,26 @@ export class Matcher<T> {
     this._shouldMatch = !this.shouldMatch;
     return this;
   }
+  private _actualValue: T;
+
+  private _shouldMatch: boolean = true;
+
+  public constructor(actualValue: T) {
+    this._actualValue = actualValue;
+  }
 
   /**
    * Checks that a value is identical to another
    * @param expectedValue - the value that will be used to match
    */
   public toBe(expectedValue: T) {
-    if ((expectedValue !== this._actualValue) === this.shouldMatch) {
-      throw new ExactMatchError(
-        this._actualValue,
-        expectedValue,
-        this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      (expectedValue === this._actualValue) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to be ${stringify(expectedValue)}.`,
+      expectedValue
+    );
   }
 
   /**
@@ -64,46 +66,69 @@ export class Matcher<T> {
       valueMatch = expectedValue == this._actualValue;
     }
 
-    if (valueMatch !== this.shouldMatch) {
-      throw new EqualMatchError(
-        this._actualValue,
-        expectedValue,
-        this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      valueMatch === this._shouldMatch,
+      `Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
+      expectedValue,
+      {
+        diff: diff(expectedValue, this._actualValue)
+      }
+    );
   }
 
   /**
    * Checks that a value is not undefined
    */
   public toBeDefined() {
-    if ((this._actualValue === undefined) === this.shouldMatch) {
-      throw new ExactMatchError(
-        this._actualValue,
-        undefined,
-        !this.shouldMatch
-      );
-    }
+    this._registerMatcher(
+      (this._actualValue !== undefined) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${
+        this.shouldMatch ? "not " : ""
+      }` + `to be undefined.`,
+      undefined
+    );
   }
 
   /**
    * Checks that a value is null
    */
   public toBeNull() {
-    if ((this._actualValue !== null) === this.shouldMatch) {
-      throw new ExactMatchError(this._actualValue, null, this.shouldMatch);
-    }
+    this._registerMatcher(
+      (this._actualValue === null) === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to be null.`,
+      null
+    );
   }
 
   /**
    * Checks that a value is equivalent to boolean true
    */
   public toBeTruthy() {
-    if (
-      (this._actualValue && !this.shouldMatch) ||
-      (!this._actualValue && this.shouldMatch)
-    ) {
-      throw new TruthyMatchError(this._actualValue, this.shouldMatch);
+    this._registerMatcher(
+      (this._actualValue && this.shouldMatch) ||
+        (!this._actualValue && !this.shouldMatch),
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }to be truthy.`,
+      this.shouldMatch ? "truthy" : "falsy"
+    );
+  }
+
+  protected _registerMatcher(
+    isMatch: boolean,
+    failureMessage: string,
+    expectedValue: any,
+    extras?: { [prop: string]: any }
+  ) {
+    if (isMatch === false) {
+      throw new MatchError(
+        failureMessage,
+        expectedValue,
+        this._actualValue,
+        extras
+      );
     }
   }
 

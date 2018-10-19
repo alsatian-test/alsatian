@@ -4,10 +4,17 @@ import {
   METADATA_KEYS,
   SpyOn,
   Test,
-  TestCase
+  TestCase,
+  TestFixture
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
+
+class FakeFixture {
+  constructor() {
+    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], this);
+  }
+}
 
 export class MultipleExportedFixtureTests {
   @TestCase(1)
@@ -18,14 +25,9 @@ export class MultipleExportedFixtureTests {
   ) {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
-    const testFixtureWrapper: { [key: string]: () => any } = {};
+    const testFixtureWrapper: { [key: string]: new () => any } = {};
     for (let i = 0; i < expectedTestFixtureCount; i++) {
-      testFixtureWrapper["TestFixture" + i] = testFixtureConstructor;
+      testFixtureWrapper["TestFixture" + i] = FakeFixture;
     }
 
     const spy = SpyOn(fileRequirer, "require");
@@ -40,18 +42,13 @@ export class MultipleExportedFixtureTests {
   }
 
   @Test()
-  public shouldIgnoreNonTestFixtureConstructorAtStartOfWrapper() {
+  public shouldIgnoreNonFakeFixtureAtStartOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
-      firstThing: () => {},
-      secondThing: testFixtureConstructor,
-      thirdThing: testFixtureConstructor
+      firstThing: class NotAFixture {},
+      secondThing: FakeFixture,
+      thirdThing: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -67,15 +64,10 @@ export class MultipleExportedFixtureTests {
   public shouldIgnoreObjectAtStartOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
       firstThing: {},
-      secondThing: testFixtureConstructor,
-      thirdThing: testFixtureConstructor
+      secondThing: FakeFixture,
+      thirdThing: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -88,18 +80,13 @@ export class MultipleExportedFixtureTests {
   }
 
   @Test()
-  public shouldIgnoreNonTestFixtureConstructorInMiddleOfWrapper() {
+  public shouldIgnoreNonFakeFixtureInMiddleOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
-      firstThing: testFixtureConstructor,
-      secondThing: () => {},
-      thirdThing: testFixtureConstructor
+      firstThing: FakeFixture,
+      secondThing: class NotAFixture {},
+      thirdThing: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -115,15 +102,10 @@ export class MultipleExportedFixtureTests {
   public shouldIgnoreObjectInMiddleOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
-      firstThing: testFixtureConstructor,
+      firstThing: FakeFixture,
       secondThing: {},
-      thirdThing: testFixtureConstructor
+      thirdThing: FakeFixture
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -136,18 +118,13 @@ export class MultipleExportedFixtureTests {
   }
 
   @Test()
-  public shouldIgnoreNonTestFixtureConstructorAtEndOfWrapper() {
+  public shouldIgnoreNonFakeFixtureAtEndOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
-      firstThing: testFixtureConstructor,
-      secondThing: testFixtureConstructor,
-      thirdThing: () => {}
+      firstThing: FakeFixture,
+      secondThing: FakeFixture,
+      thirdThing: class NotAFixture {}
     };
 
     const spy = SpyOn(fileRequirer, "require");
@@ -163,15 +140,10 @@ export class MultipleExportedFixtureTests {
   public shouldIgnoreObjectAtEndOfWrapper() {
     const fileRequirer = new FileRequirer();
 
-    const testFixtureInstance = {};
-    Reflect.defineMetadata(METADATA_KEYS.TESTS, [], testFixtureInstance);
-
-    const testFixtureConstructor = () => testFixtureInstance;
-
     const testFixtureWrapper = {
-      firstThing: testFixtureConstructor,
-      secondThing: testFixtureConstructor,
-      thirdThing: () => {}
+      firstThing: FakeFixture,
+      secondThing: FakeFixture,
+      thirdThing: class NotAFixture {}
     };
 
     const spy = SpyOn(fileRequirer, "require");

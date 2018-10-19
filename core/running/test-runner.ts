@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import {
+  Expect,
   METADATA_KEYS,
-  TestCaseResult,
   TestFixtureResults,
   TestOutputStream,
-  TestResults,
   TestSet,
   TestSetResults
 } from "../alsatian-core";
@@ -13,9 +12,11 @@ import { IOnTestCompleteCBFunction } from "../events";
 import { TestPlan } from "./test-plan";
 import { TestSetRunInfo } from "./test-set-run-info";
 import { TestItem } from "./test-item";
+import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
   private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
+  private _flushedWarnings: Array<string> = [];
   private _outputStream: TestOutputStream;
   public get outputStream() {
     return this._outputStream;
@@ -117,14 +118,6 @@ export class TestRunner {
     testSetRunInfo: TestSetRunInfo,
     testFixtureResults: TestFixtureResults
   ) {
-    let error: Error;
-
-    try {
-      await testItem.run(testSetRunInfo.timeout);
-    } catch (e) {
-      error = e;
-    }
-
     let testResults = testFixtureResults.testResults.find(
       result => result.test === testItem.test
     );
@@ -133,10 +126,24 @@ export class TestRunner {
       testResults = testFixtureResults.addTestResult(testItem.test);
     }
 
-    return testResults.addTestCaseResult(
-      testItem.testCase.caseArguments,
-      error
-    );
+    try {
+      await testItem.run(testSetRunInfo.timeout);
+
+      return testResults.addTestCaseResult(testItem.testCase.caseArguments);
+    } catch (e) {
+      return testResults.addTestCaseResult(testItem.testCase.caseArguments, e);
+    } finally {
+      const newWarnings = Warner.warnings
+        .filter(
+          (message, index, array) => array.indexOf(message, index + 1) === -1
+        )
+        .filter(message => this._flushedWarnings.indexOf(message) === -1);
+
+      newWarnings.forEach(warning => {
+        this._flushedWarnings.push(warning);
+        this.outputStream.emitWarning(warning);
+      });
+    }
   }
 
   private async _setupFixture(fixture: { [key: string]: () => any }) {
@@ -158,11 +165,7 @@ export class TestRunner {
 
     if (fixtureFunctions) {
       for (const fixtureFunction of fixtureFunctions) {
-        if (fixtureFunction.isAsync) {
-          await fixture[fixtureFunction.propertyKey].call(fixture);
-        } else {
-          fixture[fixtureFunction.propertyKey].call(fixture);
-        }
+        await fixture[fixtureFunction.propertyKey].call(fixture);
       }
     }
   }

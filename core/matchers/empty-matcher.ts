@@ -1,5 +1,5 @@
-import { EmptyMatchError } from "../errors";
 import { Matcher } from "./matcher";
+import { stringify } from "../stringification";
 
 /**
  * Compares types that can be empty e.g. string, object and Array
@@ -9,35 +9,23 @@ export class EmptyMatcher<T> extends Matcher<T> {
    * Checks that an array is empty, a string is empty, or an object literal has no properties
    */
   public toBeEmpty() {
-    if (null === this.actualValue || undefined === this.actualValue) {
-      throw new TypeError(
-        "toBeEmpty requires value passed in to Expect not to be null or undefined"
-      );
-    }
+    const actualValue = this.actualValue as any;
 
-    if (
-      typeof this.actualValue !== "string" &&
-      !Array.isArray(this.actualValue) &&
-      this.actualValue.constructor !== Object &&
-      !(this.actualValue instanceof Map)
-    ) {
-      throw new TypeError(
-        "toBeEmpty requires value passed in to Expect to be an array, string, object literal or map"
-      );
-    }
+    const length =
+      actualValue instanceof Map
+        ? actualValue.size
+        : actualValue.length !== undefined
+          ? actualValue.length
+          : Object.keys(actualValue).length;
 
-    if (this.actualValue instanceof Map) {
-      if ((this.actualValue.size === 0) !== this.shouldMatch) {
-        throw new EmptyMatchError(this.actualValue, this.shouldMatch);
-      }
-    } else {
-      const contents = (this.actualValue as any).length
-        ? this.actualValue
-        : Object.keys(this.actualValue);
-
-      if (((contents as any).length === 0) !== this.shouldMatch) {
-        throw new EmptyMatchError(this.actualValue, this.shouldMatch);
-      }
-    }
+    this._registerMatcher(
+      (length === 0) === this.shouldMatch,
+      `Expected "${
+        typeof actualValue === "string"
+          ? actualValue
+          : stringify(this.actualValue)
+      }" ` + `${this.shouldMatch ? "" : "not "}to be empty.`,
+      this.actualValue
+    );
   }
 }

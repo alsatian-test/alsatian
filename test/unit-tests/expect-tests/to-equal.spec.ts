@@ -1,12 +1,5 @@
-import {
-  Expect,
-  Test,
-  TestCase,
-  Any,
-  FocusTest
-} from "../../../core/alsatian-core";
-import { EqualMatchError } from "../../../core/errors/equal-match-error";
-import { stringify } from "../../../core/stringification";
+import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToEqualTests {
   @TestCase(undefined)
@@ -19,7 +12,6 @@ export class ToEqualTests {
   @TestCase("something")
   public identicalSimpleTypesDontThrow(value: any) {
     const expect = Expect(value);
-
     Expect(() => expect.toEqual(value)).not.toThrow();
   }
 
@@ -42,8 +34,8 @@ export class ToEqualTests {
     const expect = Expect(1);
 
     Expect(() => expect.toEqual(2)).toThrowError(
-      EqualMatchError,
-      "Expected 1 to be equal to 2."
+      MatchError,
+      "Expected values to be equal"
     );
   }
 
@@ -68,12 +60,8 @@ export class ToEqualTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toEqual(expected)).toThrowError(
-      EqualMatchError,
-      "Expected " +
-        stringify(actual) +
-        " to be equal to " +
-        stringify(expected) +
-        "."
+      MatchError,
+      "Expected values to be equal"
     );
   }
 
@@ -139,9 +127,8 @@ export class ToEqualTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toEqual(expected)).toThrowError(
-      EqualMatchError,
-      `Expected ${stringify(actual)} ` +
-        `to be equal to ${stringify(expected)}.`
+      MatchError,
+      "Expected values to be equal"
     );
   }
 
@@ -177,9 +164,8 @@ export class ToEqualTests {
     const expect = Expect(actual);
 
     Expect(() => expect.not.toEqual(expected)).toThrowError(
-      EqualMatchError,
-      `Expected ${stringify(actual)} ` +
-        `not to be equal to ${stringify(expected)}.`
+      MatchError,
+      "Expected values not to be equal"
     );
   }
 
@@ -246,24 +232,16 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).toThrow();
   }
 
-  @TestCase(
-    Any(Number),
-    "something",
-    'Expected "something" to be equal to Any Number.'
-  )
+  @TestCase(Any(Number), "something")
   @TestCase(Any(String), 42, "Expected 42 to be equal to Any String.")
-  @TestCase(
-    Any(Object).thatMatches("property", 42),
-    { property: "something", anotherProperty: 42 },
-    `Expected {"property":"something","anotherProperty":42} ` +
-      `to be equal to Any Object and with property 'property' equal to '42'.`
-  )
-  @TestCase(
-    Any(Object).thatMatches({ anotherProperty: "something" }),
-    { property: "something", anotherProperty: 42 },
-    `Expected {"property":"something","anotherProperty":42} ` +
-      `to be equal to Any Object and matches '{"anotherProperty":"something"}'.`
-  )
+  @TestCase(Any(Object).thatMatches("property", 42), {
+    property: "something",
+    anotherProperty: 42
+  })
+  @TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+    property: "something",
+    anotherProperty: 42
+  })
   public throwsCorrectErrorMessageForNonMatchesWithAny(
     expected: any,
     actual: any,
@@ -272,8 +250,8 @@ export class ToEqualTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toEqual(expected)).toThrowError(
-      EqualMatchError,
-      errorMessage
+      MatchError,
+      "Expected values to be equal"
     );
   }
 
@@ -301,26 +279,10 @@ export class ToEqualTests {
     Expect(() => expect.toEqual(expected)).toThrow();
   }
 
-  @TestCase(
-    Buffer.from([1, 2, 3]),
-    null,
-    `Expected null to be equal to {"type":"Buffer","data":[1,2,3]}.`
-  )
-  @TestCase(
-    Buffer.from([1, 2, 3]),
-    undefined,
-    `Expected undefined to be equal to {"type":"Buffer","data":[1,2,3]}.`
-  )
-  @TestCase(
-    Buffer.from([1, 2, 3]),
-    1,
-    `Expected 1 to be equal to {"type":"Buffer","data":[1,2,3]}.`
-  )
-  @TestCase(
-    Buffer.from([1, 2, 3]),
-    {},
-    `Expected {} to be equal to {"type":"Buffer","data":[1,2,3]}.`
-  )
+  @TestCase(Buffer.from([1, 2, 3]), null)
+  @TestCase(Buffer.from([1, 2, 3]), undefined)
+  @TestCase(Buffer.from([1, 2, 3]), 1)
+  @TestCase(Buffer.from([1, 2, 3]), {})
   public throwsCorrectErrorMessageForNonMatchesWithBuffer(
     expected: any,
     actual: any,
@@ -329,8 +291,8 @@ export class ToEqualTests {
     const expect = Expect(actual);
 
     Expect(() => expect.toEqual(expected)).toThrowError(
-      EqualMatchError,
-      errorMessage
+      MatchError,
+      "Expected values to be equal"
     );
   }
 }

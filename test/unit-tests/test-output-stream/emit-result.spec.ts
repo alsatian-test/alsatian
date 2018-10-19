@@ -8,51 +8,53 @@ import {
   TestCaseResult,
   TestOutputStream
 } from "../../../core/alsatian-core";
-import { EqualMatchError, MatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
   return (
     ` ---\n` +
-    `   message: "${error.message
-      .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')}"\n` +
-    `   severity: fail\n` +
-    `   data:\n` +
-    `     got: ${JSON.stringify(error.actual)}\n` +
-    `     expect: ${JSON.stringify(error.expected)}\n ...\n`
+    ` message: ${error.message.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}\n` +
+    ` severity: fail\n` +
+    ` data:\n` +
+    `   got: ${yamlStringify(error.actual)}\n` +
+    `   expect: ${yamlStringify(error.expected)}\n ...\n`
   );
 };
+
+function yamlStringify(value: any) {
+  return `'${JSON.stringify(value)}'`;
+}
 
 const _getUnhandledErrorMessage: (stack: string) => string = (
   stack: string
 ) => {
   return (
     " ---\n" +
-    '   message: "The test threw an unhandled error."\n' +
-    "   severity: fail\n" +
-    "   data:\n" +
-    "     got: an unhandled error\n" +
-    "     expect: no unhandled errors to be thrown\n" +
-    "     stack: |\n" +
+    " message: The test threw an unhandled error.\n" +
+    " severity: fail\n" +
+    " data:\n" +
+    "   got: an unhandled error\n" +
+    "   expect: no unhandled errors to be thrown\n" +
+    "   details:\n" +
+    "     stack: |-\n" +
     stack
       .split("\n")
       .map(l => "       " + l)
       .join("\n") +
-    "\n" +
-    " ...\n"
+    "\n ...\n"
   );
 };
 
 function _getUnhandledErrorMessageNoStack(): string {
   return (
     " ---\n" +
-    '   message: "The test threw an unhandled error."\n' +
-    "   severity: fail\n" +
-    "   data:\n" +
-    "     got: an unhandled error\n" +
-    "     expect: no unhandled errors to be thrown\n" +
+    " message: The test threw an unhandled error.\n" +
+    " severity: fail\n" +
+    " data:\n" +
+    "   got: an unhandled error\n" +
+    "   expect: no unhandled errors to be thrown\n" +
     " ...\n"
   );
 }
@@ -239,7 +241,9 @@ export class EmitResultTests {
 
     const test: ITest = new TestBuilder().build();
 
-    const error = new EqualMatchError(actualValue, 2, true);
+    const message = `Expected ${actualValue} to be equal to 2.`;
+
+    const error = new MatchError(message, 2, actualValue);
 
     const testCaseResult = new TestCaseResult(test, [], error);
 
@@ -259,7 +263,9 @@ export class EmitResultTests {
 
     const test: ITest = new TestBuilder().build();
 
-    const error = new EqualMatchError(1, expectedValue, true);
+    const message = `Expected 1 to be equal to ${expectedValue}.`;
+
+    const error = new MatchError(message, expectedValue, 1);
 
     const testCaseResult = new TestCaseResult(test, [], error);
 

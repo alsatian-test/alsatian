@@ -4,20 +4,21 @@ import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
-  private _testCase: ITestCase;
   public get testCase() {
     return this._testCase;
   }
-
-  private _test: ITest;
   public get test() {
     return this._test;
   }
-
-  private _testFixture: ITestFixture;
   public get testFixture() {
     return this._testFixture;
   }
+
+  private _testCase: ITestCase;
+
+  private _test: ITest;
+
+  private _testFixture: ITestFixture;
 
   public constructor(
     testFixture: ITestFixture,
@@ -46,34 +47,35 @@ export class TestItem {
       return;
     } else {
       await this._setup();
+
       try {
         await this._runTest(this._test.timeout || timeout);
-        await this._teardown();
       } catch (error) {
-        await this._teardown();
         throw error;
+      } finally {
+        await this._teardown();
       }
     }
   }
 
   private async _runTest(timeout: number) {
-    return new Promise<any>((resolve, reject) => {
-      setTimeout(() => {
+    return new Promise<any>(async (resolve, reject) => {
+      const timeoutCheck = setTimeout(() => {
         reject(new TestTimeoutError(timeout));
       }, timeout);
 
-      if (this._test.isAsync) {
-        this._execute()
-          .then(resolve)
-          .catch(reject);
-      } else {
-        this._execute();
+      try {
+        await this._execute();
         resolve();
+      } catch (exception) {
+        reject(exception);
+      } finally {
+        clearTimeout(timeoutCheck);
       }
     });
   }
 
-  private _execute() {
+  private async _execute() {
     return this._testFixture.fixture[this._test.key].apply(
       this._testFixture.fixture,
       this._testCase.caseArguments
@@ -102,14 +104,8 @@ export class TestItem {
   }
 
   private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
-    if (funcMetadata.isAsync) {
-      await this._testFixture.fixture[funcMetadata.propertyKey].call(
-        this.testFixture.fixture
-      );
-    } else {
-      this._testFixture.fixture[funcMetadata.propertyKey].call(
-        this.testFixture.fixture
-      );
-    }
+    await this._testFixture.fixture[funcMetadata.propertyKey].call(
+      this.testFixture.fixture
+    );
   }
 }

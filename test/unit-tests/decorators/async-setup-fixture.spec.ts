@@ -4,12 +4,14 @@ import {
   METADATA_KEYS,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  FocusTest
 } from "../../../core/alsatian-core";
 import { AsyncSetupFixture } from "../../../core/decorators/async-setup-fixture-decorator";
 
 @TestFixture("@AsyncSetupFixture decorator tests")
 export class AsyncSetupFixtureDecoratorTests {
+  // @FocusTest
   @Test("async setup fixture function added to metadata")
   public asyncSetupFixtureFunctionAddedAsMetaData() {
     const testFixture = {};

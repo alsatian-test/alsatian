@@ -1,23 +1,18 @@
-import { ContentsMatchError } from "../errors";
 import { EmptyMatcher } from "./empty-matcher";
+import { stringify } from "../stringification";
 
 /**
  * Compares container types e.g. string and Array
  */
-export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
-  ContainerType
-> {
+export class ContainerMatcher<
+  ContainerType extends { indexOf(content: ContentType): number },
+  ContentType
+> extends EmptyMatcher<ContainerType> {
   /**
    * Checks that a string contains another string or an array contains a specific item
    * @param expectedContent - the string or array item that the value should contain
    */
   public toContain(expectedContent: ContentType) {
-    if (this._isValidContainer(this.actualValue)) {
-      throw new TypeError(
-        "toContain must only be used to check whether strings or arrays contain given contents."
-      );
-    }
-
     if (
       typeof this.actualValue === "string" &&
       typeof expectedContent !== "string"
@@ -27,19 +22,12 @@ export class ContainerMatcher<ContainerType, ContentType> extends EmptyMatcher<
       );
     }
 
-    if (
-      ((this.actualValue as any).indexOf(expectedContent) === -1) ===
-      this.shouldMatch
-    ) {
-      throw new ContentsMatchError(
-        this.actualValue,
-        expectedContent,
-        this.shouldMatch
-      );
-    }
-  }
-
-  private _isValidContainer(value: ContainerType) {
-    return value instanceof Array === false && typeof value !== "string";
+    this._registerMatcher(
+      this.actualValue.indexOf(expectedContent) > -1 === this.shouldMatch,
+      `Expected ${stringify(this.actualValue)} ${
+        !this.shouldMatch ? "not " : ""
+      }` + `to contain ${stringify(expectedContent)}.`,
+      expectedContent
+    );
   }
 }
