@@ -13,10 +13,10 @@
       "url": "https://github.com/jameskmonger"
     }
   ],
-  "main": "./core/alsatian-core.js",
-  "typings": "./core/alsatian-core.d.ts",
+  "main": "./dist/core/alsatian-core.js",
+  "typings": "./dist/core/alsatian-core.d.ts",
   "bin": {
-    "alsatian": "./cli/alsatian-cli.js"
+    "alsatian": "./dist/cli/alsatian-cli.js"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -24,14 +24,11 @@
   "scripts": {
     "build": "tsc",
     "build-publish": "tsc --newLine \"LF\"",
-    "clean": "npm run clean-core && npm run clean-cli && npm run clean-test",
-    "clean-core": "rimraf core/**/*.js core/**/*.js.map core/**/*.d.ts",
-    "clean-cli": "rimraf cli/**/*.js cli/**/*.js.map cli/**/*.d.ts",
-    "clean-test": "rimraf test/**/*.js test/**/*.js.map test/**/*.d.ts",
-    "publish-nightly": "npm run build && node ./scripts/build-nightly",
+    "clean": "rimraf ./dist",
+    "publish-nightly": "npm run build && node ./dist/scripts/build-nightly",
     "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
-    "postpublish": "node ./scripts/tag-release",
-    "review": "npm run review-code & npm run review-tests",
+    "postpublish": "node ./dist/scripts/tag-release",
+    "review": "npm run review-code && npm run review-tests",
     "review-code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./tap-bark/**/*.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
     "review-tests": "tslint --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "fix-linting-issues": "npm run fix-code-linting-issues & npm run fix-tests-linting-issues",
@@ -39,7 +36,7 @@
     "fix-tests-linting-issues": "tslint --fix --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
     "pretest": "npm run build",
     "test": "npm run review && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
+    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "integration-tests": "tsc -p \"./test/integration-tests\" && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run gulp-integration-tests&& npm run babel-integration-tests && npm run expect-extension-integration-tests",
@@ -120,5 +117,10 @@
     "js-yaml": "^3.12.0",
     "reflect-metadata": "^0.1.3",
     "tap-bark": "^2.0.0-alpha.0"
+  },
+  "nyc": {
+    "exclude": [
+      "dist/test"
+    ]
   }
 }

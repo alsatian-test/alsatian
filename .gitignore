@@ -1,6 +1,7 @@
 #NPM
 node_modules
 npm-debug.log*
+dist
 
 #TypeScript
 *.js

@@ -20,7 +20,7 @@
             "request": "launch",
             "program": "${workspaceRoot}\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
-            "args": ["./test/unit-tests/**/*.spec.js"],
+            "args": ["./dist/test/unit-tests/**/*.spec.js"],
             "outFiles": [],
             "sourceMaps": true
         },

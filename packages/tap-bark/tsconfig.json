@@ -15,7 +15,8 @@
         "newLine": "LF",
         "lib": [ "es2015" ],
         "jsx": "react",
-        "jsxFactory": "h"
+        "jsxFactory": "h",
+        "outDir": "./dist"
     },
     "exclude": [
         "node_modules",
@@ -24,8 +25,9 @@
     ],
     "include": [
         "src/**/*.ts",
+        "src/**/*.tsx",
         "test/**/*.ts",
-        "index.ts", "src/tap-bark.tsx"
+        "index.ts",
     ],
     "atom": {
         "rewriteTsconfig": false

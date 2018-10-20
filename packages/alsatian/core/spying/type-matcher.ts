@@ -59,7 +59,9 @@ export class TypeMatcher<ExpectedType extends object> {
 
     if (typeof first === "function") {
       // cast required for node 6 remove when out of LTS
-      return this._matchesDelegate(first as (argument: ExpectedType) => boolean);
+      return this._matchesDelegate(first as (
+        argument: ExpectedType
+      ) => boolean);
     }
 
     if (typeof first === "object") {

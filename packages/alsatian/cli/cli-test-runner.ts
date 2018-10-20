@@ -16,7 +16,7 @@ export class CliTestRunner {
   }
 
   public async run(userArguments: AlsatianCliOptions) {
-    const packageJson = require("../package.json");
+    const packageJson = require("../../package.json");
 
     // if version has been requested then output the current version and exit
     if (userArguments.versionRequested) {

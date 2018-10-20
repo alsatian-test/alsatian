@@ -10,24 +10,19 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "lib": [ "es2015" ],
-      "jsx": "react",
-      "jsxFactory": "h"
+      "outDir": "./dist"
    },
    "buildOnSave": false,
    "compileOnSave": true,
    "exclude": [
-      "./core/**/*.d.ts",
-      "./cli/**/*.d.ts",
-      "./test/**/*.d.ts",
       "./test/integration-tests",
-      "./scripts/**/*.d.ts",
       "node_modules"
    ],
    "include": [
       "./cli/**/*.ts",
       "./core/**/*.ts",
       "./test/**/*.ts",
-      "./scripts/**/*.ts", "tap-bark/src/tap-bark.tsx"
+      "./scripts/**/*.ts"
    ],
    "atom": {
       "rewriteTsconfig": false
