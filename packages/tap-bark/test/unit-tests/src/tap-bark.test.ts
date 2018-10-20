@@ -9,23 +9,10 @@ import {
   Teardown
 } from "alsatian";
 import { TapBark } from "../../../src/tap-bark";
-import { OutputBuilder } from "../../_builders/output-builder";
 const parser = require("tap-parser");
 const duplexer = require("duplexer");
 
 export default class TapBarkTests {
-  @Test("setup called on output")
-  public setupFunctionCalledOnOutput() {
-    const mockOutput = new OutputBuilder().build();
-
-    SpyOn(mockOutput, "setup");
-
-    const mockParser = parser();
-
-    const tapBark = new TapBark(mockOutput, mockParser);
-
-    Expect(mockOutput.setup).toHaveBeenCalled();
-  }
 
   @Test("plan event handled")
   public parserPlanEventHandled() {
