@@ -1,126 +1,24 @@
 {
-  "name": "alsatian",
-  "version": "3.0.0-alpha.1",
-  "description": "TypeScript and JavaScript testing framework for beautiful and readable tests",
-  "author": "James Richford <=> (=)",
-  "contributors": [
-    {
-      "name": "James Richford",
-      "url": "https://github.com/jamesrichford"
-    },
-    {
-      "name": "James Monger",
-      "url": "https://github.com/jameskmonger"
-    }
-  ],
-  "main": "./core/alsatian-core.js",
-  "typings": "./core/alsatian-core.d.ts",
-  "bin": {
-    "alsatian": "./cli/alsatian-cli.js"
-  },
-  "engines": {
-    "node": ">=4.0.0"
-  },
+  "name": "alsatian-packages",
+  "private": true,
+  "version": "1.0.0",
+  "description": "repository for all alsatian packages",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "build-publish": "tsc --newLine \"LF\"",
-    "clean": "npm run clean-core && npm run clean-cli && npm run clean-test",
-    "clean-core": "rimraf core/**/*.js core/**/*.js.map core/**/*.d.ts",
-    "clean-cli": "rimraf cli/**/*.js cli/**/*.js.map cli/**/*.d.ts",
-    "clean-test": "rimraf test/**/*.js test/**/*.js.map test/**/*.d.ts",
-    "publish-nightly": "npm run build && node ./scripts/build-nightly",
-    "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
-    "postpublish": "node ./scripts/tag-release",
-    "review": "npm run review-code & npm run review-tests",
-    "review-code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./tap-bark/**/*.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
-    "review-tests": "tslint --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
-    "fix-linting-issues": "npm run fix-code-linting-issues & npm run fix-tests-linting-issues",
-    "fix-code-linting-issues": "tslint --fix \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./tap-bark/**/*.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
-    "fix-tests-linting-issues": "tslint --fix --config \"./tslint.test.json\" \"./test/**/*.ts\" --exclude \"./**/*.d.ts\"",
-    "pretest": "npm run build",
-    "test": "npm run review && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
-    "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
-    "output-test-coverage": "nyc report",
-    "install-self": "npm link && install-self",
-    "integration-tests": "npm run install-self && tsc -p \"./test/integration-tests\" && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run gulp-integration-tests&& npm run babel-integration-tests && npm run expect-extension-integration-tests",
-    "expect-extension-integration-tests": "alsatian \"./test/integration-tests/extending-expect/**/*.spec.js\"",
-    "cli-integration-tests": "alsatian \"./test/integration-tests/cli/runner\"",
-    "tsnode-integration-tests": "ts-node \"./test/integration-tests/ts-node/runner.ts\"",
-    "node-integration-tests": "node \"./test/integration-tests/node/runner\"",
-    "gulp-integration-tests": "alsatian \"./test/integration-tests/gulp/runner\"",
-    "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.js\"",
-    "build-es6-tests": "babel test/integration-tests/javascript/test-sets -d test/integration-tests/javascript/test-sets",
-    "babel-integration-tests": "npm run build-es6-tests && alsatian \"./test/integration-tests/javascript/babel/babel-compatibility.spec\"",
-    "typescript-integration-tests": "alsatian \"./test/integration-tests/typescript/compile.spec\"",
-    "selenium-integration-tests": "alsatian \"./test/integration-tests/selenium/**/*.spec.js\""
+    "bootstrap": "lerna bootstrap",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alsatian-test/alsatian.git"
   },
-  "keywords": [
-    "test",
-    "framework",
-    "test framework",
-    "TypeScript",
-    "JavaScript",
-    "babel",
-    "alsatian",
-    "decorators",
-    "annotations",
-    "readable",
-    "simple",
-    "powerful",
-    "node",
-    "test case",
-    "case",
-    "unit test",
-    "tap",
-    "tsunit",
-    "junit",
-    "nunit",
-    "xunit",
-    "tdd"
-  ],
+  "author": "James Adarich <=> (=)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alsatian-test/alsatian/issues"
   },
   "homepage": "https://github.com/alsatian-test/alsatian#readme",
   "devDependencies": {
-    "@types/deep-diff": "0.0.31",
-    "@types/diff": "^3.5.1",
-    "@types/glob": "^5.0.30",
-    "@types/gulp": "^4.0.0",
-    "@types/js-yaml": "^3.11.2",
-    "@types/selenium-webdriver": "^3.0.0",
-    "babel-cli": "^6.18.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015": "^6.18.0",
-    "coveralls": "^3.0.0",
-    "dugite": "^1.29.0",
-    "gulp": "^3.9.1",
-    "install-self": "^1.0.0-beta.7",
-    "mock-require": "^3.0.0",
-    "nyc": "^12.0.1",
-    "prettier": "^1.10.2",
-    "rimraf": "^2.5.4",
-    "selenium-webdriver": "^3.0.1",
-    "ts-node": "^7.0.0",
-    "tslint": "^5.9.1",
-    "tslint-plugin-prettier": "^1.3.0",
-    "typescript": "^3.0.1"
-  },
-  "dependencies": {
-    "@types/node": ">=4.0.0",
-    "chalk": "^2.4.1",
-    "deep-diff": "^1.0.2",
-    "diff": "^3.5.0",
-    "extendo-error": "^1.0.1",
-    "glob": "^7.0.3",
-    "js-yaml": "^3.12.0",
-    "reflect-metadata": "^0.1.3",
-    "tap-bark": "^2.0.0-alpha.0"
+    "lerna": "^3.4.3"
   }
 }

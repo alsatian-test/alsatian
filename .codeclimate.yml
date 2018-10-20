@@ -6,5 +6,4 @@ ratings:
     - "cli/**/*.ts"
     - "core/**/*.ts"
 exclude_paths:
-  - test/
-  - tap-bark/test/
+  - packages/*/test/

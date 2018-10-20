@@ -8,8 +8,8 @@
         "tap-bark": "index.js"
     },
     "scripts": {
-        "prepublish": "in-publish && npm test && npm run build || not-in-publish",
-        "pretest": "npm run install-self && npm run build-integration-tests && npm run build-with-maps",
+        "prepublishOnly": "npm test && npm run build",
+        "pretest": "npm run build-integration-tests && npm run build-with-maps",
         "install-self": "npm run build && install-self",
         "test": "npm run tests-with-coverage",
         "tests-with-coverage": "nyc --reporter=lcov --reporter=html alsatian \"./test/**/*.test.js\" && nyc report",
@@ -44,8 +44,6 @@
         "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",
         "coveralls": "^2.11.15",
-        "in-publish": "^2.0.0",
-        "install-self": "^1.0.0-beta.6",
         "nyc": "^10.0.0",
         "tslint": "^4.0.2",
         "typescript": "^2.0.3"
