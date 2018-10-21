@@ -9,7 +9,12 @@ const { h, render, Component, Color, Indent } = require("ink");
 
 const TAP_PARSER = parser();
 
-class TapBarkOutput extends Component {
+export { Component };
+export class TapBarkOutput extends Component {
+    
+    public getPipeable(): any {
+        return duplexer(TAP_PARSER, through());
+    }
 
     private FIXTURE_REGEXP: RegExp = /^# FIXTURE (.*)/;
     private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
@@ -137,13 +142,12 @@ class TapBarkOutput extends Component {
 }
 
 export class TapBark {
-    public static create(): any {
-        render(<TapBarkOutput />);
+    
+    public static readonly tapParser = TAP_PARSER;
 
-        return {
-            getPipeable(): any {
-                return duplexer(TAP_PARSER, through());
-            }
-        }
+    public static create(): TapBarkOutput {
+        const tapBarkOutput = <TapBarkOutput />;
+        render(tapBarkOutput);
+        return tapBarkOutput.instance;
     }
 }

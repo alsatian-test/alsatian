@@ -10,7 +10,9 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "newLine": "LF",
+        "newLine": "LF",        
+        "jsx": "react",
+        "jsxFactory": "h",
         "lib": [ "es2015" ]
     },
     "include": [
