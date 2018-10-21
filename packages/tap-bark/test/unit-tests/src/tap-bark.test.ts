@@ -90,7 +90,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const planEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -125,7 +125,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const commentEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -148,7 +148,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const commentEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -171,7 +171,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const assertEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -194,7 +194,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const planEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -251,7 +251,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -272,7 +272,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -291,7 +291,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -312,7 +312,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -333,7 +333,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -357,7 +357,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -376,7 +376,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -397,7 +397,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -420,7 +420,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -445,7 +445,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
@@ -467,7 +467,7 @@ export default class TapBarkTests {
     SpyOn(TapBark.tapParser, "on");
 
     const tapBark = TapBark.create();
-    
+
     SpyOn(tapBark, "setState");
 
     const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls

@@ -1,6 +1,6 @@
 import { Assertion } from "./external/tap-parser";
 
-export interface IResults {
+export interface Results {
   pass: number;
   fail: number;
   ignore: number;

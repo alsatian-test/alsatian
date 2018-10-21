@@ -1,0 +1,20 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "array-type": [true, "generic"],
+    "arrow-parens": false,
+    "interface-name": [true, "never-prefix"],
+    "max-classes-per-file": false,
+    "one-line": [ true, "check-open-brace", "check-whitespace"],
+    "trailing-comma": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "prettier": true   
+  },
+  "jsRules": {
+  },
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ]
+}
