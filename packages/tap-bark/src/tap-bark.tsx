@@ -1,4 +1,4 @@
-import { IResults } from "./results.i";
+import { Results } from "./results";
 import { Assertion as TAPAssertion, Results as TAPResults, Assertion, Plan } from "./external/tap-parser";
 import chalk from "chalk";
 
@@ -109,7 +109,7 @@ export class TapBarkOutput extends Component {
     }
 
     private handleComplete(results: TAPResults) {
-        let _results: IResults = {
+        let _results: Results = {
             pass: results.pass || 0,
             fail: (results.fail || (results.failures || []).length),
             ignore: (results.skip || 0) + (results.todo || 0),
