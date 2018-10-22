@@ -13,7 +13,7 @@ export class GulpIntegrationTests {
   @Timeout(10000)
   public toBeExpectations() {
     const result = child.exec(
-      'gulp test-to-be-expectations --gulpfile "./test/integration-tests/gulp/gulpfile.js" --cwd ./'
+      'gulp test-to-be-expectations --gulpfile "./dist/test/integration-tests/gulp/gulpfile.js" --cwd ./'
     );
 
     let consoleOutput = "";
@@ -37,7 +37,7 @@ export class GulpIntegrationTests {
   @Timeout(10000)
   public toThrowExpectations() {
     const result = child.exec(
-      'gulp test-to-throw-expectations --gulpfile "./test/integration-tests/gulp/gulpfile.js" --cwd ./'
+      'gulp test-to-throw-expectations --gulpfile "./dist/test/integration-tests/gulp/gulpfile.js" --cwd ./'
     );
 
     let consoleOutput = "";
@@ -64,7 +64,7 @@ export class GulpIntegrationTests {
   @Timeout(10000)
   public syntaxTests(syntaxTestName: string) {
     const result = child.exec(
-      'gulp test-syntax --gulpfile "./test/integration-tests/gulp/gulpfile.js" --cwd ./'
+      'gulp test-syntax --gulpfile "./dist/test/integration-tests/gulp/gulpfile.js" --cwd ./'
     );
 
     let consoleOutput = "";

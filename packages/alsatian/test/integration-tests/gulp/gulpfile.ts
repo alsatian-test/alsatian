@@ -6,7 +6,7 @@ Gulp.task("test-to-be-expectations", (done: () => any) => {
   // create test set
   const testSet = TestSet.create();
   testSet.addTestsFromFiles(
-    "./test/integration-tests/test-sets/expectations/to-be.spec.js"
+    "./dist/test/integration-tests/test-sets/expectations/to-be.spec.js"
   );
 
   const testRunner = new TestRunner();
@@ -24,7 +24,7 @@ Gulp.task("test-to-throw-expectations", (done: () => any) => {
   // create test set
   const testSet = TestSet.create();
   testSet.addTestsFromFiles(
-    "./test/integration-tests/test-sets/expectations/to-throw.spec.js"
+    "./dist/test/integration-tests/test-sets/expectations/to-throw.spec.js"
   );
 
   const testRunner = new TestRunner();
@@ -42,7 +42,7 @@ Gulp.task("test-syntax", (done: () => any) => {
   // create test set
   const testSet = TestSet.create();
   testSet.addTestsFromFiles(
-    "./test/integration-tests/test-sets/test-syntax/**/*.spec.js"
+    "./dist/test/integration-tests/test-sets/test-syntax/**/*.spec.js"
   );
 
   const testRunner = new TestRunner();
