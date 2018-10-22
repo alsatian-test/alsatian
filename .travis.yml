@@ -7,6 +7,8 @@ os:
   - linux
   - osx
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 script:
   - if [ ${TRAVIS_EVENT_TYPE} = "cron" ]; then
         npm run publish-nightly;
@@ -14,5 +16,9 @@ script:
         npm test;
     fi
 after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - 'if [ ${TRAVIS_EVENT_TYPE} != "cron" ]; then
+      ./cc-test-reporter format-coverage -t lcov -o coverage/alsatian.json packages/alsatian/coverage/lcov.info
+      ./cc-test-reporter format-coverage -t lcov -o coverage/tap-bark.json packages/alsatian/coverage/lcov.info
+      ./cc-test-reporter sum-coverage coverage/*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
+      if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
+    fi'
