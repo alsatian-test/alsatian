@@ -8,15 +8,16 @@
         "tap-bark": "dist/index.js"
     },
     "scripts": {
-        "prepublishOnly": "npm test && npm run build",
-        "pretest": "npm run build-integration-tests && npm run build-with-maps",
-        "test": "npm run lint && npm run tests-with-coverage",
-        "tests-with-coverage": "nyc --reporter=lcov --reporter=html alsatian \"./dist/test/**/*.test.js\" && nyc report",
-        "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
-        "lint:fix": "tslint --fix \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
         "build": "tsc",
-        "build-with-maps": "tsc --sourceMap -p ./",
-        "build-integration-tests": "tsc -p test/integration-tests"
+        "build:maps": "tsc --sourceMap -p ./",
+        "build:integration-tests": "tsc -p test/integration-tests",
+        "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
+        "lint:fix": "npm run lint -- --fix",
+        "prepublishOnly": "npm test && npm run build",
+        "pretest": "npm run build:integration-tests && npm run build:maps",
+        "test": "npm run lint && npm run test:coverage",
+        "test:coverage": "nyc --reporter=lcov --reporter=html npm run test:unit -- --hide-progress && nyc report",
+        "test:unit": "alsatian \"./dist/test/**/*.test.js\""
     },
     "repository": {
         "type": "git",

@@ -31,12 +31,18 @@ export class AlsatianCliOptions {
     return this._helpRequested;
   }
 
+  private _hideProgress: boolean = false;
+  public get hideProgress(): boolean {
+    return this._hideProgress;
+  }
+
   public constructor(args: Array<string>) {
     args = this._extractTap(args);
     args = this._extractVersionRequested(args);
     args = this._extractHelpRequested(args);
     args = this._extractFileGlobs(args);
     args = this._extractTimeout(args);
+    args = this._extractHideProgress(args);
 
     if (args.length > 0) {
       throw new InvalidArgumentNamesError(args);
@@ -109,6 +115,23 @@ export class AlsatianCliOptions {
     this._tap = argumentIndex !== -1;
 
     // filter out the tap argument and return the other args
+    return args.filter((value, index) => {
+      Unused(value);
+      return index !== argumentIndex;
+    });
+  }
+
+  private _extractHideProgress(args: Array<string>): Array<string> {
+    const argumentIndex = this._getArgumentIndexFromArgumentList(
+      args,
+      "hide-progress",
+      "H"
+    );
+
+    // if we found the hide progress argument, we want to enable hide progress
+    this._hideProgress = argumentIndex !== -1;
+
+    // filter out the hide progress argument and return the other args
     return args.filter((value, index) => {
       Unused(value);
       return index !== argumentIndex;

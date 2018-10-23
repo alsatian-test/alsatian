@@ -37,7 +37,7 @@
     "pretest": "npm run build",
     "test": "npm run review && npm run check-coverage && npm run integration-tests",
     "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
-    "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests && npm run output-test-coverage",
+    "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "install-self": "npm link && install-self",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",

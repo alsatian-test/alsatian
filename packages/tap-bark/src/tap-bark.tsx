@@ -20,8 +20,8 @@ export class TapBarkOutput extends Component {
     private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
     private _completeCalled = false;
 
-    public constructor() {
-        super();
+    public constructor(props) {
+        super(props);
         this.state = {
             logs: [],
             warnings: []
@@ -65,6 +65,10 @@ export class TapBarkOutput extends Component {
                         <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
                         {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
                     </Indent>;
+        }
+
+        if (this.props.showProgress === false) {
+            return <Indent>running alsatian tests</Indent>
         }
 
         return <Indent>{Math.floor(this.state.currentTest / total * 100 || 0)}% complete</Indent>;
@@ -134,9 +138,12 @@ export class TapBarkOutput extends Component {
     }
 
     private setupListeners(): void {
+        if (this.props.showProgress) {
+            TAP_PARSER.on("comment", this.handleComment.bind(this));
+            TAP_PARSER.on("assert", this.handleAssert.bind(this));
+        }
+        
         TAP_PARSER.on("plan", this.handleNewPlan.bind(this));
-        TAP_PARSER.on("comment", this.handleComment.bind(this));
-        TAP_PARSER.on("assert", this.handleAssert.bind(this));
         TAP_PARSER.on("complete", this.handleComplete.bind(this));
     }
 }
@@ -145,8 +152,8 @@ export class TapBark {
     
     public static readonly tapParser = TAP_PARSER;
 
-    public static create(): TapBarkOutput {
-        const tapBarkOutput = <TapBarkOutput />;
+    public static create(showProgress: boolean = true): TapBarkOutput {
+        const tapBarkOutput = <TapBarkOutput showProgress={showProgress} />;
         render(tapBarkOutput);
         return tapBarkOutput.instance;
     }

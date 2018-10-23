@@ -42,6 +42,8 @@ export class CliTestRunner {
           "(runs alsatian with TAP output)\n" +
           "TIMEOUT: --timeout [number] / -t [number] " +
           "(sets the timeout period for tests in milliseconds - default 500)\n" +
+          "HIDE PROGRESS: --hide-progress / -H " +
+          "(hides progress from console)\n" +
           "\n"
       );
       return;
@@ -56,7 +58,7 @@ export class CliTestRunner {
       this._testRunner.outputStream.pipe(process.stdout);
     } else {
       // otherwise create the tap bark reporter
-      const bark = TapBark.create();
+      const bark = TapBark.create(userArguments.hideProgress === false);
 
       // pipe the reporter into stdout
       this._testRunner.outputStream
