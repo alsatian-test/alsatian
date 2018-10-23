@@ -16,7 +16,7 @@ export class CliIntegrationTests {
   public toBeExpectations(expectationTestName: string) {
     const result = child.exec(
       `alsatian ` +
-        `./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
+        `./dist/test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
         ` --tap`
     );
 
@@ -47,7 +47,7 @@ export class CliIntegrationTests {
   public syntaxTests(syntaxTestName: string) {
     const result = child.exec(
       `alsatian ` +
-        `./test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
+        `./dist/test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
         `--tap`
     );
 
