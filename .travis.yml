@@ -17,9 +17,6 @@ script:
         npm test;
     fi
 after_script:
-  - if [ ${TRAVIS_EVENT_TYPE} != "cron" ]; then
-        ./cc-test-reporter format-coverage -t lcov -o coverage/alsatian.json packages/alsatian/coverage/lcov.info
-        ./cc-test-reporter format-coverage -t lcov -o coverage/tap-bark.json packages/alsatian/coverage/lcov.info
-        ./cc-test-reporter sum-coverage coverage/*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
-        if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
+  - if [ ${TRAVIS_EVENT_TYPE} != "cron" && ${$TRAVIS_TEST_RESULT} == 0 ]; then
+        ./codeclimate-report-coverage.sh
     fi
