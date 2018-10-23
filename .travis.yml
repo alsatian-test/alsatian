@@ -11,12 +11,12 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
 script:
-  - if [ ${TRAVIS_EVENT_TYPE} = "cron" ]; then
+  - if [ ${TRAVIS_EVENT_TYPE} == "cron" ]; then
         npm run publish-nightly;
     else
         npm test;
     fi
 after_script:
-  - if [ ${TRAVIS_EVENT_TYPE} != "cron" && ${$TRAVIS_TEST_RESULT} == 0 ]; then
+  - if [ ${TRAVIS_EVENT_TYPE} != "cron" && ${TRAVIS_TEST_RESULT} == 0 ]; then
         ./.codeclimate-report-coverage.sh
     fi
