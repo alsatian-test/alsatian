@@ -17,6 +17,7 @@ script:
         npm test;
     fi
 after_script:
+  - chmod +x .codeclimate-report-coverage.sh
   - if [ ${TRAVIS_EVENT_TYPE} != "cron" ] && [ ${TRAVIS_TEST_RESULT} == 0 ]; then
         ./.codeclimate-report-coverage.sh;
     fi
