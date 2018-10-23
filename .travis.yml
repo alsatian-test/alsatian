@@ -18,5 +18,5 @@ script:
     fi
 after_script:
   - if [ ${TRAVIS_EVENT_TYPE} != "cron" ] && [ ${TRAVIS_TEST_RESULT} == 0 ]; then
-        ./.codeclimate-report-coverage.sh
+        ./.codeclimate-report-coverage.sh;
     fi
