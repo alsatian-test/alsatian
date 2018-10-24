@@ -16,6 +16,7 @@
    "compileOnSave": true,
    "exclude": [
       "./test/integration-tests",
+      "../tap-bark",
       "node_modules"
    ],
    "include": [
