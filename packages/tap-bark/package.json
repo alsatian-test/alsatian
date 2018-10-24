@@ -2,10 +2,10 @@
     "name": "tap-bark",
     "version": "2.0.0-alpha.0",
     "description": "TAP parser for Alsatian",
-    "main": "dist/src/tap-bark.js",
-    "typings": "dist/src/tap-bark.d.ts",
+    "main": "dist/tap-bark.js",
+    "typings": "dist/tap-bark.d.ts",
     "bin": {
-        "tap-bark": "dist/src/cli.js"
+        "tap-bark": "dist/cli.js"
     },
     "scripts": {
         "build": "npm run build:code && npm run build:tests",
