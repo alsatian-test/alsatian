@@ -6,4 +6,4 @@
 ./cc-test-reporter sum-coverage coverage/*.json -p 2
 
 # upload to codeclimate
-./cc-test-reporter upload-coverage
+./cc-test-reporter upload-coverage --id $CODECLIMATE_REPO_TOKEN
