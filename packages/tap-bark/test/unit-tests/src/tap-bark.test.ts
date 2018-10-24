@@ -3,7 +3,6 @@ import {
   Expect,
   SpyOn,
   Any,
-  FunctionSpy,
   TestCase,
   Setup,
   Teardown,
@@ -20,65 +19,87 @@ async function wait(timeInMs: number) {
 @TestFixture("tap bark tests")
 export default class TapBarkTests {
 
+  private _originalStdErr: any;
+  private _originalStdOut: any;
+  private _originalProcessExit: any;
+
   @Setup
-  private _stubProcessExit() {
+  private _spyProcess() {
+    this._originalProcessExit = process.exit;
+    this._originalStdOut = process.stdout.write;
+    this._originalStdErr = process.stderr.write;
+
+    SpyOn(TapBark.tapParser, "on");
     SpyOn(process, "exit").andStub();
+    SpyOn(process.stderr, "write").andStub();
+    SpyOn(process.stdout, "write").andStub();
   }
 
   @Teardown
-  private _restoreProcessExit() {
-    (process.exit as any).restore();
+  private _resetProcess() {
+    process.exit = this._originalProcessExit;
+    process.stdout.write = this._originalStdOut;
+    process.stderr.write = this._originalStdErr;
+    (TapBark.tapParser.on as any).restore();
   }
 
   @Test("plan event handled")
   public parserPlanEventHandled() {
-    SpyOn(TapBark.tapParser, "on");
-
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     Expect(TapBark.tapParser.on).toHaveBeenCalledWith("plan", Any(Function));
   }
 
   @Test("comment event handled")
   public parserCommentEventHandled() {
-    SpyOn(TapBark.tapParser, "on");
-
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     Expect(TapBark.tapParser.on).toHaveBeenCalledWith("comment", Any(Function));
   }
 
   @Test("assert event handled")
   public parserAssertEventHandled() {
-    SpyOn(TapBark.tapParser, "on");
-
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     Expect(TapBark.tapParser.on).toHaveBeenCalledWith("assert", Any(Function));
   }
 
   @Test("complete event handled")
   public parserCompleteEventHandled() {
-    SpyOn(TapBark.tapParser, "on");
-
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     Expect(TapBark.tapParser.on).toHaveBeenCalledWith("complete", Any(Function));
   }
 
   @Test("create makes a new TapBark")
   public createReturnsInstanceOfTapBark() {
-    Expect(TapBark.create() instanceof TapBarkOutput).toBe(true);
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "setState").andStub();
+    Expect(tapBark instanceof TapBarkOutput).toBe(true);
   }
 
   @Test("create a new TapBark instance every time")
   public createNewInstanceOfTapBarkEachCall() {
-    Expect(TapBark.create()).not.toBe(TapBark.create());
+    const tapBarkOne = TapBark.create();
+    SpyOn(tapBarkOne, "setState").andStub();
+
+    const tapBarkTwo = TapBark.create();
+    SpyOn(tapBarkTwo, "setState").andStub();
+    Expect(tapBarkOne).not.toBe(tapBarkTwo);
   }
 
   @Test("create a new pipeable instance every time")
   public createNewInstanceOfPipeableEachCall() {
     const tapBark = TapBark.create();
+    SpyOn(tapBark, "setState").andStub();
 
     Expect(tapBark.getPipeable()).not.toBe(tapBark.getPipeable());
   }
@@ -87,11 +108,9 @@ export default class TapBarkTests {
   @TestCase(2)
   @TestCase(42)
   public planEventSetsPlanEndCorrectly(planEnd: number) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const planEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -122,11 +141,9 @@ export default class TapBarkTests {
   @TestCase("Fixture")
   @TestCase("A really, really awesome fixture!")
   public testFixtureCommentSetsFixtureNameCorrectly(fixtureName: string) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const commentEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -145,11 +162,9 @@ export default class TapBarkTests {
   @TestCase("# Fixture wrong casing")
   @TestCase("#Fixtureno space")
   public otherCommentsDoNotSetTheFixtureName(comment: string) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const commentEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -168,11 +183,9 @@ export default class TapBarkTests {
   @TestCase("Test")
   @TestCase("A really, really awesome test name!")
   public assertEventSetsTestNameCorrectly(testName: string) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const assertEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -191,11 +204,9 @@ export default class TapBarkTests {
   @TestCase(2)
   @TestCase(42)
   public assertEventSetsProgressCorrectly(testId: number) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const planEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -218,7 +229,9 @@ export default class TapBarkTests {
 
   @Test()
   public async completeEventResultsOkExitsProcessCodeZero() {
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -226,14 +239,16 @@ export default class TapBarkTests {
 
     completeEventHandler({ ok: true });
 
-    await wait(5);
+    await wait(105);
 
     Expect(process.exit).toHaveBeenCalledWith(0);
   }
 
   @Test()
   public async completeEventResultsNotOkExitsProcessCodeOne() {
-    TapBark.create();
+    const tapBark = TapBark.create();
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -241,24 +256,24 @@ export default class TapBarkTests {
 
     completeEventHandler({ ok: false });
 
-    await wait(5);
+    await wait(105);
 
     Expect(process.exit).toHaveBeenCalledWith(1);
   }
 
   @Test()
-  public completeEventResultsPassDefaultsToZero() {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsPassDefaultsToZero() {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
+
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.pass
@@ -268,18 +283,21 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsPassSetToPassOnResults(passCount: number) {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsPassSetToPassOnResults(passCount: number) {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
-    completeEventHandler({ pass: passCount });
+    completeEventHandler({
+      ok: true,
+      pass: passCount
+    });    
+
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.pass
@@ -287,18 +305,18 @@ export default class TapBarkTests {
   }
 
   @Test()
-  public completeEventResultsIgnoreDefaultsToZero() {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsIgnoreDefaultsToZero() {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
+
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
@@ -308,18 +326,17 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsIgnoreSetToSkipOnResults(skipCount: number) {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsIgnoreSetToSkipOnResults(skipCount: number) {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ skip: skipCount });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
@@ -329,18 +346,17 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsIgnoreSetToTodoOnResults(todoCount: number) {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsIgnoreSetToTodoOnResults(todoCount: number) {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ todo: todoCount });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
@@ -350,21 +366,20 @@ export default class TapBarkTests {
   @TestCase(1, 1)
   @TestCase(2, 2)
   @TestCase(42, 3)
-  public completeEventResultsIgnoreSetToSkipPlusTodoOnResults(
+  public async completeEventResultsIgnoreSetToSkipPlusTodoOnResults(
     skipCount: number,
     todoCount: number
   ) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ skip: skipCount, todo: todoCount });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
@@ -372,18 +387,17 @@ export default class TapBarkTests {
   }
 
   @Test()
-  public completeEventResultsFailDefaultsToZero() {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsFailDefaultsToZero() {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
@@ -393,18 +407,17 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsFailSetToFailOnResults(failCount: number) {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsFailSetToFailOnResults(failCount: number) {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ fail: failCount });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
@@ -414,14 +427,12 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsFailSetToFailuresLengthOnResults(
+  public async completeEventResultsFailSetToFailuresLengthOnResults(
     failCount: number
   ) {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -434,6 +445,7 @@ export default class TapBarkTests {
     }
 
     completeEventHandler({ failures });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
@@ -442,11 +454,9 @@ export default class TapBarkTests {
 
   @Test()
   public completeEventResultsFailuresDefaultsToEmptyArray() {
-    SpyOn(TapBark.tapParser, "on");
-
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -463,12 +473,10 @@ export default class TapBarkTests {
   @TestCase(0)
   @TestCase(1)
   @TestCase(42)
-  public completeEventResultsFailuresSetToFailuresOnResults(failCount: number) {
-    SpyOn(TapBark.tapParser, "on");
-
+  public async completeEventResultsFailuresSetToFailuresOnResults(failCount: number) {
     const tapBark = TapBark.create();
-
-    SpyOn(tapBark, "setState");
+    SpyOn(tapBark, "render").andStub();
+    SpyOn(tapBark, "setState").andStub();
 
     const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
@@ -481,6 +489,7 @@ export default class TapBarkTests {
     }
 
     completeEventHandler({ failures });
+    await wait(105);
 
     Expect(
       ((tapBark.setState as () => any as any) as any).calls[0].args[0].results

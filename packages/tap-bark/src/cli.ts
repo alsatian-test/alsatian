@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { TapBark } from "./src/tap-bark";
+import { TapBark } from "./tap-bark";
 
 const bark = TapBark.create();
 

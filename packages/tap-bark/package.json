@@ -5,12 +5,12 @@
     "main": "dist/src/tap-bark.js",
     "typings": "dist/src/tap-bark.d.ts",
     "bin": {
-        "tap-bark": "dist/index.js"
+        "tap-bark": "dist/src/cli.js"
     },
     "scripts": {
         "build": "tsc",
         "build:maps": "tsc --sourceMap -p ./",
-        "build:integration-tests": "tsc -p test/integration-tests",
+        "build:integration-tests": "install-self && tsc -p test/integration-tests",
         "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
         "lint:fix": "npm run lint -- --fix",
         "prepublishOnly": "npm test && npm run build",
@@ -45,6 +45,7 @@
         "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",
         "coveralls": "^2.11.15",
+        "install-self": "^1.0.0-beta.7",
         "nyc": "^10.0.0",
         "prettier": "^1.10.2",
         "tslint": "^5.11.0",

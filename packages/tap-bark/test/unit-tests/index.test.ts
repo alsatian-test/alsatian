@@ -1,7 +1,12 @@
-import { Test, Expect, SpyOn } from "alsatian";
+import { Test, Expect, SpyOn, Teardown } from "alsatian";
 import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
+  @Teardown
+  private _restoreTapBarkCreate() {
+    (TapBark.create as any).restore();
+  }
+
   @Test("process.stdin stream piped to Tap Bark")
   public stdInPipedToTapBark() {
     const chainedPipe = { pipe: () => {} };
@@ -19,14 +24,12 @@ export default class IndexTests {
     SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
     // clear cache for index
-    delete require.cache[require.resolve("../../index")];
+    delete require.cache[require.resolve("../../../dist/src/cli")];
 
     // call the index
-    require("../../index");
+    require("../../../dist/src/cli");
 
     Expect(process.stdin.pipe).toHaveBeenCalledWith(fakeTapBarkPipeable);
-
-    (TapBark.create as any).restore();
   }
 
   @Test("Tap Bark stream piped to process.stdout")
@@ -47,13 +50,11 @@ export default class IndexTests {
     SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
     // clear cache for index
-    delete require.cache[require.resolve("../../index")];
+    delete require.cache[require.resolve("../../../dist/src/cli")];
 
     // call the index
-    require("../../index");
+    require("../../../dist/src/cli");
 
     Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
-
-    (TapBark.create as any).restore();
   }
 }

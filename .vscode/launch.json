@@ -20,7 +20,17 @@
             "request": "launch",
             "program": "${workspaceRoot}\\packages\\alsatian\\dist\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
-            "args": ["./dist/test/unit-tests/**/*.spec.js"],
+            "args": ["./packages/alsatian/dist/test/unit-tests/**/*.spec.js"],
+            "outFiles": [],
+            "sourceMaps": true
+        },
+        {
+            "name": "Debug Tap Bark Unit Tests",
+            "type": "node2",
+            "request": "launch",
+            "program": "${workspaceRoot}\\packages\\alsatian\\dist\\cli\\alsatian-cli.js",
+            "cwd": "${workspaceRoot}",
+            "args": [ "./packages/tap-bark/dist/test/unit-tests/**/*.test.js"],
             "outFiles": [],
             "sourceMaps": true
         },
