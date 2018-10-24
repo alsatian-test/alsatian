@@ -23,10 +23,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "build-publish": "tsc --newLine \"LF\"",
     "clean": "rimraf ./dist",
     "publish-nightly": "npm run build && node ./dist/scripts/build-nightly",
-    "prepublishOnly": "npm run clean && npm install && npm test && npm run build-publish",
+    "prepublishOnly": "npm run clean && npm install && npm test && npm run build",
     "postpublish": "node ./dist/scripts/tag-release",
     "review": "npm run review-code && npm run review-tests",
     "review-code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./tap-bark/**/*.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
