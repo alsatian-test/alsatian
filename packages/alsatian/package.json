@@ -22,7 +22,7 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "build": "tsc -p ../tap-bark && tsc",
+    "build": "tsc",
     "clean": "rimraf ./dist",
     "publish-nightly": "npm run build && node ./dist/scripts/build-nightly",
     "prepublishOnly": "npm run clean && npm install && npm test && npm run build",
