@@ -10,16 +10,15 @@
     "scripts": {
         "build": "npm run build:code && npm run build:tests",
         "build:code": "tsc",
-        "build:maps": "tsc --sourceMap -p ./",
         "build:tests": "tsc -p test",
         "build:integration-tests": "install-self && tsc -p test/integration-tests",
         "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
         "lint:fix": "npm run lint -- --fix",
         "prepublishOnly": "npm test && npm run build",
-        "pretest": "npm run build:integration-tests && npm run build:maps",
+        "pretest": "npm run build:integration-tests && npm run build",
         "test": "npm run lint && npm run test:coverage",
         "test:coverage": "nyc --reporter=lcov --reporter=html npm run test:unit -- --hide-progress && nyc report",
-        "test:unit": "alsatian \"./dist/test/**/*.test.js\""
+        "test:unit": "alsatian \"./test-build/**/*.test.js\""
     },
     "repository": {
         "type": "git",

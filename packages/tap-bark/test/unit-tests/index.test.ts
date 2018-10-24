@@ -24,10 +24,10 @@ export default class IndexTests {
     SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
     // clear cache for index
-    delete require.cache[require.resolve("../../../dist/src/cli")];
+    delete require.cache[require.resolve("../../src/cli")];
 
     // call the index
-    require("../../../dist/src/cli");
+    require("../../src/cli");
 
     Expect(process.stdin.pipe).toHaveBeenCalledWith(fakeTapBarkPipeable);
   }
@@ -50,10 +50,10 @@ export default class IndexTests {
     SpyOn(TapBark, "create").andReturn(fakeTapBark);
 
     // clear cache for index
-    delete require.cache[require.resolve("../../../dist/src/cli")];
+    delete require.cache[require.resolve("../../src/cli")];
 
     // call the index
-    require("../../../dist/src/cli");
+    require("../../src/cli");
 
     Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
   }

@@ -30,7 +30,7 @@
             "request": "launch",
             "program": "${workspaceRoot}\\packages\\alsatian\\dist\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
-            "args": [ "./packages/tap-bark/dist/test/unit-tests/**/*.test.js"],
+            "args": [ "./packages/tap-bark/test-build/test/unit-tests/**/*.test.js"],
             "outFiles": [],
             "sourceMaps": true
         },

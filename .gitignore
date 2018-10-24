@@ -11,3 +11,4 @@ dist
 #Test
 coverage
 .nyc_output
+test-build
