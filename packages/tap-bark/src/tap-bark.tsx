@@ -7,7 +7,7 @@ const parser = require("tap-parser");
 const duplexer = require("duplexer");
 const { h, render, Component, Color, Indent } = require("ink");
 
-const TAP_PARSER = parser();
+const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
 
 export { Component };
 export class TapBarkOutput extends Component {

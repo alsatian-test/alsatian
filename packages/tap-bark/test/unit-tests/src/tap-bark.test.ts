@@ -93,11 +93,11 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const planEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const planEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "plan")[0][1];
 
-    const assertEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const assertEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "assert")[0][1];
 
@@ -105,13 +105,13 @@ export default class TapBarkTests {
 
     assertEventHandler({ id: 1 });
 
-    Expect(tapBark.setState).toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
       Any(Object).thatMatches({
         totalTests: planEnd
       })
     );
 
-    Expect(tapBark.setState).toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
       Any(Object).thatMatches({
         currentTest: 1
       })
@@ -128,13 +128,13 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const commentEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const commentEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "comment")[0][1];
 
     commentEventHandler("# FIXTURE " + fixtureName);
 
-    Expect(tapBark.setState).toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
       Any(Object).thatMatches({
         fixtureName
       })
@@ -151,13 +151,13 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const commentEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const commentEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "comment")[0][1];
 
     commentEventHandler(comment);
 
-    Expect(tapBark.setState).not.toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).not.toHaveBeenCalledWith(
       Any(Object).thatMatches({
         fixtureName: Any
       })
@@ -174,13 +174,13 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const assertEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const assertEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "assert")[0][1];
 
     assertEventHandler({ name: testName });
 
-    Expect(tapBark.setState).toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
       Any(Object).thatMatches({
         testName
       })
@@ -197,11 +197,11 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const planEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const planEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "plan")[0][1];
 
-    const assertEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const assertEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "assert")[0][1];
 
@@ -209,7 +209,7 @@ export default class TapBarkTests {
 
     assertEventHandler({ id: testId });
 
-    Expect(tapBark.setState).toHaveBeenCalledWith(
+    Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
       Any(Object).thatMatches({
         currentTest: testId
       })
@@ -220,7 +220,7 @@ export default class TapBarkTests {
   public async completeEventResultsOkExitsProcessCodeZero() {
     TapBark.create();
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
@@ -235,7 +235,7 @@ export default class TapBarkTests {
   public async completeEventResultsNotOkExitsProcessCodeOne() {
     TapBark.create();
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
@@ -254,14 +254,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.pass
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.pass
     ).toBe(0);
   }
 
@@ -275,14 +275,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ pass: passCount });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.pass
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.pass
     ).toBe(passCount);
   }
 
@@ -294,14 +294,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.ignore
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
     ).toBe(0);
   }
 
@@ -315,14 +315,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ skip: skipCount });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.ignore
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
     ).toBe(skipCount);
   }
 
@@ -336,14 +336,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ todo: todoCount });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.ignore
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
     ).toBe(todoCount);
   }
 
@@ -360,14 +360,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ skip: skipCount, todo: todoCount });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.ignore
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.ignore
     ).toBe(skipCount + todoCount);
   }
 
@@ -379,14 +379,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.fail
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
     ).toBe(0);
   }
 
@@ -400,14 +400,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({ fail: failCount });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.fail
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
     ).toBe(failCount);
   }
 
@@ -423,7 +423,7 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
@@ -436,7 +436,7 @@ export default class TapBarkTests {
     completeEventHandler({ failures });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results.fail
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results.fail
     ).toBe(failCount);
   }
 
@@ -448,14 +448,14 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
     completeEventHandler({});
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results
         .failures
     ).toEqual([]);
   }
@@ -470,7 +470,7 @@ export default class TapBarkTests {
 
     SpyOn(tapBark, "setState");
 
-    const completeEventHandler = (TapBark.tapParser.on as FunctionSpy).calls
+    const completeEventHandler = (TapBark.tapParser.on as any).calls
       .map(call => call.args)
       .filter(args => args[0] === "complete")[0][1];
 
@@ -483,7 +483,7 @@ export default class TapBarkTests {
     completeEventHandler({ failures });
 
     Expect(
-      ((tapBark.setState as any) as FunctionSpy).calls[0].args[0].results
+      ((tapBark.setState as () => any as any) as any).calls[0].args[0].results
         .failures
     ).toBe(failures);
   }
