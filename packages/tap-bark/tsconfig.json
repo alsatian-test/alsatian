@@ -22,7 +22,7 @@
         "node_modules",
         "**/*.d.ts",
         "test/integration-tests/**/*.test.ts",
-        "../alsatian/**/*.ts"
+        "../alsatian"
     ],
     "include": [
         "src/**/*.ts",
