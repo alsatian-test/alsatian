@@ -16,7 +16,7 @@
         "prepublishOnly": "npm test && npm run build",
         "pretest": "npm run build:integration-tests && npm run build:maps",
         "test": "npm run lint && npm run test:coverage",
-        "test:coverage": "nyc --reporter=lcov --reporter=html npm run test:unit && nyc report",
+        "test:coverage": "nyc --reporter=lcov --reporter=html npm run test:unit -- --hide-progress && nyc report",
         "test:unit": "alsatian \"./dist/test/**/*.test.js\""
     },
     "repository": {
@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "@types/through2": "^2.0.34",
-        "alsatian": "^1.0.0-beta.4",
+        "alsatian": "^3.0.0-alpha.1",
         "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",
         "coveralls": "^2.11.15",
