@@ -7,13 +7,11 @@
         "outDir": "./dist"
     },
     "exclude": [
-        "node_modules",
+        "../node_modules",
         "**/*.d.ts",
-        "test/**/*.test.ts",
-        "../alsatian"
+        "integration-tests/**/*.test.ts"
     ],
     "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx"
+        "**/*.ts"
     ]
 }

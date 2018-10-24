@@ -8,8 +8,10 @@
         "tap-bark": "dist/src/cli.js"
     },
     "scripts": {
-        "build": "tsc",
+        "build": "npm run build:code && npm run build:tests",
+        "build:code": "tsc",
         "build:maps": "tsc --sourceMap -p ./",
+        "build:tests": "tsc -p test",
         "build:integration-tests": "install-self && tsc -p test/integration-tests",
         "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
         "lint:fix": "npm run lint -- --fix",
