@@ -24,7 +24,7 @@ export class TestItemRunTeardownTests {
       .addTest(test)
       .build();
 
-    const teardownFunctions = [];
+    const teardownFunctions: Array<FunctionSpy> = [];
     const teardownFunctionInfo = [];
 
     for (let i = 0; i < teardownFunctionCount; i++) {

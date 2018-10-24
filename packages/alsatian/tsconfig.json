@@ -1,21 +1,10 @@
 {
-   "extends": "./tsconfig.base.json",
+   "extends": "../../tsconfig.json",
    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "declaration": true,
-      "sourceMap": true,
-      "preserveConstEnums": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "lib": [ "es2015" ],
       "jsx": "react",
       "jsxFactory": "h",
       "outDir": "./dist"
    },
-   "buildOnSave": false,
-   "compileOnSave": true,
    "exclude": [
       "./test/integration-tests",
       "../tap-bark",
@@ -26,8 +15,5 @@
       "./core/**/*.ts",
       "./test/**/*.ts",
       "./scripts/**/*.ts"
-   ],
-   "atom": {
-      "rewriteTsconfig": false
-   }
+   ]
 }

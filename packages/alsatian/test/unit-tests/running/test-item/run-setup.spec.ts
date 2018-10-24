@@ -24,7 +24,7 @@ export class TestItemRunSetupTests {
       .addTest(test)
       .build();
 
-    const setupFunctions = [];
+    const setupFunctions: Array<FunctionSpy> = [];
     const setupFunctionInfo = [];
 
     for (let i = 0; i < setupFunctionCount; i++) {

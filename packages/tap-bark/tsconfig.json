@@ -1,18 +1,6 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "isolatedModules": false,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": true,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "newLine": "LF",
         "lib": [ "es2015" ],
         "jsx": "react",
         "jsxFactory": "h",
@@ -29,8 +17,5 @@
         "src/**/*.tsx",
         "test/**/*.ts",
         "index.ts",
-    ],
-    "atom": {
-        "rewriteTsconfig": false
-    }
+    ]
 }
