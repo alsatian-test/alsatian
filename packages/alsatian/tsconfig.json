@@ -1,0 +1,19 @@
+{
+   "extends": "../../tsconfig.json",
+   "compilerOptions": {
+      "jsx": "react",
+      "jsxFactory": "h",
+      "outDir": "./dist"
+   },
+   "exclude": [
+      "./test/integration-tests",
+      "../tap-bark",
+      "node_modules"
+   ],
+   "include": [
+      "./cli/**/*.ts",
+      "./core/**/*.ts",
+      "./test/**/*.ts",
+      "./scripts/**/*.ts"
+   ]
+}

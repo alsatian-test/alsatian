@@ -16,6 +16,12 @@ If there's no issue that covers the new feature or bug you'd like to fix then cr
 
 Get your creative juices flowing, work however you want - there should be plenty of tools in place to help you along the way.
 
+Get started with `npm install && npm run bootstrap`
+
+Test your work with `npm test`
+
+Tidy up your code automagically with `npm run lint:fix`
+
 ### 3. Pull request
 
 There's a checklist whenever you create your pull request that'll help you check everything is in order before submitting. After you create a pull request our automatic CI checks will inspect your code and flag any issues if there are any. Then an Alsatian member will review the code and OK it to get merged and your wonderful code will be available in the next Alsatian release :)
