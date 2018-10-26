@@ -1,6 +1,38 @@
 import { Any, TypeMatcher } from "../spying";
 
 export function stringify(data: any): string {
+  if (isItearable(data)) {
+    return stringifyIterable(data);
+  }
+
+  if (data instanceof Function) {
+    return stringifyFunction(data);
+  }
+
+  return stringifyObject(data);
+}
+
+function isItearable(data: any) {
+  return data && typeof data[Symbol.iterator] === "function";
+}
+
+function stringifyFunction(data: (...args: Array<any>) => any) {
+  if (data === Any) {
+    return "Anything";
+  }
+
+  return data.name || "anonymous function";
+}
+
+function stringifyObject(data: object) {
+  if (data instanceof TypeMatcher) {
+    return data.stringify();
+  }
+
+  return JSON.stringify(data, createCircularReplacer(data)) || "undefined";
+}
+
+function stringifyIterable(data: Iterable<any>) {
   if (data instanceof Array) {
     return stringifyArray(data);
   }
@@ -9,27 +41,7 @@ export function stringify(data: any): string {
     return `Map<${data.size}>`;
   }
 
-  if (data === Any) {
-    return "Anything";
-  }
-
-  if (data instanceof TypeMatcher) {
-    return data.stringify();
-  }
-
-  if (data instanceof Function) {
-    if (data.name) {
-      return data.name;
-    }
-
-    return "anonymous function";
-  }
-
-  if (data === undefined) {
-    return "undefined";
-  }
-
-  return JSON.stringify(data, createCircularReplacer(data));
+  return stringifyObject(data);
 }
 
 function createCircularReplacer(rootObject: object) {
@@ -45,7 +57,6 @@ function circularReplacer(
   cache: Array<any>,
   rootObject: object
 ) {
-  // Unused(key);
   if (typeof value === "function") {
     return value.toString();
   }

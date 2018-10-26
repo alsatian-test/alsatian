@@ -36,11 +36,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorMessage: string
   ) {
     const error = this._getError();
-    const threwRightError = this._errorMatches(
-      error,
-      errorType,
-      errorMessage
-    );
+    const threwRightError = this._errorMatches(error, errorType, errorMessage);
 
     if (threwRightError !== this.shouldMatch) {
       throw new ErrorMatchError(
@@ -62,11 +58,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorMessage: string
   ) {
     const error = await this._getAsyncError();
-    const threwRightError = this._errorMatches(
-      error,
-      errorType,
-      errorMessage
-    );
+    const threwRightError = this._errorMatches(error, errorType, errorMessage);
 
     if (threwRightError !== this.shouldMatch) {
       throw new ErrorMatchError(
