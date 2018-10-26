@@ -11,30 +11,18 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
    * Checks that a function throws an error when executed
    */
   public toThrow() {
-    let errorThrown: Error | null = null;
+    const error = this._getError();
 
-    try {
-      this.actualValue();
-    } catch (error) {
-      errorThrown = error;
-    }
-
-    if ((errorThrown === null) === this.shouldMatch) {
-      throw new ErrorMatchError(errorThrown, this.shouldMatch);
+    if ((error === null) === this.shouldMatch) {
+      throw new ErrorMatchError(error, this.shouldMatch);
     }
   }
 
   public async toThrowAsync() {
-    let errorThrown: Error | null = null;
+    const error = await this._getAsyncError();
 
-    try {
-      await this.actualValue();
-    } catch (error) {
-      errorThrown = error;
-    }
-
-    if ((errorThrown === null) === this.shouldMatch) {
-      throw new ErrorMatchError(errorThrown, this.shouldMatch);
+    if ((error === null) === this.shouldMatch) {
+      throw new ErrorMatchError(error, this.shouldMatch);
     }
   }
 
@@ -47,22 +35,16 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorType: new (...args: Array<any>) => Error,
     errorMessage: string
   ) {
-    let threwRightError = false;
-    let actualError: Error | null = null;
-
-    try {
-      this.actualValue();
-    } catch (error) {
-      actualError = error;
-
-      if (error instanceof errorType && error.message === errorMessage) {
-        threwRightError = true;
-      }
-    }
+    const error = this._getError();
+    const threwRightError = this._errorMatches(
+      error,
+      errorType,
+      errorMessage
+    );
 
     if (threwRightError !== this.shouldMatch) {
       throw new ErrorMatchError(
-        actualError,
+        error,
         this.shouldMatch,
         errorType,
         errorMessage
@@ -79,22 +61,16 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     errorType: new (...args: Array<any>) => Error,
     errorMessage: string
   ) {
-    let threwRightError = false;
-    let actualError: Error | null = null;
-
-    try {
-      await this.actualValue();
-    } catch (error) {
-      actualError = error;
-
-      if (error instanceof errorType && error.message === errorMessage) {
-        threwRightError = true;
-      }
-    }
+    const error = await this._getAsyncError();
+    const threwRightError = this._errorMatches(
+      error,
+      errorType,
+      errorMessage
+    );
 
     if (threwRightError !== this.shouldMatch) {
       throw new ErrorMatchError(
-        actualError,
+        error,
         this.shouldMatch,
         errorType,
         errorMessage
@@ -145,6 +121,32 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
     }
 
     return new FunctionSpyMatcher(this.actualValue, expectedArguments);
+  }
+
+  private _getError() {
+    try {
+      this.actualValue();
+      return null;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  private async _getAsyncError() {
+    try {
+      await this.actualValue();
+      return null;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  private _errorMatches(
+    error: Error,
+    errorType: new (...args: Array<any>) => Error,
+    errorMessage: string
+  ) {
+    return error instanceof errorType && error.message === errorMessage;
   }
 
   private _callArgumentsMatch(call: any, expectedArguments: Array<any>) {
