@@ -8,24 +8,18 @@ import {
   Teardown,
   TestCase,
   TestOutcome,
-  TestRunner,
-  IgnoreTests
+  TestRunner
 } from "../../../core/alsatian-core";
+import { TapBark } from "tap-bark";
 
-@IgnoreTests("ignore temporarily as they're blocking console logs")
 export class CliTestRunnerTests {
-  private _originalStdErr: any;
-  private _originalStdOut: any;
-  private _originalProcessExit: any;
   private _originalTestPlan: any;
 
   @Setup
   private _spyProcess() {
-    this._originalProcessExit = process.exit;
-    this._originalStdOut = process.stdout.write;
-    this._originalStdErr = process.stderr.write;
     this._originalTestPlan = Reflect.getMetadata("alsatian:test-plan", Expect);
 
+    SpyOn(TapBark.tapParser, "on").andStub();
     SpyOn(process, "exit").andStub();
     SpyOn(process.stderr, "write").andStub();
     SpyOn(process.stdout, "write").andStub();
@@ -33,9 +27,10 @@ export class CliTestRunnerTests {
 
   @Teardown
   private _resetProcess() {
-    process.exit = this._originalProcessExit;
-    process.stdout.write = this._originalStdOut;
-    process.stderr.write = this._originalStdErr;
+    (process.exit as any).restore();
+    (process.stdout.write as any).restore();
+    (process.stderr.write as any).restore();
+    (TapBark.tapParser.on as any).restore();
     Reflect.defineMetadata(
       "alsatian:test-plan",
       this._originalTestPlan,
@@ -53,439 +48,296 @@ export class CliTestRunnerTests {
   }
 
   @AsyncTest()
-  public noTestFixturesExitsWithError() {
-    return new Promise<void>((resolve, reject) => {
-      const cliTestRunner = new CliTestRunner(new TestRunner());
+  public async noTestFixturesExitsWithError() {
+    const cliTestRunner = new CliTestRunner(new TestRunner());
 
-      const cliOptions = new AlsatianCliOptions([]);
+    const cliOptions = new AlsatianCliOptions([]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.exit).toHaveBeenCalledWith(1);
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.exit).toHaveBeenCalledWith(1);
   }
 
   @AsyncTest()
-  public noTestFixturesPrintsErrorMessageWithNewLine() {
-    return new Promise<void>((resolve, reject) => {
-      const cliTestRunner = new CliTestRunner(new TestRunner());
+  public async noTestFixturesPrintsErrorMessageWithNewLine() {
+    const cliTestRunner = new CliTestRunner(new TestRunner());
 
-      const cliOptions = new AlsatianCliOptions([]);
+    const cliOptions = new AlsatianCliOptions([]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stderr.write).toHaveBeenCalledWith(
-            "no tests to run.\n"
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run.\n");
   }
 
   @AsyncTest()
-  public onePassingTestFixturesExitsWithNoError() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
+  public async onePassingTestFixturesExitsWithNoError() {
+    const testRunner = new TestRunner();
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      const testRunnerRunSpy = SpyOn(testRunner, "run");
-      testRunnerRunSpy.andReturn(
-        new Promise((cliResolve, cliReject) => {
-          cliResolve();
-        })
-      );
-      testRunnerRunSpy.andStub();
+    const testRunnerRunSpy = SpyOn(testRunner, "run");
+    testRunnerRunSpy.andReturn(
+      new Promise((cliResolve, cliReject) => {
+        cliResolve();
+      })
+    );
+    testRunnerRunSpy.andStub();
 
-      const cliOptions = new AlsatianCliOptions([]);
+    const cliOptions = new AlsatianCliOptions([]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.exit).not.toHaveBeenCalledWith(1);
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.exit).not.toHaveBeenCalledWith(1);
   }
 
   @AsyncTest()
-  public runThrowsErrorExitsWithError(outcome: TestOutcome) {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
+  public async runThrowsErrorExitsWithError(outcome: TestOutcome) {
+    const testRunner = new TestRunner();
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      const testRunnerRunSpy = SpyOn(testRunner, "run");
-      testRunnerRunSpy.andCall(() => {
-        throw new Error();
-      });
-
-      const cliOptions = new AlsatianCliOptions([]);
-
-      cliTestRunner.run(cliOptions);
-
-      setTimeout(() => {
-        try {
-          Expect(process.exit).toHaveBeenCalledWith(1);
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
+    const testRunnerRunSpy = SpyOn(testRunner, "run");
+    testRunnerRunSpy.andCall(() => {
+      throw new Error();
     });
+
+    const cliOptions = new AlsatianCliOptions([]);
+
+    await cliTestRunner.run(cliOptions);
+
+    Expect(process.exit).toHaveBeenCalledWith(1);
   }
 
   @TestCase("something bad")
   @TestCase("another even worse thing")
   @TestCase("awfully terrible")
   @AsyncTest()
-  public runThrowsErrorOutputsErrorMessage(errorMessage: string) {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
+  public async runThrowsErrorOutputsErrorMessage(errorMessage: string) {
+    const testRunner = new TestRunner();
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      const testRunnerRunSpy = SpyOn(testRunner, "run");
-      testRunnerRunSpy.andCall(() => {
-        throw new Error(errorMessage);
-      });
-
-      const cliOptions = new AlsatianCliOptions([]);
-
-      cliTestRunner.run(cliOptions);
-
-      setTimeout(() => {
-        try {
-          Expect(process.stderr.write).toHaveBeenCalledWith(
-            errorMessage + "\n"
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
+    const testRunnerRunSpy = SpyOn(testRunner, "run");
+    testRunnerRunSpy.andCall(() => {
+      throw new Error(errorMessage);
     });
+
+    const cliOptions = new AlsatianCliOptions([]);
+
+    await cliTestRunner.run(cliOptions);
+
+    Expect(process.stderr.write).toHaveBeenCalledWith(errorMessage + "\n");
   }
 
   @AsyncTest()
-  public tapRequestedPipesOutputDirectlyToProcessStdOut() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async tapRequestedPipesOutputDirectlyToProcessStdOut() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      const testRunnerRunSpy = SpyOn(testRunner, "run");
-      testRunnerRunSpy.andReturn(
-        new Promise((cliResolve, cliReject) => {
-          cliResolve();
-        })
-      );
-      testRunnerRunSpy.andStub();
+    const testRunnerRunSpy = SpyOn(testRunner, "run");
+    testRunnerRunSpy.andReturn(
+      new Promise((cliResolve, cliReject) => {
+        cliResolve();
+      })
+    );
+    testRunnerRunSpy.andStub();
 
-      const cliOptions = new AlsatianCliOptions(["--tap"]);
+    const cliOptions = new AlsatianCliOptions(["--tap"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(
-            process.stdout
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(process.stdout);
   }
 
   @AsyncTest()
-  public tapRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async tapRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      const testRunnerRunSpy = SpyOn(testRunner, "run");
-      testRunnerRunSpy.andReturn(
-        new Promise((cliResolve, cliReject) => {
-          cliResolve();
-        })
-      );
-      testRunnerRunSpy.andStub();
+    const testRunnerRunSpy = SpyOn(testRunner, "run");
+    testRunnerRunSpy.andReturn(
+      new Promise((cliResolve, cliReject) => {
+        cliResolve();
+      })
+    );
+    testRunnerRunSpy.andStub();
 
-      const cliOptions = new AlsatianCliOptions(["-T"]);
+    const cliOptions = new AlsatianCliOptions(["-T"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(
-            process.stdout
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.outputStream.pipe).toHaveBeenCalledWith(process.stdout);
   }
 
   @AsyncTest()
-  public versionRequestedOutputsCurrentVersionNumber() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async versionRequestedOutputsCurrentVersionNumber() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["--version"]);
+    const cliOptions = new AlsatianCliOptions(["--version"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stdout.write).toHaveBeenCalledWith(
-            "alsatian version " + require("../../../package.json").version
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.stdout.write).toHaveBeenCalledWith(
+      "alsatian version " + require("../../../../package.json").version
+    );
   }
 
   @AsyncTest()
-  public versionRequestedWithAliasOutputsCurrentVersionNumber() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async versionRequestedWithAliasOutputsCurrentVersionNumber() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["-v"]);
+    const cliOptions = new AlsatianCliOptions(["-v"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stdout.write).toHaveBeenCalledWith(
-            "alsatian version " + require("../../../package.json").version
-          );
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.stdout.write).toHaveBeenCalledWith(
+      "alsatian version " + require("../../../../package.json").version
+    );
   }
 
   @AsyncTest()
-  public versionRequestedDoesntCallTestRunnerRun() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async versionRequestedDoesntCallTestRunnerRun() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["--version"]);
+    const cliOptions = new AlsatianCliOptions(["--version"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.run).not.toHaveBeenCalled();
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.run).not.toHaveBeenCalled();
   }
 
   @AsyncTest()
-  public versionRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async versionRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["--version"]);
+    const cliOptions = new AlsatianCliOptions(["--version"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.run).not.toHaveBeenCalled();
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.run).not.toHaveBeenCalled();
   }
 
   @AsyncTest()
-  public helpRequestedOutputsCurrentVersionNumber() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async helpRequestedOutputsCurrentVersionNumber() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["--help"]);
+    const cliOptions = new AlsatianCliOptions(["--help"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stdout.write).toHaveBeenCalledWith(
-            "\n\n" +
-              "alsatian version " +
-              require("../../../package.json").version +
-              "\n" +
-              "=========================\n" +
-              "CLI options\n" +
-              "=========================\n" +
-              "HELP:    --help / -h                      " +
-              "(outputs CLI information)\n" +
-              "VERSION: --version / -v                   " +
-              "(outputs the version of the CLI)\n" +
-              "TAP:     --tap / -T                       " +
-              "(runs alsatian with TAP output)\n" +
-              "TIMEOUT: --timeout [number] / -t [number] " +
-              "(sets the timeout period for tests in milliseconds - default 500)\n" +
-              "\n"
-          );
-
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.stdout.write).toHaveBeenCalledWith(
+      "\n\n" +
+        "alsatian version " +
+        require("../../../../package.json").version +
+        "\n" +
+        "=========================\n" +
+        "CLI options\n" +
+        "=========================\n" +
+        "HELP:    --help / -h                      " +
+        "(outputs CLI information)\n" +
+        "VERSION: --version / -v                   " +
+        "(outputs the version of the CLI)\n" +
+        "TAP:     --tap / -T                       " +
+        "(runs alsatian with TAP output)\n" +
+        "TIMEOUT: --timeout [number] / -t [number] " +
+        "(sets the timeout period for tests in milliseconds - default 500)\n" +
+        "HIDE PROGRESS: --hide-progress / -H (hides progress from console)\n" +
+        "\n"
+    );
   }
 
   @AsyncTest()
-  public helpRequestedWithAliasOutputsCurrentVersionNumber() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async helpRequestedWithAliasOutputsCurrentVersionNumber() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["-h"]);
+    const cliOptions = new AlsatianCliOptions(["-h"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(process.stdout.write).toHaveBeenCalledWith(
-            "\n\n" +
-              "alsatian version " +
-              require("../../../package.json").version +
-              "\n" +
-              "=========================\n" +
-              "CLI options\n" +
-              "=========================\n" +
-              "HELP:    --help / -h                      " +
-              "(outputs CLI information)\n" +
-              "VERSION: --version / -v                   " +
-              "(outputs the version of the CLI)\n" +
-              "TAP:     --tap / -T                       " +
-              "(runs alsatian with TAP output)\n" +
-              "TIMEOUT: --timeout [number] / -t [number] " +
-              "(sets the timeout period for tests in milliseconds - default 500)\n" +
-              "\n"
-          );
-
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(process.stdout.write).toHaveBeenCalledWith(
+      "\n\n" +
+        "alsatian version " +
+        require("../../../../package.json").version +
+        "\n" +
+        "=========================\n" +
+        "CLI options\n" +
+        "=========================\n" +
+        "HELP:    --help / -h                      " +
+        "(outputs CLI information)\n" +
+        "VERSION: --version / -v                   " +
+        "(outputs the version of the CLI)\n" +
+        "TAP:     --tap / -T                       " +
+        "(runs alsatian with TAP output)\n" +
+        "TIMEOUT: --timeout [number] / -t [number] " +
+        "(sets the timeout period for tests in milliseconds - default 500)\n" +
+        "HIDE PROGRESS: --hide-progress / -H (hides progress from console)\n" +
+        "\n"
+    );
   }
 
   @AsyncTest()
-  public helpRequestedDoesntCallTestRunnerRun() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async helpRequestedDoesntCallTestRunnerRun() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["--help"]);
+    const cliOptions = new AlsatianCliOptions(["--help"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.run).not.toHaveBeenCalled();
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.run).not.toHaveBeenCalled();
   }
 
   @AsyncTest()
-  public helpRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
-    return new Promise<void>((resolve, reject) => {
-      const testRunner = new TestRunner();
-      SpyOn(testRunner.outputStream, "pipe");
+  public async helpRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
+    const testRunner = new TestRunner();
+    SpyOn(testRunner.outputStream, "pipe");
 
-      const cliTestRunner = new CliTestRunner(testRunner);
+    const cliTestRunner = new CliTestRunner(testRunner);
 
-      SpyOn(testRunner, "run");
+    SpyOn(testRunner, "run");
 
-      const cliOptions = new AlsatianCliOptions(["-h"]);
+    const cliOptions = new AlsatianCliOptions(["-h"]);
 
-      cliTestRunner.run(cliOptions);
+    await cliTestRunner.run(cliOptions);
 
-      setTimeout(() => {
-        try {
-          Expect(testRunner.run).not.toHaveBeenCalled();
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      }, 0);
-    });
+    Expect(testRunner.run).not.toHaveBeenCalled();
   }
 }
