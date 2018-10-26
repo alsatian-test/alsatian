@@ -3,13 +3,15 @@ import { MatchError } from "../../../core/errors";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResults } from "../../../core/results/test-results";
 import { TestBuilder } from "../../builders/test-builder";
+import { TestFixtureResultsBuilder } from "../../builders/test-fixture-results-builder";
 
 export class TestResultsTests {
   @Test()
   public oneTestCaseNoErrorOutcomePass() {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([]);
 
@@ -20,8 +22,9 @@ export class TestResultsTests {
   public oneIgnoredTestCaseNoErrorOutcomeSkip() {
     const test = new TestBuilder().build();
     test.ignored = true;
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([]);
 
@@ -33,8 +36,9 @@ export class TestResultsTests {
   @TestCase(EvalError)
   public oneTestCaseErrorOutcomeError(errorType: new () => Error) {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([], new errorType());
 
@@ -44,8 +48,9 @@ export class TestResultsTests {
   @TestCase(MatchError)
   public oneTestCaseMatchErrorOutcomeError(errorType: new () => Error) {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([], new errorType());
 
@@ -57,8 +62,9 @@ export class TestResultsTests {
     errorType: new () => Error
   ) {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([]);
     testResults.addTestCaseResult([], new errorType());
@@ -71,8 +77,9 @@ export class TestResultsTests {
   @TestCase(TypeError)
   public twoTestCasesOnePassOneErrorOutcomeError(errorType: new () => Error) {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([]);
     testResults.addTestCaseResult([], new errorType());
@@ -86,8 +93,9 @@ export class TestResultsTests {
     errorTypeB: new () => Error
   ) {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([], new errorTypeA());
     testResults.addTestCaseResult([], new errorTypeB());
@@ -98,8 +106,9 @@ export class TestResultsTests {
   @Test()
   public twoTestCasesNoErrorOutcomePass() {
     const test = new TestBuilder().build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     testResults.addTestCaseResult([]);
     testResults.addTestCaseResult([]);
@@ -112,8 +121,9 @@ export class TestResultsTests {
   @TestCase("super sweet fixture")
   public testInConstructorIsAccessible(description: string) {
     const test = new TestBuilder().withDescription(description).build();
+    const testFixtureResults = new TestFixtureResultsBuilder().build();
 
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(testFixtureResults, test);
 
     Expect(testResults.test).toBe(test);
   }

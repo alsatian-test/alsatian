@@ -22,7 +22,7 @@ export class TestFixtureResults implements IResultWithOutcome {
   }
 
   public addTestResult(test: ITest): TestResults {
-    const testResults = new TestResults(test);
+    const testResults = new TestResults(this, test);
     this._testResults.push(testResults);
     return testResults;
   }

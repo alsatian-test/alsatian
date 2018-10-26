@@ -9,10 +9,11 @@ import {
   TestCase,
   TestOutcome,
   TestRunner,
-  IgnoreTests
+  IgnoreTests,
+  Ignore
 } from "../../../core/alsatian-core";
 
-@IgnoreTests("ignore temporarily as they're blocking console logs")
+@Ignore("ignore temporarily as they're blocking console logs")
 export class CliTestRunnerTests {
   private _originalStdErr: any;
   private _originalStdOut: any;

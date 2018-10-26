@@ -3,10 +3,10 @@ import {
   Test,
   TestCase,
   TestFixture,
-  IgnoreTests
+  Ignore
 } from "../../../core/alsatian-core";
 
-@IgnoreTests("ignoring temporarily as likely to be redundant soon")
+@Ignore("ignoring temporarily as likely to be redundant soon")
 @TestFixture("temporary tests to satisfy TypeScript quirk")
 export class TempTests {
   private _setErrorMessage() {}

@@ -1,8 +1,14 @@
-import { Expect, Test, TestCase } from "../../../core/alsatian-core";
+import {
+  Expect,
+  Test,
+  TestCase,
+  TestResults
+} from "../../../core/alsatian-core";
 import { MatchError } from "../../../core/errors";
 import { TestCaseResult } from "../../../core/results/test-case-result";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestBuilder } from "../../builders/test-builder";
+import { TestResultsBuilder } from "../../builders/test-results-builder";
 
 export class TestCaseResultTests {
   @TestCase()
@@ -11,18 +17,18 @@ export class TestCaseResultTests {
   @TestCase("a", "list", "of", "arguments")
   @TestCase(1, "or", 2, "mixed", "arguments")
   public argumentsAreStored(...inputArguments: Array<any>) {
-    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().build();
 
-    const testCaseResult = new TestCaseResult(test, inputArguments);
+    const testCaseResult = new TestCaseResult(testResults, inputArguments);
 
-    Expect(testCaseResult.arguments).toEqual(inputArguments);
+    Expect(testCaseResult.args).toEqual(inputArguments);
   }
 
   @Test()
   public noErrorAndNotIgnoredTestOutcomeIsPass() {
-    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Pass);
   }
@@ -31,8 +37,9 @@ export class TestCaseResultTests {
   public noErrorAndIgnoredTestOutcomeIsSkip() {
     const test = new TestBuilder().build();
     test.ignored = true;
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Skip);
   }
@@ -43,8 +50,9 @@ export class TestCaseResultTests {
   public errorOutcomeIsError(errorType: new () => Error) {
     const test = new TestBuilder().build();
     test.ignored = true;
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], new errorType());
+    const testCaseResult = new TestCaseResult(testResults, [], new errorType());
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Error);
   }
@@ -53,8 +61,9 @@ export class TestCaseResultTests {
   public matchErrorOutcomeIsFail(errorType: new () => Error) {
     const test = new TestBuilder().build();
     test.ignored = true;
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], new errorType());
+    const testCaseResult = new TestCaseResult(testResults, [], new errorType());
 
     Expect(testCaseResult.outcome).toEqual(TestOutcome.Fail);
   }

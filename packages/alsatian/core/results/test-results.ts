@@ -3,15 +3,15 @@ import { TestCaseResult } from "./test-case-result";
 import { TestOutcome } from "./test-outcome";
 import { IResultWithOutcome } from "./result-with-outcome.i";
 import { getOverallOutcome } from "./get-overall-outcome";
+import { TestFixtureResults } from "../alsatian-core";
 
 export class TestResults implements IResultWithOutcome {
   private _testCaseResults: Array<TestCaseResult> = [];
 
-  public constructor(private _test: ITest) {}
-
-  public get test(): ITest {
-    return this._test;
-  }
+  public constructor(
+    public readonly fixtureResult: TestFixtureResults,
+    public readonly test: ITest
+  ) {}
 
   public get outcome(): TestOutcome {
     return getOverallOutcome(this._testCaseResults);
@@ -21,7 +21,7 @@ export class TestResults implements IResultWithOutcome {
     args: Array<any>,
     error: Error | null = null
   ): TestCaseResult {
-    const testCaseResult = new TestCaseResult(this._test, args, error);
+    const testCaseResult = new TestCaseResult(this, args, error);
     this._testCaseResults.push(testCaseResult);
     return testCaseResult;
   }
