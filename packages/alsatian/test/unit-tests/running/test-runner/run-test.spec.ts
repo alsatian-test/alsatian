@@ -4,6 +4,7 @@ import {
   Expect,
   METADATA_KEYS,
   SpyOn,
+  TestFixture,
   Timeout,
   Setup,
   Teardown
@@ -16,6 +17,7 @@ import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestPlan } from "../../../../core/running";
 
+@TestFixture("test set run tests")
 export class RunTestTests {
   private _originalTestPlan: TestPlan;
 
@@ -33,7 +35,7 @@ export class RunTestTests {
     );
   }
 
-  @AsyncTest()
+  @AsyncTest("a single passing test can be run successfully")
   public async singlePassingTestRunsSuccessfully() {
     const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -47,10 +49,12 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("a passing test can be run with on complete event")
   public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
     let testCompletedValue: ITestCompleteEvent = null;
     const testDescription = "testDescriptionToCheck";
@@ -98,7 +102,9 @@ export class RunTestTests {
     Expect(testCompletedValue.error).toBeNull();
   }
 
-  @AsyncTest()
+  @AsyncTest(
+    "single passing test can be run successfully without on complete event"
+  )
   public async singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
     let testCompletedValue: ITestCompleteEvent = null;
     const test = new TestBuilder().withTestCaseCount(1).build();
@@ -126,7 +132,9 @@ export class RunTestTests {
     Expect(spyContainer.onCompleteCB).not.toHaveBeenCalled();
   }
 
-  @AsyncTest()
+  @AsyncTest(
+    "single passing test can be run succesffully with multiple on complete events"
+  )
   public async singlePassingTestRunsSuccessfullyWithSeveralOnCompleteEventRaised() {
     let testCompletedValue1: ITestCompleteEvent = null;
     let testCompletedValue2: ITestCompleteEvent = null;
@@ -163,7 +171,7 @@ export class RunTestTests {
       .exactly(1);
   }
 
-  @AsyncTest()
+  @AsyncTest("single test that exceeds timeout fails")
   @Timeout(600)
   public async singleTestTakes501msFails() {
     const test = new TestBuilder()
@@ -193,10 +201,12 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("single test that exceeds custom timeout fails")
   public async singleTestTakes100msWith50msTimeoutFails() {
     const test = new TestBuilder()
       .withTestCaseCount(1)
@@ -225,10 +235,12 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet, 50);
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("single test that throws an error fails")
   public async singleTestThrowsErrorFails() {
     const test = new TestBuilder()
       .withTestCaseCount(1)
@@ -263,10 +275,12 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("two passing tests run successfully")
   public async twoPassingTestsRunsSuccessfully() {
     const firstTest = new TestBuilder().withTestCaseCount(1).build();
     const secondTest = new TestBuilder().withTestCaseCount(1).build();
@@ -284,11 +298,15 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 1 Unnamed Test Fixture > Test Function\n"
+    );
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 2 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("two tests first exceeds timeout fails")
   @Timeout(1000)
   public async twoTestsFirstTakes501msFails() {
     const firstTest = new TestBuilder()
@@ -330,11 +348,15 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 2 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("two tests, second exceeds timeout fails")
   @Timeout(1000)
   public async twoTestsSecondTakes501msFails() {
     const firstTest = new TestBuilder()
@@ -376,11 +398,15 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet);
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 1 Unnamed Test Fixture > Test Function\n"
+    );
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 2 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("two tests first exceeds custom timeout fails")
   public async twoTestsFirstTakes100msWith50msTimeoutFails() {
     const firstTest = new TestBuilder()
       .withTestCaseCount(1)
@@ -421,11 +447,15 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet, 50);
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 2 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 2 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("two tests second exceeds custom timeout fails")
   public async twoTestsSecondTakes100msWith50msTimeoutFails() {
     const firstTest = new TestBuilder()
       .withTestCaseCount(1)
@@ -466,7 +496,11 @@ export class RunTestTests {
     const testRunner = new TestRunner(outputStream);
 
     await testRunner.run(testSet, 50);
-    Expect(outputStream.push).toHaveBeenCalledWith("ok 1 Test Function\n");
-    Expect(outputStream.push).toHaveBeenCalledWith("not ok 2 Test Function\n");
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "ok 1 Unnamed Test Fixture > Test Function\n"
+    );
+    Expect(outputStream.push).toHaveBeenCalledWith(
+      "not ok 2 Unnamed Test Fixture > Test Function\n"
+    );
   }
 }

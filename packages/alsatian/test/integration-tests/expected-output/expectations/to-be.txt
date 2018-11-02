@@ -1,9 +1,9 @@
 TAP version 13
 1..4
 # FIXTURE ToBeTests
-ok 1 twoPlusTwoMakeFour
-ok 2 twoPlusTwoDoNotMakeFive
-not ok 3 twoPlusTwoDoNotMakeFour
+ok 1 ToBeTests > twoPlusTwoMakeFour
+ok 2 ToBeTests > twoPlusTwoDoNotMakeFive
+not ok 3 ToBeTests > twoPlusTwoDoNotMakeFour
  ---
  message: Expected 4 not to be 4.
  severity: fail
@@ -11,7 +11,7 @@ not ok 3 twoPlusTwoDoNotMakeFour
    got: '4'
    expect: '4'
  ...
-not ok 4 twoPlusTwoMakeFive
+not ok 4 ToBeTests > twoPlusTwoMakeFive
  ---
  message: Expected 4 to be 5.
  severity: fail

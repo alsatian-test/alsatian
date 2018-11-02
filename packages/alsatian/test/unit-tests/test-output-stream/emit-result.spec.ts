@@ -11,6 +11,7 @@ import {
 import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
+import { TestResultsBuilder } from "../../builders/test-results-builder";
 
 const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
   return (
@@ -67,13 +68,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     testOutput.emitResult(testId, testCaseResult);
 
-    const expected = `ok ${testId} ${test.description}\n`;
+    const expected = `ok ${testId} ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -85,13 +87,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().withDescription(description).build();
+    const test = new TestBuilder().withDescription(description).build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `ok 1 ${description}\n`;
+    const expected = `ok 1 ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -109,13 +112,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, testCaseArguments);
+    const testCaseResult = new TestCaseResult(testResults, testCaseArguments);
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `ok 1 ${test.description} ${testCaseOutput}\n`;
+    const expected = `ok 1 ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -125,13 +129,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `ok 1 ${test.description}\n`;
+    const expected = `ok 1 ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -141,18 +146,19 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
     // match error causes a "fail"
     const testCaseResult = new TestCaseResult(
-      test,
+      testResults,
       [],
       new MatchError("message", 1, 2)
     );
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `not ok 1 ${test.description}\n`;
+    const expected = `not ok 1 ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -162,13 +168,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().ignored().build();
+    const test = new TestBuilder().ignored().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `ok 1 ${test.description} # skip\n`;
+    const expected = `ok 1 ${testCaseResult.description} # skip\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -180,13 +187,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().ignored(reason).build();
+    const test = new TestBuilder().ignored(reason).build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, []);
+    const testCaseResult = new TestCaseResult(testResults, []);
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `ok 1 ${test.description} # skip ${reason}\n`;
+    const expected = `ok 1 ${testCaseResult.description} # skip ${reason}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -196,18 +204,19 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
     // any error apart from a MatchError causes an "error" outcome
     const testCaseResult = new TestCaseResult(
-      test,
+      testResults,
       [],
       new Error("an error occured when running the test")
     );
 
     testOutput.emitResult(1, testCaseResult);
 
-    const expected = `not ok 1 ${test.description}\n`;
+    const expected = `not ok 1 ${testCaseResult.description}\n`;
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
@@ -219,11 +228,12 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
 
     const error = new MatchError(message, 1, 2);
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(testResults, [], error);
 
     const expected = _getErrorYaml(error);
 
@@ -239,13 +249,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
 
     const message = `Expected ${actualValue} to be equal to 2.`;
 
     const error = new MatchError(message, 2, actualValue);
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(testResults, [], error);
 
     const expected = _getErrorYaml(error);
 
@@ -261,13 +272,14 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
 
     const message = `Expected 1 to be equal to ${expectedValue}.`;
 
     const error = new MatchError(message, expectedValue, 1);
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(testResults, [], error);
 
     const expected = _getErrorYaml(error);
 
@@ -298,12 +310,13 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
 
     const error = new Error("empty message");
     error.stack = stack;
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(testResults, [], error);
 
     const expected = _getUnhandledErrorMessage(stack);
 
@@ -320,9 +333,10 @@ export class EmitResultTests {
     const testOutput = new TestOutputStream();
     SpyOn(testOutput, "push");
 
-    const test: ITest = new TestBuilder().build();
+    const test = new TestBuilder().build();
+    const testResults = new TestResultsBuilder().withTest(test).build();
 
-    const testCaseResult = new TestCaseResult(test, [], error);
+    const testCaseResult = new TestCaseResult(testResults, [], error);
     SpyOnProperty(testCaseResult, "outcome").andCallGetter(
       () => TestOutcome.Error
     );

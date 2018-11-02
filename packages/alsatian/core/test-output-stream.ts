@@ -1,5 +1,5 @@
 import { Readable as ReadableStream } from "stream";
-import { ITest, ITestFixture } from "./_interfaces";
+import { ITestFixture } from "./_interfaces";
 import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 import { stringify } from "./stringification";
@@ -34,15 +34,13 @@ export class TestOutputStream extends ReadableStream {
 
   public emitResult(testId: number, result: TestCaseResult): void {
     const outcome = result.outcome;
-    const test = result.test;
-    const testCaseArguments = result.arguments;
 
     if (outcome === TestOutcome.Pass) {
-      this._emitPass(testId, test, testCaseArguments);
+      this._emitPass(testId, result);
     } else if (outcome === TestOutcome.Fail || outcome === TestOutcome.Error) {
-      this._emitFail(testId, test, testCaseArguments, result);
+      this._emitFail(testId, result);
     } else if (outcome === TestOutcome.Skip) {
-      this._emitSkip(testId, test, testCaseArguments);
+      this._emitSkip(testId, result);
     } else {
       throw new TypeError(`Invalid test outcome: ${outcome}`);
     }
@@ -56,61 +54,28 @@ export class TestOutputStream extends ReadableStream {
     this.push(message);
   }
 
-  private _emitPass(
-    testId: number,
-    test: ITest,
-    testCaseArguments: Array<any>
-  ): void {
-    const description = this._getTestDescription(test, testCaseArguments);
-
-    this._writeOut(`ok ${testId} ${description}\n`);
+  private _emitPass(testId: number, result: TestCaseResult): void {
+    this._writeOut(`ok ${testId} ${result.description}\n`);
   }
 
-  private _emitSkip(
-    testId: number,
-    test: ITest,
-    testCaseArguments: Array<any>
-  ): void {
-    const description = this._getTestDescription(test, testCaseArguments);
+  private _emitSkip(testId: number, result: TestCaseResult): void {
+    const test = result.testResults.test;
 
-    // we only want to use the reason if it's not undefined
-    let reasonString = "";
+    const reasonString = test.ignoreReason ? ` ${test.ignoreReason}` : "";
 
-    if (test.ignoreReason !== undefined) {
-      reasonString = ` ${test.ignoreReason}`;
-    }
-
-    this._writeOut(`ok ${testId} ${description} # skip${reasonString}\n`);
+    this._writeOut(
+      `ok ${testId} ${result.description} # skip${reasonString}\n`
+    );
   }
 
-  private _emitFail(
-    testId: number,
-    test: ITest,
-    testCaseArguments: Array<any>,
-    result: TestCaseResult
-  ): void {
-    const description = this._getTestDescription(test, testCaseArguments);
-
-    this._writeOut(`not ok ${testId} ${description}\n`);
+  private _emitFail(testId: number, result: TestCaseResult): void {
+    this._writeOut(`not ok ${testId} ${result.description}\n`);
 
     if (result.error instanceof MatchError) {
       this._writeMatchErrorOutput(result.error);
     } else {
       this._writeUnhandledErrorOutput(result.error);
     }
-  }
-
-  private _getTestDescription(
-    test: ITest,
-    testCaseArguments: Array<any>
-  ): string {
-    if (testCaseArguments === undefined || testCaseArguments.length <= 0) {
-      return test.description;
-    }
-
-    const formattedArguments = testCaseArguments.map(stringify).join(", ");
-
-    return `${test.description} ( ${formattedArguments} )`;
   }
 
   private _writeMatchErrorOutput(error: MatchError): void {

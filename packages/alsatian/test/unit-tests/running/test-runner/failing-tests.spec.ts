@@ -1,9 +1,10 @@
 import {
-  AsyncTest,
+  Test,
   Expect,
   Setup,
   SpyOn,
-  Teardown
+  Teardown,
+  TestFixture
 } from "../../../../core/alsatian-core";
 import { MatchError } from "../../../../core/errors/match-error";
 import { TestRunner } from "../../../../core/running/test-runner";
@@ -13,6 +14,7 @@ import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestSetBuilder } from "../../../builders/test-set-builder";
 
+@TestFixture("failing tests")
 export class FailingTestsTests {
   private _originalStdErr: any;
   private _originalProcessExit: any;
@@ -39,7 +41,7 @@ export class FailingTestsTests {
     );
   }
 
-  @AsyncTest()
+  @Test("failing test outputs 'not ok'")
   public async failingTestOutputsNotOk() {
     const output = new TestOutputStream();
     SpyOn(output, "push");
@@ -66,10 +68,12 @@ export class FailingTestsTests {
     const testRunner = new TestRunner(output);
 
     await testRunner.run(testSet);
-    Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+    Expect(output.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 
-  @AsyncTest()
+  @Test("a test that throws an error outputs 'not ok'")
   public async testThrowsErrorOutputsNotOk() {
     const output = new TestOutputStream();
     SpyOn(output, "push");
@@ -91,6 +95,8 @@ export class FailingTestsTests {
     const testRunner = new TestRunner(output);
 
     await testRunner.run(testSet);
-    Expect(output.push).toHaveBeenCalledWith("not ok 1 Test Function\n");
+    Expect(output.push).toHaveBeenCalledWith(
+      "not ok 1 Unnamed Test Fixture > Test Function\n"
+    );
   }
 }

@@ -2,8 +2,8 @@ TAP version 13
 1..16
 # FIXTURE error throwing
 # WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
-ok 1 errorThrown
-not ok 2 errorNotThrown
+ok 1 error throwing > errorThrown
+not ok 2 error throwing > errorNotThrown
  ---
  message: Expected an error to be thrown but no errors were thrown.
  severity: fail
@@ -11,8 +11,8 @@ not ok 2 errorNotThrown
    got: '"error was not thrown."'
    expect: '"error to be thrown."'
  ...
-ok 3 noErrorThrown
-not ok 4 errorUnexpectedlyThrown
+ok 3 error throwing > noErrorThrown
+not ok 4 error throwing > errorUnexpectedlyThrown
  ---
  message: Expected an error not to be thrown but an error was thrown.
  severity: fail
@@ -20,8 +20,8 @@ not ok 4 errorUnexpectedlyThrown
    got: '"Error error was thrown with message \"error\"."'
    expect: '"error not to be thrown."'
  ...
-ok 5 exactErrorThrown
-not ok 6 exactErrorNotThrown
+ok 5 error throwing > exactErrorThrown
+not ok 6 error throwing > exactErrorNotThrown
  ---
  message: >-
    Expected an error with message \"specific error\" and type TypeError to have
@@ -31,8 +31,8 @@ not ok 6 exactErrorNotThrown
    got: '"Error error was thrown with message \"any old error\"."'
    expect: '"TypeError error to be thrown with message \"specific error\"."'
  ...
-ok 7 notExactErrorThrown
-not ok 8 exactErrorThrownUnexpectedly
+ok 7 error throwing > notExactErrorThrown
+not ok 8 error throwing > exactErrorThrownUnexpectedly
  ---
  message: >-
    Expected an error with message \"specific error\" and type TypeError to not
@@ -42,8 +42,8 @@ not ok 8 exactErrorThrownUnexpectedly
    got: '"TypeError error was thrown with message \"specific error\"."'
    expect: '"TypeError error not to be thrown with message \"specific error\"."'
  ...
-ok 9 asyncErrorThrown
-not ok 10 asyncErrorNotThrown
+ok 9 error throwing > asyncErrorThrown
+not ok 10 error throwing > asyncErrorNotThrown
  ---
  message: Expected an error to be thrown but no errors were thrown.
  severity: fail
@@ -51,8 +51,8 @@ not ok 10 asyncErrorNotThrown
    got: '"error was not thrown."'
    expect: '"error to be thrown."'
  ...
-ok 11 asyncNoErrorThrown
-not ok 12 asyncErrorUnexpectedly
+ok 11 error throwing > asyncNoErrorThrown
+not ok 12 error throwing > asyncErrorUnexpectedly
  ---
  message: Expected an error not to be thrown but an error was thrown.
  severity: fail
@@ -60,8 +60,8 @@ not ok 12 asyncErrorUnexpectedly
    got: '"Error error was thrown with message \"error\"."'
    expect: '"error not to be thrown."'
  ...
-ok 13 asnycExactErrorThrown
-not ok 14 asnycExactErrorNotThrown
+ok 13 error throwing > asnycExactErrorThrown
+not ok 14 error throwing > asnycExactErrorNotThrown
  ---
  message: >-
    Expected an error with message \"specific error\" and type TypeError to have
@@ -71,8 +71,8 @@ not ok 14 asnycExactErrorNotThrown
    got: '"Error error was thrown with message \"error\"."'
    expect: '"TypeError error to be thrown with message \"specific error\"."'
  ...
-ok 15 asyncNotExactErrorThrown
-not ok 16 asyncExactErrorThrownUnexpectedly
+ok 15 error throwing > asyncNotExactErrorThrown
+not ok 16 error throwing > asyncExactErrorThrownUnexpectedly
  ---
  message: >-
    Expected an error with message \"specific error\" and type TypeError to not

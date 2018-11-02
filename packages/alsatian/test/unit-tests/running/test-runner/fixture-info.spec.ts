@@ -4,6 +4,7 @@ import {
   MatchError,
   SpyOn,
   TestCase,
+  TestFixture,
   TestOutputStream,
   TestRunner,
   TestSet,
@@ -15,6 +16,7 @@ import { TestCaseBuilder } from "../../../builders/test-case-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
 import { TestPlan } from "../../../../core/running";
 
+@TestFixture("fixture info tests")
 export class FixtureInfoTests {
   private _originalTestPlan: TestPlan;
 
@@ -36,10 +38,10 @@ export class FixtureInfoTests {
     return `# FIXTURE ${fixtureName}\n`;
   }
 
-  @AsyncTest()
+  @AsyncTest("a passing test outputs the fixture name")
   @TestCase("SomeFixtureName")
   @TestCase("AnotherFixture")
-  public async outputsFixtureNameWithPassingTest(description: string) {
+  public async outputsFixtureNameWithPassingTest(fixtureDescription: string) {
     const output = new TestOutputStream();
     SpyOn(output, "push");
 
@@ -54,7 +56,7 @@ export class FixtureInfoTests {
 
     const testFixture = new TestFixtureBuilder()
       .withFixture({ test: () => {} })
-      .withDescription(description)
+      .withDescription(fixtureDescription)
       .addTest(test)
       .build();
 
@@ -63,15 +65,17 @@ export class FixtureInfoTests {
     const testRunner = new TestRunner(output);
     await testRunner.run(testSet);
     Expect(output.push).toHaveBeenCalledWith(
-      FixtureInfoTests._getExpectedFixtureOutput(description)
+      FixtureInfoTests._getExpectedFixtureOutput(fixtureDescription)
     );
-    Expect(output.push).toHaveBeenCalledWith(`ok 1 ${test.description}\n`);
+    Expect(output.push).toHaveBeenCalledWith(
+      `ok 1 ${fixtureDescription} > ${test.description}\n`
+    );
   }
 
-  @AsyncTest()
+  @AsyncTest("a failing tests outputs the fixture name")
   @TestCase("SomeFixtureName")
   @TestCase("AnotherFixture")
-  public async outputsFixtureNameWithFailingTest(description: string) {
+  public async outputsFixtureNameWithFailingTest(fixtureDescription: string) {
     const output = new TestOutputStream();
     SpyOn(output, "push");
 
@@ -95,7 +99,7 @@ export class FixtureInfoTests {
         }
       })
       .addTest(test)
-      .withDescription(description)
+      .withDescription(fixtureDescription)
       .build();
 
     testSet.testFixtures.push(testFixture);
@@ -105,8 +109,10 @@ export class FixtureInfoTests {
 
     testSet.testFixtures.push(testFixture);
     Expect(output.push).toHaveBeenCalledWith(
-      FixtureInfoTests._getExpectedFixtureOutput(description)
+      FixtureInfoTests._getExpectedFixtureOutput(fixtureDescription)
     );
-    Expect(output.push).toHaveBeenCalledWith(`not ok 1 ${test.description}\n`);
+    Expect(output.push).toHaveBeenCalledWith(
+      `not ok 1 ${fixtureDescription} > ${test.description}\n`
+    );
   }
 }
