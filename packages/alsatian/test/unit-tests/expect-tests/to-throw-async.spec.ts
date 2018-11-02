@@ -7,10 +7,7 @@ import {
 } from "../../../core/alsatian-core";
 import { ErrorMatchError } from "../../../core/errors/error-match-error";
 import { INameable } from "../../../core/_interfaces";
-
-async function wait(timeInMilliseconds: number) {
-  return new Promise<void>(resolve => setTimeout(resolve, timeInMilliseconds));
-}
+import { wait } from "../../utility-functions/wait";
 
 export class ToThrowAsyncTests {
   // Asynchronous throw
