@@ -4,9 +4,11 @@ import {
   METADATA_KEYS,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { SetupFixture } from "../../../core/decorators/setup-fixture-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("@SetupFixture decorator tests")
 export class SetupFixtureDecoratorTests {
@@ -76,5 +78,14 @@ export class SetupFixtureDecoratorTests {
     );
 
     Expect(setupFixtureFunctions.length).toBe(setupFixtureFunctionCount);
+  }
+
+  @Test("deprecation warning not added")
+  public deprecationWarningNotAdded() {
+    SpyOn(Warner, "warn");
+
+    SetupFixture({}, "");
+
+    Expect(Warner.warn).not.toHaveBeenCalled();
   }
 }

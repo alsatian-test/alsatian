@@ -4,9 +4,11 @@ import {
   METADATA_KEYS,
   Test,
   TestCase,
-  TestFixture
+  TestFixture,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncTeardownFixture } from "../../../core/decorators/async-teardown-fixture-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("@AsyncTeardownFixture decorator tests")
 export class AsyncTeadownFixtureDecoratorTests {
@@ -77,6 +79,18 @@ export class AsyncTeadownFixtureDecoratorTests {
 
     Expect(asyncTeardownFixtureFunctions.length).toBe(
       asyncTeardownFixtureFunctionCount
+    );
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    AsyncTeardownFixture({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "AsyncTeardownFixture has been depreacated and will be removed in version 4.0.0. " +
+        "Use the TeardownFixture decorator instead."
     );
   }
 }

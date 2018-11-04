@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { IgnoreTest as IgnoreTestDecorator } from "../../../core/decorators/ignore-test-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class IgnoreTestDecoratorTests {
   @TestCase("key")
@@ -36,5 +38,17 @@ export class IgnoreTestDecoratorTests {
     Expect(
       Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture, key)
     ).toBe(reason);
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    IgnoreTestDecorator("")({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "IgnoreTest has been depreacated and will be removed in version 4.0.0. " +
+        "Use the Ignore decorator instead."
+    );
   }
 }

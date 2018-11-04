@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncTeardown } from "../../../core/decorators/async-teardown-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class AsyncTeardownDecoratorTests {
   @Test()
@@ -71,5 +73,17 @@ export class AsyncTeardownDecoratorTests {
     );
 
     Expect(teardownFunctions.length).toBe(teardownFunctionCount);
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    AsyncTeardown({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "AsyncTeardown has been depreacated and will be removed in version 4.0.0. " +
+        "Use the Teardown decorator instead."
+    );
   }
 }

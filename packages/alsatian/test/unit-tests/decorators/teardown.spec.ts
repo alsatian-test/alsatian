@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { Teardown } from "../../../core/decorators/teardown-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class TeardownDecoratorTests {
   @Test()
@@ -71,5 +73,14 @@ export class TeardownDecoratorTests {
     );
 
     Expect(teardownFunctions.length).toBe(teardownFunctionCount);
+  }
+
+  @Test("deprecation warning not added")
+  public deprecationWarningNotAdded() {
+    SpyOn(Warner, "warn");
+
+    Teardown({}, "");
+
+    Expect(Warner.warn).not.toHaveBeenCalled();
   }
 }
