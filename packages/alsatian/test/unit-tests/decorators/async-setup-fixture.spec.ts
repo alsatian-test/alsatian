@@ -5,13 +5,13 @@ import {
   Test,
   TestCase,
   TestFixture,
-  FocusTest
+  SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncSetupFixture } from "../../../core/decorators/async-setup-fixture-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("@AsyncSetupFixture decorator tests")
 export class AsyncSetupFixtureDecoratorTests {
-  // @FocusTest
   @Test("async setup fixture function added to metadata")
   public asyncSetupFixtureFunctionAddedAsMetaData() {
     const testFixture = {};
@@ -79,6 +79,18 @@ export class AsyncSetupFixtureDecoratorTests {
 
     Expect(asyncSetupFixtureFunctions.length).toBe(
       asyncSetupFixtureFunctionCount
+    );
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    AsyncSetupFixture({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "AsyncSetupFixture has been depreacated and will be removed in version 4.0.0. " +
+        "Use the SetupFixture decorator instead."
     );
   }
 }

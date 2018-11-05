@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncSetup } from "../../../core/decorators/async-setup-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class AsyncSetupDecoratorTests {
   @Test()
@@ -71,5 +73,17 @@ export class AsyncSetupDecoratorTests {
     );
 
     Expect(setupFunctions.length).toBe(setupFunctionCount);
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    AsyncSetup({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "AsyncSetup has been depreacated and will be removed in version 4.0.0. " +
+        "Use the Setup decorator instead."
+    );
   }
 }

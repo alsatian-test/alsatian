@@ -15,17 +15,17 @@ export function createSetupTeardownDecorator(
     const functions: Array<ISetupTeardownMetadata> =
       Reflect.getMetadata(metadataDescription, target) || [];
 
-    const functionName = metadataDescription
-      .replace("alsatian:", "")
-      .replace("-fixture", "Fixture")
-      .replace("setup", "Setup")
-      .replace("teardown", "Teardown");
+    if (isAsync) {
+      const functionName = metadataDescription
+        .replace("alsatian:", "")
+        .replace("-fixture", "Fixture")
+        .replace("setup", "Setup")
+        .replace("teardown", "Teardown");
 
-    if (metadataDescription.indexOf("-fixture") > -1 || isAsync) {
       deprecate(
-        isAsync ? `Async${functionName}` : functionName,
+        `Async${functionName}`,
         "4.0.0",
-        `Use the ${functionName.replace("Fixture", "")} decorator instead.`
+        `Use the ${functionName} decorator instead.`
       );
     }
 

@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncTest as AsyncTestDecorator } from "../../../core/decorators/async-test-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class AsyncTestDecoratorTests {
   @Test()
@@ -97,5 +99,17 @@ export class AsyncTestDecoratorTests {
     const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
     Expect(tests.length).toBe(1);
+  }
+
+  @Test("deprecation warning added")
+  public deprecationWarningAdded() {
+    SpyOn(Warner, "warn");
+
+    AsyncTestDecorator("")({}, "");
+
+    Expect(Warner.warn).toHaveBeenCalledWith(
+      "AsyncTest has been depreacated and will be removed in version 4.0.0. " +
+        "Use the Test decorator instead."
+    );
   }
 }

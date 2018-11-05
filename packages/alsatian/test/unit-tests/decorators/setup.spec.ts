@@ -3,9 +3,11 @@ import {
   Expect,
   METADATA_KEYS,
   Test,
-  TestCase
+  TestCase,
+  SpyOn
 } from "../../../core/alsatian-core";
 import { Setup } from "../../../core/decorators/setup-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class SetupDecoratorTests {
   @Test()
@@ -71,5 +73,14 @@ export class SetupDecoratorTests {
     );
 
     Expect(setupFunctions.length).toBe(setupFunctionCount);
+  }
+
+  @Test("deprecation warning not added")
+  public deprecationWarningNotAdded() {
+    SpyOn(Warner, "warn");
+
+    Setup({}, "");
+
+    Expect(Warner.warn).not.toHaveBeenCalled();
   }
 }

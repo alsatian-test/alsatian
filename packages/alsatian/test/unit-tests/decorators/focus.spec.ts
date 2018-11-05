@@ -6,7 +6,7 @@ import {
   TestCase,
   SpyOn
 } from "../../../core/alsatian-core";
-import { FocusTest as FocusTestDecorator } from "../../../core/decorators/focus-test-decorator";
+import { Focus } from "../../../core/decorators/focus-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
 export class FocusTestDecoratorTests {
@@ -16,22 +16,21 @@ export class FocusTestDecoratorTests {
   public focusTestKeyMetaDataAddedToCorrectKey(key: string) {
     const testFixture = {};
 
-    FocusTestDecorator(testFixture, key, null);
+    Focus(testFixture, key);
 
     Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture, key)).toBe(
       true
     );
   }
 
-  @Test("deprecation warning added")
-  public deprecationWarningAdded() {
-    SpyOn(Warner, "warn");
+  @Test()
+  public focusTestKeyMetaDataAdded(key: string) {
+    class TestFixtureClass {}
 
-    FocusTestDecorator({}, "");
+    Focus(TestFixtureClass);
 
-    Expect(Warner.warn).toHaveBeenCalledWith(
-      "FocusTest has been depreacated and will be removed in version 4.0.0. " +
-        "Use the Focus decorator instead."
+    Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixtureClass)).toBe(
+      true
     );
   }
 }

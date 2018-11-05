@@ -1,7 +1,6 @@
 TAP version 13
 1..3
 # FIXTURE setup tests
-# WARN: SetupFixture has been depreacated and will be removed in version 4.0.0. Use the Setup decorator instead.
 # WARN: AsyncSetup has been depreacated and will be removed in version 4.0.0. Use the Setup decorator instead.
 ok 1 setup tests > simple setup
 ok 2 setup tests > simple async setup
