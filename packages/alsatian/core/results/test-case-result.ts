@@ -13,13 +13,20 @@ export class TestCaseResult implements IResultWithOutcome {
   ) {}
 
   public get logs() {
-    const filePath = this.testResults.fixtureResult.fixture.filePath.replace(/\//g, "\\");
-    const functionName = this.testResults.fixtureResult.fixture.fixture.constructor.name + "." + this.testResults.test.key;
+    const filePath = this.testResults.fixtureResult.fixture.filePath.replace(
+      /\//g,
+      "\\"
+    );
+    const functionName =
+      this.testResults.fixtureResult.fixture.fixture.constructor.name +
+      "." +
+      this.testResults.test.key;
 
-    return Logger
-            .LOGS
-            .filter(x => x.stack
-                          .some(y => y.filePath === filePath && y.functionName === functionName));
+    return Logger.LOGS.filter(x =>
+      x.stack.some(
+        y => y.filePath === filePath && y.functionName === functionName
+      )
+    );
   }
 
   public get outcome(): TestOutcome {

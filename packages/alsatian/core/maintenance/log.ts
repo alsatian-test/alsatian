@@ -13,7 +13,7 @@ function getStack() {
   });
 }
 
-export interface Log {
+export interface ILog {
   value: string;
   stack: Array<StackDetail>;
 }
@@ -24,11 +24,12 @@ export interface StackDetail {
 }
 
 export class Logger {
-
-  public static readonly LOGS: Array<Log> = [];
+  public static readonly LOGS: Array<ILog> = [];
 
   public static log(value: string) {
-    Warner.warn("The log function may cause tests to be slow and should only be used for debugging.");
+    Warner.warn(
+      "The log function may cause tests to be slow and should only be used for debugging."
+    );
 
     Logger.LOGS.push({
       value,

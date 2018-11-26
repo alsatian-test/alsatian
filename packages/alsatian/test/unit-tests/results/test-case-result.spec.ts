@@ -16,18 +16,17 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestFixture } from "../../../core";
 
 export class TestCaseResultTests {
-
   private _originalLogs: Array<any>;
 
   @Setup
   private _replaceLogArray() {
-      this._originalLogs = Logger.LOGS;
-      (Logger as any).LOGS = [];
+    this._originalLogs = Logger.LOGS;
+    (Logger as any).LOGS = [];
   }
 
   @Teardown
   private _restoreLogArray() {
-      (Logger as any).LOGS = this._originalLogs;
+    (Logger as any).LOGS = this._originalLogs;
   }
 
   @TestCase()
@@ -94,51 +93,58 @@ export class TestCaseResultTests {
   @TestCase(2, 1)
   @TestCase(3, 0)
   @Test("only logs related to test are returned")
-  public onlyLogsRelatedToTestAreReturned(matchingLogCount: number, otherLogCount: number) {
+  public onlyLogsRelatedToTestAreReturned(
+    matchingLogCount: number,
+    otherLogCount: number
+  ) {
     class Fixture {
-      key() {}
+      public key() {}
     }
 
     const fixture = new Fixture();
 
     const testFixture = new TestFixtureBuilder()
-                                      .withFixture(fixture as any)
-                                      .withFilePath("a-given.fixture")
-                                      .build();
+      .withFixture(fixture as any)
+      .withFilePath("a-given.fixture")
+      .build();
 
     const testFixtureResult = new TestFixtureResultsBuilder()
-                                      .withTestFixture(testFixture)
-                                      .build();
+      .withTestFixture(testFixture)
+      .build();
 
     const test = new TestBuilder().withKey("key").build();
 
     const testResults = new TestResultsBuilder()
-                                      .withTest(test)
-                                      .withTestFixtureResults(testFixtureResult)
-                                      .build();
+      .withTest(test)
+      .withTestFixtureResults(testFixtureResult)
+      .build();
 
     const testCaseResult = new TestCaseResult(testResults, []);
-    
+
     const matchingLog = {
       value: "some log",
-      stack: [{
-        filePath: "a-given.fixture",
-        functionName: "Fixture.key"
-      }]
-    }
+      stack: [
+        {
+          filePath: "a-given.fixture",
+          functionName: "Fixture.key"
+        }
+      ]
+    };
 
     const matchingLogs = new Array(matchingLogCount).fill(matchingLog);
-    
+
     const otherLog = {
       value: "another log",
-      stack: [{
-        filePath: "some-where.else",
-        functionName: "Somewhere.else"
-      }]
-    }
+      stack: [
+        {
+          filePath: "some-where.else",
+          functionName: "Somewhere.else"
+        }
+      ]
+    };
 
     const otherLogs = new Array(otherLogCount).fill(otherLog);
-    
+
     (Logger as any).LOGS = matchingLogs.concat(otherLogs);
 
     Expect(testCaseResult.logs.length).toBe(matchingLogCount);

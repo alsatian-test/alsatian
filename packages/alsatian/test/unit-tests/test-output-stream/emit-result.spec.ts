@@ -11,7 +11,7 @@ import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResultsBuilder } from "../../builders/test-results-builder";
-import { Log } from "../../../core/maintenance/log";
+import { ILog } from "../../../core/maintenance/log";
 
 const _getErrorYaml = (error: MatchError, logs?: Array<string>) => {
   return (
@@ -31,9 +31,7 @@ function yamlStringify(value: any) {
   return `'${JSON.stringify(value)}'`;
 }
 
-const _getUnhandledErrorMessage = (
-  stack: string, logs?: Array<string>
-) => {
+const _getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
   return (
     " ---\n" +
     " message: The test threw an unhandled error.\n" +
@@ -53,13 +51,10 @@ const _getUnhandledErrorMessage = (
 };
 
 const buildLogs = (logs: Array<string>) => {
-  return logs !== undefined ? 
-  "     logs: |-\n" +
-  logs
-    .map(l => "       " + l)
-    .join("\n") + "\n"
-  : ""
-}
+  return logs !== undefined
+    ? "     logs: |-\n" + logs.map(l => "       " + l).join("\n") + "\n"
+    : "";
+};
 
 function _getUnhandledErrorMessageNoStack(): string {
   return (
@@ -374,7 +369,9 @@ export class EmitResultTests {
     const testResults = new TestResultsBuilder().withTest(test).build();
 
     const testCaseResult = new TestCaseResult(testResults, [], error);
-    SpyOnProperty(testCaseResult, "logs").andReturnValue(logs.map(value => { return { value }; }));
+    SpyOnProperty(testCaseResult, "logs").andReturnValue(
+      logs.map(value => ({ value }))
+    );
 
     const expected = _getUnhandledErrorMessage(error.stack, logs);
 
@@ -382,7 +379,7 @@ export class EmitResultTests {
 
     Expect(testOutput.push).toHaveBeenCalledWith(expected);
   }
-  
+
   @TestCase("log", "something")
   @TestCase("another", "set", "of", "logs")
   public shouldEmitYamlWithCorrectLogs(...logs: Array<string>) {
@@ -395,7 +392,9 @@ export class EmitResultTests {
     const testResults = new TestResultsBuilder().withTest(test).build();
 
     const testCaseResult = new TestCaseResult(testResults, [], error);
-    SpyOnProperty(testCaseResult, "logs").andReturnValue(logs.map(value => { return { value }; }));
+    SpyOnProperty(testCaseResult, "logs").andReturnValue(
+      logs.map(value => ({ value }))
+    );
 
     const expected = _getErrorYaml(error, logs);
 
