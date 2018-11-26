@@ -15,10 +15,10 @@ function getStack() {
 
 export interface ILog {
   value: string;
-  stack: Array<StackDetail>;
+  stack: Array<IStackDetail>;
 }
 
-export interface StackDetail {
+export interface IStackDetail {
   functionName: string;
   filePath: string;
 }
