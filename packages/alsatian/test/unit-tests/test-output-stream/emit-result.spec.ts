@@ -1,4 +1,3 @@
-import { ITest } from "../../../core/_interfaces";
 import {
   Expect,
   SpyOn,
@@ -12,15 +11,19 @@ import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResultsBuilder } from "../../builders/test-results-builder";
+import { Log } from "../../../core/maintenance/log";
 
-const _getErrorYaml: (error: MatchError) => string = (error: MatchError) => {
+const _getErrorYaml = (error: MatchError, logs?: Array<string>) => {
   return (
     ` ---\n` +
     ` message: ${error.message.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}\n` +
     ` severity: fail\n` +
     ` data:\n` +
     `   got: ${yamlStringify(error.actual)}\n` +
-    `   expect: ${yamlStringify(error.expected)}\n ...\n`
+    `   expect: ${yamlStringify(error.expected)}\n` +
+    (logs !== undefined ? "   details:\n" : "") +
+    buildLogs(logs) +
+    ` ...\n`
   );
 };
 
@@ -28,8 +31,8 @@ function yamlStringify(value: any) {
   return `'${JSON.stringify(value)}'`;
 }
 
-const _getUnhandledErrorMessage: (stack: string) => string = (
-  stack: string
+const _getUnhandledErrorMessage = (
+  stack: string, logs?: Array<string>
 ) => {
   return (
     " ---\n" +
@@ -39,6 +42,7 @@ const _getUnhandledErrorMessage: (stack: string) => string = (
     "   got: an unhandled error\n" +
     "   expect: no unhandled errors to be thrown\n" +
     "   details:\n" +
+    buildLogs(logs) +
     "     stack: |-\n" +
     stack
       .split("\n")
@@ -47,6 +51,15 @@ const _getUnhandledErrorMessage: (stack: string) => string = (
     "\n ...\n"
   );
 };
+
+const buildLogs = (logs: Array<string>) => {
+  return logs !== undefined ? 
+  "     logs: |-\n" +
+  logs
+    .map(l => "       " + l)
+    .join("\n") + "\n"
+  : ""
+}
 
 function _getUnhandledErrorMessageNoStack(): string {
   return (
@@ -342,6 +355,49 @@ export class EmitResultTests {
     );
 
     const expected = _getUnhandledErrorMessageNoStack();
+
+    testOutput.emitResult(1, testCaseResult);
+
+    Expect(testOutput.push).toHaveBeenCalledWith(expected);
+  }
+
+  @TestCase("log", "something")
+  @TestCase("another", "set", "of", "logs")
+  public shouldEmitCorrectUnhandledErrorLogs(...logs: Array<string>) {
+    const testOutput = new TestOutputStream();
+    SpyOn(testOutput, "push");
+
+    const test = new TestBuilder().build();
+
+    const error = new Error("empty message");
+    error.stack = "stack\nstack\nstack";
+    const testResults = new TestResultsBuilder().withTest(test).build();
+
+    const testCaseResult = new TestCaseResult(testResults, [], error);
+    SpyOnProperty(testCaseResult, "logs").andReturnValue(logs.map(value => { return { value }; }));
+
+    const expected = _getUnhandledErrorMessage(error.stack, logs);
+
+    testOutput.emitResult(1, testCaseResult);
+
+    Expect(testOutput.push).toHaveBeenCalledWith(expected);
+  }
+  
+  @TestCase("log", "something")
+  @TestCase("another", "set", "of", "logs")
+  public shouldEmitYamlWithCorrectLogs(...logs: Array<string>) {
+    const testOutput = new TestOutputStream();
+    SpyOn(testOutput, "push");
+
+    const test = new TestBuilder().build();
+
+    const error = new MatchError("message", 1, 2);
+    const testResults = new TestResultsBuilder().withTest(test).build();
+
+    const testCaseResult = new TestCaseResult(testResults, [], error);
+    SpyOnProperty(testCaseResult, "logs").andReturnValue(logs.map(value => { return { value }; }));
+
+    const expected = _getErrorYaml(error, logs);
 
     testOutput.emitResult(1, testCaseResult);
 

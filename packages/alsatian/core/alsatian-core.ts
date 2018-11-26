@@ -59,6 +59,9 @@ import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
 import { TestRunner } from "./running";
 
+import { Logger } from "./maintenance/log";
+const log = Logger.log;
+
 export {
   Any,
   AsyncSetup,
@@ -79,6 +82,7 @@ export {
   Ignore,
   IgnoreTest,
   IgnoreTests,
+  log,
   Matcher,
   MatchError,
   METADATA_KEYS,

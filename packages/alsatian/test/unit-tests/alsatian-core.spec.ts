@@ -109,4 +109,10 @@ export class AlsatianCoreTests {
     Expect(Alsatian.createFunctionSpy).toBeDefined();
     Expect(Alsatian.createFunctionSpy).not.toBeNull();
   }
+
+  @Test("log should be exposed")
+  public logShouldBeExposed() {
+    Expect(Alsatian.log).toBeDefined();
+    Expect(Alsatian.log).not.toBeNull();
+  }
 }

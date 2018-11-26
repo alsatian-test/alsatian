@@ -4,6 +4,7 @@ import { MatchError } from "./errors";
 import { TestCaseResult, TestOutcome } from "./results";
 import { stringify } from "./stringification";
 import { safeDump } from "js-yaml";
+import { Log } from "./maintenance/log";
 
 export class TestOutputStream extends ReadableStream {
   public _read() {} // tslint:disable-line:no-empty
@@ -72,13 +73,13 @@ export class TestOutputStream extends ReadableStream {
     this._writeOut(`not ok ${testId} ${result.description}\n`);
 
     if (result.error instanceof MatchError) {
-      this._writeMatchErrorOutput(result.error);
+      this._writeMatchErrorOutput(result.error, result.logs);
     } else {
-      this._writeUnhandledErrorOutput(result.error);
+      this._writeUnhandledErrorOutput(result.error, result.logs);
     }
   }
 
-  private _writeMatchErrorOutput(error: MatchError): void {
+  private _writeMatchErrorOutput(error: MatchError, logs: Array<Log>): void {
     const sanitisedMessage = error.message
       .replace(/\\/g, "\\\\")
       .replace(/"/g, '\\"');
@@ -89,17 +90,28 @@ export class TestOutputStream extends ReadableStream {
       sanitisedMessage,
       sanitisedActual,
       sanitisedExpected,
-      error.extras
+      this.extrasWithLogs(error.extras, logs)
     );
   }
 
-  private _writeUnhandledErrorOutput(error: Error | null): void {
+  private _writeUnhandledErrorOutput(error: Error | null, logs: Array<Log>): void {
     this._writeFailure(
       "The test threw an unhandled error.",
       "an unhandled error",
       "no unhandled errors to be thrown",
-      error instanceof Error ? { stack: error.stack } : undefined
+      error instanceof Error ? this.extrasWithLogs({ stack: error.stack }, logs) : undefined
     );
+  }
+
+  private extrasWithLogs(extras: { [prop: string]: any }, logs: Array<Log>) {
+    if (logs && logs.length) { 
+      return { 
+        logs: logs.map(x => x.value).join("\n"),
+        ...extras
+      };
+    }
+    
+    return extras;
   }
 
   private _writeFailure(
