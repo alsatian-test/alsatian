@@ -26,16 +26,19 @@ function diffString(firstString: string, secondString: string) {
       ? diffWords(firstString, secondString)
       : diffChars(firstString, secondString);
 
-  return diffs
-    .map(
-      diffItem =>
-        diffItem.added
-          ? chalk.green(diffItem.value)
-          : diffItem.removed
-            ? chalk.red(diffItem.value)
-            : diffItem.value
-    )
-    .join("");
+  return diffs.map(styleDiffItem).join("");
+}
+
+function styleDiffItem(diffItem: JsDiff.IDiffResult) {
+  if (diffItem.added) {
+    return chalk.green(diffItem.value);
+  }
+
+  if (diffItem.removed) {
+    return chalk.red(diffItem.value);
+  }
+
+  return diffItem.value;
 }
 
 function buildDiff(diffs: Array<deepDiff.IDiff>) {

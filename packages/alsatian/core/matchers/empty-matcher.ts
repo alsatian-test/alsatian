@@ -9,23 +9,27 @@ export class EmptyMatcher<T> extends Matcher<T> {
    * Checks that an array is empty, a string is empty, or an object literal has no properties
    */
   public toBeEmpty() {
-    const actualValue = this.actualValue as any;
-
-    const length =
-      actualValue instanceof Map
-        ? actualValue.size
-        : actualValue.length !== undefined
-          ? actualValue.length
-          : Object.keys(actualValue).length;
+    const actualValue = this.actualValue;
+    const length = this._getLength(actualValue);
 
     this._registerMatcher(
       (length === 0) === this.shouldMatch,
       `Expected "${
-        typeof actualValue === "string"
-          ? actualValue
-          : stringify(this.actualValue)
+        typeof actualValue === "string" ? actualValue : stringify(actualValue)
       }" ` + `${this.shouldMatch ? "" : "not "}to be empty.`,
       this.actualValue
     );
+  }
+
+  private _getLength(value: any) {
+    if (value instanceof Map) {
+      return value.size;
+    }
+
+    if (value.length !== undefined) {
+      return value.length;
+    }
+
+    return Object.keys(value).length;
   }
 }
