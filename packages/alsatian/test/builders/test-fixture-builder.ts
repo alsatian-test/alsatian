@@ -13,6 +13,11 @@ export class TestFixtureBuilder {
       .replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$2");
   }
 
+  public withFilePath(filePath: string) {
+    this._testFixture.filePath = filePath;
+    return this;
+  }
+
   public withFixture(fixture: {
     [id: string]: (...args: Array<any>) => any;
   }): TestFixtureBuilder {

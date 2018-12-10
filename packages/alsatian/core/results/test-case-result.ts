@@ -3,6 +3,7 @@ import { TestOutcome } from "./test-outcome";
 import { IResultWithOutcome } from "./result-with-outcome.i";
 import { TestResults } from "./test-results";
 import { stringify } from "../stringification";
+import { Logger } from "../maintenance/log";
 
 export class TestCaseResult implements IResultWithOutcome {
   public constructor(
@@ -10,6 +11,23 @@ export class TestCaseResult implements IResultWithOutcome {
     public readonly args: Array<any>,
     public readonly error: Error | null = null
   ) {}
+
+  public get logs() {
+    const filePath = this.testResults.fixtureResult.fixture.filePath.replace(
+      /\//g,
+      "\\"
+    );
+    const functionName =
+      this.testResults.fixtureResult.fixture.fixture.constructor.name +
+      "." +
+      this.testResults.test.key;
+
+    return Logger.LOGS.filter(x =>
+      x.stack.some(
+        y => y.filePath === filePath && y.functionName === functionName
+      )
+    );
+  }
 
   public get outcome(): TestOutcome {
     if (this.error) {
