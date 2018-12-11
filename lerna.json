@@ -3,11 +3,10 @@
   "command": {
     "publish": {
       "ignoreChanges": [
-        "*.md"
+        "*.spec.ts"
       ]
     },
     "bootstrap": {
-      "ignore": "component-*",
       "npmClientArgs": ["--no-package-lock"]      
     }
   },

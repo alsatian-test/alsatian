@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "lerna bootstrap && npm run build:tap-bark",
+    "build": "lerna run build",
     "build:tap-bark": "npm run build:code --prefix packages/tap-bark",
+    "clean": "lerna run clean",
     "lint:fix": "lerna run lint:fix",
     "test": "lerna run test",
     "test:changes": "lerna run test --since master"
