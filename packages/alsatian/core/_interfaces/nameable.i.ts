@@ -1,3 +1,3 @@
 export interface INameable {
-  name: string;
+	name: string;
 }

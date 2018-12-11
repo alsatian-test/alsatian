@@ -1,96 +1,96 @@
 import "reflect-metadata";
 import {
-  Expect,
-  METADATA_KEYS,
-  Test,
-  TestCase,
-  TestFixture,
-  SpyOn
+	Expect,
+	METADATA_KEYS,
+	Test,
+	TestCase,
+	TestFixture,
+	SpyOn
 } from "../../../core/alsatian-core";
 import { AsyncSetupFixture } from "../../../core/decorators/async-setup-fixture-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("@AsyncSetupFixture decorator tests")
 export class AsyncSetupFixtureDecoratorTests {
-  @Test("async setup fixture function added to metadata")
-  public asyncSetupFixtureFunctionAddedAsMetaData() {
-    const testFixture = {};
+	@Test("async setup fixture function added to metadata")
+	public asyncSetupFixtureFunctionAddedAsMetaData() {
+		const testFixture = {};
 
-    AsyncSetupFixture(testFixture, "test");
+		AsyncSetupFixture(testFixture, "test");
 
-    const asyncSetupFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.SETUP_FIXTURE,
-      testFixture
-    );
+		const asyncSetupFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.SETUP_FIXTURE,
+			testFixture
+		);
 
-    Expect(asyncSetupFixtureFunctions).toBeDefined();
-    Expect(asyncSetupFixtureFunctions).not.toBeNull();
-  }
+		Expect(asyncSetupFixtureFunctions).toBeDefined();
+		Expect(asyncSetupFixtureFunctions).not.toBeNull();
+	}
 
-  @TestCase("key")
-  @TestCase("another key")
-  @TestCase("something-different")
-  @Test("async setup fixture function added to metadata with correct key")
-  public asyncSetupFixtureFunctionKeyMetaDataAdded(key: string) {
-    const testFixture = {};
+	@TestCase("key")
+	@TestCase("another key")
+	@TestCase("something-different")
+	@Test("async setup fixture function added to metadata with correct key")
+	public asyncSetupFixtureFunctionKeyMetaDataAdded(key: string) {
+		const testFixture = {};
 
-    AsyncSetupFixture(testFixture, key);
+		AsyncSetupFixture(testFixture, key);
 
-    const asyncSetupFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.SETUP_FIXTURE,
-      testFixture
-    );
+		const asyncSetupFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.SETUP_FIXTURE,
+			testFixture
+		);
 
-    Expect(asyncSetupFixtureFunctions[0].propertyKey).toBe(key);
-  }
+		Expect(asyncSetupFixtureFunctions[0].propertyKey).toBe(key);
+	}
 
-  @TestCase("key")
-  @TestCase("another key")
-  @TestCase("something-different")
-  @Test("async setup fixture function added to metadata with isAsync = true")
-  public asyncSetupFixtureFunctionIsAsyncMetaDataAdded(key: string) {
-    const testFixture = {};
+	@TestCase("key")
+	@TestCase("another key")
+	@TestCase("something-different")
+	@Test("async setup fixture function added to metadata with isAsync = true")
+	public asyncSetupFixtureFunctionIsAsyncMetaDataAdded(key: string) {
+		const testFixture = {};
 
-    AsyncSetupFixture(testFixture, key);
+		AsyncSetupFixture(testFixture, key);
 
-    const asyncSetupFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.SETUP_FIXTURE,
-      testFixture
-    );
+		const asyncSetupFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.SETUP_FIXTURE,
+			testFixture
+		);
 
-    Expect(asyncSetupFixtureFunctions[0].isAsync).toBe(true);
-  }
+		Expect(asyncSetupFixtureFunctions[0].isAsync).toBe(true);
+	}
 
-  @TestCase(1)
-  @TestCase(2)
-  @TestCase(42)
-  @Test("multiple async setup fixture functions added to metadata")
-  public correctTestCountAdded(asyncSetupFixtureFunctionCount: number) {
-    const testFixture = {};
+	@TestCase(1)
+	@TestCase(2)
+	@TestCase(42)
+	@Test("multiple async setup fixture functions added to metadata")
+	public correctTestCountAdded(asyncSetupFixtureFunctionCount: number) {
+		const testFixture = {};
 
-    for (let i = 0; i < asyncSetupFixtureFunctionCount; i++) {
-      AsyncSetupFixture(testFixture, "key " + i);
-    }
+		for (let i = 0; i < asyncSetupFixtureFunctionCount; i++) {
+			AsyncSetupFixture(testFixture, "key " + i);
+		}
 
-    const asyncSetupFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.SETUP_FIXTURE,
-      testFixture
-    );
+		const asyncSetupFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.SETUP_FIXTURE,
+			testFixture
+		);
 
-    Expect(asyncSetupFixtureFunctions.length).toBe(
-      asyncSetupFixtureFunctionCount
-    );
-  }
+		Expect(asyncSetupFixtureFunctions.length).toBe(
+			asyncSetupFixtureFunctionCount
+		);
+	}
 
-  @Test("deprecation warning added")
-  public deprecationWarningAdded() {
-    SpyOn(Warner, "warn");
+	@Test("deprecation warning added")
+	public deprecationWarningAdded() {
+		SpyOn(Warner, "warn");
 
-    AsyncSetupFixture({}, "");
+		AsyncSetupFixture({}, "");
 
-    Expect(Warner.warn).toHaveBeenCalledWith(
-      "AsyncSetupFixture has been depreacated and will be removed in version 4.0.0. " +
-        "Use the SetupFixture decorator instead."
-    );
-  }
+		Expect(Warner.warn).toHaveBeenCalledWith(
+			"AsyncSetupFixture has been depreacated and will be removed in version 4.0.0. " +
+				"Use the SetupFixture decorator instead."
+		);
+	}
 }

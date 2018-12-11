@@ -1,4 +1,4 @@
 export interface ISetupTeardownMetadata {
-  isAsync: boolean;
-  propertyKey: string;
+	isAsync: boolean;
+	propertyKey: string;
 }

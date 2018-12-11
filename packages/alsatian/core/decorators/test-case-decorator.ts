@@ -4,33 +4,33 @@ import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function TestCase(...testCaseArguments: Array<any>) {
-  return (
-    target: object,
-    propertyKey: string,
-    descriptor?: TypedPropertyDescriptor<any>
-  ) => {
-    Unused(descriptor);
+	return (
+		target: object,
+		propertyKey: string,
+		descriptor?: TypedPropertyDescriptor<any>
+	) => {
+		Unused(descriptor);
 
-    markPropertyAsTest(propertyKey, target);
+		markPropertyAsTest(propertyKey, target);
 
-    // check if there are test cases already associated with this test
-    let testCases: Array<any> = Reflect.getMetadata(
-      TEST_CASES,
-      target,
-      propertyKey
-    );
+		// check if there are test cases already associated with this test
+		let testCases: Array<any> = Reflect.getMetadata(
+			TEST_CASES,
+			target,
+			propertyKey
+		);
 
-    // if not create an empty array
-    if (!testCases) {
-      testCases = [];
-    }
+		// if not create an empty array
+		if (!testCases) {
+			testCases = [];
+		}
 
-    // add the test case to the list
-    testCases.unshift({
-      caseArguments: testCaseArguments
-    });
+		// add the test case to the list
+		testCases.unshift({
+			caseArguments: testCaseArguments
+		});
 
-    // update the list of test cases
-    Reflect.defineMetadata(TEST_CASES, testCases, target, propertyKey);
-  };
+		// update the list of test cases
+		Reflect.defineMetadata(TEST_CASES, testCases, target, propertyKey);
+	};
 }
