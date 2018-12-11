@@ -5,9 +5,6 @@
       "ignoreChanges": [
         "*.spec.ts"
       ]
-    },
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]      
     }
   },
   "packages": ["packages/*"]
