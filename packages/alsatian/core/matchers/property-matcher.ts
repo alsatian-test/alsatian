@@ -6,33 +6,34 @@ import { Matcher } from "./matcher";
  * Checks whether properties have performed as expected
  */
 export class PropertyMatcher<PropertyType> extends Matcher<
-  PropertySpy<PropertyType>
+	PropertySpy<PropertyType>
 > {
-  /**
-   * Checks that a property spy has been set
-   */
-  public toHaveBeenSet() {
-    if ((this.actualValue.setCalls.length === 0) === this.shouldMatch) {
-      throw new PropertySetMatchError(this.actualValue, this.shouldMatch);
-    }
-  }
+	/**
+	 * Checks that a property spy has been set
+	 */
+	public toHaveBeenSet() {
+		if ((this.actualValue.setCalls.length === 0) === this.shouldMatch) {
+			throw new PropertySetMatchError(this.actualValue, this.shouldMatch);
+		}
+	}
 
-  /**
-   * Checks that a property spy has been set to a specific value
-   * @param value - a value to which the property should be set to
-   */
-  public toHaveBeenSetTo(value: any) {
-    if (
-      (this.actualValue.setCalls.filter((call: any) => call.args[0] === value)
-        .length ===
-        0) ===
-      this.shouldMatch
-    ) {
-      throw new PropertySetMatchError(
-        this.actualValue,
-        this.shouldMatch,
-        value
-      );
-    }
-  }
+	/**
+	 * Checks that a property spy has been set to a specific value
+	 * @param value - a value to which the property should be set to
+	 */
+	public toHaveBeenSetTo(value: any) {
+		if (
+			(this.actualValue.setCalls.filter(
+				(call: any) => call.args[0] === value
+			).length ===
+				0) ===
+			this.shouldMatch
+		) {
+			throw new PropertySetMatchError(
+				this.actualValue,
+				this.shouldMatch,
+				value
+			);
+		}
+	}
 }

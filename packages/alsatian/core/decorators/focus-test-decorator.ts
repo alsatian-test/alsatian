@@ -4,14 +4,14 @@ import { Unused } from "../unused";
 import { deprecate } from "../maintenance/deprecate";
 
 export function FocusTest(
-  target: object,
-  propertyKey: string,
-  descriptor?: TypedPropertyDescriptor<any>
+	target: object,
+	propertyKey: string,
+	descriptor?: TypedPropertyDescriptor<any>
 ) {
-  Unused(descriptor);
+	Unused(descriptor);
 
-  deprecate("FocusTest", "4.0.0", "Use the Focus decorator instead.");
+	deprecate("FocusTest", "4.0.0", "Use the Focus decorator instead.");
 
-  // mark test method as focussed
-  Reflect.defineMetadata(FOCUS, true, target, propertyKey);
+	// mark test method as focussed
+	Reflect.defineMetadata(FOCUS, true, target, propertyKey);
 }

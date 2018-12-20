@@ -4,98 +4,98 @@ import { TestSet } from "../../../core/test-set";
 import { resolve, sep } from "path";
 
 export class LoadTestTests {
-  @Test()
-  public noTestsAtLocationGivesNoTestFixtures() {
-    const testLoader = new TestLoader(null);
-    const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
-    testLoaderSpy.andReturn([]);
-    testLoaderSpy.andStub();
+	@Test()
+	public noTestsAtLocationGivesNoTestFixtures() {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
 
-    const globHelper = new GlobHelper();
-    SpyOn(globHelper, "isGlob").andReturn(false);
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "isGlob").andReturn(false);
 
-    const testSet = new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
 
-    testSet.addTestsFromFiles("no-tests");
+		testSet.addTestsFromFiles("no-tests");
 
-    Expect(testSet.testFixtures.length).toBe(0);
-  }
+		Expect(testSet.testFixtures.length).toBe(0);
+	}
 
-  @TestCase("/test/spec.js")
-  @TestCase("/another/spec.somewhere.js")
-  @Test("absolute paths are resolved")
-  public absolutePathsAreResolved(path: string) {
-    const testLoader = new TestLoader(null);
-    const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
-    testLoaderSpy.andReturn([]);
-    testLoaderSpy.andStub();
+	@TestCase("/test/spec.js")
+	@TestCase("/another/spec.somewhere.js")
+	@Test("absolute paths are resolved")
+	public absolutePathsAreResolved(path: string) {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
 
-    const globHelper = new GlobHelper();
-    SpyOn(globHelper, "isGlob").andReturn(false);
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "isGlob").andReturn(false);
 
-    const testSet = new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
 
-    testSet.addTestsFromFiles(path);
+		testSet.addTestsFromFiles(path);
 
-    Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
-  }
+		Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
+	}
 
-  @TestCase("./spec.js")
-  @TestCase("spec.somewhere.js")
-  @TestCase("../another.test.js")
-  @Test("relative paths are resolved")
-  public relativePathsAreResolved(path: string) {
-    const testLoader = new TestLoader(null);
-    const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
-    testLoaderSpy.andReturn([]);
-    testLoaderSpy.andStub();
+	@TestCase("./spec.js")
+	@TestCase("spec.somewhere.js")
+	@TestCase("../another.test.js")
+	@Test("relative paths are resolved")
+	public relativePathsAreResolved(path: string) {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
 
-    const globHelper = new GlobHelper();
-    SpyOn(globHelper, "isGlob").andReturn(false);
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "isGlob").andReturn(false);
 
-    const testSet = new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
 
-    testSet.addTestsFromFiles(path);
+		testSet.addTestsFromFiles(path);
 
-    Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
-  }
+		Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(resolve(path));
+	}
 
-  @TestCase("/*/spec.js")
-  @TestCase("/another/**/*.spec.somewhere.js")
-  @Test("absolute globs are resolved")
-  public absoluteGlobsAreResolved(path: string) {
-    const testLoader = new TestLoader(null);
-    const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
-    testLoaderSpy.andReturn([]);
-    testLoaderSpy.andStub();
+	@TestCase("/*/spec.js")
+	@TestCase("/another/**/*.spec.somewhere.js")
+	@Test("absolute globs are resolved")
+	public absoluteGlobsAreResolved(path: string) {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
 
-    const globHelper = new GlobHelper();
-    SpyOn(globHelper, "resolve").andReturn([]);
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "resolve").andReturn([]);
 
-    const testSet = new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
 
-    testSet.addTestsFromFiles(path);
+		testSet.addTestsFromFiles(path);
 
-    Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
-  }
+		Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
+	}
 
-  @TestCase("./*.js")
-  @TestCase("**/*.js")
-  @TestCase("../*.test.js")
-  @Test("relative globs are resolved")
-  public relativeGlobsAreResolved(path: string) {
-    const testLoader = new TestLoader(null);
-    const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
-    testLoaderSpy.andReturn([]);
-    testLoaderSpy.andStub();
+	@TestCase("./*.js")
+	@TestCase("**/*.js")
+	@TestCase("../*.test.js")
+	@Test("relative globs are resolved")
+	public relativeGlobsAreResolved(path: string) {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
 
-    const globHelper = new GlobHelper();
-    SpyOn(globHelper, "resolve").andReturn([]);
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "resolve").andReturn([]);
 
-    const testSet = new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
 
-    testSet.addTestsFromFiles(path);
+		testSet.addTestsFromFiles(path);
 
-    Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
-  }
+		Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
+	}
 }

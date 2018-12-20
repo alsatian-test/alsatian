@@ -1,91 +1,93 @@
 import "reflect-metadata";
 import {
-  Expect,
-  METADATA_KEYS,
-  Test,
-  TestCase,
-  TestFixture,
-  SpyOn
+	Expect,
+	METADATA_KEYS,
+	Test,
+	TestCase,
+	TestFixture,
+	SpyOn
 } from "../../../core/alsatian-core";
 import { TeardownFixture } from "../../../core/decorators/teardown-fixture-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("@TeardownFixture decorator tests")
 export class TeardownFixtureDecoratorTests {
-  @Test("teardown fixture function added to metadata")
-  public teardownFixtureFunctionAddedAsMetaData() {
-    const testFixture = {};
+	@Test("teardown fixture function added to metadata")
+	public teardownFixtureFunctionAddedAsMetaData() {
+		const testFixture = {};
 
-    TeardownFixture(testFixture, "test", null);
+		TeardownFixture(testFixture, "test", null);
 
-    const teardownFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.TEARDOWN_FIXTURE,
-      testFixture
-    );
+		const teardownFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.TEARDOWN_FIXTURE,
+			testFixture
+		);
 
-    Expect(teardownFixtureFunctions).toBeDefined();
-    Expect(teardownFixtureFunctions).not.toBeNull();
-  }
+		Expect(teardownFixtureFunctions).toBeDefined();
+		Expect(teardownFixtureFunctions).not.toBeNull();
+	}
 
-  @TestCase("key")
-  @TestCase("another key")
-  @TestCase("something-different")
-  @Test("teardown fixture function added to metadata with correct key")
-  public teardownFixtureFunctionKeyMetaDataAdded(key: string) {
-    const testFixture = {};
+	@TestCase("key")
+	@TestCase("another key")
+	@TestCase("something-different")
+	@Test("teardown fixture function added to metadata with correct key")
+	public teardownFixtureFunctionKeyMetaDataAdded(key: string) {
+		const testFixture = {};
 
-    TeardownFixture(testFixture, key, null);
+		TeardownFixture(testFixture, key, null);
 
-    const teardownFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.TEARDOWN_FIXTURE,
-      testFixture
-    );
+		const teardownFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.TEARDOWN_FIXTURE,
+			testFixture
+		);
 
-    Expect(teardownFixtureFunctions[0].propertyKey).toBe(key);
-  }
+		Expect(teardownFixtureFunctions[0].propertyKey).toBe(key);
+	}
 
-  @TestCase("key")
-  @TestCase("another key")
-  @TestCase("something-different")
-  @Test("teardown fixture function added to metadata with isAsync = false")
-  public teardownFixtureFunctionIsAsyncMetaDataAdded(key: string) {
-    const testFixture = {};
+	@TestCase("key")
+	@TestCase("another key")
+	@TestCase("something-different")
+	@Test("teardown fixture function added to metadata with isAsync = false")
+	public teardownFixtureFunctionIsAsyncMetaDataAdded(key: string) {
+		const testFixture = {};
 
-    TeardownFixture(testFixture, key, null);
+		TeardownFixture(testFixture, key, null);
 
-    const teardownFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.TEARDOWN_FIXTURE,
-      testFixture
-    );
+		const teardownFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.TEARDOWN_FIXTURE,
+			testFixture
+		);
 
-    Expect(teardownFixtureFunctions[0].isAsync).toBe(false);
-  }
+		Expect(teardownFixtureFunctions[0].isAsync).toBe(false);
+	}
 
-  @TestCase(1)
-  @TestCase(2)
-  @TestCase(42)
-  @Test("multiple teardown fixture functions added to metadata")
-  public correctTestCountAdded(teardownFixtureFunctionCount: number) {
-    const testFixture = {};
+	@TestCase(1)
+	@TestCase(2)
+	@TestCase(42)
+	@Test("multiple teardown fixture functions added to metadata")
+	public correctTestCountAdded(teardownFixtureFunctionCount: number) {
+		const testFixture = {};
 
-    for (let i = 0; i < teardownFixtureFunctionCount; i++) {
-      TeardownFixture(testFixture, "key " + i, null);
-    }
+		for (let i = 0; i < teardownFixtureFunctionCount; i++) {
+			TeardownFixture(testFixture, "key " + i, null);
+		}
 
-    const teardownFixtureFunctions = Reflect.getMetadata(
-      METADATA_KEYS.TEARDOWN_FIXTURE,
-      testFixture
-    );
+		const teardownFixtureFunctions = Reflect.getMetadata(
+			METADATA_KEYS.TEARDOWN_FIXTURE,
+			testFixture
+		);
 
-    Expect(teardownFixtureFunctions.length).toBe(teardownFixtureFunctionCount);
-  }
+		Expect(teardownFixtureFunctions.length).toBe(
+			teardownFixtureFunctionCount
+		);
+	}
 
-  @Test("deprecation warning not added")
-  public deprecationWarningNotAdded() {
-    SpyOn(Warner, "warn");
+	@Test("deprecation warning not added")
+	public deprecationWarningNotAdded() {
+		SpyOn(Warner, "warn");
 
-    TeardownFixture({}, "");
+		TeardownFixture({}, "");
 
-    Expect(Warner.warn).not.toHaveBeenCalled();
-  }
+		Expect(Warner.warn).not.toHaveBeenCalled();
+	}
 }

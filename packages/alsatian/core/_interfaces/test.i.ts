@@ -1,14 +1,14 @@
 import { ITestCase } from "./test-case.i";
 
 export interface ITest {
-  isAsync: boolean;
+	isAsync: boolean;
 
-  ignored: boolean;
-  ignoreReason?: string;
+	ignored: boolean;
+	ignoreReason?: string;
 
-  focussed: boolean;
-  timeout: number;
-  key: string;
-  description: string;
-  testCases: Array<ITestCase>;
+	focussed: boolean;
+	timeout: number;
+	key: string;
+	description: string;
+	testCases: Array<ITestCase>;
 }
