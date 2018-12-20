@@ -3,14 +3,14 @@ import { exposeSpyFunctions } from "./expose-spy-functions";
 import { ISpiedFunction } from "./spied-function.i";
 
 export function createFunctionSpy<ArgumentType, ReturnType>(): ISpiedFunction<
-  ArgumentType,
-  ReturnType
+	ArgumentType,
+	ReturnType
 > {
-  const functionSpy = new FunctionSpy();
+	const functionSpy = new FunctionSpy();
 
-  const spiedFunction = functionSpy.call.bind(functionSpy);
+	const spiedFunction = functionSpy.call.bind(functionSpy);
 
-  exposeSpyFunctions(spiedFunction, functionSpy);
+	exposeSpyFunctions(spiedFunction, functionSpy);
 
-  return spiedFunction;
+	return spiedFunction;
 }

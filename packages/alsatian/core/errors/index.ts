@@ -9,13 +9,13 @@ import { RegexMatchError } from "./regex-match-error";
 import { TestTimeoutError } from "./test-timeout-error";
 
 export {
-  MatchError,
-  RegexMatchError,
-  LessThanMatchError,
-  GreaterThanMatchError,
-  ErrorMatchError,
-  FunctionCallMatchError,
-  FunctionCallCountMatchError,
-  TestTimeoutError,
-  PropertySetMatchError
+	MatchError,
+	RegexMatchError,
+	LessThanMatchError,
+	GreaterThanMatchError,
+	ErrorMatchError,
+	FunctionCallMatchError,
+	FunctionCallCountMatchError,
+	TestTimeoutError,
+	PropertySetMatchError
 };

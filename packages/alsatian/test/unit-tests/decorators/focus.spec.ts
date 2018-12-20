@@ -1,36 +1,36 @@
 import "reflect-metadata";
 import {
-  Expect,
-  METADATA_KEYS,
-  Test,
-  TestCase,
-  SpyOn
+	Expect,
+	METADATA_KEYS,
+	Test,
+	TestCase,
+	SpyOn
 } from "../../../core/alsatian-core";
 import { Focus } from "../../../core/decorators/focus-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
 export class FocusTestDecoratorTests {
-  @TestCase("key")
-  @TestCase("another key")
-  @TestCase("something-different")
-  public focusTestKeyMetaDataAddedToCorrectKey(key: string) {
-    const testFixture = {};
+	@TestCase("key")
+	@TestCase("another key")
+	@TestCase("something-different")
+	public focusTestKeyMetaDataAddedToCorrectKey(key: string) {
+		const testFixture = {};
 
-    Focus(testFixture, key);
+		Focus(testFixture, key);
 
-    Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture, key)).toBe(
-      true
-    );
-  }
+		Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture, key)).toBe(
+			true
+		);
+	}
 
-  @Test()
-  public focusTestKeyMetaDataAdded(key: string) {
-    class TestFixtureClass {}
+	@Test()
+	public focusTestKeyMetaDataAdded(key: string) {
+		class TestFixtureClass {}
 
-    Focus(TestFixtureClass);
+		Focus(TestFixtureClass);
 
-    Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixtureClass)).toBe(
-      true
-    );
-  }
+		Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, TestFixtureClass)).toBe(
+			true
+		);
+	}
 }

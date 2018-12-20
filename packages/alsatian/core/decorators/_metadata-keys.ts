@@ -14,20 +14,20 @@ const SETUP: "alsatian:setup" = "alsatian:setup";
 const SETUP_FIXTURE: "alsatian:setup-fixture" = "alsatian:setup-fixture";
 const TEARDOWN: "alsatian:teardown" = "alsatian:teardown";
 const TEARDOWN_FIXTURE: "alsatian:teardown-fixture" =
-  "alsatian:teardown-fixture";
+	"alsatian:teardown-fixture";
 const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
 const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";
 
 export {
-  TEST_FIXTURE,
-  TESTS,
-  FOCUS,
-  IGNORE,
-  IGNORE_REASON,
-  SETUP,
-  SETUP_FIXTURE,
-  TEARDOWN,
-  TEARDOWN_FIXTURE,
-  TEST_CASES,
-  TIMEOUT
+	TEST_FIXTURE,
+	TESTS,
+	FOCUS,
+	IGNORE,
+	IGNORE_REASON,
+	SETUP,
+	SETUP_FIXTURE,
+	TEARDOWN,
+	TEARDOWN_FIXTURE,
+	TEST_CASES,
+	TIMEOUT
 };

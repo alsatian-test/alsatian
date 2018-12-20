@@ -3,44 +3,47 @@ import { DuplicateCliArgumentError } from "../../../../cli/errors/duplicate-cli-
 import { Expect, Test, TestCase } from "../../../../core/alsatian-core";
 
 export class HelpRequestedTests {
-  @Test()
-  public helpRequestedDefaultsToFalse() {
-    const options = new AlsatianCliOptions([]);
+	@Test()
+	public helpRequestedDefaultsToFalse() {
+		const options = new AlsatianCliOptions([]);
 
-    Expect(options.helpRequested).toBe(false);
-  }
+		Expect(options.helpRequested).toBe(false);
+	}
 
-  @TestCase("--help")
-  @TestCase("-h")
-  public helpRequestedIfCalled(argument: string) {
-    const options = new AlsatianCliOptions([argument]);
+	@TestCase("--help")
+	@TestCase("-h")
+	public helpRequestedIfCalled(argument: string) {
+		const options = new AlsatianCliOptions([argument]);
 
-    Expect(options.helpRequested).toBe(true);
-  }
+		Expect(options.helpRequested).toBe(true);
+	}
 
-  @TestCase("--help", "-h")
-  @TestCase("--help", "--help")
-  @TestCase("-h", "-h")
-  public duplicateTapArgumentsThrowsError(
-    firstArgument: string,
-    secondArgument: string
-  ) {
-    Expect(() => {
-      const options = new AlsatianCliOptions([firstArgument, secondArgument]);
-    }).toThrowError(
-      DuplicateCliArgumentError,
-      'Duplicate "help" arguments were provided.'
-    );
-  }
+	@TestCase("--help", "-h")
+	@TestCase("--help", "--help")
+	@TestCase("-h", "-h")
+	public duplicateTapArgumentsThrowsError(
+		firstArgument: string,
+		secondArgument: string
+	) {
+		Expect(() => {
+			const options = new AlsatianCliOptions([
+				firstArgument,
+				secondArgument
+			]);
+		}).toThrowError(
+			DuplicateCliArgumentError,
+			'Duplicate "help" arguments were provided.'
+		);
+	}
 
-  @TestCase("--help", "/test/location.spec.js")
-  @TestCase("/another/set/of/**/*.spec.js", "-h")
-  public helpRequestedVeforeOrAfterGlobIsTrue(
-    firstArgument: string,
-    secondArgument: string
-  ) {
-    const options = new AlsatianCliOptions([firstArgument, secondArgument]);
+	@TestCase("--help", "/test/location.spec.js")
+	@TestCase("/another/set/of/**/*.spec.js", "-h")
+	public helpRequestedVeforeOrAfterGlobIsTrue(
+		firstArgument: string,
+		secondArgument: string
+	) {
+		const options = new AlsatianCliOptions([firstArgument, secondArgument]);
 
-    Expect(options.helpRequested).toBe(true);
-  }
+		Expect(options.helpRequested).toBe(true);
+	}
 }

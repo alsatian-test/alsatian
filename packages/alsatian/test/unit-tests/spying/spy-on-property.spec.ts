@@ -1,117 +1,117 @@
 import {
-  Expect,
-  SpyOnProperty,
-  Test,
-  TestCase
+	Expect,
+	SpyOnProperty,
+	Test,
+	TestCase
 } from "../../../core/alsatian-core";
 
 class Testing {
-  get test() {
-    return 42;
-  }
+	get test() {
+		return 42;
+	}
 }
 
 export class SpyOnPropertyTests {
-  @Test()
-  public getterIsReplacedWithSpy() {
-    const object = {};
+	@Test()
+	public getterIsReplacedWithSpy() {
+		const object = {};
 
-    const originalGetter = () => {};
+		const originalGetter = () => {};
 
-    Object.defineProperty(object, "property", {
-      get: originalGetter,
-      configurable: true
-    });
+		Object.defineProperty(object, "property", {
+			get: originalGetter,
+			configurable: true
+		});
 
-    SpyOnProperty(object, "property");
+		SpyOnProperty(object, "property");
 
-    Expect(Object.getOwnPropertyDescriptor(object, "property").get).not.toBe(
-      originalGetter
-    );
-  }
+		Expect(
+			Object.getOwnPropertyDescriptor(object, "property").get
+		).not.toBe(originalGetter);
+	}
 
-  @Test()
-  public setterIsReplacedWithSpy() {
-    const object = {};
+	@Test()
+	public setterIsReplacedWithSpy() {
+		const object = {};
 
-    const originalSetter = () => {};
+		const originalSetter = () => {};
 
-    Object.defineProperty(object, "property", {
-      set: originalSetter,
-      configurable: true
-    });
+		Object.defineProperty(object, "property", {
+			set: originalSetter,
+			configurable: true
+		});
 
-    SpyOnProperty(object, "property");
+		SpyOnProperty(object, "property");
 
-    Expect(Object.getOwnPropertyDescriptor(object, "property").set).not.toBe(
-      originalSetter
-    );
-  }
+		Expect(
+			Object.getOwnPropertyDescriptor(object, "property").set
+		).not.toBe(originalSetter);
+	}
 
-  @TestCase(undefined)
-  @TestCase(null)
-  @TestCase(0)
-  @TestCase(1)
-  @TestCase(42)
-  @TestCase("")
-  @TestCase("something")
-  @TestCase({})
-  @TestCase({ an: "object" })
-  @TestCase([])
-  @TestCase(["an", "array"])
-  public propertyStillReturnsOriginalValue(originalValue: any) {
-    const object: any = {
-      _property: false
-    };
+	@TestCase(undefined)
+	@TestCase(null)
+	@TestCase(0)
+	@TestCase(1)
+	@TestCase(42)
+	@TestCase("")
+	@TestCase("something")
+	@TestCase({})
+	@TestCase({ an: "object" })
+	@TestCase([])
+	@TestCase(["an", "array"])
+	public propertyStillReturnsOriginalValue(originalValue: any) {
+		const object: any = {
+			_property: false
+		};
 
-    Object.defineProperty(object, "property", {
-      get: () => originalValue,
-      configurable: true
-    });
+		Object.defineProperty(object, "property", {
+			get: () => originalValue,
+			configurable: true
+		});
 
-    SpyOnProperty(object, "property");
+		SpyOnProperty(object, "property");
 
-    Expect(object.property).toBe(originalValue);
-  }
+		Expect(object.property).toBe(originalValue);
+	}
 
-  @Test()
-  public spyShouldBeReturned() {
-    const object = {};
+	@Test()
+	public spyShouldBeReturned() {
+		const object = {};
 
-    Object.defineProperty(object, "property", {
-      get: () => {},
-      configurable: true
-    });
+		Object.defineProperty(object, "property", {
+			get: () => {},
+			configurable: true
+		});
 
-    const spy = SpyOnProperty(object, "property");
+		const spy = SpyOnProperty(object, "property");
 
-    Expect(spy).toBeDefined();
-    Expect(spy).not.toBeNull();
-  }
+		Expect(spy).toBeDefined();
+		Expect(spy).not.toBeNull();
+	}
 
-  @TestCase("property")
-  @TestCase("proper tea")
-  @TestCase("anotherProperty")
-  public spyingOnNonPropertyShouldThrowError(propertyName: string) {
-    const object: { [propertyName: string]: any } = {};
+	@TestCase("property")
+	@TestCase("proper tea")
+	@TestCase("anotherProperty")
+	public spyingOnNonPropertyShouldThrowError(propertyName: string) {
+		const object: { [propertyName: string]: any } = {};
 
-    Expect(() => SpyOnProperty(object, propertyName)).toThrowError(
-      TypeError,
-      `${propertyName} is not a property.`
-    );
-  }
+		Expect(() => SpyOnProperty(object, propertyName)).toThrowError(
+			TypeError,
+			`${propertyName} is not a property.`
+		);
+	}
 
-  @TestCase("property")
-  @TestCase("proper tea")
-  @TestCase("anotherProperty")
-  public spyingOnPropertyShouldNotThrowError(propertyName: string) {
-    const object: { [propertyName: string]: any } = {};
+	@TestCase("property")
+	@TestCase("proper tea")
+	@TestCase("anotherProperty")
+	public spyingOnPropertyShouldNotThrowError(propertyName: string) {
+		const object: { [propertyName: string]: any } = {};
 
-    Object.defineProperty(object, propertyName, {
-      get: () => {},
-      configurable: true
-    });
+		Object.defineProperty(object, propertyName, {
+			get: () => {},
+			configurable: true
+		});
 
-    Expect(() => SpyOnProperty(object, propertyName)).not.toThrow();
-  }
+		Expect(() => SpyOnProperty(object, propertyName)).not.toThrow();
+	}
 }

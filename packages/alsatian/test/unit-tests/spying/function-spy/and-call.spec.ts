@@ -2,43 +2,43 @@ import { Expect, SpyOn, Test, TestCase } from "../../../../core/alsatian-core";
 import { FunctionSpy } from "../../../../core/spying/function-spy";
 
 export class AndCallTests {
-  @TestCase(null)
-  @TestCase(undefined)
-  @TestCase(42)
-  @TestCase("something")
-  @TestCase({ an: "object" })
-  @TestCase(["an", "array"])
-  public spyShoulReturnCorrectValue(returnValue: any) {
-    const someObject = {
-      func: () => {}
-    };
+	@TestCase(null)
+	@TestCase(undefined)
+	@TestCase(42)
+	@TestCase("something")
+	@TestCase({ an: "object" })
+	@TestCase(["an", "array"])
+	public spyShoulReturnCorrectValue(returnValue: any) {
+		const someObject = {
+			func: () => {}
+		};
 
-    SpyOn(someObject, "func").andCall(() => {
-      return returnValue;
-    });
+		SpyOn(someObject, "func").andCall(() => {
+			return returnValue;
+		});
 
-    Expect(someObject.func()).toBe(returnValue);
-  }
+		Expect(someObject.func()).toBe(returnValue);
+	}
 
-  @TestCase(() => {})
-  @TestCase(() => 1 + 1)
-  public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
-    const object = {
-      originalFunction: () => {}
-    };
+	@TestCase(() => {})
+	@TestCase(() => 1 + 1)
+	public fakeFunctionNotCalledIfSpyNotFaked(fakeFunction: () => any) {
+		const object = {
+			originalFunction: () => {}
+		};
 
-    const fake = {
-      function: fakeFunction
-    };
+		const fake = {
+			function: fakeFunction
+		};
 
-    SpyOn(fake, "function");
+		SpyOn(fake, "function");
 
-    const originalFunction = object.originalFunction;
+		const originalFunction = object.originalFunction;
 
-    const spy = new FunctionSpy();
+		const spy = new FunctionSpy();
 
-    spy.call([]);
+		spy.call([]);
 
-    Expect(fake.function).not.toHaveBeenCalled();
-  }
+		Expect(fake.function).not.toHaveBeenCalled();
+	}
 }

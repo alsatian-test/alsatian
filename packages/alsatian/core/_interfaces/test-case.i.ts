@@ -1,3 +1,3 @@
 export interface ITestCase {
-  caseArguments: Array<any>;
+	caseArguments: Array<any>;
 }
