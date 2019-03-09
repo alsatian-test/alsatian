@@ -1,4 +1,6 @@
 #! /usr/bin/env node
+// tslint:disable-next-line
+require('ts-node/register');
 
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 import { CliTestRunner } from "./cli-test-runner";
