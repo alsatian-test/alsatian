@@ -104,7 +104,6 @@
     "prettier": "^1.10.2",
     "rimraf": "^2.5.4",
     "selenium-webdriver": "^3.0.1",
-    "ts-node": "^7.0.0",
     "tslint": "^5.9.1",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^2.0.3"
@@ -114,6 +113,7 @@
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
     "reflect-metadata": "^0.1.3",
-    "tap-bark": "1.0.0"
+    "tap-bark": "1.0.0",
+    "ts-node": "^7.0.0"
   }
 }
