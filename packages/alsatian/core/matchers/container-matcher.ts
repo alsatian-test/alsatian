@@ -1,5 +1,5 @@
-import { EmptyMatcher } from "./empty-matcher";
 import { stringify } from "../stringification";
+import { ObjectMatcher } from "./object-matcher";
 
 /**
  * Compares container types e.g. string and Array
@@ -7,7 +7,7 @@ import { stringify } from "../stringification";
 export class ContainerMatcher<
 	ContainerType extends { indexOf(content: ContentType): number },
 	ContentType
-> extends EmptyMatcher<ContainerType> {
+> extends ObjectMatcher<ContainerType> {
 	/**
 	 * Checks that a string contains another string or an array contains a specific item
 	 * @param expectedContent - the string or array item that the value should contain

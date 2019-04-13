@@ -1,16 +1,17 @@
 import "reflect-metadata";
 import {
+	BufferMatcher,
 	PropertyMatcher,
 	FunctionMatcher,
 	ContainerMatcher,
-	EmptyMatcher,
 	StringMatcher,
 	NumberMatcher
 } from "../matchers";
 import { IExpect } from "./expect.i";
 import { fail } from "./fail";
 import { Matcher } from "../matchers";
-import { PropertySpy, FunctionSpy } from "../spying";
+import { PropertySpy, FunctionSpy, TypeMatcher } from "../spying";
+import { ObjectMatcher } from "../matchers/object-matcher";
 
 export function buildExpect(): IExpect {
 	const EXPECT = ExpectFunction as IExpect;
@@ -32,10 +33,11 @@ type MatcherDictionary<ExpectedType> = [
 ];
 
 const MATCHER_MAP: Array<MatcherDictionary<any>> = [
+	[Buffer, BufferMatcher],
 	[Array, ContainerMatcher],
 	[FunctionSpy, FunctionMatcher],
 	[PropertySpy, PropertyMatcher],
-	[Object, EmptyMatcher]
+	[Object, ObjectMatcher]
 ];
 
 function ExpectFunction<ActualType>(
