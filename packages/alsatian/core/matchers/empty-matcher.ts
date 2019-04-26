@@ -19,7 +19,11 @@ export class EmptyMatcher<T> extends Matcher<T> {
 					? actualValue
 					: stringify(actualValue)
 			}" ` + `${this.shouldMatch ? "" : "not "}to be empty.`,
-			"value to be empty"
+			"value to be empty",
+			{
+				actualLength: length,
+				expectedLength: this.shouldMatch ? 0 : "> 0"
+			}
 		);
 	}
 

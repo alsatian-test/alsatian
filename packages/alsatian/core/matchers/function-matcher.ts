@@ -1,7 +1,8 @@
-import { ErrorMatchError, FunctionCallMatchError } from "../errors";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
-import { FunctionSpyMatcher } from "./";
+import { FunctionSpyMatcher } from "./function-spy-matcher";
 import { Matcher } from "./matcher";
+import { stringify } from "../stringification";
+import { INameable } from "../_interfaces";
 
 /**
  * Checks whether functions have performed as expected
@@ -13,17 +14,33 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 	public toThrow() {
 		const error = this._getError();
 
-		if ((error === null) === this.shouldMatch) {
-			throw new ErrorMatchError(error, this.shouldMatch);
-		}
+		console.log("\n\n\n\n", error, "\n\n\n");
+
+		this._registerMatcher(
+			(error === null) === this.shouldMatch,
+			`Expected an error ` +
+			`${this.shouldMatch ? "" : "not "} to be thrown ` +
+			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
+			this.shouldMatch ? "an error thrown" : "no errors thrown",
+			{
+				errorThrown: error ? error.toString() : "none"
+			}
+		);
 	}
 
 	public async toThrowAsync() {
 		const error = await this._getAsyncError();
 
-		if ((error === null) === this.shouldMatch) {
-			throw new ErrorMatchError(error, this.shouldMatch);
-		}
+		this._registerMatcher(
+			(error === null) === this.shouldMatch,
+			`Expected an error ` +
+			`${this.shouldMatch ? "" : "not "} to be thrown ` +
+			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
+			this.shouldMatch ? "an error thrown" : "no errors thrown",
+			{
+				errorThrown: error ? error.toString() : "none"
+			}
+		);
 	}
 
 	/**
@@ -42,14 +59,20 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			errorMessage
 		);
 
-		if (threwRightError !== this.shouldMatch) {
-			throw new ErrorMatchError(
-				error,
-				this.shouldMatch,
-				errorType,
-				errorMessage
-			);
-		}
+		this._registerMatcher(
+			threwRightError === this.shouldMatch,
+			`Expected an error with ` +
+			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
+			`${errorMessage && errorType ? "and " : ""}` +
+			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
+			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
+			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
+			{
+				actualError: error ? error.toString() : "none",
+				expectedError: errorType.name,
+				expectedErrorMessage: errorMessage
+			}
+		);
 	}
 
 	/**
@@ -68,14 +91,20 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			errorMessage
 		);
 
-		if (threwRightError !== this.shouldMatch) {
-			throw new ErrorMatchError(
-				error,
-				this.shouldMatch,
-				errorType,
-				errorMessage
-			);
-		}
+		this._registerMatcher(
+			threwRightError === this.shouldMatch,
+			`Expected an error with ` +
+			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
+			`${errorMessage && errorType ? "and " : ""}` +
+			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
+			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
+			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
+			{
+				actualError: error ? error.toString() : "none",
+				expectedError: errorType.name,
+				expectedErrorMessage: errorMessage
+			}
+		);
 	}
 
 	/**
@@ -88,12 +117,11 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			);
 		}
 
-		if ((this.actualValue.calls.length === 0) === this.shouldMatch) {
-			throw new FunctionCallMatchError(
-				this.actualValue,
-				this.shouldMatch
-			);
-		}
+		this._registerMatcher(
+			(this.actualValue.calls.length === 0) === this.shouldMatch,
+			`Expected function ${!this.shouldMatch ? "not " : ""}to be called.`,
+			`function ${!this.shouldMatch ? "not " : ""}to have been called`
+		);
 
 		return new FunctionSpyMatcher(this.actualValue);
 	}
@@ -111,17 +139,18 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			);
 		}
 
-		if (
-			this.actualValue.calls.some((call: any) =>
+		this._registerMatcher(
+			this.actualValue.calls.some(call =>
 				this._callArgumentsMatch(call, expectedArguments)
-			) !== this.shouldMatch
-		) {
-			throw new FunctionCallMatchError(
-				this.actualValue,
-				this.shouldMatch,
-				expectedArguments
-			);
-		}
+			) !== this.shouldMatch,
+			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
+			`${expectedArguments ? " with " + stringify(expectedArguments) : ""}.`,
+			`function ${!this.shouldMatch ? "not " : ""}to have been called`,
+			{
+				expectedArguments: stringify(expectedArguments),
+				actualArguments: stringify(this.actualValue.calls.map(call => call.args))
+			}
+		);
 
 		return new FunctionSpyMatcher(this.actualValue, expectedArguments);
 	}

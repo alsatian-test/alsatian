@@ -4,7 +4,7 @@ import {
 	Test,
 	TestCase
 } from "../../../core/alsatian-core";
-import { PropertySetMatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 
 export class ToHaveBeenSetTests {
 	@Test()
@@ -40,7 +40,7 @@ export class ToHaveBeenSetTests {
 		const propertySpy = SpyOnProperty(some, "property");
 
 		Expect(() => Expect(propertySpy).toHaveBeenSet()).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			"Expected property to be set."
 		);
 	}
@@ -80,7 +80,7 @@ export class ToHaveBeenSetTests {
 		some.property = "something";
 
 		Expect(() => Expect(propertySpy).not.toHaveBeenSet()).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			"Expected property not to be set."
 		);
 	}
@@ -93,7 +93,7 @@ export class ToHaveBeenSetTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).toHaveBeenSet();
@@ -116,7 +116,7 @@ export class ToHaveBeenSetTests {
 
 		some.property = "something";
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSet();
@@ -137,7 +137,7 @@ export class ToHaveBeenSetTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).toHaveBeenSet();
@@ -160,7 +160,7 @@ export class ToHaveBeenSetTests {
 
 		some.property = "something";
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSet();

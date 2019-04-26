@@ -1,6 +1,8 @@
-import { FunctionCallCountMatchError } from "../errors";
 import { FunctionSpy } from "../spying";
-import { FunctionSpyCallCountMatcher, SpyCallCountType } from "./";
+import { FunctionSpyCallCountMatcher } from "./function-spy-call-count-matcher";
+import { SpyCallCountType } from "./spy-call-count-type";
+import { MatchError } from "../errors";
+import { stringify } from "../stringification";
 
 export class FunctionSpyMatcher {
 	private _spy: FunctionSpy;
@@ -91,15 +93,35 @@ export class FunctionSpyMatcher {
 		this._validateCallCount(callCount, callCountName);
 
 		if (countIsNotCorrect(this._matchingCallsCount())) {
-			throw new FunctionCallCountMatchError(
-				this._spy,
-				shouldMatch,
-				callCount,
-				callCountType,
-				this._expectedArguments
+			throw new MatchError(
+				`Expected function ${!shouldMatch ? "not " : ""}to be called` +
+				`${this._expectedArguments ? " with " + stringify(this._expectedArguments) : ""}` +
+				`${this.stringifyExpectedCallCount(callCount, callCountType)}.`,
+				null,
+				null,
+				{
+					actualCallCount: stringify(this._spy.calls.map(call => call.args)),
+					expectedCallCount: this.stringifyExpectedCallCount(callCount, callCountType),
+					expectedArguments: stringify(this._expectedArguments)
+				}
 			);
 		}
 
 		return new FunctionSpyCallCountMatcher();
+	}
+
+	private stringifyExpectedCallCount(callCount: number, callCountType: SpyCallCountType) {
+		return `${this.stringifyCallCountType(callCountType)} ${callCount} time${callCount === 1 ? "" : "s"}`;
+	}
+
+	private stringifyCallCountType(callCountType: SpyCallCountType) {
+		switch (callCountType) {
+			case SpyCallCountType.GreaterThan:
+				return "greater than";
+			case SpyCallCountType.LessThan:
+				return "less than";
+			default:
+				return "";
+		}
 	}
 }

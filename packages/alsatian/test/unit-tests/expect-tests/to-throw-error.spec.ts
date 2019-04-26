@@ -1,5 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 import { INameable } from "../../../core/_interfaces";
 
 export class ToThrowErrorTests {
@@ -10,7 +10,7 @@ export class ToThrowErrorTests {
 		Expect(() =>
 			Expect(nonThrowFunction).toThrowError(Error, "error message")
 		).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			'Expected an error with message "error message" and type Error to have been thrown, but it wasn\'t.'
 		);
 	}
@@ -43,7 +43,7 @@ export class ToThrowErrorTests {
 				expectedErrorMessage
 			)
 		).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			'Expected an error with message "' +
 				expectedErrorMessage +
 				'" and type ' +
@@ -69,7 +69,7 @@ export class ToThrowErrorTests {
 				"error message"
 			)
 		).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			"Expected an error of type " +
 				(expectedErrorType as INameable).name +
 				" to have been thrown, but " +
@@ -94,7 +94,7 @@ export class ToThrowErrorTests {
 				expectedErrorMessage
 			)
 		).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			'Expected an error with message "' +
 				expectedErrorMessage +
 				"\" to have been thrown, but it wasn't."
@@ -110,7 +110,7 @@ export class ToThrowErrorTests {
 		Expect(() =>
 			Expect(throwFunction).not.toThrowError(Error, "error message")
 		).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			'Expected an error with message "error message" and type Error to not have been thrown, but it was.'
 		);
 	}
@@ -168,7 +168,7 @@ export class ToThrowErrorTests {
 
 	@Test()
 	public actualValueAndShouldMatchShouldBeSetToErrorWasNotThrown() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {}).toThrowError(Error, "this error won't be thrown.");
@@ -188,7 +188,7 @@ export class ToThrowErrorTests {
 		expectedErrorType: new (message: string) => Error,
 		expectedErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {}).toThrowError(
@@ -223,7 +223,7 @@ export class ToThrowErrorTests {
 		actualErrorType: new (message: string) => Error,
 		actualErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {
@@ -249,7 +249,7 @@ export class ToThrowErrorTests {
 		expectedErrorType: new (message: string) => Error,
 		expectedErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {
@@ -275,7 +275,7 @@ export class ToThrowErrorTests {
 		expectedErrorType: new (message: string) => Error,
 		expectedErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {}).toThrowError(
@@ -302,7 +302,7 @@ export class ToThrowErrorTests {
 		expectedErrorType: new (message: string) => Error,
 		expectedErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {

@@ -1,5 +1,5 @@
-import { RegexMatchError } from "../errors";
 import { ContainerMatcher } from "./container-matcher";
+import { stringify } from "../stringification";
 
 /**
  * Compares strings
@@ -16,12 +16,16 @@ export class StringMatcher extends ContainerMatcher<string, string> {
 			);
 		}
 
-		if (!regex.test(this.actualValue) === this.shouldMatch) {
-			throw new RegexMatchError(
-				this.actualValue,
-				regex,
-				this.shouldMatch
-			);
-		}
+		this._registerMatcher(
+			regex.test(this.actualValue) === this.shouldMatch,
+			`Expected ${stringify(this.actualValue)} ${
+				!this.shouldMatch ? "not " : ""
+			}to conform to ${regex}.`,
+			regex,
+			{
+				string: this.actualValue,
+				regex: regex.toString()
+			}
+		);
 	}
 }

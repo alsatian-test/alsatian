@@ -5,10 +5,7 @@ import {
 	Test,
 	TestCase
 } from "../../../core/alsatian-core";
-import {
-	FunctionCallCountMatchError,
-	FunctionCallMatchError
-} from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { INameable } from "../../../core/_interfaces";
 import { stringify } from "../../../core/stringification";
 
@@ -48,7 +45,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 
 		Expect(() => Expect(some.function).toHaveBeenCalledWith()).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with []."
 		);
 	}
@@ -100,7 +97,7 @@ export class ToHaveBeenCalledWithTests {
 			const matcher = Expect(some.function);
 			matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
 		}).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [${expectedArguments
 				.map(arg => stringify(arg))
 				.join(", ")}].`
@@ -131,7 +128,7 @@ export class ToHaveBeenCalledWithTests {
 			const matcher = Expect(some.function);
 			matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
 		}).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [${expectedArguments
 				.map(arg => stringify(arg))
 				.join(", ")}].`
@@ -156,7 +153,7 @@ export class ToHaveBeenCalledWithTests {
 			const matcher = Expect(some.function);
 			matcher.toHaveBeenCalledWith.apply(matcher, expectedArguments);
 		}).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [${expectedArguments
 				.map(arg => JSON.stringify(arg))
 				.join(", ")}].`
@@ -204,7 +201,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith()
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with []."
 		);
 	}
@@ -302,7 +299,7 @@ export class ToHaveBeenCalledWithTests {
 			const matcher = Expect(some.function);
 			matcher.not.toHaveBeenCalledWith.apply(matcher, expectedArguments);
 		}).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function not to be called with [${expectedArguments
 				.map(arg => JSON.stringify(arg))
 				.join(", ")}].`
@@ -373,7 +370,7 @@ export class ToHaveBeenCalledWithTests {
 			some.function.apply(some, actualArguments);
 		});
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith([]);
@@ -408,7 +405,7 @@ export class ToHaveBeenCalledWithTests {
 			some.function.apply(some, actualArguments);
 		});
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			const expect = Expect(some.function);
@@ -443,7 +440,7 @@ export class ToHaveBeenCalledWithTests {
 
 		SpyOn(some, "function");
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			const expect = Expect(some.function);
@@ -477,7 +474,7 @@ export class ToHaveBeenCalledWithTests {
 
 		some.function.apply(some, expectedArguments);
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			const expect = Expect(some.function);
@@ -587,7 +584,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any)
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Anything]."
 		);
 	}
@@ -611,7 +608,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any, Any)
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Anything, Anything]."
 		);
 	}
@@ -631,7 +628,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function.apply(some, callArguments);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any);
@@ -661,7 +658,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function.apply(some, callArguments);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any, Any);
@@ -720,7 +717,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(Number))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any Number]."
 		);
 	}
@@ -757,7 +754,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(Number))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any Number]."
 		);
 	}
@@ -792,7 +789,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Number));
@@ -843,7 +840,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(String))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any String]."
 		);
 	}
@@ -884,7 +881,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(String))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any String]."
 		);
 	}
@@ -923,7 +920,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(String));
@@ -974,7 +971,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(Boolean))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any Boolean]."
 		);
 	}
@@ -1015,7 +1012,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(Boolean))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any Boolean]."
 		);
 	}
@@ -1054,7 +1051,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Boolean));
@@ -1133,7 +1130,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(Object))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any Object]."
 		);
 	}
@@ -1160,7 +1157,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(Object))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any Object]."
 		);
 	}
@@ -1185,7 +1182,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Object));
@@ -1236,7 +1233,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(Array))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any Array]."
 		);
 	}
@@ -1277,7 +1274,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(Array))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any Array]."
 		);
 	}
@@ -1316,7 +1313,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Array));
@@ -1363,7 +1360,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).not.toHaveBeenCalledWith(Any(Error))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called with [Any Error]."
 		);
 	}
@@ -1406,7 +1403,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(Error))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called with [Any Error]."
 		);
 	}
@@ -1447,7 +1444,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: FunctionCallMatchError;
+		let functionCallError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Error));
@@ -1540,7 +1537,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any, Any(type))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [Anything, Any ${
 				(type as INameable).name
 			}].`
@@ -1625,7 +1622,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(type), Any)
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [Any ${
 				(type as INameable).name
 			}, Anything].`
@@ -1710,7 +1707,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(42, Any(type))
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [42, Any ${
 				(type as INameable).name
 			}].`
@@ -1795,7 +1792,7 @@ export class ToHaveBeenCalledWithTests {
 		Expect(() =>
 			Expect(some.function).toHaveBeenCalledWith(Any(type), 42)
 		).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			`Expected function to be called with [Any ${
 				(type as INameable).name
 			}, 42].`
@@ -1979,7 +1976,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called with [42] 1 time."
 			);
 		} else {
@@ -1989,7 +1986,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with [42] ${expectedCallCount} times.`
 			);
 		}
@@ -2021,7 +2018,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				'Expected function to be called with ["some", "thing"] 1 time.'
 			);
 		} else {
@@ -2031,7 +2028,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with ["some", "thing"] ${expectedCallCount} times.`
 			);
 		}
@@ -2138,7 +2135,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.anythingBut(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function not to be called with [42] 1 time."
 			);
 		} else {
@@ -2148,7 +2145,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.anythingBut(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function not to be called with [42] ${expectedCallCount} times.`
 			);
 		}
@@ -2180,7 +2177,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.anythingBut(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				'Expected function not to be called with ["some", "thing"] 1 time.'
 			);
 		} else {
@@ -2190,7 +2187,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.anythingBut(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function not to be called with ["some", "thing"] ${expectedCallCount} times.`
 			);
 		}
@@ -2297,7 +2294,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called with [42] greater than 1 time."
 			);
 		} else {
@@ -2307,7 +2304,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith(42)
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with [42] greater than ${minimumCallCount} times.`
 			);
 		}
@@ -2339,7 +2336,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				'Expected function to be called with ["some", "thing"] greater than 1 time.'
 			);
 		} else {
@@ -2349,7 +2346,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with ["some", "thing"] greater than ${minimumCallCount} times.`
 			);
 		}
@@ -2507,7 +2504,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				'Expected function to be called with ["some", "thing"] less than 1 time.'
 			);
 		} else {
@@ -2517,7 +2514,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`
 			);
 		}
@@ -2549,7 +2546,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				'Expected function to be called with ["some", "thing"] less than 1 time.'
 			);
 		} else {
@@ -2559,7 +2556,7 @@ export class ToHaveBeenCalledWithTests {
 						.toHaveBeenCalledWith("some", "thing")
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called with ["some", "thing"] less than ${maximumCallCount} times.`
 			);
 		}

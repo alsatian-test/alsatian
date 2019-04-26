@@ -27,7 +27,11 @@ export class ContainerMatcher<
 			`Expected ${stringify(this.actualValue)} ${
 				!this.shouldMatch ? "not " : ""
 			}` + `to contain ${stringify(expectedContent)}.`,
-			expectedContent
+			expectedContent,
+			{
+				actualContainer: this.actualValue,
+				expectedContent,
+			}
 		);
 	}
 }

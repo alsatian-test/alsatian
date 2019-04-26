@@ -18,7 +18,7 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 				expectedValue,
 				this.actualValue
 			) === this.shouldMatch,
-			`Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
+			`Expected objects ${!this.shouldMatch ? "not " : ""}to be equal`,
 			expectedValue,
 			{
 				diff: diff(expectedValue, this.actualValue)
