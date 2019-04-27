@@ -2,19 +2,17 @@ import { Any, FunctionSpy, TypeMatcher } from "../spying";
 import { FunctionSpyMatcher } from "./function-spy-matcher";
 import { Matcher } from "./matcher";
 import { stringify } from "../stringification";
-import { INameable } from "../_interfaces";
+import { AnyFunction, INameable, FunctionArguments } from "../_interfaces";
 
 /**
  * Checks whether functions have performed as expected
  */
-export class FunctionMatcher extends Matcher<FunctionSpy | any> {
+export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy | T> {
 	/**
 	 * Checks that a function throws an error when executed
 	 */
 	public toThrow() {
 		const error = this._getError();
-
-		console.log("\n\n\n\n", error, "\n\n\n");
 
 		this._registerMatcher(
 			(error === null) === this.shouldMatch,
@@ -117,13 +115,15 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			);
 		}
 
+		const spy = this.actualValue as FunctionSpy;
+
 		this._registerMatcher(
-			(this.actualValue.calls.length === 0) === this.shouldMatch,
+			(spy.calls.length === 0) === this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called.`,
 			`function ${!this.shouldMatch ? "not " : ""}to have been called`
 		);
 
-		return new FunctionSpyMatcher(this.actualValue);
+		return new FunctionSpyMatcher(spy);
 	}
 
 	/**
@@ -131,16 +131,17 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 	 * @param expectedArguments - a list of arguments that the spy should have been called with
 	 */
 	public toHaveBeenCalledWith(
-		...expectedArguments: Array<any>
+		...expectedArguments: FunctionArguments<T>
 	): FunctionSpyMatcher {
 		if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
 			throw new TypeError(
 				"toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
 			);
 		}
+		const spy = this.actualValue as FunctionSpy;
 
 		this._registerMatcher(
-			this.actualValue.calls.some(call =>
+			spy.calls.some(call =>
 				this._callArgumentsMatch(call, expectedArguments)
 			) !== this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
@@ -148,16 +149,16 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			`function ${!this.shouldMatch ? "not " : ""}to have been called`,
 			{
 				expectedArguments: stringify(expectedArguments),
-				actualArguments: stringify(this.actualValue.calls.map(call => call.args))
+				actualArguments: stringify(spy.calls.map(call => call.args))
 			}
 		);
 
-		return new FunctionSpyMatcher(this.actualValue, expectedArguments);
+		return new FunctionSpyMatcher(spy, expectedArguments);
 	}
 
 	private _getError() {
 		try {
-			this.actualValue();
+			(this.actualValue as T)();
 			return null;
 		} catch (error) {
 			return error;
@@ -166,7 +167,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 
 	private async _getAsyncError() {
 		try {
-			await this.actualValue();
+			await (this.actualValue as T)();
 			return null;
 		} catch (error) {
 			return error;

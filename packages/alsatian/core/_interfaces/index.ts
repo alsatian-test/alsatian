@@ -1,17 +1,9 @@
-import { INameable } from "./nameable.i";
-import { ITestCase } from "./test-case.i";
-import { ITestFixture } from "./test-fixture.i";
-import { ITest } from "./test.i";
-import { Constructor } from "./constructor";
-import { ITester } from "./tester.i";
-import { ISpyCall } from "./spy-call.i";
-
-export {
-	ITestCase,
-	ITestFixture,
-	ITest,
-	INameable,
-	Constructor,
-	ITester,
-	ISpyCall
-};
+export { INameable } from "./nameable.i";
+export { ITestCase } from "./test-case.i";
+export { ITestFixture } from "./test-fixture.i";
+export { ITest } from "./test.i";
+export { Constructor } from "./constructor";
+export { ITester } from "./tester.i";
+export { ISpyCall } from "./spy-call.i";
+export { AnyFunction } from "./any-function";
+export { FunctionArguments } from "./function-arguments";

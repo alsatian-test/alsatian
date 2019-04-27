@@ -53,7 +53,7 @@ function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
 	}
 
 	if (typeof actualValue === "function") {
-		return FunctionMatcher;
+		return FunctionMatcher as any;
 	}
 
 	return getPrimitiveMatcher(actualValue);
