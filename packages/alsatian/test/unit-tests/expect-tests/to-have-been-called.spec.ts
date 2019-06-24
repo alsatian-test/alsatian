@@ -197,7 +197,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function to be called.");
+		Expect(functionError.expected).toBe("function to be called");
 	}
 
 	@Test()
@@ -220,7 +220,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function not to be called.");
+		Expect(functionError.expected).toBe("function not to be called");
 	}
 
 	@TestCase(1)

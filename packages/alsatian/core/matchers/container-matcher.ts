@@ -1,5 +1,7 @@
 import { stringify } from "../stringification";
 import { ObjectMatcher } from "./object-matcher";
+import { TypeMatcher } from "../spying";
+import { diff } from "./diff";
 
 /**
  * Compares container types e.g. string and Array

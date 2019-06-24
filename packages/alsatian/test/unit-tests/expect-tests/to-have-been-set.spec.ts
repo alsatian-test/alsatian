@@ -41,7 +41,7 @@ export class ToHaveBeenSetTests {
 
 		Expect(() => Expect(propertySpy).toHaveBeenSet()).toThrowError(
 			MatchError,
-			"Expected property to be set."
+			"Expected property to be set"
 		);
 	}
 

@@ -193,8 +193,10 @@ export class CliTestRunnerTests {
 
 		await cliTestRunner.run(cliOptions);
 
+		const packageJson = await import("../../../package.json");
+
 		Expect(process.stdout.write).toHaveBeenCalledWith(
-			"alsatian version " + require("../../../../package.json").version
+			"alsatian version " + packageJson.version
 		);
 	}
 
@@ -211,8 +213,10 @@ export class CliTestRunnerTests {
 
 		await cliTestRunner.run(cliOptions);
 
+		const packageJson = await import("../../../package.json");
+
 		Expect(process.stdout.write).toHaveBeenCalledWith(
-			"alsatian version " + require("../../../../package.json").version
+			"alsatian version " + packageJson.version
 		);
 	}
 
@@ -261,10 +265,12 @@ export class CliTestRunnerTests {
 
 		await cliTestRunner.run(cliOptions);
 
+		const packageJson = await import("../../../package.json");
+
 		Expect(process.stdout.write).toHaveBeenCalledWith(
 			"\n\n" +
 				"alsatian version " +
-				require("../../../../package.json").version +
+				packageJson.version +
 				"\n" +
 				"=========================\n" +
 				"CLI options\n" +
@@ -295,10 +301,12 @@ export class CliTestRunnerTests {
 
 		await cliTestRunner.run(cliOptions);
 
+		const packageJson = await import("../../../package.json");
+
 		Expect(process.stdout.write).toHaveBeenCalledWith(
 			"\n\n" +
 				"alsatian version " +
-				require("../../../../package.json").version +
+				packageJson.version +
 				"\n" +
 				"=========================\n" +
 				"CLI options\n" +

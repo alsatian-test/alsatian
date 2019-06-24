@@ -1,4 +1,3 @@
-import { BufferMatcher } from "./buffer-matcher";
 import { ContainerMatcher } from "./container-matcher";
 import { EmptyMatcher } from "./empty-matcher";
 import { FunctionMatcher } from "./function-matcher";
@@ -11,7 +10,6 @@ import { SpyCallCountType } from "./spy-call-count-type";
 import { StringMatcher } from "./string-matcher";
 
 export {
-	BufferMatcher,
 	ContainerMatcher,
 	EmptyMatcher,
 	FunctionMatcher,

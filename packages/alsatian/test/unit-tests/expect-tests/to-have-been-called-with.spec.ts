@@ -380,10 +380,8 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe(
-			"function was called with " +
-				actualArgumentsList.map(args => stringify(args)).join(", ") +
-				"."
+		Expect(functionError.extras.actualArguments).toBe(
+			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
 
@@ -420,10 +418,8 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe(
-			"function was called with " +
-				actualArgumentsList.map(args => stringify(args)).join(", ") +
-				"."
+		Expect(functionError.extras.actualArguments).toBe(
+			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
 

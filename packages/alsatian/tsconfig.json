@@ -3,7 +3,8 @@
    "compilerOptions": {
       "jsx": "react",
       "jsxFactory": "h",
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "resolveJsonModule": true
    },
    "exclude": [
       "./test/integration-tests",

@@ -13,7 +13,7 @@ export class PropertyMatcher<PropertyType> extends Matcher<
 	 */
 	public toHaveBeenSet() {
 		this._registerMatcher(
-			(this.actualValue.setCalls.length === 0) === this.shouldMatch,
+			(this.actualValue.setCalls.length === 0) !== this.shouldMatch,
 			`Expected property ${!this.shouldMatch ? "not " : ""}to be set`,
 			`property ${this.shouldMatch ? "" : "not "}to have been set`
 		);
@@ -24,12 +24,14 @@ export class PropertyMatcher<PropertyType> extends Matcher<
 	 * @param value - a value to which the property should be set to
 	 */
 	public toHaveBeenSetTo(value: PropertyType) {
+		const stringifiedValue = stringify(value);
+
 		this._registerMatcher(
-			(this.actualValue.setCalls.filter(
+			this.actualValue.setCalls.some(
 				call => call.args[0] === value
-			).length === 0) === this.shouldMatch,
-			`Expected property ${!this.shouldMatch ? "not " : ""}to be set to ${value}`,
-			`property ${this.shouldMatch ? "" : "not "}to have been set to ${value}`,
+			) === this.shouldMatch,
+			`Expected property ${!this.shouldMatch ? "not " : ""}to be set to ${stringifiedValue}.`,
+			`property ${this.shouldMatch ? "" : "not "}to be set to ${stringifiedValue}.`,
 			{
 				actualValues: this.actualValue.setCalls.map(call => call.args[0]),
 				expectedValue: value

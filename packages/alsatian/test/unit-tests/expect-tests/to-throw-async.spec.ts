@@ -115,7 +115,7 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe("error was not thrown.");
+		Expect(errorMatchError.extras.errorThrown).toBe("none");
 	}
 
 	@TestCase(EvalError, "something went wrong")
@@ -140,10 +140,8 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe(
-			`${
-				(actualErrorType as INameable).name
-			} error was thrown with message "${actualErrorMessage}".`
+		Expect(errorMatchError.extras.errorThrown).toBe(
+			`${actualErrorType.name}: ${actualErrorMessage}`
 		);
 	}
 
@@ -163,7 +161,7 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("error not to be thrown.");
+		Expect(errorMatchError.expected).toBe("no errors thrown");
 	}
 
 	@AsyncTest(

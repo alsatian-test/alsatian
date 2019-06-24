@@ -12,11 +12,13 @@ export class NumberMatcher extends Matcher<number> {
 		this._validateValues(upperLimit, "toBeLessThan", "upper limit");
 
 		this._registerMatcher(
-			this.actualValue < upperLimit !== this.shouldMatch,
+			this.actualValue < upperLimit === this.shouldMatch,
 			`Expected ${this.actualValue} ${
 				!this.shouldMatch ? "not " : ""
-			}to be less than ${upperLimit}.`,
-			upperLimit,
+			}to be less than ${upperLimit}.`,			
+			`a number ${
+				!this.shouldMatch ? "not " : ""
+			}less than ${upperLimit}`,
 			{
 				actual: this.actualValue,
 				upperLimit
@@ -32,11 +34,13 @@ export class NumberMatcher extends Matcher<number> {
 		this._validateValues(lowerLimit, "toBeGreaterThan", "lower limit");
 
 		this._registerMatcher(
-			this.actualValue > lowerLimit !== this.shouldMatch,
+			this.actualValue > lowerLimit === this.shouldMatch,
 			`Expected ${this.actualValue} ${
 				!this.shouldMatch ? "not " : ""
 			}to be greater than ${lowerLimit}.`,
-			lowerLimit,
+			`a number ${
+				!this.shouldMatch ? "not " : ""
+			}greater than ${lowerLimit}`,
 			{
 				actual: this.actualValue,
 				lowerLimit

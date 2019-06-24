@@ -234,11 +234,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(
-			"property was set to " +
-				values.map(value => JSON.stringify(value)).join(", ") +
-				"."
-		);
+		Expect(propertyError.extras.actualValues).toEqual(values);
 	}
 
 	@TestCase([null])
@@ -269,11 +265,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(
-			"property was set to " +
-				values.map(value => JSON.stringify(value)).join(", ") +
-				"."
-		);
+		Expect(propertyError.extras.actualValues).toEqual(values);
 	}
 
 	@TestCase(undefined)
@@ -306,9 +298,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.expected).toBe(
-			"property to be set to " + stringify(expectedValue) + "."
-		);
+		Expect(propertyError.extras.expectedValue).toBe(expectedValue);
 	}
 
 	@TestCase(undefined)

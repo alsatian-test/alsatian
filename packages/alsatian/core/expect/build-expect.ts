@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {
-	BufferMatcher,
 	PropertyMatcher,
 	FunctionMatcher,
 	ContainerMatcher,
@@ -33,7 +32,6 @@ type MatcherDictionary<ExpectedType> = [
 ];
 
 const MATCHER_MAP: Array<MatcherDictionary<any>> = [
-	[Buffer, BufferMatcher],
 	[Array, ContainerMatcher],
 	[FunctionSpy, FunctionMatcher],
 	[PropertySpy, PropertyMatcher],

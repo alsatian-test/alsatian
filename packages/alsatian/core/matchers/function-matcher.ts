@@ -15,9 +15,9 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		const error = this._getError();
 
 		this._registerMatcher(
-			(error === null) === this.shouldMatch,
+			(error === null) !== this.shouldMatch,
 			`Expected an error ` +
-			`${this.shouldMatch ? "" : "not "} to be thrown ` +
+			`${this.shouldMatch ? "" : "not "}to be thrown ` +
 			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
 			this.shouldMatch ? "an error thrown" : "no errors thrown",
 			{
@@ -30,9 +30,9 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		const error = await this._getAsyncError();
 
 		this._registerMatcher(
-			(error === null) === this.shouldMatch,
+			(error === null) !== this.shouldMatch,
 			`Expected an error ` +
-			`${this.shouldMatch ? "" : "not "} to be thrown ` +
+			`${this.shouldMatch ? "" : "not "}to be thrown ` +
 			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
 			this.shouldMatch ? "an error thrown" : "no errors thrown",
 			{
@@ -118,9 +118,9 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		const spy = this.actualValue as FunctionSpy;
 
 		this._registerMatcher(
-			(spy.calls.length === 0) === this.shouldMatch,
+			(spy.calls.length === 0) !== this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called.`,
-			`function ${!this.shouldMatch ? "not " : ""}to have been called`
+			`function ${!this.shouldMatch ? "not " : ""}to be called`,
 		);
 
 		return new FunctionSpyMatcher(spy);
@@ -143,10 +143,11 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		this._registerMatcher(
 			spy.calls.some(call =>
 				this._callArgumentsMatch(call, expectedArguments)
-			) !== this.shouldMatch,
+			) === this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
-			`${expectedArguments ? " with " + stringify(expectedArguments) : ""}.`,
-			`function ${!this.shouldMatch ? "not " : ""}to have been called`,
+			`${this._stringifyArguments(expectedArguments)}.`,
+			`function ${!this.shouldMatch ? "not " : ""}to be called`+
+			`${this._stringifyArguments(expectedArguments)}.`,
 			{
 				expectedArguments: stringify(expectedArguments),
 				actualArguments: stringify(spy.calls.map(call => call.args))
@@ -154,6 +155,10 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		);
 
 		return new FunctionSpyMatcher(spy, expectedArguments);
+	}
+
+	private _stringifyArguments(expectedArguments: FunctionArguments<T>) {
+		return `${expectedArguments ? " with " + stringify(expectedArguments) : ""}`;
 	}
 
 	private _getError() {

@@ -33,7 +33,7 @@
     "lint:fix": "npm run lint:code -- --fix & npm run lint:tests -- --fix",
     "pretest": "npm run build",
     "test": "npm run lint && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
+    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
     "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "install-self": "npm link && npm link alsatian",
