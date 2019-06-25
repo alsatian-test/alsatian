@@ -158,7 +158,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	}
 
 	private _stringifyArguments(expectedArguments: FunctionArguments<T>) {
-		return `${expectedArguments ? " with " + stringify(expectedArguments) : ""}`;
+		return expectedArguments ? ` with ${stringify(expectedArguments)}` : "";
 	}
 
 	private _getError() {
