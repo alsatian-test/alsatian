@@ -1,7 +1,5 @@
 import { stringify } from "../stringification";
 import { ObjectMatcher } from "./object-matcher";
-import { TypeMatcher } from "../spying";
-import { diff } from "./diff";
 
 /**
  * Compares container types e.g. string and Array
@@ -11,8 +9,8 @@ export class ContainerMatcher<
 	ContentType
 > extends ObjectMatcher<ContainerType> {
 	/**
-	 * Checks that a string contains another string or an array contains a specific item
-	 * @param expectedContent - the string or array item that the value should contain
+	 * Checks that an array contains a specific item
+	 * @param expectedContent - the array item that the value should contain
 	 */
 	public toContain(expectedContent: ContentType) {
 		if (
