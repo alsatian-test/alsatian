@@ -94,8 +94,7 @@ export class FunctionSpyMatcher {
 
 		const actualCallCount = this._matchingCallsCount();
 
-		if (countIsNotCorrect(actualCallCount))
-		 {
+		if (countIsNotCorrect(actualCallCount)) {
 			throw new MatchError(
 				`Expected function ${!shouldMatch ? "not " : ""}to be called` +
 				`${this._expectedArguments ? " with " + stringify(this._expectedArguments) : ""}` +

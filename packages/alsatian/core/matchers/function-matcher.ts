@@ -146,7 +146,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 			) === this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
 			`${this._stringifyArguments(expectedArguments)}.`,
-			`function ${!this.shouldMatch ? "not " : ""}to be called`+
+			`function ${!this.shouldMatch ? "not " : ""}to be called` +
 			`${this._stringifyArguments(expectedArguments)}.`,
 			{
 				expectedArguments: stringify(expectedArguments),

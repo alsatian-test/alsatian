@@ -15,7 +15,7 @@ export class NumberMatcher extends Matcher<number> {
 			this.actualValue < upperLimit === this.shouldMatch,
 			`Expected ${this.actualValue} ${
 				!this.shouldMatch ? "not " : ""
-			}to be less than ${upperLimit}.`,			
+			}to be less than ${upperLimit}.`,
 			`a number ${
 				!this.shouldMatch ? "not " : ""
 			}less than ${upperLimit}`,

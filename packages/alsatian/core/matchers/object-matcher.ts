@@ -5,10 +5,10 @@ import { TypeMatcher } from "../spying";
 export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 
 	/**
-	* Checks that a value is equal to another (for objects the function will check for deep equality)
-	* @param expectedValue - the value that will be used to match
-	*/
-   public toEqual(expectedValue: T | TypeMatcher<T>) {
+	 * Checks that a value is equal to another (for objects the function will check for deep equality)
+	 * @param expectedValue - the value that will be used to match
+	 */
+	public toEqual(expectedValue: T | TypeMatcher<T>) {
 		if (Buffer.isBuffer(expectedValue) || Buffer.isBuffer(this.actualValue)) {
 			this._checkTypeMatcherEqual(expectedValue, this.buffersEqual);
 		}
