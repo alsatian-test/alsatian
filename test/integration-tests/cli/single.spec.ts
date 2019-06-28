@@ -1,4 +1,4 @@
-import { Expect, Test } from 'alsatian';
+import { Expect, Test } from "alsatian";
 
 export class SingleTest {
   @Test()

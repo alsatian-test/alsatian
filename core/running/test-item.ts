@@ -1,7 +1,7 @@
-import { ITest, ITestCase, ITestFixture } from '../_interfaces';
-import { METADATA_KEYS } from '../alsatian-core';
-import { ISetupTeardownMetadata } from '../decorators/_interfaces';
-import { TestTimeoutError } from '../errors';
+import { ITest, ITestCase, ITestFixture } from "../_interfaces";
+import { METADATA_KEYS } from "../alsatian-core";
+import { ISetupTeardownMetadata } from "../decorators/_interfaces";
+import { TestTimeoutError } from "../errors";
 
 export class TestItem {
   private _testCase: ITestCase;
@@ -19,17 +19,21 @@ export class TestItem {
     return this._testFixture;
   }
 
-  public constructor(testFixture: ITestFixture, test: ITest, testCase: ITestCase) {
+  public constructor(
+    testFixture: ITestFixture,
+    test: ITest,
+    testCase: ITestCase
+  ) {
     if (testFixture === null || testFixture === undefined) {
-      throw new TypeError('testFixture must not be null or undefined.');
+      throw new TypeError("testFixture must not be null or undefined.");
     }
 
     if (test === null || test === undefined) {
-      throw new TypeError('test must not be null or undefined.');
+      throw new TypeError("test must not be null or undefined.");
     }
 
     if (testCase === null || testCase === undefined) {
-      throw new TypeError('testCase must not be null or undefined.');
+      throw new TypeError("testCase must not be null or undefined.");
     }
 
     this._testFixture = testFixture;
@@ -100,9 +104,13 @@ export class TestItem {
 
   private async _runFunctionFromMetadata(funcMetadata: ISetupTeardownMetadata) {
     if (funcMetadata.isAsync) {
-      await this._testFixture.fixture[funcMetadata.propertyKey].call(this.testFixture.fixture);
+      await this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
     } else {
-      this._testFixture.fixture[funcMetadata.propertyKey].call(this.testFixture.fixture);
+      this._testFixture.fixture[funcMetadata.propertyKey].call(
+        this.testFixture.fixture
+      );
     }
   }
 }
