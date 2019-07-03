@@ -38,4 +38,19 @@ export class StringifyTests {
 	public anyTypeReturnsAnyTypeName(constructor: any) {
 		Expect(stringify(Any(constructor))).toBe("Any " + constructor.name);
 	}
+
+	@Test("circular references don't blow up")
+	public circularReferencesDontBlowUp() {
+		const parent = {
+			children: []
+		};
+
+		const child = {
+			parent
+		};
+
+		parent.children.push(child);
+
+		Expect(() => stringify(parent)).not.toThrow();
+	}
 }

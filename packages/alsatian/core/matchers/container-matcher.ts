@@ -13,15 +13,6 @@ export class ContainerMatcher<
 	 * @param expectedContent - the array item that the value should contain
 	 */
 	public toContain(expectedContent: ContentType) {
-		if (
-			typeof this.actualValue === "string" &&
-			typeof expectedContent !== "string"
-		) {
-			throw new TypeError(
-				"toContain cannot check whether a string contains a non string value."
-			);
-		}
-
 		this._registerMatcher(
 			this.actualValue.indexOf(expectedContent) > -1 === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
