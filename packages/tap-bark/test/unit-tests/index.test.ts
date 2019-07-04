@@ -34,7 +34,7 @@ export default class IndexTests {
 
 	@Test("Tap Bark stream piped to process.stdout")
 	public tapBarkPipedToStdOut() {
-		const chainedPipe = { pipe: () => {} };
+		const chainedPipe = { pipe: (stream: NodeJS.WritableStream) => {} };
 		SpyOn(chainedPipe, "pipe");
 
 		SpyOn(process.stdin, "pipe").andReturn(chainedPipe);
