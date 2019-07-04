@@ -15,11 +15,11 @@
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg" alt="Code Climate" />
     </a>
-    <a href="https://coveralls.io/github/alsatian-test/alsatian?branch=master">
-        <img src="https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master" alt="Coverage Status" />
-    </a>
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg" alt="Code Climate Issue Count" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian/test_coverage">
+        <img src="https://api.codeclimate.com/v1/badges/ba8c9cedceb03ab59dc8/test_coverage" />
     </a>
     <a href="https://snyk.io/test/github/alsatian-test/alsatian">
         <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
