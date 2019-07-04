@@ -4,7 +4,7 @@ import {
 	Test,
 	TestCase
 } from "../../../core/alsatian-core";
-import { PropertySetMatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { stringify } from "../../../core/stringification";
 
 export class ToHaveBeenSetToTests {
@@ -47,7 +47,7 @@ export class ToHaveBeenSetToTests {
 		Expect(() =>
 			Expect(propertySpy).toHaveBeenSetTo("something")
 		).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			'Expected property to be set to "something".'
 		);
 	}
@@ -101,7 +101,7 @@ export class ToHaveBeenSetToTests {
 		Expect(() =>
 			Expect(propertySpy).toHaveBeenSetTo(expectedValue)
 		).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			`Expected property to be set to ${stringify(expectedValue)}.`
 		);
 	}
@@ -156,7 +156,7 @@ export class ToHaveBeenSetToTests {
 		Expect(() =>
 			Expect(propertySpy).not.toHaveBeenSetTo(expectedValue)
 		).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			`Expected property not to be set to ${stringify(expectedValue)}.`
 		);
 	}
@@ -201,7 +201,7 @@ export class ToHaveBeenSetToTests {
 		Expect(() =>
 			Expect(propertySpy).toHaveBeenSetTo(expectedValue)
 		).toThrowError(
-			PropertySetMatchError,
+			MatchError,
 			`Expected property to be set to ${JSON.stringify(expectedValue)}.`
 		);
 	}
@@ -224,7 +224,7 @@ export class ToHaveBeenSetToTests {
 			some.property = value;
 		});
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).toHaveBeenSetTo({ something: "weird" });
@@ -234,11 +234,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(
-			"property was set to " +
-				values.map(value => JSON.stringify(value)).join(", ") +
-				"."
-		);
+		Expect(propertyError.extras.actualValues).toEqual(values);
 	}
 
 	@TestCase([null])
@@ -259,7 +255,7 @@ export class ToHaveBeenSetToTests {
 			some.property = value;
 		});
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSetTo(values[0]);
@@ -269,11 +265,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(
-			"property was set to " +
-				values.map(value => JSON.stringify(value)).join(", ") +
-				"."
-		);
+		Expect(propertyError.extras.actualValues).toEqual(values);
 	}
 
 	@TestCase(undefined)
@@ -296,7 +288,7 @@ export class ToHaveBeenSetToTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).toHaveBeenSetTo(expectedValue);
@@ -306,9 +298,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.expected).toBe(
-			"property to be set to " + stringify(expectedValue) + "."
-		);
+		Expect(propertyError.extras.expectedValue).toBe(expectedValue);
 	}
 
 	@TestCase(undefined)
@@ -333,7 +323,7 @@ export class ToHaveBeenSetToTests {
 
 		some.property = expectedValue;
 
-		let propertyError: PropertySetMatchError;
+		let propertyError: MatchError;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSetTo(expectedValue);

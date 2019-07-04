@@ -34,7 +34,7 @@
     "pretest": "npm run build",
     "test": "npm run lint && npm run check-coverage && npm run integration-tests",
     "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
-    "check-coverage": "npm run build & nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
+    "check-coverage": "nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
     "output-test-coverage": "nyc report",
     "install-self": "npm link && npm link alsatian",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
@@ -98,7 +98,7 @@
     "prettier": "^1.10.2",
     "rimraf": "^2.5.4",
     "selenium-webdriver": "^3.0.1",
-    "ts-node": "^7.0.0",
+    "ts-node": "^8.3.0",
     "tslint": "^5.9.1",
     "tslint-plugin-prettier": "^1.3.0",
     "typescript": "^3.0.1"

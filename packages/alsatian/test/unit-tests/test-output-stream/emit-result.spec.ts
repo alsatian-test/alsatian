@@ -43,6 +43,8 @@ const _getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
 		"   expect: no unhandled errors to be thrown\n" +
 		"   details:\n" +
 		buildLogs(logs) +
+		"     type: Error\n" +
+		"     message: empty message\n" +
 		"     stack: |-\n" +
 		stack
 			.split("\n")

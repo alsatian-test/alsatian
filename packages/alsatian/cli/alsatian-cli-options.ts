@@ -6,51 +6,39 @@ import { Unused } from "../core/unused";
 import { removeItemByIndex } from "../core/utils/remove-item-by-index";
 
 export class AlsatianCliOptions {
-	private _fileGlobs: Array<string>;
-	public get fileGlobs(): Array<string> {
-		return this._fileGlobs;
-	}
-
-	private _timeout: number | null = null;
-	public get timeout(): number | null {
-		return this._timeout;
-	}
-
-	private _tap: boolean = false;
-	public get tap(): boolean {
-		return this._tap;
-	}
-
-	private _versionRequested: boolean = false;
-	public get versionRequested(): boolean {
-		return this._versionRequested;
-	}
-
-	private _helpRequested: boolean = false;
-	public get helpRequested(): boolean {
-		return this._helpRequested;
-	}
-
-	private _hideProgress: boolean = false;
-	public get hideProgress(): boolean {
-		return this._hideProgress;
-	}
+	public readonly fileGlobs: Array<string>;
+	public readonly timeout: number | null = null;
+	public readonly tap: boolean = false;
+	public readonly versionRequested: boolean = false;
+	public readonly helpRequested: boolean = false;
+	public readonly hideProgress: boolean = false;
 
 	public constructor(args: Array<string>) {
-		args = this._extractTap(args);
-		args = this._extractVersionRequested(args);
-		args = this._extractHelpRequested(args);
-		args = this._extractFileGlobs(args);
-		args = this._extractTimeout(args);
-		args = this._extractHideProgress(args);
+		const a = this.extractTap(args);
+		this.tap = a.value;
 
-		if (args.length > 0) {
-			throw new InvalidArgumentNamesError(args);
+		const b = this.extractVersionRequested(a.args);
+		this.versionRequested = b.value;
+
+		const c = this.extractHelpRequested(b.args);
+		this.helpRequested = c.value;
+
+		const d = this.extractFileGlobs(c.args);
+		this.fileGlobs = d.value;
+
+		const e = this.extractTimeout(d.args);
+		this.timeout = e.value;
+
+		const f = this.extractHideProgress(e.args);
+		this.hideProgress = f.value;
+
+		if (f.args.length > 0) {
+			throw new InvalidArgumentNamesError(f.args);
 		}
 	}
 
-	private _extractFileGlobs(args: Array<string>) {
-		this._fileGlobs = args.filter((value, index) => {
+	private extractFileGlobs(args: Array<string>) {
+		const fileGlobs = args.filter((value, index) => {
 			const previousArgument = args[index - 1];
 
 			if (
@@ -63,10 +51,14 @@ export class AlsatianCliOptions {
 			return false;
 		});
 
-		return args.filter(value => this._fileGlobs.indexOf(value) === -1);
+		args = args.filter(value => fileGlobs.indexOf(value) === -1);
+		return {
+			value: fileGlobs,
+			args
+		};
 	}
 
-	private _isInvalidTimeoutValue(timeoutValue: string) {
+	private isInvalidTimeoutValue(timeoutValue: string) {
 		const timeout = parseInt(timeoutValue, 10);
 
 		return (
@@ -74,105 +66,118 @@ export class AlsatianCliOptions {
 		);
 	}
 
-	private _extractTimeout(args: Array<string>) {
-		const timeoutValue = this._getArgumentValueFromArgumentList(
+	private extractTimeout(args: Array<string>) {
+		const timeoutValue = this.getArgumentValueFromArgumentList(
 			args,
 			"timeout",
 			"t"
 		);
 
 		if (timeoutValue !== null) {
-			if (this._isInvalidTimeoutValue(timeoutValue)) {
+			if (this.isInvalidTimeoutValue(timeoutValue)) {
 				throw new InvalidTimeoutValueError(timeoutValue);
 			}
 
-			const timeout = parseInt(timeoutValue, 10);
-
-			this._timeout = timeout;
-
-			const argumentIndex = this._getArgumentIndexFromArgumentList(
+			const argumentIndex = this.getArgumentIndexFromArgumentList(
 				args,
 				"timeout",
 				"t"
 			);
 
 			// filter out the timeout argument and its value
-			return args.filter((value, index) => {
+			args = args.filter((value, index) => {
 				Unused(value);
 				return index !== argumentIndex && index !== argumentIndex + 1;
 			});
 		}
 
-		return args;
+		return {
+			value: parseInt(timeoutValue, 10) || null,
+			args
+		};
 	}
 
-	private _extractTap(args: Array<string>): Array<string> {
-		const argumentIndex = this._getArgumentIndexFromArgumentList(
+	private extractTap(args: Array<string>) {
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			"tap",
 			"T"
 		);
 
-		// if we found the tap argument, we want to enable tap output
-		this._tap = argumentIndex !== -1;
-
 		// filter out the tap argument and return the other args
-		return args.filter((value, index) => {
+		args = args.filter((value, index) => {
 			Unused(value);
 			return index !== argumentIndex;
 		});
+
+		// if we found the tap argument, we want to enable tap output
+		return {
+			value: argumentIndex !== -1,
+			args
+		};
 	}
 
-	private _extractHideProgress(args: Array<string>): Array<string> {
-		const argumentIndex = this._getArgumentIndexFromArgumentList(
+	private extractHideProgress(args: Array<string>) {
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			"hide-progress",
 			"H"
 		);
 
-		// if we found the hide progress argument, we want to enable hide progress
-		this._hideProgress = argumentIndex !== -1;
-
-		// filter out the hide progress argument and return the other args
-		return args.filter((value, index) => {
+		// filter out the tap argument and return the other args
+		args = args.filter((value, index) => {
 			Unused(value);
 			return index !== argumentIndex;
 		});
+
+		// if we found the tap argument, we want to enable tap output
+		return {
+			value: argumentIndex !== -1,
+			args
+		};
 	}
 
-	private _extractVersionRequested(args: Array<string>) {
-		const versionRequestedIndex = this._getArgumentIndexFromArgumentList(
+	private extractVersionRequested(args: Array<string>) {
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			"version",
 			"v"
 		);
 
-		if (versionRequestedIndex > -1) {
-			this._versionRequested = true;
+		// filter out the tap argument and return the other args
+		args = args.filter((value, index) => {
+			Unused(value);
+			return index !== argumentIndex;
+		});
 
-			return removeItemByIndex(args, versionRequestedIndex);
-		}
-
-		return args;
+		// if we found the tap argument, we want to enable tap output
+		return {
+			value: argumentIndex !== -1,
+			args
+		};
 	}
 
-	private _extractHelpRequested(args: Array<string>) {
-		const helpRequestedIndex = this._getArgumentIndexFromArgumentList(
+	private extractHelpRequested(args: Array<string>) {
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			"help",
 			"h"
 		);
 
-		if (helpRequestedIndex > -1) {
-			this._helpRequested = true;
+		// filter out the tap argument and return the other args
+		args = args.filter((value, index) => {
+			Unused(value);
+			return index !== argumentIndex;
+		});
 
-			return removeItemByIndex(args, helpRequestedIndex);
-		}
-
-		return args;
+		// if we found the tap argument, we want to enable tap output
+		return {
+			value: argumentIndex !== -1,
+			args
+		};
 	}
 
-	private _getArgumentIndexFromArgumentList(
+	private getArgumentIndexFromArgumentList(
 		args: Array<string>,
 		argumentName: string,
 		argumentShorthand?: string
@@ -192,12 +197,12 @@ export class AlsatianCliOptions {
 		return args.indexOf(matchingArguments[0]);
 	}
 
-	private _getArgumentValueFromArgumentList(
+	private getArgumentValueFromArgumentList(
 		args: Array<string>,
 		argumentName: string,
 		argumentShorthand?: string
 	): string | null {
-		const argumentIndex = this._getArgumentIndexFromArgumentList(
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			argumentName,
 			argumentShorthand

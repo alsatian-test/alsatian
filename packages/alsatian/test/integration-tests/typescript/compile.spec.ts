@@ -28,7 +28,6 @@ export class TypeScriptCompilerTests {
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				// console.log(consoleOutput);
 				Expect(code).toBe(0);
 				resolve();
 			});

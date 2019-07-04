@@ -1,11 +1,9 @@
 import {
 	AsyncTest,
 	Expect,
-	TestCase,
-	Focus,
-	Test
+	TestCase
 } from "../../../core/alsatian-core";
-import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 import { INameable } from "../../../core/_interfaces";
 import { wait } from "../../utility-functions/wait";
 
@@ -56,7 +54,7 @@ export class ToThrowAsyncTests {
 				async () => await this.asyncNonThrowFunction(delayMs)
 			).toThrowAsync();
 		}).toThrowErrorAsync(
-			ErrorMatchError,
+			MatchError,
 			"Expected an error to be thrown but no errors were thrown."
 		);
 	}
@@ -98,7 +96,7 @@ export class ToThrowAsyncTests {
 				async () => await this.asyncThrowFunction(delayMs)
 			).not.toThrowAsync();
 		}).toThrowErrorAsync(
-			ErrorMatchError,
+			MatchError,
 			"Expected an error not to be thrown but an error was thrown."
 		);
 	}
@@ -107,7 +105,7 @@ export class ToThrowAsyncTests {
 		"Test toThrowAsync errors are caught and error is type ErrorMatchError"
 	)
 	public async asyncActualValueAndShouldNotMatchErrorM() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			await Expect(() => {}).toThrowAsync();
@@ -117,7 +115,7 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe("error was not thrown.");
+		Expect(errorMatchError.extras.errorThrown).toBe("none");
 	}
 
 	@TestCase(EvalError, "something went wrong")
@@ -130,7 +128,7 @@ export class ToThrowAsyncTests {
 		actualErrorType: new (message: string) => Error,
 		actualErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			await Expect(() => {
@@ -142,10 +140,8 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe(
-			`${
-				(actualErrorType as INameable).name
-			} error was thrown with message "${actualErrorMessage}".`
+		Expect(errorMatchError.extras.errorThrown).toBe(
+			`${actualErrorType.name}: ${actualErrorMessage}`
 		);
 	}
 
@@ -153,7 +149,7 @@ export class ToThrowAsyncTests {
 		"Test not.toThrowAsync error are caught and error is ErrorMatchError"
 	)
 	public async asyncExpectedValueAndShouldNotMatchShouldBeSetToErrorNotToBeThrown() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			await Expect(() => {
@@ -165,7 +161,7 @@ export class ToThrowAsyncTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("error not to be thrown.");
+		Expect(errorMatchError.expected).toBe("no errors thrown");
 	}
 
 	@AsyncTest(

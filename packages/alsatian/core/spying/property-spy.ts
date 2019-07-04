@@ -97,7 +97,7 @@ export class PropertySpy<PropertyType> {
 		}
 
 		// otherwise call the getter function and return it's return value
-		return this._getter.call(this._descriptorTarget);
+		return this._getter ? this._getter.call(this._descriptorTarget) : undefined;
 	}
 
 	private _set(value: PropertyType) {

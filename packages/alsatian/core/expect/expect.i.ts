@@ -8,6 +8,7 @@ import {
 	StringMatcher
 } from "../matchers";
 import { FunctionSpy, PropertySpy } from "../spying";
+import { AnyFunction } from "../_interfaces";
 
 /**
  * Enables actual vs expected comparisons
@@ -18,9 +19,9 @@ export interface IExpect {
 	 * @param actualValue - the value or function under test
 	 */
 	<T>(actualValue: Array<T>): ContainerMatcher<Array<T>, T>;
-	(
-		actualValue: FunctionSpy | ((...args: Array<any>) => any)
-	): FunctionMatcher;
+	<T extends AnyFunction>(
+		actualValue: FunctionSpy | T
+	): FunctionMatcher<T>;
 	(actualValue: number): NumberMatcher;
 	<T>(actualValue: PropertySpy<T>): PropertyMatcher<T>;
 	(actualValue: object): EmptyMatcher<object>;

@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+import "ts-node/register";
 
 import { AlsatianCliOptions } from "./alsatian-cli-options";
 import { CliTestRunner } from "./cli-test-runner";

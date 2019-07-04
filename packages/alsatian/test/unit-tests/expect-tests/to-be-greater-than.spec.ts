@@ -1,5 +1,5 @@
 import { Expect, TestCase } from "../../../core/alsatian-core";
-import { GreaterThanMatchError } from "../../../core/errors/greater-than-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToBeGreaterThanTests {
 	@TestCase(1, 0)
@@ -52,7 +52,7 @@ export class ToBeGreaterThanTests {
 		const expect = Expect(value);
 
 		Expect(() => expect.toBeGreaterThan(lowerLimit)).toThrowError(
-			GreaterThanMatchError,
+			MatchError,
 			"Expected " + value + " to be greater than " + lowerLimit + "."
 		);
 	}
@@ -63,7 +63,7 @@ export class ToBeGreaterThanTests {
 		const expect = Expect(value);
 
 		Expect(() => expect.not.toBeGreaterThan(lowerLimit)).toThrowError(
-			GreaterThanMatchError,
+			MatchError,
 			"Expected " + value + " not to be greater than " + lowerLimit + "."
 		);
 	}
@@ -74,7 +74,7 @@ export class ToBeGreaterThanTests {
 	public greaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: GreaterThanMatchError;
+		let greaterThanError: MatchError;
 
 		try {
 			Expect(actualValue).toBeGreaterThan(512);
@@ -93,7 +93,7 @@ export class ToBeGreaterThanTests {
 	public notGreaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: GreaterThanMatchError;
+		let greaterThanError: MatchError;
 
 		try {
 			Expect(actualValue).not.toBeGreaterThan(-42);
@@ -110,7 +110,7 @@ export class ToBeGreaterThanTests {
 	@TestCase(-1)
 	@TestCase(42)
 	public shouldSetExpectedValueToGreaterThanLowerLimit(lowerLimit: number) {
-		let greaterThanError: GreaterThanMatchError;
+		let greaterThanError: MatchError;
 
 		try {
 			Expect(-42).toBeGreaterThan(lowerLimit);
@@ -131,7 +131,7 @@ export class ToBeGreaterThanTests {
 	public shouldSetExpectedValueToNotGreaterThanLowerLimit(
 		lowerLimit: number
 	) {
-		let greaterThanError: GreaterThanMatchError;
+		let greaterThanError: MatchError;
 
 		try {
 			Expect(512).not.toBeGreaterThan(lowerLimit);

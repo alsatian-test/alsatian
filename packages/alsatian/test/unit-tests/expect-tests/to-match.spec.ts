@@ -1,5 +1,5 @@
 import { Expect, TestCase } from "../../../core/alsatian-core";
-import { RegexMatchError } from "../../../core/errors/regex-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 
 export class ToMatchTests {
 	@TestCase("thing", /something/)
@@ -11,7 +11,7 @@ export class ToMatchTests {
 		const expect = Expect(actualValue);
 
 		Expect(() => expect.toMatch(expectedRegex)).toThrowError(
-			RegexMatchError,
+			MatchError,
 			`Expected ${JSON.stringify(
 				actualValue
 			)} to conform to ${expectedRegex}.`
@@ -49,7 +49,7 @@ export class ToMatchTests {
 		const expect = Expect(actualValue);
 
 		Expect(() => expect.not.toMatch(expectedRegex)).toThrowError(
-			RegexMatchError,
+			MatchError,
 			`Expected ${JSON.stringify(
 				actualValue
 			)} not to conform to ${expectedRegex}.`
