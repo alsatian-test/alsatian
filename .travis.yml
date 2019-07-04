@@ -1,11 +1,12 @@
 language: node_js
 node_js:
+  - "12"
   - "10"
   - "8"
-  - "6"
 os:
   - linux
   - osx
+  - windows
 before_script:
   - npm run bootstrap
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
