@@ -2,7 +2,7 @@ import { Any, FunctionSpy, TypeMatcher } from "../spying";
 import { FunctionSpyMatcher } from "./function-spy-matcher";
 import { Matcher } from "./matcher";
 import { stringify } from "../stringification";
-import { AnyFunction, INameable, FunctionArguments } from "../_interfaces";
+import { AnyFunction, INameable } from "../_interfaces";
 
 /**
  * Checks whether functions have performed as expected
@@ -131,7 +131,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	 * @param expectedArguments - a list of arguments that the spy should have been called with
 	 */
 	public toHaveBeenCalledWith(
-		...expectedArguments: FunctionArguments<T>
+		...expectedArguments: Parameters<T>
 	): FunctionSpyMatcher {
 		if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
 			throw new TypeError(
@@ -157,7 +157,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		return new FunctionSpyMatcher(spy, expectedArguments);
 	}
 
-	private _stringifyArguments(expectedArguments: FunctionArguments<T>) {
+	private _stringifyArguments(expectedArguments: Parameters<T>) {
 		return expectedArguments ? ` with ${stringify(expectedArguments)}` : "";
 	}
 

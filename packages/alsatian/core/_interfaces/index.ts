@@ -6,4 +6,3 @@ export { Constructor } from "./constructor";
 export { ITester } from "./tester.i";
 export { ISpyCall } from "./spy-call.i";
 export { AnyFunction } from "./any-function";
-export { FunctionArguments } from "./function-arguments";
