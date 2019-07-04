@@ -17,7 +17,7 @@ export default class IndexTests {
 			on: () => {},
 			once: () => {},
 			emit: () => {}
-		};
+		} as any as NodeJS.WritableStream;
 
 		const fakeTapBark = { getPipeable: () => fakeTapBarkPipeable };
 
