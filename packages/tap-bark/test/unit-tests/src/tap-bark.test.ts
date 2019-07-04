@@ -121,7 +121,8 @@ export default class TapBarkTests {
 	public planEventSetsPlanEndCorrectly(planEnd: number) {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
 
 		const planEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -135,13 +136,13 @@ export default class TapBarkTests {
 
 		assertEventHandler({ id: 1 });
 
-		Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
+		Expect(setStateSpy).toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				totalTests: planEnd
 			})
 		);
 
-		Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
+		Expect(setStateSpy).toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				currentTest: 1
 			})
@@ -154,7 +155,8 @@ export default class TapBarkTests {
 	public testFixtureCommentSetsFixtureNameCorrectly(fixtureName: string) {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
 
 		const commentEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -162,7 +164,7 @@ export default class TapBarkTests {
 
 		commentEventHandler("# FIXTURE " + fixtureName);
 
-		Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
+		Expect(setStateSpy).toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				fixtureName
 			})
@@ -175,7 +177,8 @@ export default class TapBarkTests {
 	public otherCommentsDoNotSetTheFixtureName(comment: string) {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
 
 		const commentEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -183,7 +186,7 @@ export default class TapBarkTests {
 
 		commentEventHandler(comment);
 
-		Expect(tapBark.setState as () => any).not.toHaveBeenCalledWith(
+		Expect(setStateSpy).not.toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				fixtureName: Any
 			})
@@ -196,7 +199,8 @@ export default class TapBarkTests {
 	public assertEventSetsTestNameCorrectly(testName: string) {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
 
 		const assertEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -204,7 +208,7 @@ export default class TapBarkTests {
 
 		assertEventHandler({ name: testName });
 
-		Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
+		Expect(setStateSpy).toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				testName
 			})
@@ -217,7 +221,8 @@ export default class TapBarkTests {
 	public assertEventSetsProgressCorrectly(testId: number) {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
 
 		const planEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -231,7 +236,7 @@ export default class TapBarkTests {
 
 		assertEventHandler({ id: testId });
 
-		Expect(tapBark.setState as () => any).toHaveBeenCalledWith(
+		Expect(setStateSpy).toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				currentTest: testId
 			})
@@ -287,8 +292,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.pass
+			tapBark.setState.calls[0].args[0].results.pass
 		).toBe(0);
 	}
 
@@ -312,8 +316,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.pass
+			tapBark.setState.calls[0].args[0].results.pass
 		).toBe(passCount);
 	}
 
@@ -332,8 +335,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.ignore
+			tapBark.setState.calls[0].args[0].results.ignore
 		).toBe(0);
 	}
 
@@ -355,8 +357,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.ignore
+			tapBark.setState.calls[0].args[0].results.ignore
 		).toBe(skipCount);
 	}
 
@@ -378,8 +379,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.ignore
+			tapBark.setState.calls[0].args[0].results.ignore
 		).toBe(todoCount);
 	}
 
@@ -402,8 +402,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.ignore
+			tapBark.setState.calls[0].args[0].results.ignore
 		).toBe(skipCount + todoCount);
 	}
 
@@ -421,8 +420,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.fail
+			tapBark.setState.calls[0].args[0].results.fail
 		).toBe(0);
 	}
 
@@ -442,8 +440,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.fail
+			tapBark.setState.calls[0].args[0].results.fail
 		).toBe(failCount);
 	}
 
@@ -471,8 +468,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.fail
+			tapBark.setState.calls[0].args[0].results.fail
 		).toBe(failCount);
 	}
 
@@ -489,8 +485,7 @@ export default class TapBarkTests {
 		completeEventHandler({});
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.failures
+			tapBark.setState.calls[0].args[0].results.failures
 		).toEqual([]);
 	}
 
@@ -518,8 +513,7 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			(((tapBark.setState as () => any) as any) as any).calls[0].args[0]
-				.results.failures
+			tapBark.setState.calls[0].args[0].results.failures
 		).toBe(failures);
 	}
 }

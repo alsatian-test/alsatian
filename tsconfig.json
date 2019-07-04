@@ -9,7 +9,6 @@
        "noImplicitAny": false,
        "removeComments": true,
        "noLib": false,
-       "lib": [ "es5", "es2015" ],
        "preserveConstEnums": true,
        "suppressImplicitAnyIndexErrors": true,
        "experimentalDecorators": true,

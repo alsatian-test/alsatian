@@ -5,12 +5,31 @@ import chalk from "chalk";
 const through = require("through2");
 const parser = require("tap-parser");
 const duplexer = require("duplexer");
-const { h, render, Component, Color, Indent } = require("ink");
+import { h, render, Color, Component as InkComponent, InkElement } from "ink";
+
+//TODO: update ink typings to include Indent and proper constructor for Component
+const { Component, Indent } = require("ink");
 
 const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
 
-export { Component };
-export class TapBarkOutput extends Component {
+export interface TapBarkOutputState {
+    logs: Array<string>;
+    warnings: Array<string>;
+    results?: {
+        pass: number;
+        fail: number;
+        ignore: number;
+        failures: Array<Assertion>;
+    };
+    totalTests?: number;
+    currentTest?: number;
+}
+
+export interface TapBarkOutputProps {
+    showProgress: boolean;
+}
+
+class TapBarkOutputComponent extends Component {
     
     public getPipeable(): any {
         return duplexer(TAP_PARSER, through());
@@ -19,9 +38,13 @@ export class TapBarkOutput extends Component {
     private FIXTURE_REGEXP: RegExp = /^# FIXTURE (.*)/;
     private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
     private _completeCalled = false;
+    
+    //TODO: remove when proper ink types
+    private state: TapBarkOutputState;
 
     public constructor(props) {
         super(props);
+
         this.state = {
             logs: [],
             warnings: []
@@ -148,13 +171,23 @@ export class TapBarkOutput extends Component {
     }
 }
 
+//TODO: remove when proper ink types
+export const TapBarkOutput = TapBarkOutputComponent as any as new (props: TapBarkOutputProps) => InkComponent<TapBarkOutputProps, TapBarkOutputState>;
+
 export class TapBark {
     
     public static readonly tapParser = TAP_PARSER;
 
-    public static create(showProgress: boolean = true): TapBarkOutput {
+    public static create(showProgress: boolean = true) {
         const tapBarkOutput = <TapBarkOutput showProgress={showProgress} />;
         render(tapBarkOutput);
-        return tapBarkOutput.instance;
+        //TODO: remove when proper ink types
+        return tapBarkOutput.instance as any as InkElement & TapBarkOutputComponent;
     }
+}
+
+//TODO: remove when proper ink types
+export {
+    Component,
+    TapBarkOutputComponent
 }
