@@ -26,11 +26,11 @@
     </a>
 </p>
 
-## v3.0.0 is in ALPHA
+## v3.0.0 is in Beta
 
-We're getting ready to release 3.0.0 and we'd love your feedback. We are still developing features fully but for the most part they should be there but perhaps with some bugs. The goal of alpha is to get feedback about API changes and finish features so if you've got any feedback or would like to help please raise an issue or get in touch :) Info about the release can be found on our [Roadmap](https://github.com/alsatian-test/alsatian/wiki/roadmap)
+We're really close to release 3.0.0 and we'd love your feedback. Just doing the final bits of polish and tidying up the repo now, it should be ready to integrate into your repositories so have a go. If you find a bug, let us know or send a PR and we'll get it resolved promptly. Any questions send in an issue and we'll get back to you ASAP. Info about the release can be found on our [Roadmap](https://github.com/alsatian-test/alsatian/wiki/roadmap)
 
-You can install via `npm install alsatian@alpha`. We hope you love the new features and look forward to hearing from you guys
+You can install via `npm install alsatian@beta`. We hope you love the new features and look forward to hearing from you guys
 
 ## Quick Start
 
