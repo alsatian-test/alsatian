@@ -1,9 +1,11 @@
 {
    "extends": "../../tsconfig.json",
    "compilerOptions": {
+      "typeRoots" : ["./node_modules/@types", "./typings"],
       "jsx": "react",
       "jsxFactory": "h",
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "resolveJsonModule": true
    },
    "exclude": [
       "./test/integration-tests",

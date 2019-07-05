@@ -1,5 +1,5 @@
 import { Expect, SpyOn, TestCase } from "../../../core/alsatian-core";
-import { FunctionCallCountMatchError } from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 import { FunctionSpyMatcher } from "../../../core/matchers";
 import { FunctionSpy } from "../../../core/spying";
 
@@ -74,14 +74,14 @@ export class FunctionSpyMatcherTests {
 			Expect(
 				() => spyMatcher.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called 1 time.`
 			);
 		} else {
 			Expect(
 				() => spyMatcher.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called ${expectedCallCount} times.`
 			);
 		}
@@ -154,14 +154,14 @@ export class FunctionSpyMatcherTests {
 			Expect(
 				() => spyMatcher.anythingBut(unexpectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function not to be called 1 time.`
 			);
 		} else {
 			Expect(
 				() => spyMatcher.anythingBut(unexpectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function not to be called ${unexpectedCallCount} times.`
 			);
 		}
@@ -231,14 +231,14 @@ export class FunctionSpyMatcherTests {
 			Expect(
 				() => spyMatcher.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called less than 1 time.`
 			);
 		} else {
 			Expect(
 				() => spyMatcher.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called less than ${maximumCallCount} times.`
 			);
 		}
@@ -311,14 +311,14 @@ export class FunctionSpyMatcherTests {
 			Expect(
 				() => spyMatcher.greaterThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called greater than 1 time.`
 			);
 		} else {
 			Expect(
 				() => spyMatcher.greaterThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called greater than ${maximumCallCount} times.`
 			);
 		}

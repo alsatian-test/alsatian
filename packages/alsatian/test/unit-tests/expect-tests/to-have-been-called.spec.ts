@@ -2,15 +2,11 @@
 
 import {
 	Expect,
-	FunctionSpy,
 	SpyOn,
 	Test,
 	TestCase
 } from "../../../core/alsatian-core";
-import {
-	FunctionCallCountMatchError,
-	FunctionCallMatchError
-} from "../../../core/errors";
+import { MatchError } from "../../../core/errors";
 
 export class ToHaveBeenCalledTests {
 	@Test()
@@ -46,7 +42,7 @@ export class ToHaveBeenCalledTests {
 		SpyOn(some, "function");
 
 		Expect(() => Expect(some.function).toHaveBeenCalled()).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function to be called."
 		);
 	}
@@ -88,7 +84,7 @@ export class ToHaveBeenCalledTests {
 		some.function();
 
 		Expect(() => Expect(some.function).not.toHaveBeenCalled()).toThrowError(
-			FunctionCallMatchError,
+			MatchError,
 			"Expected function not to be called."
 		);
 	}
@@ -147,7 +143,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -157,7 +153,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe("function was not called.");
+		Expect(functionError.actual).toBe(some.function);
 	}
 
 	@Test()
@@ -170,7 +166,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -180,7 +176,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe("function was called.");
+		Expect(functionError.actual).toBe(some.function);
 	}
 
 	@Test()
@@ -191,7 +187,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -201,7 +197,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function to be called.");
+		Expect(functionError.expected).toBe("function to be called");
 	}
 
 	@Test()
@@ -214,7 +210,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: FunctionCallMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -224,7 +220,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function not to be called.");
+		Expect(functionError.expected).toBe("function not to be called");
 	}
 
 	@TestCase(1)
@@ -273,7 +269,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called ${expectedCallCount} time.`
 			);
 		} else {
@@ -283,7 +279,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.exactly(expectedCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				`Expected function to be called ${expectedCallCount} times.`
 			);
 		}
@@ -306,7 +302,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -347,7 +343,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -419,7 +415,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.anythingBut(callCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function not to be called " + callCount + " time."
 			);
 		} else {
@@ -429,7 +425,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.anythingBut(callCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function not to be called " + callCount + " times."
 			);
 		}
@@ -451,7 +447,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -491,7 +487,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -564,7 +560,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called greater than " +
 					minimumCallCount +
 					" time."
@@ -576,7 +572,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.greaterThan(minimumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called greater than " +
 					minimumCallCount +
 					" times."
@@ -601,7 +597,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -646,7 +642,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -718,7 +714,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called less than " +
 					maximumCallCount +
 					" time."
@@ -730,7 +726,7 @@ export class ToHaveBeenCalledTests {
 						.toHaveBeenCalled()
 						.lessThan(maximumCallCount).times
 			).toThrowError(
-				FunctionCallCountMatchError,
+				MatchError,
 				"Expected function to be called less than " +
 					maximumCallCount +
 					" times."
@@ -755,7 +751,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)
@@ -798,7 +794,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: FunctionCallCountMatchError;
+		let functionError: MatchError;
 
 		try {
 			Expect(some.function)

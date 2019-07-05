@@ -128,7 +128,7 @@ export class ToEqualTests {
 
 		Expect(() => expect.toEqual(expected)).toThrowError(
 			MatchError,
-			"Expected values to be equal"
+			"Expected objects to be equal"
 		);
 	}
 
@@ -165,7 +165,7 @@ export class ToEqualTests {
 
 		Expect(() => expect.not.toEqual(expected)).toThrowError(
 			MatchError,
-			"Expected values not to be equal"
+			"Expected objects not to be equal"
 		);
 	}
 

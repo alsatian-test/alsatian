@@ -75,8 +75,8 @@ export class TestOutputStream extends ReadableStream {
 	private _emitFail(testId: number, result: TestCaseResult): void {
 		this._writeOut(`not ok ${testId} ${result.description}\n`);
 
-		if (result.error instanceof MatchError) {
-			this._writeMatchErrorOutput(result.error, result.logs);
+		if (result.error && result.error.name === MatchError.name) {
+			this._writeMatchErrorOutput(result.error as MatchError, result.logs);
 		} else {
 			this._writeUnhandledErrorOutput(result.error, result.logs);
 		}
@@ -106,7 +106,11 @@ export class TestOutputStream extends ReadableStream {
 			"an unhandled error",
 			"no unhandled errors to be thrown",
 			error instanceof Error
-				? this.extrasWithLogs({ stack: error.stack }, logs)
+				? this.extrasWithLogs({
+					type: error.name,
+					message: error.message,
+					stack: error.stack || "no stack found"
+				}, logs)
 				: undefined
 		);
 	}

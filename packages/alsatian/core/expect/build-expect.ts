@@ -3,14 +3,14 @@ import {
 	PropertyMatcher,
 	FunctionMatcher,
 	ContainerMatcher,
-	EmptyMatcher,
 	StringMatcher,
 	NumberMatcher
 } from "../matchers";
 import { IExpect } from "./expect.i";
 import { fail } from "./fail";
 import { Matcher } from "../matchers";
-import { PropertySpy, FunctionSpy } from "../spying";
+import { PropertySpy, FunctionSpy, TypeMatcher } from "../spying";
+import { ObjectMatcher } from "../matchers/object-matcher";
 
 export function buildExpect(): IExpect {
 	const EXPECT = ExpectFunction as IExpect;
@@ -35,7 +35,7 @@ const MATCHER_MAP: Array<MatcherDictionary<any>> = [
 	[Array, ContainerMatcher],
 	[FunctionSpy, FunctionMatcher],
 	[PropertySpy, PropertyMatcher],
-	[Object, EmptyMatcher]
+	[Object, ObjectMatcher]
 ];
 
 function ExpectFunction<ActualType>(
@@ -51,7 +51,7 @@ function findMatcher<T>(actualValue: T): new (value: T) => Matcher<T> {
 	}
 
 	if (typeof actualValue === "function") {
-		return FunctionMatcher;
+		return FunctionMatcher as any;
 	}
 
 	return getPrimitiveMatcher(actualValue);

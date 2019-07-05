@@ -1,15 +1,17 @@
 import { MatchError } from "../errors";
-import { TypeMatcher } from "../spying";
 import { stringify } from "../stringification";
 import { diff } from "./diff";
+import { TypeMatcher } from "../spying";
 
 /**
  * Gives functionality to ensure the outcome of a test is as expected
  */
 export class Matcher<T> {
+
 	protected get actualValue(): T {
 		return this._actualValue;
 	}
+
 	protected get shouldMatch(): boolean {
 		return this._shouldMatch;
 	}
@@ -21,6 +23,7 @@ export class Matcher<T> {
 		this._shouldMatch = !this.shouldMatch;
 		return this;
 	}
+
 	private _actualValue: T;
 
 	private _shouldMatch: boolean = true;
@@ -48,35 +51,7 @@ export class Matcher<T> {
 	 * @param expectedValue - the value that will be used to match
 	 */
 	public toEqual(expectedValue: any) {
-		let valueMatch: boolean;
-
-		if (expectedValue instanceof TypeMatcher) {
-			valueMatch = expectedValue.test(this._actualValue);
-		} else if (Buffer.isBuffer(expectedValue)) {
-			valueMatch = this._checkBuffersAreEqual(
-				expectedValue,
-				this._actualValue
-			);
-		} else if (expectedValue instanceof Object) {
-			valueMatch = this._checkObjectsAreDeepEqual(
-				expectedValue,
-				this._actualValue
-			);
-		} else {
-			// exclude the double equals in this case from review
-			// as this is what we want to do
-			// tslint:disable-next-line:triple-equals
-			valueMatch = expectedValue == this._actualValue;
-		}
-
-		this._registerMatcher(
-			valueMatch === this._shouldMatch,
-			`Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
-			expectedValue,
-			{
-				diff: diff(expectedValue, this._actualValue)
-			}
-		);
+		this._checkTypeMatcherEqual(expectedValue, this.toEqualCheck);
 	}
 
 	/**
@@ -135,70 +110,33 @@ export class Matcher<T> {
 		}
 	}
 
-	private _checkBuffersAreEqual(buffer: Buffer, other: any): boolean {
-		// Buffer.from() only accepts of type string, Buffer, ArrayBuffer, Array, or Array-like Object.
-		if (this._isBufferable(other)) {
-			const otherBuffer = Buffer.isBuffer(other)
-				? other
-				: Buffer.from(other as string); // Typings don't know that Buffer.from() can accept ArrayLike<T>
-
-			return buffer.equals(otherBuffer);
-		} else {
-			return false;
-		}
-	}
-
-	private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
-		// if one object is an array and the other is not then they are not equal
-		if (Array.isArray(objectA) !== Array.isArray(objectB)) {
-			return false;
-		}
-
-		// get all the property keys for each object
-		const OBJECT_A_KEYS = Object.keys(objectA);
-		const OBJECT_B_KEYS = Object.keys(objectB);
-
-		// if they don't have the same amount of properties then clearly not
-		if (OBJECT_A_KEYS.length !== OBJECT_B_KEYS.length) {
-			return false;
-		}
-
-		// check all the properties of each object
-		for (const objectAKey of OBJECT_A_KEYS) {
-			// if the property values are not the same
-			if (objectA[objectAKey] !== objectB[objectAKey]) {
-				// and it's not an object or the objects are not equal
-				if (
-					typeof objectA[objectAKey] !== "object" ||
-					this._checkObjectsAreDeepEqual(
-						objectA[objectAKey],
-						objectB[objectAKey]
-					) === false
-				) {
-					// then not deep equal
-					return false;
+	protected _checkTypeMatcherEqual(expected: any, alternativeCheck: (expectedValue: T) => void) {
+		if (expected instanceof TypeMatcher) {
+			this._registerMatcher(
+				expected.test(this.actualValue) === this._shouldMatch,
+				`Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
+				expected,
+				{
+					diff: diff(expected, this._actualValue)
 				}
-			}
+			);
 		}
-
-		// all properties match so all is good
-		return true;
+		else {
+			alternativeCheck.call(this, expected);
+		}
 	}
 
-	private _isBufferable(
-		obj: any
-	): obj is string | Buffer | Array<any> | ArrayBuffer | ArrayLike<any> {
-		return (
-			"string" === typeof obj ||
-			Buffer.isBuffer(obj) ||
-			Array.isArray(obj) ||
-			obj instanceof ArrayBuffer ||
-			// ArrayLike<any>
-			(null != obj &&
-				"object" === typeof obj &&
-				obj.hasOwnProperty("length") &&
-				"number" === typeof obj.length &&
-				(obj.length === 0 || (obj.length > 0 && obj.length - 1 in obj)))
+	private toEqualCheck(expectedValue: any) {
+		this._registerMatcher(
+			// exclude the double equals in this case from review
+			// as this is what we want to do
+			// tslint:disable-next-line:triple-equals
+			(expectedValue == this._actualValue) === this._shouldMatch,
+			`Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
+			expectedValue,
+			{
+				diff: diff(expectedValue, this._actualValue)
+			}
 		);
 	}
 }

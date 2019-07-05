@@ -1,29 +1,44 @@
-import { ErrorMatchError, FunctionCallMatchError } from "../errors";
 import { Any, FunctionSpy, TypeMatcher } from "../spying";
-import { FunctionSpyMatcher } from "./";
+import { FunctionSpyMatcher } from "./function-spy-matcher";
 import { Matcher } from "./matcher";
+import { stringify } from "../stringification";
+import { AnyFunction, INameable } from "../_interfaces";
 
 /**
  * Checks whether functions have performed as expected
  */
-export class FunctionMatcher extends Matcher<FunctionSpy | any> {
+export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy | T> {
 	/**
 	 * Checks that a function throws an error when executed
 	 */
 	public toThrow() {
 		const error = this._getError();
 
-		if ((error === null) === this.shouldMatch) {
-			throw new ErrorMatchError(error, this.shouldMatch);
-		}
+		this._registerMatcher(
+			(error === null) !== this.shouldMatch,
+			`Expected an error ` +
+			`${this.shouldMatch ? "" : "not "}to be thrown ` +
+			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
+			this.shouldMatch ? "an error thrown" : "no errors thrown",
+			{
+				errorThrown: error ? error.toString() : "none"
+			}
+		);
 	}
 
 	public async toThrowAsync() {
 		const error = await this._getAsyncError();
 
-		if ((error === null) === this.shouldMatch) {
-			throw new ErrorMatchError(error, this.shouldMatch);
-		}
+		this._registerMatcher(
+			(error === null) !== this.shouldMatch,
+			`Expected an error ` +
+			`${this.shouldMatch ? "" : "not "}to be thrown ` +
+			`but ${this.shouldMatch ? "no errors were" : "an error was"} thrown.`,
+			this.shouldMatch ? "an error thrown" : "no errors thrown",
+			{
+				errorThrown: error ? error.toString() : "none"
+			}
+		);
 	}
 
 	/**
@@ -42,14 +57,20 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			errorMessage
 		);
 
-		if (threwRightError !== this.shouldMatch) {
-			throw new ErrorMatchError(
-				error,
-				this.shouldMatch,
-				errorType,
-				errorMessage
-			);
-		}
+		this._registerMatcher(
+			threwRightError === this.shouldMatch,
+			`Expected an error with ` +
+			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
+			`${errorMessage && errorType ? "and " : ""}` +
+			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
+			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
+			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
+			{
+				actualError: error ? error.toString() : "none",
+				expectedError: errorType.name,
+				expectedErrorMessage: errorMessage
+			}
+		);
 	}
 
 	/**
@@ -68,14 +89,20 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			errorMessage
 		);
 
-		if (threwRightError !== this.shouldMatch) {
-			throw new ErrorMatchError(
-				error,
-				this.shouldMatch,
-				errorType,
-				errorMessage
-			);
-		}
+		this._registerMatcher(
+			threwRightError === this.shouldMatch,
+			`Expected an error with ` +
+			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
+			`${errorMessage && errorType ? "and " : ""}` +
+			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
+			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
+			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
+			{
+				actualError: error ? error.toString() : "none",
+				expectedError: errorType.name,
+				expectedErrorMessage: errorMessage
+			}
+		);
 	}
 
 	/**
@@ -88,14 +115,15 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 			);
 		}
 
-		if ((this.actualValue.calls.length === 0) === this.shouldMatch) {
-			throw new FunctionCallMatchError(
-				this.actualValue,
-				this.shouldMatch
-			);
-		}
+		const spy = this.actualValue as FunctionSpy;
 
-		return new FunctionSpyMatcher(this.actualValue);
+		this._registerMatcher(
+			(spy.calls.length === 0) !== this.shouldMatch,
+			`Expected function ${!this.shouldMatch ? "not " : ""}to be called.`,
+			`function ${!this.shouldMatch ? "not " : ""}to be called`,
+		);
+
+		return new FunctionSpyMatcher(spy);
 	}
 
 	/**
@@ -103,32 +131,39 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 	 * @param expectedArguments - a list of arguments that the spy should have been called with
 	 */
 	public toHaveBeenCalledWith(
-		...expectedArguments: Array<any>
+		...expectedArguments: Parameters<T>
 	): FunctionSpyMatcher {
 		if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
 			throw new TypeError(
 				"toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
 			);
 		}
+		const spy = this.actualValue as FunctionSpy;
 
-		if (
-			this.actualValue.calls.some((call: any) =>
+		this._registerMatcher(
+			spy.calls.some(call =>
 				this._callArgumentsMatch(call, expectedArguments)
-			) !== this.shouldMatch
-		) {
-			throw new FunctionCallMatchError(
-				this.actualValue,
-				this.shouldMatch,
-				expectedArguments
-			);
-		}
+			) === this.shouldMatch,
+			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
+			`${this._stringifyArguments(expectedArguments)}.`,
+			`function ${!this.shouldMatch ? "not " : ""}to be called` +
+			`${this._stringifyArguments(expectedArguments)}.`,
+			{
+				expectedArguments: stringify(expectedArguments),
+				actualArguments: stringify(spy.calls.map(call => call.args))
+			}
+		);
 
-		return new FunctionSpyMatcher(this.actualValue, expectedArguments);
+		return new FunctionSpyMatcher(spy, expectedArguments);
+	}
+
+	private _stringifyArguments(expectedArguments: Parameters<T>) {
+		return expectedArguments ? ` with ${stringify(expectedArguments)}` : "";
 	}
 
 	private _getError() {
 		try {
-			this.actualValue();
+			(this.actualValue as T)();
 			return null;
 		} catch (error) {
 			return error;
@@ -137,7 +172,7 @@ export class FunctionMatcher extends Matcher<FunctionSpy | any> {
 
 	private async _getAsyncError() {
 		try {
-			await this.actualValue();
+			await (this.actualValue as T)();
 			return null;
 		} catch (error) {
 			return error;

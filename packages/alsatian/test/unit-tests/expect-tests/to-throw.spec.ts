@@ -1,5 +1,5 @@
 import { Expect, Test, TestCase } from "../../../core/alsatian-core";
-import { ErrorMatchError } from "../../../core/errors/error-match-error";
+import { MatchError } from "../../../core/errors/match-error";
 import { INameable } from "../../../core/_interfaces";
 
 export class ToThrowTests {
@@ -24,7 +24,7 @@ export class ToThrowTests {
 		const nonThrowFunction = () => {};
 
 		Expect(() => Expect(nonThrowFunction).toThrow()).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			"Expected an error to be thrown but no errors were thrown."
 		);
 	}
@@ -52,14 +52,14 @@ export class ToThrowTests {
 		};
 
 		Expect(() => Expect(throwFunction).not.toThrow()).toThrowError(
-			ErrorMatchError,
+			MatchError,
 			"Expected an error not to be thrown but an error was thrown."
 		);
 	}
 
 	@Test()
 	public actualValueAndShouldMatchShouldBeSetToErrorWasNotThrown() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {}).toThrow();
@@ -69,7 +69,7 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe("error was not thrown.");
+		Expect(errorMatchError.extras.errorThrown).toBe("none");
 	}
 
 	@TestCase(EvalError, "something went wrong")
@@ -79,7 +79,7 @@ export class ToThrowTests {
 		actualErrorType: new (message: string) => Error,
 		actualErrorMessage: string
 	) {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {
@@ -91,16 +91,14 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.actual).toBe(
-			`${
-				(actualErrorType as INameable).name
-			} error was thrown with message "${actualErrorMessage}".`
+		Expect(errorMatchError.extras.errorThrown).toBe(
+			`${(actualErrorType as INameable).name}: ${actualErrorMessage}`
 		);
 	}
 
 	@Test()
 	public actualValueAndShouldMatchShouldBeSetToErrorToBeThrown() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {}).toThrow();
@@ -110,12 +108,12 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("error to be thrown.");
+		Expect(errorMatchError.expected).toBe("an error thrown");
 	}
 
 	@Test()
 	public expectedValueAndShouldNotMatchShouldBeSetToErrorNotToBeThrown() {
-		let errorMatchError: ErrorMatchError;
+		let errorMatchError: MatchError;
 
 		try {
 			Expect(() => {
@@ -127,6 +125,6 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("error not to be thrown.");
+		Expect(errorMatchError.expected).toBe("no errors thrown");
 	}
 }
