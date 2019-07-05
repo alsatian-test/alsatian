@@ -8,10 +8,7 @@ export class FunctionSpy {
 	protected context: any;
 	private _fakeFunction: () => any;
 
-	private _calls: Array<ISpyCall> = [];
-	public get calls() {
-		return this._calls;
-	}
+	public readonly calls: Array<ISpyCall> = [];
 
 	public callsWithArguments(...args: Array<any>): Array<ISpyCall> {
 		return this.calls.filter(call =>

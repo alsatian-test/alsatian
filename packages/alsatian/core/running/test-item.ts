@@ -4,21 +4,10 @@ import { ISetupTeardownMetadata } from "../decorators/_interfaces";
 import { TestTimeoutError } from "../errors";
 
 export class TestItem {
-	public get testCase() {
-		return this._testCase;
-	}
-	public get test() {
-		return this._test;
-	}
-	public get testFixture() {
-		return this._testFixture;
-	}
 
-	private _testCase: ITestCase;
-
-	private _test: ITest;
-
-	private _testFixture: ITestFixture;
+	public readonly testCase: ITestCase;
+	public readonly test: ITest;
+	public readonly testFixture: ITestFixture;
 
 	public constructor(
 		testFixture: ITestFixture,
@@ -37,19 +26,19 @@ export class TestItem {
 			throw new TypeError("testCase must not be null or undefined.");
 		}
 
-		this._testFixture = testFixture;
-		this._test = test;
-		this._testCase = testCase;
+		this.testFixture = testFixture;
+		this.test = test;
+		this.testCase = testCase;
 	}
 
 	public async run(timeout: number) {
-		if (this._test.ignored) {
+		if (this.test.ignored) {
 			return;
 		} else {
 			await this._setup();
 
 			try {
-				await this._runTest(this._test.timeout || timeout);
+				await this._runTest(this.test.timeout || timeout);
 			} catch (error) {
 				throw error;
 			} finally {
@@ -76,9 +65,9 @@ export class TestItem {
 	}
 
 	private async _execute() {
-		return this._testFixture.fixture[this._test.key].apply(
-			this._testFixture.fixture,
-			this._testCase.caseArguments
+		return this.testFixture.fixture[this.test.key].apply(
+			this.testFixture.fixture,
+			this.testCase.caseArguments
 		);
 	}
 
@@ -93,7 +82,7 @@ export class TestItem {
 	private async _runFunctionsByMetaDataKey(metadataKey: string) {
 		const functions: Array<ISetupTeardownMetadata> = Reflect.getMetadata(
 			metadataKey,
-			this._testFixture.fixture
+			this.testFixture.fixture
 		);
 
 		if (functions) {
@@ -106,7 +95,7 @@ export class TestItem {
 	private async _runFunctionFromMetadata(
 		funcMetadata: ISetupTeardownMetadata
 	) {
-		await this._testFixture.fixture[funcMetadata.propertyKey].call(
+		await this.testFixture.fixture[funcMetadata.propertyKey].call(
 			this.testFixture.fixture
 		);
 	}

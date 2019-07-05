@@ -1,26 +1,22 @@
 import { Any, TypeMatcher } from "../spying";
 import { ISpyCall } from "../_interfaces";
 
-export class SpyCall implements ISpyCall {
-	public get args() {
-		return this._args;
+export class SpyCall<Arguments extends Array<any>> implements ISpyCall {
+	public readonly args = [] as Arguments;
+
+	public constructor(args: Arguments) {
+		this.args = args;
 	}
 
-	private _args: Array<any> = [];
-
-	public constructor(args: Array<any>) {
-		this._args = args;
-	}
-
-	public allArgumentsMatch(...expectedArguments: Array<any>): boolean {
-		if (expectedArguments.length !== this._args.length) {
+	public allArgumentsMatch(...expectedArguments: Arguments): boolean {
+		if (expectedArguments.length !== this.args.length) {
 			return false;
 		}
 
 		if (
 			expectedArguments.some(
 				(arg, index) =>
-					!this._argumentIsAsExpected(this._args[index], arg)
+					!this._argumentIsAsExpected(this.args[index], arg)
 			)
 		) {
 			return false;
@@ -29,7 +25,7 @@ export class SpyCall implements ISpyCall {
 		return true;
 	}
 
-	private _argumentIsAsExpected(actualArgument: any, expectedArgument: any) {
+	private _argumentIsAsExpected<T>(actualArgument: T, expectedArgument: T | typeof Any) {
 		if (expectedArgument === Any) {
 			return true;
 		} else if (expectedArgument instanceof TypeMatcher) {
