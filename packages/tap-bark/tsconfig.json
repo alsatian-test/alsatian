@@ -1,0 +1,18 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "h",
+        "outDir": "./dist"
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.d.ts",
+        "test/**/*.test.ts",
+        "../alsatian"
+    ],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ]
+}

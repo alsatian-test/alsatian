@@ -1,6 +1,7 @@
 #NPM
 node_modules
 npm-debug.log*
+dist
 
 #TypeScript
 *.js
@@ -10,3 +11,4 @@ npm-debug.log*
 #Test
 coverage
 .nyc_output
+test-build

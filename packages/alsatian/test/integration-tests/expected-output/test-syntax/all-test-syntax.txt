@@ -1,0 +1,33 @@
+TAP version 13
+1..16
+# FIXTURE asynchronous tests
+# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
+# WARN: AsyncSetup has been depreacated and will be removed in version 4.0.0. Use the Setup decorator instead.
+# WARN: AsyncTeardown has been depreacated and will be removed in version 4.0.0. Use the Teardown decorator instead.
+ok 1 asynchronous tests > simple passing asynchronous test
+not ok 2 asynchronous tests > simple failing asynchronous test
+ ---
+ message: Expected 4 to be 5.
+ severity: fail
+ data:
+   got: '4'
+   expect: '5'
+ ...
+# FIXTURE CaseArgumentTestsTests
+ok 3 CaseArgumentTestsTests > AddNumbers ( 1, 2, 3 )
+ok 4 CaseArgumentTestsTests > AddNumbers ( 1.5, 2.5, 4 )
+ok 5 CaseArgumentTestsTests > AddStrings ( "Hello", " world!", "Hello world!" )
+ok 6 CaseArgumentTestsTests > AddStrings ( "Far", "away", "Faraway" )
+ok 7 CaseArgumentTestsTests > AddObjectProperty ( {"a":1}, {"a":2}, 3 )
+ok 8 CaseArgumentTestsTests > AddArray ( [1, 2], [3, 4], 10 )
+# FIXTURE setup tests
+ok 9 setup tests > simple setup
+ok 10 setup tests > simple async setup
+ok 11 setup tests > setup fixture only happened once
+# FIXTURE teardown fixtures
+ok 12 teardown fixtures > teardown fixture not called before first test
+ok 13 teardown fixtures > teardown fixture has still not been called after first test or before second
+# FIXTURE teardown tests
+ok 14 teardown tests > teardown not called before first test
+ok 15 teardown tests > teardown has been called after first test and before second
+ok 16 teardown tests > teardown fixture has been called when previous fixture completes

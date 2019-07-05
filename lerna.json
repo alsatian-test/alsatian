@@ -1,0 +1,11 @@
+{
+  "version": "independent",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.spec.ts"
+      ]
+    }
+  },
+  "packages": ["packages/*"]
+}

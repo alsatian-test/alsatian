@@ -1,9 +1,0 @@
-TAP version 13
-1..6
-# FIXTURE CaseArgumentTestsTests
-ok 1 AddNumbers ( 1, 2, 3 )
-ok 2 AddNumbers ( 1.5, 2.5, 4 )
-ok 3 AddStrings ( "Hello", " world!", "Hello world!" )
-ok 4 AddStrings ( "Far", "away", "Faraway" )
-ok 5 AddObjectProperty ( {"a":1}, {"a":2}, 3 )
-ok 6 AddArray ( [1, 2], [3, 4], 10 )

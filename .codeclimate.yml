@@ -6,4 +6,4 @@ ratings:
     - "cli/**/*.ts"
     - "core/**/*.ts"
 exclude_paths:
-  - test/
+  - packages/*/test/
