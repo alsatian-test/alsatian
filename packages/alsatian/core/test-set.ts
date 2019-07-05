@@ -13,11 +13,7 @@ export class TestSet {
 	private _testLoader: TestLoader;
 	private _globHelper: GlobHelper;
 
-	private _testFixtures: Array<ITestFixture> = [];
-
-	public get testFixtures(): Array<ITestFixture> {
-		return this._testFixtures;
-	}
+	public readonly testFixtures: Array<ITestFixture> = [];
 
 	public constructor(testLoader: TestLoader, globHelper: GlobHelper) {
 		if (testLoader === null || testLoader === undefined) {
@@ -54,15 +50,13 @@ export class TestSet {
 				);
 
 				physicalTestFileLocations.forEach(physicalTestFileLocation => {
-					this._testFixtures = this.testFixtures.concat(
-						this._testLoader.loadTestFixture(
-							physicalTestFileLocation
-						)
+					this.testFixtures.push(
+						...this._testLoader.loadTestFixture(physicalTestFileLocation)
 					);
 				});
 			} else {
-				this._testFixtures = this.testFixtures.concat(
-					this._testLoader.loadTestFixture(testFileLocation)
+				this.testFixtures.push(
+					...this._testLoader.loadTestFixture(testFileLocation)
 				);
 			}
 		});

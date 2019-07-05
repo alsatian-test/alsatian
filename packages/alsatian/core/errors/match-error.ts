@@ -1,31 +1,21 @@
 import ExtendoError from "extendo-error";
 
-export class MatchError extends ExtendoError {
-	protected _actual: any;
-	public get actual(): any {
-		return this._actual;
-	}
+export class MatchError<ActualType, ExpectedType, ExtrasType extends { [prop: string]: any }> extends ExtendoError {
 
-	protected _expected: any;
-	public get expected(): any {
-		return this._expected;
-	}
-
-	protected _extras: { [prop: string]: any };
-	public get extras(): { [prop: string]: any } {
-		return this._extras;
-	}
+	public readonly actual: ActualType;
+	public readonly expected: ExpectedType;
+	public readonly extras: { [prop: string]: any };
 
 	public constructor(
 		message?: string,
-		expectedValue?: any,
-		actualValue?: any,
-		extras?: { [prop: string]: any }
+		expectedValue?: ExpectedType,
+		actualValue?: ActualType,
+		extras?: ExtrasType
 	) {
 		super(message);
 
-		this._actual = actualValue;
-		this._expected = expectedValue;
-		this._extras = extras;
+		this.actual = actualValue;
+		this.expected = expectedValue;
+		this.extras = extras;
 	}
 }
