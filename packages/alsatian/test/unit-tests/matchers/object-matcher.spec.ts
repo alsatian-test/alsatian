@@ -1,0 +1,15 @@
+import { Expect, TestCase, MatchError } from "../../../core/alsatian-core";
+import { ObjectMatcher } from "../../../core/matchers";
+
+export class FunctionSpyMatcherTests {
+	@TestCase(123)
+	public objectsComparisonReturnsResultWithoutError(value: number) {
+		const objectMatcher = new ObjectMatcher<{
+			test: number
+		}>({
+			test: value
+		});
+
+		Expect(() => objectMatcher.toEqual({ test: null })).toThrowError(MatchError, "Expected objects to be equal");
+	}
+}
