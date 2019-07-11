@@ -96,6 +96,7 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 			if (objectA[objectAKey] !== objectB[objectAKey]) {
 				// and it's not an object or the objects are not equal
 				if (
+					objectA[objectAKey] === null ||
 					typeof objectA[objectAKey] !== "object" ||
 					this._checkObjectsAreDeepEqual(
 						objectA[objectAKey],

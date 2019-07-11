@@ -8,6 +8,7 @@ import { NumberMatcher } from "./number-matcher";
 import { PropertyMatcher } from "./property-matcher";
 import { SpyCallCountType } from "./spy-call-count-type";
 import { StringMatcher } from "./string-matcher";
+import { ObjectMatcher } from "./object-matcher";
 
 export {
 	ContainerMatcher,
@@ -19,5 +20,6 @@ export {
 	NumberMatcher,
 	PropertyMatcher,
 	SpyCallCountType,
-	StringMatcher
+	StringMatcher,
+	ObjectMatcher
 };
