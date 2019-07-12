@@ -1,6 +1,6 @@
 import ExtendoError from "extendo-error";
 
-export class MatchError<ActualType, ExpectedType, ExtrasType extends { [prop: string]: any }> extends ExtendoError {
+export class MatchError<ActualType = undefined, ExpectedType = undefined, ExtrasType extends { [prop: string]: any } = undefined> extends ExtendoError {
 
 	public readonly actual: ActualType;
 	public readonly expected: ExpectedType;

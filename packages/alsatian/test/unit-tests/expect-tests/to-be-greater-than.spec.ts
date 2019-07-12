@@ -74,7 +74,7 @@ export class ToBeGreaterThanTests {
 	public greaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError<number>;
 
 		try {
 			Expect(actualValue).toBeGreaterThan(512);
@@ -93,7 +93,7 @@ export class ToBeGreaterThanTests {
 	public notGreaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError<number>;
 
 		try {
 			Expect(actualValue).not.toBeGreaterThan(-42);
@@ -110,7 +110,7 @@ export class ToBeGreaterThanTests {
 	@TestCase(-1)
 	@TestCase(42)
 	public shouldSetExpectedValueToGreaterThanLowerLimit(lowerLimit: number) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError<number, string>;
 
 		try {
 			Expect(-42).toBeGreaterThan(lowerLimit);
@@ -131,7 +131,7 @@ export class ToBeGreaterThanTests {
 	public shouldSetExpectedValueToNotGreaterThanLowerLimit(
 		lowerLimit: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError<number, string>;
 
 		try {
 			Expect(512).not.toBeGreaterThan(lowerLimit);

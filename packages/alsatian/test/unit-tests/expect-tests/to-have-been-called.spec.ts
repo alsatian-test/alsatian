@@ -143,7 +143,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -166,7 +166,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -187,7 +187,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -210,7 +210,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -302,7 +302,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -343,7 +343,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -447,7 +447,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -487,7 +487,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -597,7 +597,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -642,7 +642,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -751,7 +751,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)
@@ -794,7 +794,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError<string, string>;
 
 		try {
 			Expect(some.function)

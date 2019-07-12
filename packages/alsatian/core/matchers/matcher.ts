@@ -8,7 +8,7 @@ import { TypeMatcher } from "../spying";
  */
 export class Matcher<T> {
 
-	private readonly actualValue: T;
+	protected readonly actualValue: T;
 	private _shouldMatch = true;
 	protected get shouldMatch(): boolean {
 		return this._shouldMatch;

@@ -85,7 +85,7 @@ export class PropertySpy<PropertyType> {
 
 	private _get() {
 		// log that the property was requested
-		this._getCalls.push(new SpyCall<[PropertyType]>([]));
+		this._getCalls.push(new SpyCall<[PropertyType]>([this._value]));
 
 		// return a given value if this is the spy's behaviour
 		if (this._returnValue) {
