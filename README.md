@@ -12,28 +12,25 @@
     <a href="https://travis-ci.org/alsatian-test/alsatian">
         <img src="https://travis-ci.org/alsatian-test/alsatian.svg?branch=master" alt="Linux and OSX Build Status" />
     </a>
-    <a href="https://ci.appveyor.com/project/jamesrichford/alsatian">
-        <img src="https://ci.appveyor.com/api/projects/status/github/alsatian-test/alsatian?branch=master&amp;svg=true" alt="Windows Build Status" />
-    </a>
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/gpa.svg" alt="Code Climate" />
     </a>
-    <a href="https://coveralls.io/github/alsatian-test/alsatian?branch=master">
-        <img src="https://coveralls.io/repos/github/alsatian-test/alsatian/badge.svg?branch=master" alt="Coverage Status" />
-    </a>
     <a href="https://codeclimate.com/github/alsatian-test/alsatian">
         <img src="https://codeclimate.com/github/alsatian-test/alsatian/badges/issue_count.svg" alt="Code Climate Issue Count" />
+    </a>
+    <a href="https://codeclimate.com/github/alsatian-test/alsatian/test_coverage">
+        <img src="https://api.codeclimate.com/v1/badges/ba8c9cedceb03ab59dc8/test_coverage" />
     </a>
     <a href="https://snyk.io/test/github/alsatian-test/alsatian">
         <img src="https://snyk.io/test/github/alsatian-test/alsatian/badge.svg" alt="Known Vulnerabilities" />
     </a>
 </p>
 
-## v3.0.0 is in ALPHA
+## v3.0.0 is in Beta
 
-We're getting ready to release 3.0.0 and we'd love your feedback. We are still developing features fully but for the most part they should be there but perhaps with some bugs. The goal of alpha is to get feedback about API changes and finish features so if you've got any feedback or would like to help please raise an issue or get in touch :) Info about the release can be found on our [Roadmap](https://github.com/alsatian-test/alsatian/wiki/roadmap)
+We're really close to release 3.0.0 and we'd love your feedback. Just doing the final bits of polish and tidying up the repo now, it should be ready to integrate into your repositories so have a go. If you find a bug, let us know or send a PR and we'll get it resolved promptly. Any questions send in an issue and we'll get back to you ASAP. Info about the release can be found on our [Roadmap](https://github.com/alsatian-test/alsatian/wiki/roadmap)
 
-You can install via `npm install alsatian@alpha`. We hope you love the new features and look forward to hearing from you guys
+You can install via `npm install alsatian@beta`. We hope you love the new features and look forward to hearing from you guys
 
 ## Quick Start
 

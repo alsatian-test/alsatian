@@ -1,0 +1,108 @@
+TAP version 13
+1..16
+# FIXTURE error throwing
+# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
+ok 1 error throwing > errorThrown
+not ok 2 error throwing > errorNotThrown
+ ---
+ message: Expected an error to be thrown but no errors were thrown.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"an error thrown"'
+   details:
+     errorThrown: none
+ ...
+ok 3 error throwing > noErrorThrown
+not ok 4 error throwing > errorUnexpectedlyThrown
+ ---
+ message: Expected an error not to be thrown but an error was thrown.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"no errors thrown"'
+   details:
+     errorThrown: 'Error: error'
+ ...
+ok 5 error throwing > exactErrorThrown
+not ok 6 error throwing > exactErrorNotThrown
+ ---
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to have
+   been thrown, but it wasn't.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"an error of the right type thrown"'
+   details:
+     actualError: 'Error: any old error'
+     expectedError: TypeError
+     expectedErrorMessage: specific error
+ ...
+ok 7 error throwing > notExactErrorThrown
+not ok 8 error throwing > exactErrorThrownUnexpectedly
+ ---
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to not
+   have been thrown, but it was.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"no errors of type thrown"'
+   details:
+     actualError: 'TypeError: specific error'
+     expectedError: TypeError
+     expectedErrorMessage: specific error
+ ...
+ok 9 error throwing > asyncErrorThrown
+not ok 10 error throwing > asyncErrorNotThrown
+ ---
+ message: Expected an error to be thrown but no errors were thrown.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"an error thrown"'
+   details:
+     errorThrown: none
+ ...
+ok 11 error throwing > asyncNoErrorThrown
+not ok 12 error throwing > asyncErrorUnexpectedly
+ ---
+ message: Expected an error not to be thrown but an error was thrown.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"no errors thrown"'
+   details:
+     errorThrown: 'Error: error'
+ ...
+ok 13 error throwing > asnycExactErrorThrown
+not ok 14 error throwing > asnycExactErrorNotThrown
+ ---
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to have
+   been thrown, but it wasn't.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"an error of the right type thrown"'
+   details:
+     actualError: 'Error: error'
+     expectedError: TypeError
+     expectedErrorMessage: specific error
+ ...
+ok 15 error throwing > asyncNotExactErrorThrown
+not ok 16 error throwing > asyncExactErrorThrownUnexpectedly
+ ---
+ message: >-
+   Expected an error with message \"specific error\" and type TypeError to not
+   have been thrown, but it was.
+ severity: fail
+ data:
+   got: errorFunction
+   expect: '"no errors of type thrown"'
+   details:
+     actualError: 'TypeError: specific error'
+     expectedError: TypeError
+     expectedErrorMessage: specific error
+ ...

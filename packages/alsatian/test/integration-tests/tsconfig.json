@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": [ "es2015" ],
+        "outDir": "../../dist"
+    },
+    "buildOnSave": false,
+    "compileOnSave": true,
+    "exclude": [
+        "./**/*.d.ts",
+        "../../core/**/*.ts"
+    ],
+    "include": [
+        "./**/*.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

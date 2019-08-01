@@ -1,0 +1,18 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "h",
+        "outDir": "../test-build"
+    },
+    "exclude": [
+        "../node_modules",
+        "**/*.d.ts",
+        "integration-tests/**/*.test.ts"
+    ],
+    "include": [
+        "./**/*.test.ts",
+        "../src/**/*.ts",
+        "../src/**/*.tsx"
+    ]
+}

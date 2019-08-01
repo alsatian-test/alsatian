@@ -1,0 +1,21 @@
+{
+   "extends": "../../tsconfig.json",
+   "compilerOptions": {
+      "typeRoots" : ["./node_modules/@types", "./typings"],
+      "jsx": "react",
+      "jsxFactory": "h",
+      "outDir": "./dist",
+      "resolveJsonModule": true
+   },
+   "exclude": [
+      "./test/integration-tests",
+      "../tap-bark",
+      "node_modules"
+   ],
+   "include": [
+      "./cli/**/*.ts",
+      "./core/**/*.ts",
+      "./test/**/*.ts",
+      "./scripts/**/*.ts"
+   ]
+}

@@ -1,18 +1,24 @@
 language: node_js
 node_js:
+  - "12"
   - "10"
   - "8"
-  - "6"
 os:
   - linux
   - osx
+  - windows
 before_script:
+  - npm run bootstrap
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 script:
-  - if [ ${TRAVIS_EVENT_TYPE} = "cron" ]; then
+  - if [ ${TRAVIS_EVENT_TYPE} == "cron" ]; then
         npm run publish-nightly;
     else
         npm test;
     fi
 after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - chmod +x .codeclimate-report-coverage.sh
+  - if [ ${TRAVIS_EVENT_TYPE} != "cron" ] && [ ${TRAVIS_TEST_RESULT} == 0 ]; then
+        ./.codeclimate-report-coverage.sh;
+    fi
