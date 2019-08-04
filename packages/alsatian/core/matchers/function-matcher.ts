@@ -51,25 +51,10 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorMessage: string
 	) {
 		const error = this._getError();
-		const threwRightError = this._errorMatches(
+		this._errorMatches(
 			error,
 			errorType,
 			errorMessage
-		);
-
-		this._registerMatcher(
-			threwRightError === this.shouldMatch,
-			`Expected an error with ` +
-			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
-			`${errorMessage && errorType ? "and " : ""}` +
-			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
-			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
-			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
-			{
-				actualError: error ? error.toString() : "none",
-				expectedError: errorType.name,
-				expectedErrorMessage: errorMessage
-			}
 		);
 	}
 
@@ -83,25 +68,10 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorMessage: string
 	) {
 		const error = await this._getAsyncError();
-		const threwRightError = this._errorMatches(
+		this._errorMatches(
 			error,
 			errorType,
 			errorMessage
-		);
-
-		this._registerMatcher(
-			threwRightError === this.shouldMatch,
-			`Expected an error with ` +
-			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
-			`${errorMessage && errorType ? "and " : ""}` +
-			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
-			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
-			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
-			{
-				actualError: error ? error.toString() : "none",
-				expectedError: errorType.name,
-				expectedErrorMessage: errorMessage
-			}
 		);
 	}
 
@@ -184,7 +154,22 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorType: new (...args: Array<any>) => Error,
 		errorMessage: string
 	) {
-		return error instanceof errorType && error.message === errorMessage;
+		const threwRightError = error instanceof errorType && error.message === errorMessage;
+
+		this._registerMatcher(
+			threwRightError === this.shouldMatch,
+			`Expected an error with ` +
+			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
+			`${errorMessage && errorType ? "and " : ""}` +
+			`${errorType ? `type ${(errorType as INameable).name} to ${!this.shouldMatch ? "not " : ""}` : ""}` +
+			`have been thrown, but it was${!this.shouldMatch ? "" : "n't"}.`,
+			this.shouldMatch ? "an error of the right type thrown" : "no errors of type thrown",
+			{
+				actualError: error ? error.toString() : "none",
+				expectedError: errorType.name,
+				expectedErrorMessage: errorMessage
+			}
+		);
 	}
 
 	private _callArgumentsMatch(call: any, expectedArguments: Array<any>) {
