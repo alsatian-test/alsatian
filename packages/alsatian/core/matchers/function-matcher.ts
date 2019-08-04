@@ -154,7 +154,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorType: new (...args: Array<any>) => Error,
 		errorMessage: string
 	) {
-		const threwRightError = error instanceof errorType && error.message === errorMessage;		
+		const threwRightError = error instanceof errorType && error.message === errorMessage;
 
 		this._registerMatcher(
 			threwRightError === this.shouldMatch,
