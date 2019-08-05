@@ -10,6 +10,7 @@ import {
 
 export class CliIntegrationTests {
 	@TestCase("to-be")
+	@TestCase("to-equal")
 	@TestCase("to-throw")
 	@AsyncTest()
 	@Timeout(5000)
