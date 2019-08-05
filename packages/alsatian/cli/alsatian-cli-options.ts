@@ -98,70 +98,46 @@ export class AlsatianCliOptions {
 	}
 
 	private extractTap(args: Array<string>) {
-		const argumentIndex = this.getArgumentIndexFromArgumentList(
+		return this.extractArgumentFromList(
 			args,
 			"tap",
 			"T"
 		);
-
-		// filter out the tap argument and return the other args
-		args = args.filter((value, index) => {
-			Unused(value);
-			return index !== argumentIndex;
-		});
-
-		// if we found the tap argument, we want to enable tap output
-		return {
-			value: argumentIndex !== -1,
-			args
-		};
 	}
 
 	private extractHideProgress(args: Array<string>) {
-		const argumentIndex = this.getArgumentIndexFromArgumentList(
+		return this.extractArgumentFromList(
 			args,
 			"hide-progress",
 			"H"
 		);
-
-		// filter out the tap argument and return the other args
-		args = args.filter((value, index) => {
-			Unused(value);
-			return index !== argumentIndex;
-		});
-
-		// if we found the tap argument, we want to enable tap output
-		return {
-			value: argumentIndex !== -1,
-			args
-		};
 	}
 
 	private extractVersionRequested(args: Array<string>) {
-		const argumentIndex = this.getArgumentIndexFromArgumentList(
+		return this.extractArgumentFromList(
 			args,
 			"version",
 			"v"
 		);
-
-		// filter out the tap argument and return the other args
-		args = args.filter((value, index) => {
-			Unused(value);
-			return index !== argumentIndex;
-		});
-
-		// if we found the tap argument, we want to enable tap output
-		return {
-			value: argumentIndex !== -1,
-			args
-		};
 	}
 
 	private extractHelpRequested(args: Array<string>) {
-		const argumentIndex = this.getArgumentIndexFromArgumentList(
+		return this.extractArgumentFromList(
 			args,
 			"help",
 			"h"
+		);
+	}
+
+	private extractArgumentFromList(
+		args: Array<string>,
+		argumentName: string,
+		argumentShorthand?: string
+	) {
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
+			args,
+			argumentName,
+			argumentShorthand
 		);
 
 		// filter out the tap argument and return the other args
@@ -170,7 +146,6 @@ export class AlsatianCliOptions {
 			return index !== argumentIndex;
 		});
 
-		// if we found the tap argument, we want to enable tap output
 		return {
 			value: argumentIndex !== -1,
 			args
