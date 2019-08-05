@@ -1,0 +1,13 @@
+TAP version 13
+1..1
+# FIXTURE ToEqualTests
+not ok 1 ToEqualTests > onObjectWithNumericDifference
+ ---
+ message: Expected objects to be equal
+ severity: fail
+ data:
+   got: '{"price":159.99999999999997}'
+   expect: '{"price":160}'
+   details:
+     diff: "{\n    price: \"1\e[31m60\e[39m\e[32m59.99999999999997\e[39m\"\n}"
+ ...
