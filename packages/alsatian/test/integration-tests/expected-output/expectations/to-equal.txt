@@ -9,5 +9,8 @@ not ok 1 ToEqualTests > onObjectWithNumericDifference
    got: '{"price":159.99999999999997}'
    expect: '{"price":160}'
    details:
-     diff: "{\n    price: \"1\e[31m60\e[39m\e[32m59.99999999999997\e[39m\"\n}"
+     diff: |-
+       {
+           price: "16059.99999999999997"
+       }
  ...
