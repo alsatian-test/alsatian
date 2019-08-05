@@ -112,6 +112,14 @@ function buildDiffProp(diffInfo: deepDiff.IDiff, value: any, padding: string) {
 	}`;
 }
 
+function safeToString(val: any) {
+	if (val && val.toString) {
+		return val.toString();
+	}
+
+	return String(val).toString();
+}
+
 function stringifyDiffProp(diffInfo: deepDiff.IDiff, padding: string) {
 	if (diffInfo.kind === "N") {
 		return chalk.green(
@@ -122,7 +130,7 @@ function stringifyDiffProp(diffInfo: deepDiff.IDiff, padding: string) {
 	} else if (diffInfo.kind === "E") {
 		return `  ${buildDiffProp(
 			diffInfo,
-			diffString(diffInfo.lhs, diffInfo.rhs),
+			diffString(safeToString(diffInfo.lhs), safeToString(diffInfo.rhs)),
 			padding
 		)}`;
 	}
