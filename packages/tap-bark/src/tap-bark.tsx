@@ -27,6 +27,7 @@ export interface TapBarkOutputState {
 
 export interface TapBarkOutputProps {
     showProgress: boolean;
+    resultsOrder: string[]
 }
 
 class TapBarkOutputComponent extends Component {
@@ -81,13 +82,22 @@ class TapBarkOutputComponent extends Component {
         const total = this.state.totalTests;
 
         if (this.state.results) {
-            return <Indent>
-                        {this.state.warnings.join("\n")}
-                        <Color green>Pass: {results.pass} / {total}{"\n"}</Color>
-                        <Color red>Fail: {results.fail} / {total}{"\n"}</Color>
-                        <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
-                        {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
-                    </Indent>;
+            const resultElement =
+                <Indent>
+                    <Color green>Pass: {results.pass} / {total}</Color>{"\n"}
+                    <Color red>Fail: {results.fail} / {total}</Color>{"\n"}
+                    <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
+                </Indent>
+            
+            const elements = {
+                warnings: <Indent>{this.state.warnings.join("\n")}</Indent>,
+                results: resultElement,
+                failures: <Indent>{results.failures.map(this.getFailureMessage.bind(this)).join("\n") + "\n"}</Indent>
+            }
+
+            const output = this.props.resultsOrder.map(item => elements[item])
+
+            return <div>{output}</div>;
         }
 
         if (this.props.showProgress === false) {
@@ -178,8 +188,8 @@ export class TapBark {
     
     public static readonly tapParser = TAP_PARSER;
 
-    public static create(showProgress: boolean = true) {
-        const tapBarkOutput = <TapBarkOutput showProgress={showProgress} />;
+    public static create(showProgress: boolean = true, resultsOrder: string[] = ["warnings", "results", "failures"]) {
+        const tapBarkOutput = <TapBarkOutput showProgress={showProgress} resultsOrder={resultsOrder} />;
         render(tapBarkOutput);
         //TODO: remove when proper ink types
         return tapBarkOutput.instance as any as InkElement & TapBarkOutputComponent;
