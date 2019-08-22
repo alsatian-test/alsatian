@@ -58,7 +58,8 @@ export class CliTestRunner {
 			this._testRunner.outputStream.pipe(process.stdout);
 		} else {
 			// otherwise create the tap bark reporter
-			const bark = TapBark.create(userArguments.hideProgress === false);
+			const hideProgress = (process.env.CI || userArguments.hideProgress);
+			const bark = TapBark.create(hideProgress === false);
 
 			// pipe the reporter into stdout
 			this._testRunner.outputStream
