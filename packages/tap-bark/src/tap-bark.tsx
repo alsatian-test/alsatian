@@ -83,10 +83,10 @@ class TapBarkOutputComponent extends Component {
         if (this.state.results) {
             return <Indent>
                         {this.state.warnings.join("\n")}
+                        {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
                         <Color green>Pass: {results.pass} / {total}{"\n"}</Color>
                         <Color red>Fail: {results.fail} / {total}{"\n"}</Color>
                         <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
-                        {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
                     </Indent>;
         }
 
