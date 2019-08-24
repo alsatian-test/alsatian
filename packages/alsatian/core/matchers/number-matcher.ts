@@ -1,5 +1,10 @@
 import { Matcher } from "./matcher";
 
+enum LimitType {
+	LessThan,
+	GreaterThan
+}
+
 /**
  * Compares numbers
  */
@@ -9,21 +14,7 @@ export class NumberMatcher extends Matcher<number> {
 	 * @param upperLimit - the number that the number under test should be less than
 	 */
 	public toBeLessThan(upperLimit: number) {
-		this._validateValues(upperLimit, "toBeLessThan", "upper limit");
-
-		this._registerMatcher(
-			this.actualValue < upperLimit === this.shouldMatch,
-			`Expected ${this.actualValue} ${
-				!this.shouldMatch ? "not " : ""
-			}to be less than ${upperLimit}.`,
-			`a number ${
-				!this.shouldMatch ? "not " : ""
-			}less than ${upperLimit}`,
-			{
-				actual: this.actualValue,
-				upperLimit
-			}
-		);
+		this._matchAgainstLimit(upperLimit, LimitType.LessThan);
 	}
 
 	/**
@@ -31,19 +22,33 @@ export class NumberMatcher extends Matcher<number> {
 	 * @param lowerLimit - the number that the number under test should be greater than
 	 */
 	public toBeGreaterThan(lowerLimit: number) {
-		this._validateValues(lowerLimit, "toBeGreaterThan", "lower limit");
+		this._matchAgainstLimit(lowerLimit, LimitType.GreaterThan);
+	}
+
+	private _matchAgainstLimit(limit: number, limitType: LimitType) {
+		const limitTypeName = LimitType[limitType];
+
+		this._validateValues(
+			limit,
+			`toBe${LimitType[limitType]}`,
+			`${limitType === LimitType.LessThan ? "upper" : "lower"} limit`
+		);
+
+		const readableLimitType = limitTypeName.replace(/(a-z)(A-Z)/, "$1 $2").toLowerCase();
+
+		const exceedsLimit = limitType === LimitType.LessThan ? this.actualValue < limit: this.actualValue > limit;
 
 		this._registerMatcher(
-			this.actualValue > lowerLimit === this.shouldMatch,
+			exceedsLimit === this.shouldMatch,
 			`Expected ${this.actualValue} ${
 				!this.shouldMatch ? "not " : ""
-			}to be greater than ${lowerLimit}.`,
+			}to be ${readableLimitType} ${limit}.`,
 			`a number ${
 				!this.shouldMatch ? "not " : ""
-			}greater than ${lowerLimit}`,
+			}${readableLimitType} ${limit}`,
 			{
 				actual: this.actualValue,
-				lowerLimit
+				limit
 			}
 		);
 	}
