@@ -1,0 +1,16 @@
+TAP version 13
+1..1
+# FIXTURE ToEqualTests
+not ok 1 ToEqualTests > onObjectWithNumericDifference
+ ---
+ message: Expected objects to be equal
+ severity: fail
+ data:
+   got: '{"price":159.99999999999997}'
+   expect: '{"price":160}'
+   details:
+     diff: |-
+       {
+           price: "16059.99999999999997"
+       }
+ ...

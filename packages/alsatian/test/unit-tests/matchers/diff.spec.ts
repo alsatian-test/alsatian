@@ -119,4 +119,11 @@ export class DiffingFunctionTests {
 			"{\n" + chalk.green(`+   an: {"extra":"object"}`) + "\n}"
 		);
 	}
+
+	@Test()
+	public objectWithNumeric() {
+		Expect(diff({ a: 123 }, { a: 456 })).toBe(
+			`{\n    a: "${chalk.red("123")}${chalk.green("456")}"\n}`
+		);
+	}
 }
