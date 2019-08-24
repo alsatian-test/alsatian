@@ -36,7 +36,7 @@ export class NumberMatcher extends Matcher<number> {
 
 		const readableLimitType = limitTypeName.replace(/(a-z)(A-Z)/, "$1 $2").toLowerCase();
 
-		const exceedsLimit = limitType === LimitType.LessThan ? this.actualValue < limit: this.actualValue > limit;
+		const exceedsLimit = limitType === LimitType.LessThan ? this.actualValue < limit : this.actualValue > limit;
 
 		this._registerMatcher(
 			exceedsLimit === this.shouldMatch,
