@@ -26,26 +26,7 @@ export class CliTestRunner {
 
 		// if help has been requested then output info about using the CLI and exit
 		if (userArguments.helpRequested) {
-			process.stdout.write(
-				"\n\n" +
-					"alsatian version " +
-					packageJson.version +
-					"\n" +
-					"=========================\n" +
-					"CLI options\n" +
-					"=========================\n" +
-					"HELP:    --help / -h                      " +
-					"(outputs CLI information)\n" +
-					"VERSION: --version / -v                   " +
-					"(outputs the version of the CLI)\n" +
-					"TAP:     --tap / -T                       " +
-					"(runs alsatian with TAP output)\n" +
-					"TIMEOUT: --timeout [number] / -t [number] " +
-					"(sets the timeout period for tests in milliseconds - default 500)\n" +
-					"HIDE PROGRESS: --hide-progress / -H " +
-					"(hides progress from console)\n" +
-					"\n"
-			);
+			this._printHelp(packageJson.version);
 			return;
 		}
 
@@ -58,12 +39,7 @@ export class CliTestRunner {
 			this._testRunner.outputStream.pipe(process.stdout);
 		} else {
 			// otherwise create the tap bark reporter
-			const bark = TapBark.create(userArguments.hideProgress === false);
-
-			// pipe the reporter into stdout
-			this._testRunner.outputStream
-				.pipe(bark.getPipeable())
-				.pipe(process.stdout);
+			this._createTapBarkReporter(userArguments.hideProgress);
 		}
 
 		try {
@@ -73,8 +49,41 @@ export class CliTestRunner {
 		}
 	}
 
+	private _createTapBarkReporter(hideProgressArgument: boolean) {
+		const hideProgress = (process.env.CI || hideProgressArgument);
+		const bark = TapBark.create(hideProgress === false);
+
+		// pipe the reporter into stdout
+		this._testRunner.outputStream
+			.pipe(bark.getPipeable())
+			.pipe(process.stdout);
+	}
+
 	private _handleTestSetRunError(error: Error) {
 		process.stderr.write(error.message + "\n");
 		process.exit(1);
+	}
+
+	private _printHelp(version: string) {
+		process.stdout.write(
+			"\n\n" +
+				"alsatian version " +
+				version +
+				"\n" +
+				"=========================\n" +
+				"CLI options\n" +
+				"=========================\n" +
+				"HELP:    --help / -h                      " +
+				"(outputs CLI information)\n" +
+				"VERSION: --version / -v                   " +
+				"(outputs the version of the CLI)\n" +
+				"TAP:     --tap / -T                       " +
+				"(runs alsatian with TAP output)\n" +
+				"TIMEOUT: --timeout [number] / -t [number] " +
+				"(sets the timeout period for tests in milliseconds - default 500)\n" +
+				"HIDE PROGRESS: --hide-progress / -H " +
+				"(hides progress from console)\n" +
+				"\n"
+		);
 	}
 }
