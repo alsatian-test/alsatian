@@ -167,6 +167,6 @@ export class TapBark {
         const tapBarkOutput = <TapBarkOutputComponent showProgress={showProgress} />;
         render(tapBarkOutput);
         
-        return tapBarkOutput.instance;
+        return tapBarkOutput.instance as TapBarkOutputComponent;
     }
 }
