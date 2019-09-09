@@ -47,12 +47,12 @@ export class TypeMatcher<ExpectedType extends object> {
 	}
 
 	/* tslint:disable:unified-signatures */
-	public thatMatches(key: string, value: any): this;
-	public thatMatches(properties: object): this;
+	public thatMatches<Key extends keyof ExpectedType>(key: Key, value: ExpectedType[Key]): this;
+	public thatMatches(properties: Partial<ExpectedType>): this;
 	public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
-	public thatMatches(
-		first: string | object | ((argument: ExpectedType) => boolean),
-		second?: any
+	public thatMatches<Key extends keyof ExpectedType>(
+		first: Key | Partial<ExpectedType> | ((argument: ExpectedType) => boolean),
+		second?: ExpectedType[Key]
 	): this {
 		if (null === first || undefined === first) {
 			throw new TypeError(
