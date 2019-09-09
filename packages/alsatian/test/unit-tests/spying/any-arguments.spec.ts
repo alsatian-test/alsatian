@@ -4,15 +4,6 @@ import { TypeMatcher } from "../../../core/spying/type-matcher";
 import { InterfaceMatcher } from "../../../core/spying/interface-matcher";
 
 export class AnyArgumentsTests {
-	@TestCase(null)
-	@TestCase(undefined)
-	public nullOrUndefinedTypesThrowError(type: any) {
-		Expect(() => Any(type)).toThrowError(
-			TypeError,
-			"type must not be null or undefined"
-		);
-	}
-
 	@TestCase(Number)
 	@TestCase(String)
 	@TestCase(Boolean)
