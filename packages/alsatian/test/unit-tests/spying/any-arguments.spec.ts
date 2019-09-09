@@ -24,9 +24,11 @@ export class AnyArgumentsTests {
 	}
 
 	@Test("Any called with no arguments returns an InterfaceMatcher")
-	public anyReturnsInterfaceMatcherIfNoArguments() {		
-		interface SampleInterface {}
+	public anyReturnsInterfaceMatcherIfNoArguments() {
+		interface ISampleInterface {
+			example: string;
+		}
 
-		Expect(Any<SampleInterface>()).toEqual(Any(InterfaceMatcher));
+		Expect(Any<ISampleInterface>()).toEqual(Any(InterfaceMatcher));
 	}
 }
