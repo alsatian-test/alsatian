@@ -8,7 +8,7 @@ import {
 	Teardown,
 	TestFixture
 } from "alsatian";
-import { TapBark, TapBarkOutput } from "../../../src/tap-bark";
+import { TapBark, TapBarkOutput, TapBarkOutputState } from "../../../src/tap-bark";
 
 async function wait(timeInMs: number) {
 	return new Promise(resolve => {
@@ -137,12 +137,12 @@ export default class TapBarkTests {
 		assertEventHandler({ id: 1 });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				totalTests: planEnd
 			})
 		);
 
-		Expect(setStateSpy).toHaveBeenCalledWith(
+		Expect<TapBarkOutputState>().toHaveBeenCalledWith(
 			Any(Object).thatMatches({
 				currentTest: 1
 			})
@@ -165,7 +165,7 @@ export default class TapBarkTests {
 		commentEventHandler("# FIXTURE " + fixtureName);
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				fixtureName
 			})
 		);
@@ -187,7 +187,7 @@ export default class TapBarkTests {
 		commentEventHandler(comment);
 
 		Expect(setStateSpy).not.toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				fixtureName: Any
 			})
 		);
