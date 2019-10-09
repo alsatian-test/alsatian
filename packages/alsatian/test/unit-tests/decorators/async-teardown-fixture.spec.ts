@@ -91,7 +91,7 @@ export class AsyncTeadownFixtureDecoratorTests {
 		AsyncTeardownFixture({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"AsyncTeardownFixture has been depreacated and will be removed in version 4.0.0. " +
+			"AsyncTeardownFixture has been deprecated and will be removed in version 4.0.0. " +
 				"Use the TeardownFixture decorator instead."
 		);
 	}

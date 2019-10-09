@@ -6,7 +6,7 @@ export function deprecate(
 	prompt: string
 ) {
 	Warner.warn(
-		`${featureName} has been depreacated and will be removed in version ${versionToBeRemoved}.` +
+		`${featureName} has been deprecated and will be removed in version ${versionToBeRemoved}.` +
 			(prompt ? ` ${prompt}` : "")
 	);
 }
