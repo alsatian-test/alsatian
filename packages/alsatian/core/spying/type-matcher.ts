@@ -1,7 +1,9 @@
 import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
+import { SpyMatcher } from "./spy-matcher";
+import { MatcherOrType } from "./matcher-or-type";
 
-export class TypeMatcher<ExpectedType extends object> {
+export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<ExpectedType> {
 	private _testers: Array<ITester> = [];
 	private _type: new (...args: Array<any>) => ExpectedType;
 	public get type() {
@@ -46,14 +48,10 @@ export class TypeMatcher<ExpectedType extends object> {
 		return this._testers.map(tester => tester.stringify()).join(" and ");
 	}
 
-	/* tslint:disable:unified-signatures */
-	public thatMatches<Key extends keyof ExpectedType>(key: Key, value: ExpectedType[Key]): this;
-	public thatMatches(properties: Partial<ExpectedType>): this;
-	public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
 	public thatMatches<Key extends keyof ExpectedType>(
 		first: Key | Partial<ExpectedType> | ((argument: ExpectedType) => boolean),
 		second?: ExpectedType[Key]
-	): this {
+	): MatcherOrType<ExpectedType> {
 		if (null === first || undefined === first) {
 			throw new TypeError(
 				"thatMatches requires none-null or non-undefined argument"
@@ -77,9 +75,8 @@ export class TypeMatcher<ExpectedType extends object> {
 
 		throw new Error("Invalid arguments");
 	}
-	/* tslint:enable:unified-signatures */
 
-	private _matchesKeyAndValue(key: string, value: any): this {
+	private _matchesKeyAndValue(key: string, value: any): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () =>
 				`with property '${key}' equal to '${stringify(value)}'`,
@@ -97,7 +94,7 @@ export class TypeMatcher<ExpectedType extends object> {
 
 	private _matchesDelegate(
 		delegate: (argument: ExpectedType) => boolean
-	): this {
+	): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () => `matches '${delegate.toString()}'`,
 			test: (v: any) => delegate(v)
@@ -106,7 +103,7 @@ export class TypeMatcher<ExpectedType extends object> {
 		return this;
 	}
 
-	private _matchesObjectLiteral(properties: object): this {
+	private _matchesObjectLiteral(properties: object): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () => `matches '${stringify(properties)}'`,
 			test: (v: any) => {

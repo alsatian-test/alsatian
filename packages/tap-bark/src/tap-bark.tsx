@@ -24,6 +24,7 @@ export interface TapBarkOutputState {
     };
     totalTests?: number;
     currentTest?: number;
+    testName?: string;
 }
 
 export interface TapBarkOutputProps {
