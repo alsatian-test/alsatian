@@ -2,7 +2,7 @@ import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
 import { SpyMatcher } from "./spy-matcher";
 import { MatcherOrType } from "./matcher-or-type";
-import { InterfaceMatcher } from "./interface-matcher";
+import { InterfaceMatcher, MatcherArgument } from "./interface-matcher";
 
 export class TypeMatcher<ExpectedType extends object> extends InterfaceMatcher<ExpectedType> {
 	private _testers: Array<ITester> = [];
@@ -52,7 +52,7 @@ export class TypeMatcher<ExpectedType extends object> extends InterfaceMatcher<E
 	}
 
 	public thatMatches<Key extends keyof ExpectedType>(
-		first: Key | Partial<ExpectedType> | ((argument: ExpectedType) => boolean),
+		first: MatcherArgument<ExpectedType, Key>,
 		second?: ExpectedType[Key]
 	): MatcherOrType<ExpectedType> {
 		if (null === first || undefined === first) {
