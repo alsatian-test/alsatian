@@ -2,8 +2,9 @@ import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
 import { SpyMatcher } from "./spy-matcher";
 import { MatcherOrType } from "./matcher-or-type";
+import { InterfaceMatcher } from "./interface-matcher";
 
-export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<ExpectedType> {
+export class TypeMatcher<ExpectedType extends object> extends InterfaceMatcher<ExpectedType> {
 	private _testers: Array<ITester> = [];
 	private _type: new (...args: Array<any>) => ExpectedType;
 	public get type() {
@@ -11,6 +12,8 @@ export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<Expe
 	}
 
 	public constructor(type: new (...args: Array<any>) => ExpectedType) {
+		super();
+
 		if (type === null || type === undefined) {
 			throw new TypeError("type must not be null or undefined");
 		}
@@ -89,7 +92,7 @@ export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<Expe
 			}
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
 	}
 
 	private _matchesDelegate(
@@ -100,7 +103,7 @@ export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<Expe
 			test: (v: any) => delegate(v)
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
 	}
 
 	private _matchesObjectLiteral(properties: object): MatcherOrType<ExpectedType> {
@@ -118,6 +121,10 @@ export class TypeMatcher<ExpectedType extends object> implements SpyMatcher<Expe
 			}
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
+	}
+
+	private _thisAsMatcherOrType() {
+		return this as unknown as MatcherOrType<ExpectedType>;
 	}
 }
