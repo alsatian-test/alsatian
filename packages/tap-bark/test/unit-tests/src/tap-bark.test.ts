@@ -142,8 +142,8 @@ export default class TapBarkTests {
 			})
 		);
 
-		Expect<TapBarkOutputState>().toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+		Expect(setStateSpy).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: 1
 			})
 		);
@@ -209,7 +209,7 @@ export default class TapBarkTests {
 		assertEventHandler({ name: testName });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				testName
 			})
 		);
@@ -237,7 +237,7 @@ export default class TapBarkTests {
 		assertEventHandler({ id: testId });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: testId
 			})
 		);
