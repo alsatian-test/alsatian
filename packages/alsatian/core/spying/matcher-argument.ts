@@ -1,3 +1,3 @@
-export type MatcherArgument<ExpectedType, Key extends keyof ExpectedType> = Key 
-                                                                          | Partial<ExpectedType>
-                                                                          | ((argument: ExpectedType) => boolean);
+export type MatcherArgument<ExpectedType, Key extends keyof ExpectedType> = Key
+																			| Partial<ExpectedType>
+																			| ((argument: ExpectedType) => boolean);
