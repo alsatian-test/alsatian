@@ -15,7 +15,7 @@ const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = pars
 export interface TapBarkOutputState {
     logs: Array<string>;
     warnings: Array<string>;
-    fixtureName: string;
+    fixtureName?: string;
     results?: {
         pass: number;
         fail: number;
