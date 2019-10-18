@@ -82,7 +82,7 @@ export class AsyncTeardownDecoratorTests {
 		AsyncTeardown({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"AsyncTeardown has been depreacated and will be removed in version 4.0.0. " +
+			"AsyncTeardown has been deprecated and will be removed in version 4.0.0. " +
 				"Use the Teardown decorator instead."
 		);
 	}

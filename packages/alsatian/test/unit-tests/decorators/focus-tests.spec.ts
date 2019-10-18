@@ -30,7 +30,7 @@ export class FocusTestsDecoratorTests {
 		FocusTestsDecorator(TestFixtureClass);
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"FocusTests has been depreacated and will be removed in version 4.0.0. " +
+			"FocusTests has been deprecated and will be removed in version 4.0.0. " +
 				"Use the Focus decorator instead."
 		);
 	}
