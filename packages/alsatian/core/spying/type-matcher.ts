@@ -1,43 +1,35 @@
 import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
-import { SpyMatcher } from "./spy-matcher";
+import { ISpyMatcher } from "./spy-matcher.i";
 import { MatcherOrType } from "./matcher-or-type";
-import { InterfaceMatcher, MatcherArgument } from "./interface-matcher";
+import { MatcherArgument } from "./matcher-argument";
 
-export class TypeMatcher<ExpectedType extends object> extends InterfaceMatcher<ExpectedType> {
-	private _testers: Array<ITester> = [];
-	private _type: new (...args: Array<any>) => ExpectedType;
-	public get type() {
-		return this._type;
-	}
+export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<ExpectedType> {
+	private readonly _testers: Array<ITester> = [];
 
-	public constructor(type: new (...args: Array<any>) => ExpectedType) {
-		super();
-
+	public constructor(public readonly type: new (...args: Array<any>) => ExpectedType) {
 		if (type === null || type === undefined) {
 			throw new TypeError("type must not be null or undefined");
 		}
-
-		this._type = type;
 
 		this._testers.push({
 			stringify: () => `Any ${(this.type as INameable).name}`,
 			test: (value: any) => {
 				if ((type as any) === String) {
 					return (
-						typeof value === "string" || value instanceof this._type
+						typeof value === "string" || value instanceof this.type
 					);
 				} else if ((type as any) === Number) {
 					return (
-						typeof value === "number" || value instanceof this._type
+						typeof value === "number" || value instanceof this.type
 					);
 				} else if ((type as any) === Boolean) {
 					return (
 						typeof value === "boolean" ||
-						value instanceof this._type
+						value instanceof this.type
 					);
 				} else {
-					return value instanceof this._type;
+					return value instanceof this.type;
 				}
 			}
 		});

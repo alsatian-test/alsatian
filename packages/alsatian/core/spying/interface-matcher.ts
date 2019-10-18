@@ -1,11 +1,9 @@
 import { MatcherOrType } from "./matcher-or-type";
 import { TypeMatcher } from "./type-matcher";
-export type MatcherArgument<ExpectedType, Key extends keyof ExpectedType> = Key | Partial<ExpectedType> | ((argument: ExpectedType) => boolean);
+import { MatcherArgument } from "./matcher-argument";
+import { ISpyMatcher } from "./spy-matcher.i";
 
-export class InterfaceMatcher<ExpectedType extends object> {
-	public thatMatches<Key extends keyof ExpectedType>(key: Key, value: ExpectedType[Key]): MatcherOrType<ExpectedType>;
-	public thatMatches(properties: Partial<ExpectedType>): MatcherOrType<ExpectedType>;
-	public thatMatches(delegate: (argument: ExpectedType) => boolean): MatcherOrType<ExpectedType>;
+export class InterfaceMatcher<ExpectedType extends object> implements ISpyMatcher<ExpectedType> {
 	public thatMatches<Key extends keyof ExpectedType>(
 		first: MatcherArgument<ExpectedType, Key>,
 		second?: ExpectedType[Key]
