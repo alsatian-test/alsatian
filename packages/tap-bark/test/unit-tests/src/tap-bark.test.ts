@@ -187,9 +187,7 @@ export default class TapBarkTests {
 		commentEventHandler(comment);
 
 		Expect(setStateSpy).not.toHaveBeenCalledWith(
-			Any<TapBarkOutputState>().thatMatches({
-				fixtureName: Any
-			})
+			Any<TapBarkOutputState>().thatMatches(value => value.fixtureName !== undefined)
 		);
 	}
 
