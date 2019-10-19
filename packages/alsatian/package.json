@@ -119,5 +119,6 @@
     "exclude": [
       "dist/test"
     ]
-  }
+  },
+  "gitHead": "c9378ae3f68dc87ec90481659d86364020411b1a"
 }
