@@ -9,7 +9,8 @@
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "indent": [true, "tabs", 4]
+    "indent": [true, "tabs", 4],
+    "unified-signatures": false
   },
   "jsRules": {
   },

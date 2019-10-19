@@ -40,6 +40,7 @@ import {
 	Any,
 	createFunctionSpy,
 	FunctionSpy,
+	ISpiedFunction,
 	RestorableFunctionSpy,
 	SpyOn,
 	SpyOnProperty
