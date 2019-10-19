@@ -1,6 +1,6 @@
 {
     "name": "tap-bark",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "TAP parser for Alsatian",
     "main": "dist/tap-bark.js",
     "typings": "dist/tap-bark.d.ts",
@@ -43,7 +43,7 @@
     "devDependencies": {
         "@types/ink": "^0.5.1",
         "@types/through2": "^2.0.34",
-        "alsatian": "^3.0.0-alpha.1",
+        "alsatian": "^3.1.0",
         "chalk": "^2.4.1",
         "codeclimate-test-reporter": "^0.4.0",
         "install-self": "^1.0.0-beta.7",
