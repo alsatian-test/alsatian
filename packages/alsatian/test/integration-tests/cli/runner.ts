@@ -13,7 +13,7 @@ export class CliIntegrationTests {
 	@TestCase("to-equal")
 	@TestCase("to-throw")
 	@AsyncTest()
-	@Timeout(5000)
+	@Timeout(10000)
 	public toBeExpectations(expectationTestName: string) {
 		const result = child.exec(
 			`alsatian ` +

@@ -29,7 +29,7 @@ export class BabelIntegrationTests {
 	}
 
 	@AsyncTest()
-	@Timeout(5000)
+	@Timeout(10000)
 	public toThrowExpectations() {
 		const result = child.exec(
 			"alsatian ./dist/test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap"
