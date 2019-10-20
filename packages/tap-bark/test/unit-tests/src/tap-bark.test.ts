@@ -8,7 +8,7 @@ import {
 	Teardown,
 	TestFixture
 } from "alsatian";
-import { TapBark, TapBarkOutput, TapBarkOutputState } from "../../../src/tap-bark";
+import { TapBark, TapBarkOutputComponent, TapBarkOutputState } from "../../../src/tap-bark";
 
 async function wait(timeInMs: number) {
 	return new Promise(resolve => {
@@ -94,7 +94,7 @@ export default class TapBarkTests {
 	public createReturnsInstanceOfTapBark() {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "setState").andStub();
-		Expect(tapBark instanceof TapBarkOutput).toBe(true);
+		Expect(tapBark instanceof TapBarkOutputComponent).toBe(true);
 	}
 
 	@Test("create a new TapBark instance every time")
