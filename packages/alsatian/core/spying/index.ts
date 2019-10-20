@@ -1,6 +1,7 @@
 export { Any } from "./any-argument";
 export { createFunctionSpy } from "./create-function-spy";
 export { FunctionSpy } from "./function-spy";
+export { ISpiedFunction } from "./spied-function.i";
 export { PropertySpy } from "./property-spy";
 export { RestorableFunctionSpy } from "./restorable-function-spy";
 export { SpyCall } from "./spy-call";

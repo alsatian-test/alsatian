@@ -202,11 +202,11 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), 42)
 	@TestCase(Any(String), "something")
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: 42,
 		anotherProperty: "something"
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: 42,
 		anotherProperty: "something"
 	})
@@ -218,11 +218,11 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), "something")
 	@TestCase(Any(String), 42)
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: "something",
 		anotherProperty: 42
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: "something",
 		anotherProperty: 42
 	})
@@ -234,11 +234,11 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), "something")
 	@TestCase(Any(String), 42, "Expected 42 to be equal to Any String.")
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: "something",
 		anotherProperty: 42
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: "something",
 		anotherProperty: 42
 	})
