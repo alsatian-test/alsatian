@@ -8,7 +8,7 @@ import {
 	Teardown,
 	TestFixture
 } from "alsatian";
-import { TapBark, TapBarkOutput } from "../../../src/tap-bark";
+import { TapBark, TapBarkOutputComponent, TapBarkOutputState } from "../../../src/tap-bark";
 
 async function wait(timeInMs: number) {
 	return new Promise(resolve => {
@@ -94,7 +94,7 @@ export default class TapBarkTests {
 	public createReturnsInstanceOfTapBark() {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "setState").andStub();
-		Expect(tapBark instanceof TapBarkOutput).toBe(true);
+		Expect(tapBark instanceof TapBarkOutputComponent).toBe(true);
 	}
 
 	@Test("create a new TapBark instance every time")
@@ -137,13 +137,13 @@ export default class TapBarkTests {
 		assertEventHandler({ id: 1 });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				totalTests: planEnd
 			})
 		);
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: 1
 			})
 		);
@@ -165,7 +165,7 @@ export default class TapBarkTests {
 		commentEventHandler("# FIXTURE " + fixtureName);
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				fixtureName
 			})
 		);
@@ -187,9 +187,7 @@ export default class TapBarkTests {
 		commentEventHandler(comment);
 
 		Expect(setStateSpy).not.toHaveBeenCalledWith(
-			Any(Object).thatMatches({
-				fixtureName: Any
-			})
+			Any<TapBarkOutputState>().thatMatches(value => value.fixtureName !== undefined)
 		);
 	}
 
@@ -209,7 +207,7 @@ export default class TapBarkTests {
 		assertEventHandler({ name: testName });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				testName
 			})
 		);
@@ -237,7 +235,7 @@ export default class TapBarkTests {
 		assertEventHandler({ id: testId });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: testId
 			})
 		);

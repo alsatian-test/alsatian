@@ -108,7 +108,7 @@ export class AsyncTestDecoratorTests {
 		AsyncTestDecorator("")({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"AsyncTest has been depreacated and will be removed in version 4.0.0. " +
+			"AsyncTest has been deprecated and will be removed in version 4.0.0. " +
 				"Use the Test decorator instead."
 		);
 	}

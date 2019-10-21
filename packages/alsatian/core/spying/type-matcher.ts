@@ -1,38 +1,35 @@
 import { stringify } from "../stringification";
 import { ITester, INameable } from "../_interfaces";
+import { ISpyMatcher } from "./spy-matcher.i";
+import { MatcherOrType } from "./matcher-or-type";
+import { MatcherArgument } from "./matcher-argument";
 
-export class TypeMatcher<ExpectedType extends object> {
-	private _testers: Array<ITester> = [];
-	private _type: new (...args: Array<any>) => ExpectedType;
-	public get type() {
-		return this._type;
-	}
+export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<ExpectedType> {
+	private readonly _testers: Array<ITester> = [];
 
-	public constructor(type: new (...args: Array<any>) => ExpectedType) {
+	public constructor(public readonly type: new (...args: Array<any>) => ExpectedType) {
 		if (type === null || type === undefined) {
 			throw new TypeError("type must not be null or undefined");
 		}
-
-		this._type = type;
 
 		this._testers.push({
 			stringify: () => `Any ${(this.type as INameable).name}`,
 			test: (value: any) => {
 				if ((type as any) === String) {
 					return (
-						typeof value === "string" || value instanceof this._type
+						typeof value === "string" || value instanceof this.type
 					);
 				} else if ((type as any) === Number) {
 					return (
-						typeof value === "number" || value instanceof this._type
+						typeof value === "number" || value instanceof this.type
 					);
 				} else if ((type as any) === Boolean) {
 					return (
 						typeof value === "boolean" ||
-						value instanceof this._type
+						value instanceof this.type
 					);
 				} else {
-					return value instanceof this._type;
+					return value instanceof this.type;
 				}
 			}
 		});
@@ -46,14 +43,10 @@ export class TypeMatcher<ExpectedType extends object> {
 		return this._testers.map(tester => tester.stringify()).join(" and ");
 	}
 
-	/* tslint:disable:unified-signatures */
-	public thatMatches(key: string, value: any): this;
-	public thatMatches(properties: object): this;
-	public thatMatches(delegate: (argument: ExpectedType) => boolean): this;
-	public thatMatches(
-		first: string | object | ((argument: ExpectedType) => boolean),
-		second?: any
-	): this {
+	public thatMatches<Key extends keyof ExpectedType>(
+		first: MatcherArgument<ExpectedType, Key>,
+		second?: ExpectedType[Key]
+	): MatcherOrType<ExpectedType> {
 		if (null === first || undefined === first) {
 			throw new TypeError(
 				"thatMatches requires none-null or non-undefined argument"
@@ -77,9 +70,8 @@ export class TypeMatcher<ExpectedType extends object> {
 
 		throw new Error("Invalid arguments");
 	}
-	/* tslint:enable:unified-signatures */
 
-	private _matchesKeyAndValue(key: string, value: any): this {
+	private _matchesKeyAndValue(key: string, value: any): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () =>
 				`with property '${key}' equal to '${stringify(value)}'`,
@@ -92,21 +84,21 @@ export class TypeMatcher<ExpectedType extends object> {
 			}
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
 	}
 
 	private _matchesDelegate(
 		delegate: (argument: ExpectedType) => boolean
-	): this {
+	): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () => `matches '${delegate.toString()}'`,
 			test: (v: any) => delegate(v)
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
 	}
 
-	private _matchesObjectLiteral(properties: object): this {
+	private _matchesObjectLiteral(properties: object): MatcherOrType<ExpectedType> {
 		this._testers.push({
 			stringify: () => `matches '${stringify(properties)}'`,
 			test: (v: any) => {
@@ -121,6 +113,10 @@ export class TypeMatcher<ExpectedType extends object> {
 			}
 		});
 
-		return this;
+		return this._thisAsMatcherOrType();
+	}
+
+	private _thisAsMatcherOrType() {
+		return this as unknown as MatcherOrType<ExpectedType>;
 	}
 }

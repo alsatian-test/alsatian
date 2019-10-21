@@ -47,7 +47,7 @@ export class IgnoreTestDecoratorTests {
 		IgnoreTestDecorator("")({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"IgnoreTest has been depreacated and will be removed in version 4.0.0. " +
+			"IgnoreTest has been deprecated and will be removed in version 4.0.0. " +
 				"Use the Ignore decorator instead."
 		);
 	}

@@ -1,9 +1,9 @@
 TAP version 13
 1..16
 # FIXTURE asynchronous tests
-# WARN: AsyncTest has been depreacated and will be removed in version 4.0.0. Use the Test decorator instead.
-# WARN: AsyncSetup has been depreacated and will be removed in version 4.0.0. Use the Setup decorator instead.
-# WARN: AsyncTeardown has been depreacated and will be removed in version 4.0.0. Use the Teardown decorator instead.
+# WARN: AsyncTest has been deprecated and will be removed in version 4.0.0. Use the Test decorator instead.
+# WARN: AsyncSetup has been deprecated and will be removed in version 4.0.0. Use the Setup decorator instead.
+# WARN: AsyncTeardown has been deprecated and will be removed in version 4.0.0. Use the Teardown decorator instead.
 ok 1 asynchronous tests > simple passing asynchronous test
 not ok 2 asynchronous tests > simple failing asynchronous test
  ---

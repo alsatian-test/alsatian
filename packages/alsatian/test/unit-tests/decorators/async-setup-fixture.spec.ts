@@ -89,7 +89,7 @@ export class AsyncSetupFixtureDecoratorTests {
 		AsyncSetupFixture({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"AsyncSetupFixture has been depreacated and will be removed in version 4.0.0. " +
+			"AsyncSetupFixture has been deprecated and will be removed in version 4.0.0. " +
 				"Use the SetupFixture decorator instead."
 		);
 	}

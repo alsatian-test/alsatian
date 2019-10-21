@@ -231,7 +231,7 @@ export class TypeMatcherTestFunctionTests {
 	@Test()
 	public thatMatchesWithValidArgumentsDoesNotThrow() {
 		const sut = new TypeMatcher(Error);
-		Expect(() => sut.thatMatches("a", null)).not.toThrow();
+		Expect(() => sut.thatMatches("name", null)).not.toThrow();
 		Expect(() => sut.thatMatches({})).not.toThrow();
 		Expect(() => sut.thatMatches((v: Error) => true)).not.toThrow();
 	}
@@ -281,7 +281,7 @@ export class TypeMatcherTestFunctionTests {
 	@TestCase([2], "length", 1, true)
 	public thatMatchesWithKeyAndValueReturnsExpected<ItemType extends object>(
 		item: ItemType,
-		key: string,
+		key: keyof ItemType,
 		value: any,
 		output: boolean
 	) {
