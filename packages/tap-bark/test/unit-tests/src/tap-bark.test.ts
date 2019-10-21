@@ -467,7 +467,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(Any<TapBarkOutputState>(state => state.results.fail === failCount)9);
+		).toHaveBeenCalledWith(Any<TapBarkOutputState>(state => state.results.fail === failCount));
 	}
 
 	@Test()
