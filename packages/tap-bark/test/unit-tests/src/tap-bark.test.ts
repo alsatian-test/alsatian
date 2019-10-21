@@ -291,7 +291,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.pass === 0);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.pass === 0);
 	}
 
 	@TestCase(0)
@@ -315,7 +315,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.pass === passCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.pass === passCount);
 	}
 
 	@Test()
@@ -334,7 +334,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.ignore === 0);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.ignore === 0);
 	}
 
 	@TestCase(0)
@@ -356,7 +356,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.ignore === skipCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.ignore === skipCount);
 	}
 
 	@TestCase(0)
@@ -378,7 +378,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.ignore === todoCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.ignore === todoCount);
 	}
 
 	@TestCase(1, 1)
@@ -401,7 +401,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.ignore === skipCount + todoCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.ignore === skipCount + todoCount);
 	}
 
 	@Test()
@@ -419,7 +419,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.fail === 0);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.fail === 0);
 	}
 
 	@TestCase(0)
@@ -439,7 +439,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.fail === failCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.fail === failCount);
 	}
 
 	@TestCase(0)
@@ -467,7 +467,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.fail === failCount);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.fail === failCount);
 	}
 
 	@Test()
@@ -484,7 +484,7 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.failures.length === 0);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.failures.length === 0);
 	}
 
 	@TestCase(0)
@@ -512,6 +512,6 @@ export default class TapBarkTests {
 
 		Expect(
 			tapBark.setState
-		).toHaveBeenCalledWith(event => event.results.failures === failures);
+		).toHaveBeenCalledWith((state: TapBarkOutputState) => state.results.failures === failures);
 	}
 }
