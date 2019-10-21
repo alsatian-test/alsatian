@@ -11,7 +11,6 @@
 - [x] I am an awesome developer and proud of my code
 - [ ] I added / updated / removed relevant unit or integration tests to prove my change works
 - [ ] I ran all tests using ```npm test``` to make sure everything else still works
-- [ ] I ran ```npm run review``` to ensure the code adheres to the repository standards
 
 <!-- Thanks again, and if you'd like to add any further information you can do so below -->
 

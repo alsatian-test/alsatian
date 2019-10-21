@@ -5,10 +5,7 @@ import chalk from "chalk";
 const through = require("through2");
 const parser = require("tap-parser");
 const duplexer = require("duplexer");
-import { h, render, Color, Component as InkComponent, InkElement } from "ink";
-
-//TODO: update ink typings to include Indent and proper constructor for Component
-const { Component, Indent } = require("ink");
+import { h, render, Color, Component, Indent } from "ink";
 
 const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
 
@@ -31,7 +28,7 @@ export interface TapBarkOutputProps {
     showProgress: boolean;
 }
 
-class TapBarkOutputComponent extends Component {
+export class TapBarkOutputComponent extends Component<TapBarkOutputProps, TapBarkOutputState> {
     
     public getPipeable(): any {
         return duplexer(TAP_PARSER, through());
@@ -40,9 +37,6 @@ class TapBarkOutputComponent extends Component {
     private FIXTURE_REGEXP: RegExp = /^# FIXTURE (.*)/;
     private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
     private _completeCalled = false;
-    
-    //TODO: remove when proper ink types
-    private state: TapBarkOutputState;
 
     public constructor(props) {
         super(props);
@@ -152,13 +146,7 @@ class TapBarkOutputComponent extends Component {
             this.setState({
                 ... this.state,
                 results: _results
-            }, setTimeout(() => {
-                if (results.ok) {
-                    process.exit(0);
-                } else {
-                    process.exit(1);
-                }
-            }, 100));
+            }, () => setTimeout(() => process.exit(results.ok ? 0 : 1), 100));
         }
     }
 
@@ -173,23 +161,14 @@ class TapBarkOutputComponent extends Component {
     }
 }
 
-//TODO: remove when proper ink types
-export const TapBarkOutput = TapBarkOutputComponent as any as new (props: TapBarkOutputProps) => InkComponent<TapBarkOutputProps, TapBarkOutputState>;
-
 export class TapBark {
     
     public static readonly tapParser = TAP_PARSER;
 
     public static create(showProgress: boolean = true) {
-        const tapBarkOutput = <TapBarkOutput showProgress={showProgress} />;
+        const tapBarkOutput = <TapBarkOutputComponent showProgress={showProgress} />;
         render(tapBarkOutput);
-        //TODO: remove when proper ink types
-        return tapBarkOutput.instance as any as InkElement & TapBarkOutputComponent;
+        
+        return tapBarkOutput.instance as TapBarkOutputComponent;
     }
-}
-
-//TODO: remove when proper ink types
-export {
-    Component,
-    TapBarkOutputComponent
 }
