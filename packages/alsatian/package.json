@@ -45,7 +45,7 @@
     "node-integration-tests": "node \"./dist/test/integration-tests/node/runner\"",
     "debug-unit-tests": "node-debug ./cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
     "build-es6-tests": "babel test/integration-tests/javascript/test-sets -d dist/test/integration-tests/javascript/test-sets",
-    "babel-integration-tests": "npm run build-es6-tests && alsatian \"./dist/test/integration-tests/javascript/babel/babel-compatibility.spec\"",
+    "babel-integration-tests": "npm run build-es6-tests && alsatian \"./test/integration-tests/javascript/babel/babel-compatibility.spec.ts\"",
     "typescript-integration-tests": "alsatian \"./dist/test/integration-tests/typescript/compile.spec\"",
     "selenium-integration-tests": "alsatian \"./dist/test/integration-tests/selenium/**/*.spec.js\""
   },
