@@ -9,6 +9,7 @@ import {
 	TestFixture
 } from "alsatian";
 import { TapBark, TapBarkOutputComponent, TapBarkOutputState } from "../../../src/tap-bark";
+import chalk from "chalk";
 
 async function wait(timeInMs: number) {
 	return new Promise(resolve => {
@@ -544,4 +545,136 @@ export default class TapBarkTests {
 			Any<TapBarkOutputState>().thatMatches(state => state.results.failures === failures),
 			Any
 		);
-	}}
+	}
+
+	@Test("only first complete call sets state")
+	public async completeSetStateOnlyCalledOnce() {		
+		const tapBark = TapBark.create();
+		SpyOn(tapBark, "render").andStub();
+		SpyOn(tapBark, "setState").andStub();
+
+		const completeEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "complete")[0][1];
+
+		completeEventHandler({});
+		completeEventHandler({});
+
+		await wait(210);
+
+		Expect(tapBark.setState).toHaveBeenCalled().exactly(1).times;
+	}
+
+	@TestCase("")
+	@TestCase("WARNING")
+	@TestCase("Oh no, something's really wrong!")
+	public warningStoredCorrectly(warning: string) {
+		const tapBark = TapBark.create();
+		SpyOn(tapBark, "render").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
+
+		const commentEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "comment")[0][1];
+
+		warning = `WARN: ${warning}`;
+
+		commentEventHandler(`# ${warning}`);
+
+		Expect(setStateSpy).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.warnings.indexOf(chalk.yellow(warning)) !== -1)
+		);
+	}
+
+	@Test("show message in place of progress")
+	public showMessageInPlaceOfProgress() {
+		const tapBark = TapBark.create(false);
+
+		Expect(tapBark.render()._props.children as Array<string>).toContain("running alsatian tests");
+	}
+
+	@Test("hide pending message after complete")
+	public async hidePendingMessageOnComplete() {
+		const tapBark = TapBark.create(false);
+
+		const completeEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "complete")[0][1];
+
+		completeEventHandler({});
+		await wait(105);
+
+		Expect(tapBark.render()._props.children as Array<string>).not.toContain("running alsatian tests");
+	}
+
+	@TestCase("Failed")
+	@TestCase("Darn it")
+	@TestCase("OOOOOPS!!!")
+	@Test("standard message without diag")
+	public async standardFailureMesssageWithoutDiag(name: string) {
+		const tapBark = TapBark.create(false);
+
+		const failureMessage = tapBark.getFailureMessage({ id: null, ok: null, name });
+
+		Expect(failureMessage).toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\nFailure reason unknown.`);
+	}
+
+	@TestCase("Failed")
+	@TestCase("Darn it")
+	@TestCase("OOOOOPS!!!")
+	@Test("diag message output")
+	public async diagMessageOutput(message: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const expect = "EXPECT";
+		const got = "GOT";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { expect, got } } });
+
+		Expect(failureMessage)
+			.toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\n ${message}\n\nexpected:\n${expect}\nactual:\n${got}`);
+	}
+
+	@TestCase("EXPECTED", "GOT")
+	@TestCase("Something", "Something Else")
+	@TestCase("This normal thing", "something EXCEPTIONALLY weird")
+	@Test("diag without data returns expect and got")
+	public async diagWithoutDataReturnsExpectAndGot(expect: string, got: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const message = "MESSAGE";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { expect, got } } });
+
+		Expect(failureMessage)
+			.toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\n ${message}\n\nexpected:\n${expect}\nactual:\n${got}`);
+	}
+
+	@TestCase("KEY", "VALUE")
+	@TestCase("This", "thing")
+	@TestCase("Wow this is important", "something EXCEPTIONALLY important")
+	@Test("diag details output in failure message")
+	public async diagDetailsOutputInFailureMessage(key: string, value: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const message = "MESSAGE";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { details: { [key]: value } } } });
+
+		Expect(failureMessage)
+			.toContain(`${chalk.underline(key)}:\n${value}`)
+	}
+}
