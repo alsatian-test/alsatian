@@ -8,7 +8,7 @@ os:
   - osx
   - windows
 before_script:
-  - if [ ${TRAVIS_OS_NAME} = "linux" ]; then
+  - if [ ${TRAVIS_OS_NAME} == "linux" ]; then
         curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
         chmod +x ./cc-test-reporter;
         ./cc-test-reporter before-build;
@@ -21,7 +21,7 @@ script:
         npm test;
     fi
 after_script:
-  - if [ TRAVIS_OS_NAME = "linux" ]; then
+  - if [ ${TRAVIS_OS_NAME} == "linux" ]; then
         chmod +x .codeclimate-report-coverage.sh;
         ./.codeclimate-report-coverage.sh;
     fi
