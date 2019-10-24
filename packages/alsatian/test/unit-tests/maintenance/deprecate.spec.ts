@@ -11,9 +11,9 @@ import { Warner } from "../../../core/maintenance/warn";
 @TestFixture("deprecate function tests")
 export class DeprecateFunctionTests {
 
-    @TestCase("FEATURE", "VERSION")
-    @TestCase("Awesome Feature", "3.0.0")
-    @TestCase("Wowza?!", "9.9.9-abc")
+	@TestCase("FEATURE", "VERSION")
+	@TestCase("Awesome Feature", "3.0.0")
+	@TestCase("Wowza?!", "9.9.9-abc")
 	@Test("warning given")
 	public warningGiven(featureName: string, versionNumber: string) {
 		SpyOn(Warner, "warn");
@@ -25,9 +25,9 @@ export class DeprecateFunctionTests {
 		);
 	}
 
-    @TestCase("prompt")
-    @TestCase("I'm prompting you to do something")
-    @TestCase("PLEASE OH PLEASE?!")
+	@TestCase("prompt")
+	@TestCase("I'm prompting you to do something")
+	@TestCase("PLEASE OH PLEASE?!")
 	@Test("warning given with prompt")
 	public warningGivenWithPrompt(prompt: string) {
 		SpyOn(Warner, "warn");
