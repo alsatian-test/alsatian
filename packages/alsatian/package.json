@@ -33,9 +33,8 @@
     "lint:fix": "npm run lint:code -- --fix & npm run lint:tests -- --fix",
     "pretest": "npm run build",
     "test": "npm run lint && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
-    "check-coverage": "nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
-    "output-test-coverage": "nyc report",
+    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
+    "check-coverage": "nyc npm run unit-tests -- --hide-progress && nyc report",
     "install-self": "npm link && npm link alsatian",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
     "integration-tests": "npm run install-self && npm run build:integration-tests && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run babel-integration-tests && npm run expect-extension-integration-tests",
@@ -115,8 +114,17 @@
     "ts-node": "^8.3.0"
   },
   "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
     "exclude": [
-      "dist/test"
+      "**/*.d.ts",
+      "test/"
+    ],
+    "reporter": [
+      "html",
+      "lcov"
     ]
   },
   "gitHead": "c9378ae3f68dc87ec90481659d86364020411b1a"
