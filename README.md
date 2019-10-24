@@ -19,15 +19,15 @@ Core test reporter
 ## Community Packages
 
 ### [alsatian-cli-function](https://www.npmjs.com/package/alsatian-cli-function)
-[![npm](https://img.shields.io/npm/v/junit-bark.svg)](https://www.npmjs.com/package/alsatian-cli-function)
+[![npm](https://img.shields.io/npm/v/alsatian-cli-function.svg)](https://www.npmjs.com/package/alsatian-cli-function)
 Exports a function to run a provided file using alsatian.
 
 ### [alsatian-fluent-assertions](https://www.npmjs.com/package/alsatian-fluent-assertions)
-[![npm](https://img.shields.io/npm/v/junit-bark.svg)](https://www.npmjs.com/package/alsatian-fluent-assertions)
+[![npm](https://img.shields.io/npm/v/alsatian-fluent-assertions.svg)](https://www.npmjs.com/package/alsatian-fluent-assertions)
 A fluent assertions plugin for the Alsatian.
 
 ### [alsatian-tsmockito](https://www.npmjs.com/package/alsatian-tsmockito)
-[![npm](https://img.shields.io/npm/v/junit-bark.svg)](https://www.npmjs.com/package/alsatian-tsmockito)
+[![npm](https://img.shields.io/npm/v/alsatian-tsmockito.svg)](https://www.npmjs.com/package/alsatian-tsmockito)
 Alsatian + decorator based mock injection.
 
 ### [junit-bark](https://www.npmjs.com/package/junit-bark)
