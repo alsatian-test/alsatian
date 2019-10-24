@@ -32,7 +32,7 @@
     "bugs": {
         "url": "https://github.com/alsatian-test/alsatian/issues"
     },
-    "homepage": "https://github.com/alsatian-test/alsatian/tree/master/tap-bark#readme",
+    "homepage": "https://github.com/alsatian-test/alsatian/tree/master/packages/tap-bark#readme",
     "dependencies": {
         "@types/ink": "^0.5.2",
         "@types/node": ">=0.0.2",
