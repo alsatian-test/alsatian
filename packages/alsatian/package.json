@@ -80,7 +80,7 @@
   "bugs": {
     "url": "https://github.com/alsatian-test/alsatian/issues"
   },
-  "homepage": "https://github.com/alsatian-test/alsatian#readme",
+  "homepage": "https://github.com/alsatian-test/alsatian/tree/master/packages/alsatian#readme",
   "devDependencies": {
     "@types/deep-diff": "0.0.31",
     "@types/diff": "^3.5.1",
