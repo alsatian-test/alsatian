@@ -33,3 +33,13 @@ Alsatian + decorator based mock injection.
 ### [junit-bark](https://www.npmjs.com/package/junit-bark)
 [![npm](https://img.shields.io/npm/v/junit-bark.svg)](https://www.npmjs.com/package/junit-bark)
 JUnit reporter for Alsatian.
+
+## Contributing
+
+Contributions are most welcome and working with the repo should be simple.
+
+* Fork it
+* Bootstrap `npm run bootstrap`
+* Write your code
+* Test it `npm test`
+* Send up your pull request
