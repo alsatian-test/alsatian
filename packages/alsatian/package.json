@@ -36,6 +36,7 @@
     "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
     "check-coverage": "nyc npm run unit-tests -- --hide-progress && nyc report",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
+    "install-self": "install-self",
     "integration-tests": "npm run install-self && npm run build:integration-tests && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run babel-integration-tests && npm run expect-extension-integration-tests",
     "expect-extension-integration-tests": "alsatian \"./dist/test/integration-tests/extending-expect/**/*.spec.js\"",
     "cli-integration-tests": "alsatian \"./dist/test/integration-tests/cli/runner\"",
