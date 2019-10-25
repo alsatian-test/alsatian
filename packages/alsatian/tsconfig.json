@@ -1,7 +1,6 @@
 {
    "extends": "../../tsconfig.json",
    "compilerOptions": {
-      "sourceMap": false,
       "typeRoots" : ["./node_modules/@types", "./typings"],
       "jsx": "react",
       "jsxFactory": "h",
