@@ -8,6 +8,7 @@ export class InterfaceMatcher<ExpectedType extends object> implements ISpyMatche
 		first: MatcherArgument<ExpectedType, Key>,
 		second?: ExpectedType[Key]
 	): MatcherOrType<ExpectedType> {
-		return new TypeMatcher<ExpectedType>(Object as any).thatMatches(first as Key, second);
+		const typeMatcher = new TypeMatcher<ExpectedType>(Object as any);
+		return typeMatcher.thatMatches(first, second);
 	}
 }

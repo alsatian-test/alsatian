@@ -8,9 +8,12 @@ os:
   - osx
   - windows
 before_script:
+  - if [ ${TRAVIS_OS_NAME} == "linux" ]; then
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
+        chmod +x ./cc-test-reporter;
+        ./cc-test-reporter before-build;
+    fi
   - npm run bootstrap
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
 script:
   - if [ ${TRAVIS_EVENT_TYPE} == "cron" ]; then
         npm run publish-nightly;
@@ -18,7 +21,7 @@ script:
         npm test;
     fi
 after_script:
-  - chmod +x .codeclimate-report-coverage.sh
-  - if [ ${TRAVIS_EVENT_TYPE} != "cron" ] && [ ${TRAVIS_TEST_RESULT} == 0 ]; then
+  - if [ ${TRAVIS_OS_NAME} == "linux" ]; then
+        chmod +x .codeclimate-report-coverage.sh;
         ./.codeclimate-report-coverage.sh;
     fi
