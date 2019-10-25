@@ -12,6 +12,7 @@
     ],
     "include": [
         "./**/*.test.ts",
+        "./**/*.test.tsx",
         "../src/**/*.ts",
         "../src/**/*.tsx"
     ]

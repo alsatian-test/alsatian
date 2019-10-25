@@ -33,10 +33,8 @@
     "lint:fix": "npm run lint:code -- --fix & npm run lint:tests -- --fix",
     "pretest": "npm run build",
     "test": "npm run lint && npm run check-coverage && npm run integration-tests",
-    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./dist/test/unit-tests/**/*.spec.js\"",
-    "check-coverage": "nyc --reporter=lcov --reporter=html npm run unit-tests -- --hide-progress && npm run output-test-coverage",
-    "output-test-coverage": "nyc report",
-    "install-self": "install-self",
+    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
+    "check-coverage": "nyc npm run unit-tests -- --hide-progress && nyc report",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
     "integration-tests": "npm run install-self && npm run build:integration-tests && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run babel-integration-tests && npm run expect-extension-integration-tests",
     "expect-extension-integration-tests": "alsatian \"./dist/test/integration-tests/extending-expect/**/*.spec.js\"",
@@ -81,7 +79,7 @@
   "bugs": {
     "url": "https://github.com/alsatian-test/alsatian/issues"
   },
-  "homepage": "https://github.com/alsatian-test/alsatian#readme",
+  "homepage": "https://github.com/alsatian-test/alsatian/tree/master/packages/alsatian#readme",
   "devDependencies": {
     "@types/deep-diff": "0.0.31",
     "@types/diff": "^3.5.1",
@@ -96,7 +94,7 @@
     "mock-require": "^3.0.0",
     "nyc": "^14.1.1",
     "prettier": "^1.10.2",
-    "rimraf": "^2.5.4",
+    "rimraf": "^3.0.0",
     "selenium-webdriver": "^3.0.1",
     "tslint": "^5.9.1",
     "tslint-plugin-prettier": "^1.3.0",
@@ -106,7 +104,7 @@
     "@types/node": ">=4.0.0",
     "chalk": "^2.4.1",
     "deep-diff": "^1.0.2",
-    "diff": "^3.5.0",
+    "diff": "^4.0.1",
     "extendo-error": "^1.0.1",
     "glob": "^7.0.3",
     "js-yaml": "^3.12.0",
@@ -116,8 +114,17 @@
     "ts-node": "^8.3.0"
   },
   "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
     "exclude": [
-      "dist/test"
+      "**/*.d.ts",
+      "test/"
+    ],
+    "reporter": [
+      "html",
+      "lcov"
     ]
   },
   "gitHead": "c9378ae3f68dc87ec90481659d86364020411b1a"
