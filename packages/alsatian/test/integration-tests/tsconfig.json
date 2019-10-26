@@ -4,7 +4,7 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
-        "sourceMap": true,
+        "sourceMap": false,
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
