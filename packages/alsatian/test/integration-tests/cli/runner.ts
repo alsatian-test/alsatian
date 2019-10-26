@@ -1,6 +1,5 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
-import * as path from "path";
 import {
 	AsyncTest,
 	Expect,
