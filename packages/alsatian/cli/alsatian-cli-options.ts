@@ -131,11 +131,12 @@ export class AlsatianCliOptions {
 		);
 	}
 
-
 	private extractProject(args) {
 		const project = this.extractArgumentFromList(args, "project", "p", true);
 
-		process.env.TS_NODE_PROJECT = project.value;
+		if (project.value) {
+			process.env.TS_NODE_PROJECT = project.value;
+		}
 
 		return project;
 	}
@@ -154,13 +155,13 @@ export class AlsatianCliOptions {
 
 		let value: any = argumentIndex !== -1;
 
-		if (hasValue) {
+		if (hasValue && value) {
 			value = args[argumentIndex + 1];
 		}
 
 		// filter out the tap argument and return the other args
-		args = args.filter((value, index) => {
-			Unused(value);
+		args = args.filter((_, index) => {
+			Unused(_);
 			return index !== argumentIndex;
 		});
 
