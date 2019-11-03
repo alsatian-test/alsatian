@@ -32,8 +32,10 @@ export class AlsatianCliOptions {
 		const f = this.extractHideProgress(e.args);
 		this.hideProgress = f.value;
 
-		if (f.args.length > 0) {
-			throw new InvalidArgumentNamesError(f.args);
+		const p = this.extractProject(f.args);
+
+		if (p.args.length > 0) {
+			throw new InvalidArgumentNamesError(p.args);
 		}
 	}
 
@@ -129,16 +131,32 @@ export class AlsatianCliOptions {
 		);
 	}
 
+
+	private extractProject(args) {
+		const project = this.extractArgumentFromList(args, "project", "p", true);
+
+		process.env.TS_NODE_PROJECT = project.value;
+
+		return project;
+	}
+
 	private extractArgumentFromList(
 		args: Array<string>,
 		argumentName: string,
-		argumentShorthand?: string
+		argumentShorthand?: string,
+		hasValue: boolean = false
 	) {
 		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
 			argumentName,
 			argumentShorthand
 		);
+
+		let value: any = argumentIndex !== -1;
+
+		if (hasValue) {
+			value = args[argumentIndex + 1];
+		}
 
 		// filter out the tap argument and return the other args
 		args = args.filter((value, index) => {
@@ -147,7 +165,7 @@ export class AlsatianCliOptions {
 		});
 
 		return {
-			value: argumentIndex !== -1,
+			value,
 			args
 		};
 	}
