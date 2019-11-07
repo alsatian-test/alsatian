@@ -98,4 +98,26 @@ export class LoadTestTests {
 
 		Expect(globHelper.resolve).toHaveBeenCalledWith(resolve(path));
 	}
+
+	@TestCase("file.js", "another-file.ts")
+	@TestCase("singlefile.js")
+	@TestCase("path/and/file.ts", "./path/relative/file.ts")
+	@Test("resolved files are loaded")
+	public resolvedFilesAreLoaded(... fileLocations: Array<string>) {
+		const testLoader = new TestLoader(null);
+		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
+		testLoaderSpy.andReturn([]);
+		testLoaderSpy.andStub();
+
+		const globHelper = new GlobHelper();
+		SpyOn(globHelper, "resolve").andReturn(fileLocations);
+
+		const testSet = new TestSet(testLoader, globHelper);
+
+		testSet.addTestsFromFiles("**/*/glob");
+
+		fileLocations.forEach(fileLocation => {
+			Expect(testLoader.loadTestFixture).toHaveBeenCalledWith(fileLocation);
+		});
+	}
 }

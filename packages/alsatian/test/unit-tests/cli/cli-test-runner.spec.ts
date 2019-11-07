@@ -6,6 +6,7 @@ import {
 	Setup,
 	SpyOn,
 	Teardown,
+	Test,
 	TestCase,
 	TestOutcome,
 	TestRunner
@@ -48,6 +49,11 @@ export class CliTestRunnerTests {
 			TypeError,
 			"_testRunner must not be null or undefined."
 		);
+	}
+
+	@Test()
+	public async createFunction() {
+		Expect(CliTestRunner.create()).toBeDefined();
 	}
 
 	@AsyncTest()
