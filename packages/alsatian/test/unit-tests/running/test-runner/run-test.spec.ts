@@ -7,9 +7,9 @@ import {
 	TestFixture,
 	Timeout,
 	Setup,
-	Teardown
+	Teardown, TestOutcome
 } from "../../../../core/alsatian-core";
-import { ITestCompleteEvent } from "../../../../core/events";
+import {ITestCompleteEvent, ITestFixtureCompleteEvent, ITestStartedEvent} from "../../../../core/events";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestBuilder } from "../../../builders/test-builder";
@@ -107,6 +107,99 @@ export class RunTestTests {
 		Expect(testCompletedValue.outcome).not.toBeNull();
 		Expect(testCompletedValue.testCase).not.toBeNull();
 		Expect(testCompletedValue.error).toBeNull();
+	}
+	@AsyncTest("a passing test can be run with on started event")
+	public async singlePassingTestRunsSuccessfullyWithOnStartedEventRaised() {
+		let testStartedValue: ITestStartedEvent = null;
+		const testDescription = "testDescriptionToCheck";
+		const test = new TestBuilder()
+			.withDescription(testDescription)
+			.withTestCaseCount(1)
+			.build();
+
+		const testFixtureDescription = "testFixtureDescriptionToCheck";
+		const testFixture = new TestFixtureBuilder()
+			.withDescription(testFixtureDescription)
+			.addTest(test)
+			.build();
+
+		const testSet = new TestSetBuilder()
+			.addTestFixture(testFixture)
+			.build();
+
+		const outputStream = new TestOutputStream();
+
+		const testRunner = new TestRunner(outputStream);
+
+		const spyContainer = {
+			onStartedCB: (testStarted: ITestStartedEvent) => {
+				testStartedValue = testStarted;
+			}
+		};
+
+		SpyOn(spyContainer, "onStartedCB");
+		testRunner.onTestStarted(spyContainer.onStartedCB);
+
+		await testRunner.run(testSet);
+
+		this._restoreOriginalTestPlan();
+
+		Expect(spyContainer.onStartedCB)
+			.toHaveBeenCalled()
+			.exactly(1);
+
+		Expect(testStartedValue.testId).toEqual(1);
+		Expect(testStartedValue.test.description).toEqual(testDescription);
+		Expect(testStartedValue.testFixture.description).toEqual(
+			testFixtureDescription
+		);
+		Expect(testStartedValue.test.key).not.toBeNull();
+		Expect(testStartedValue.test.description).not.toBeNull();
+		Expect(testStartedValue.test.ignored).toBe(false);
+	}
+
+	@AsyncTest("a passing test can be run with on started event")
+	public async singlePassingTestRunsSuccessfullyWithOnTestFixtureCompleteEventRaised() {
+		let testTestFixtureCompleteValue: ITestFixtureCompleteEvent = null;
+		const testDescription = "testDescriptionToCheck";
+		const test = new TestBuilder()
+			.withDescription(testDescription)
+			.withTestCaseCount(1)
+			.build();
+
+		const testFixtureDescription = "testFixtureDescriptionToCheck";
+		const testFixture = new TestFixtureBuilder()
+			.withDescription(testFixtureDescription)
+			.addTest(test)
+			.build();
+
+		const testSet = new TestSetBuilder()
+			.addTestFixture(testFixture)
+			.build();
+
+		const outputStream = new TestOutputStream();
+
+		const testRunner = new TestRunner(outputStream);
+
+		const spyContainer = {
+			onTestFixtureCompleteCB: (testTestFixtureComplete: ITestFixtureCompleteEvent) => {
+				testTestFixtureCompleteValue = testTestFixtureComplete;
+			}
+		};
+
+		SpyOn(spyContainer, "onTestFixtureCompleteCB");
+		testRunner.onTestFixtureComplete(spyContainer.onTestFixtureCompleteCB);
+
+		await testRunner.run(testSet);
+
+		this._restoreOriginalTestPlan();
+
+		Expect(spyContainer.onTestFixtureCompleteCB)
+			.toHaveBeenCalled()
+			.exactly(1);
+
+		Expect(testTestFixtureCompleteValue.testFixture).not.toBeNull();
+		Expect(testTestFixtureCompleteValue.testFixtureResults.outcome).toBe(TestOutcome.Pass);
 	}
 
 	@AsyncTest(

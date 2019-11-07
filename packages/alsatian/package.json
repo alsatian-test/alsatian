@@ -117,7 +117,14 @@
   },
   "nyc": {
     "exclude": [
+      "test",
       "dist/test"
+    ],
+    "cache": false,
+    "all": true,
+    "extension": [
+      "js",
+      "ts"
     ]
   }
 }
