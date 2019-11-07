@@ -34,7 +34,7 @@
     "pretest": "npm run build",
     "test": "npm run lint && npm run integration-tests && npm run check-coverage",
     "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
-    "check-coverage": "nyc --reporter=lcov --reporter=html --exclude=/**/*.d.ts --exclude=test --extension=.ts --extension=.tsx npm run unit-tests -- --hide-progress && nyc report",
+    "check-coverage": "nyc --reporter=lcov --exclude=/**/*.d.ts --exclude=test npm run unit-tests -- --hide-progress && nyc report",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
     "install-self": "install-self && chmod +x ./node_modules/.bin/alsatian",
     "integration-tests": "npm run install-self && npm run build:integration-tests && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run babel-integration-tests && npm run expect-extension-integration-tests",
