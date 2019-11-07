@@ -1,4 +1,4 @@
-import { Expect, Test, TestFixture } from "../../..";
+import { Expect, Test, TestFixture } from "../../../core/alsatian-core";
 import { removeItemByIndex } from "../../../core/utils/remove-item-by-index";
 
 @TestFixture("remove item by index tests")
