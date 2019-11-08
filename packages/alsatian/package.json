@@ -116,6 +116,7 @@
   },
   "nyc": {
     "all": true,
+    "cache": false,
     "check-coverage": true,
     "branches": 99,
     "lines": 100,
