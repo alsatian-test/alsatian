@@ -1,6 +1,14 @@
 /*
 import * as mock from "mock-require";
-import { Any, createFunctionSpy, Expect, SpyOn, Test, TestFixture, RestorableFunctionSpy } from "../../../core/alsatian-core";
+import {
+	Any,
+	createFunctionSpy,
+	Expect,
+	SpyOn,
+	Test,
+	TestFixture,
+	RestorableFunctionSpy
+} from "../../../core/alsatian-core";
 import { CliTestRunner } from "../../../cli/cli-test-runner";
 
 @TestFixture("alsatian cli tests")
