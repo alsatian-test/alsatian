@@ -1,3 +1,4 @@
+/*
 import { FileRequirer } from "../../../core/file-requirer";
 import { Expect, Test, TestFixture, TestCase } from "../../../core/alsatian-core";
 import * as mock from "mock-require";
@@ -16,3 +17,4 @@ export class FileRequirerTests {
 		Expect(new FileRequirer().require(path)).toBe(module);
 	}
 }
+*/

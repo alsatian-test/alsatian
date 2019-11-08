@@ -1,3 +1,4 @@
+/*
 import { GlobHelper } from "../../../core/glob-helper";
 import { Expect, Test, TestFixture, TestCase, SpyOn } from "../../../core/alsatian-core";
 import * as Glob from "glob";
@@ -17,3 +18,4 @@ export class GlobHelperTests {
 		Expect(Glob.sync).toHaveBeenCalledWith(glob);
 	}
 }
+*/
