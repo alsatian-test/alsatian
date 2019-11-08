@@ -124,7 +124,7 @@
     "statements": 100,
     "extension": [ ".ts", ".tsx" ],
     "include": [ "**/*.ts" ],
-    "exclude": [ "test", "dist", "scripts" ],
+    "exclude": [ "test", "dist", "scripts", "node_modules" ],
     "reporter": [ "lcov" ]
   },
   "gitHead": "c9378ae3f68dc87ec90481659d86364020411b1a"
