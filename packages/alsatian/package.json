@@ -126,6 +126,10 @@
       ".ts",
       ".tsx"
     ],
+    "include": [
+      "core/**/*.ts",
+      "cli/**/*.ts"
+    ],
     "exclude": [
       "**/*.d.ts",
       "test/",
