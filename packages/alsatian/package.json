@@ -130,6 +130,7 @@
       "**/*.ts"
     ],
     "exclude": [
+      "**/*.d.ts",
       "test",
       "dist",
       "scripts",
