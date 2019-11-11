@@ -34,7 +34,7 @@
     "pretest": "npm run build",
     "test": "npm run lint && npm run check-coverage",
     "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
-    "check-coverage": "nyc --check-coverage npm run unit-tests -- --hide-progress && nyc report",
+    "check-coverage": "nyc npm run unit-tests -- --hide-progress && nyc report",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
     "install-self": "install-self && chmod +x ./node_modules/.bin/alsatian",
     "integration-tests": "npm run install-self && npm run build:integration-tests && npm run cli-integration-tests && npm run node-integration-tests && npm run tsnode-integration-tests && npm run babel-integration-tests && npm run expect-extension-integration-tests",
@@ -115,7 +115,10 @@
     "ts-node": "^8.3.0"
   },
   "nyc": {
-    "branches": 99,
+    "all": true,
+    "cache": false,
+    "check-coverage": true,
+    "branches": 100,
     "lines": 100,
     "functions": 100,
     "statements": 100,
@@ -128,10 +131,13 @@
     ],
     "exclude": [
       "**/*.d.ts",
-      "test/",
-      "dist",
-      "scripts",
-      "node_modules"
+      "coverage/**",
+      "packages/*/test/**",
+      "test/**",
+      "test{,-*}.ts",
+      "**/*{.,-}{test,spec}.ts",
+      "**/__tests__/**",
+      "**/node_modules/**"
     ],
     "reporter": [
       "lcov"
