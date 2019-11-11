@@ -49,16 +49,27 @@
         "typescript": "^3.5.2"
     },
     "nyc": {
-      "all": true,
-      "check-coverage": true,
-      "branches": 100,
-      "lines": 100,
-      "functions": 100,
-      "statements": 100,
-      "extension": [ ".ts", ".tsx" ],
-      "include": [ "**/*.ts", "**/*.tsx" ],
-      "exclude": [ "test", "dist" ],
-      "reporter": [ "lcov" ]
+        "all": true,
+        "check-coverage": true,
+        "branches": 100,
+        "lines": 100,
+        "functions": 100,
+        "statements": 100,
+        "extension": [
+            ".ts",
+            ".tsx"
+        ],
+        "include": [
+            "**/*.ts",
+            "**/*.tsx"
+        ],
+        "exclude": [
+            "test",
+            "dist"
+        ],
+        "reporter": [
+            "lcov"
+        ]
     },
     "gitHead": "c9378ae3f68dc87ec90481659d86364020411b1a"
 }
