@@ -115,11 +115,6 @@
     "ts-node": "^8.3.0"
   },
   "nyc": {
-    "check-coverage": true,
-    "branches": 99,
-    "lines": 100,
-    "functions": 100,
-    "statements": 100,
     "extension": [
       ".ts"
     ],
