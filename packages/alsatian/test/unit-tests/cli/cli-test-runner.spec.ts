@@ -50,12 +50,12 @@ export class CliTestRunnerTests {
 			"_testRunner must not be null or undefined."
 		);
 	}
-
+/*
 	@Test()
 	public async createFunction() {
 		Expect(CliTestRunner.create()).toBeDefined();
 	}
-
+*/
 	@AsyncTest()
 	public async noTestFixturesExitsWithError() {
 		const cliTestRunner = new CliTestRunner(new TestRunner());
