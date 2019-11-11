@@ -121,8 +121,7 @@
     "functions": 100,
     "statements": 100,
     "extension": [
-      ".ts",
-      ".tsx"
+      ".ts"
     ],
     "include": [
       "core/**/*.ts",
