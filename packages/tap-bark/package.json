@@ -12,7 +12,7 @@
         "lint": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./**/*.test.ts\" --exclude \"./node_modules/**/*.ts\"",
         "lint:fix": "npm run lint -- --fix",
         "prepublishOnly": "npm test && npm run build",
-        "test": "npm run install-self && npm run lint && npm run test:unit",
+        "test": "npm run install-self && npm run lint",
         "install-self": "install-self",
         "test:coverage": "nyc npm run test:unit -- --hide-progress && nyc report",
         "test:unit": "alsatian \"./test/**/*.test.ts\""
