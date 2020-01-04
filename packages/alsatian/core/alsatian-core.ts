@@ -91,6 +91,7 @@ export {
 	PropertyMatcher,
 	Setup,
 	SetupFixture,
+	ISpiedFunction,
 	FunctionSpy,
 	RestorableFunctionSpy,
 	createFunctionSpy,
