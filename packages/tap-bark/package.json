@@ -13,7 +13,7 @@
         "lint:fix": "npm run lint -- --fix",
         "prepublishOnly": "npm test && npm run build",
         "test": "npm run install-self && npm run lint && npm run test:unit",
-        "install-self": "rimraf node_modules/tap-bark node_modules/.bin/tap-bark* && install-self",
+        "install-self": "rimraf node_modules/tap-bark node_modules/.bin/tap-bark* && install-self && npm link ../alsatian",
         "test:coverage": "nyc npm run test:unit -- --hide-progress && nyc report",
         "test:unit": "alsatian \"./test/**/*.test.ts\""
     },
@@ -40,7 +40,6 @@
     },
     "devDependencies": {
         "@types/through2": "^2.0.34",
-        "alsatian": "^3.1.0",
         "chalk": "^2.4.1",
         "install-self": "^1.0.0-rc.1",
         "nyc": "^14.1.1",
