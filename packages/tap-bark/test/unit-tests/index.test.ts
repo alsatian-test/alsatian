@@ -1,4 +1,4 @@
-import { Test, Expect, SpyOn, Teardown } from "alsatian";
+import { Test, Expect, SpyOn, Teardown } from "../../../alsatian";
 import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
