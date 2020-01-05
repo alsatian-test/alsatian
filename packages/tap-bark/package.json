@@ -34,7 +34,7 @@
         "@types/ink": "^0.5.2",
         "@types/node": ">=0.0.2",
         "duplexer": "^0.1.1",
-        "ink": "^0.5.1",
+        "ink": "^2.0.3",
         "tap-parser": "^5.0.0",
         "through2": "^3.0.1"
     },
