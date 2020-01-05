@@ -15,7 +15,7 @@
         "test": "npm run install-self && npm run lint && npm run test:unit",
         "install-self": "rimraf node_modules/tap-bark node_modules/.bin/tap-bark* && install-self",
         "test:coverage": "nyc npm run test:unit -- --hide-progress && nyc report",
-        "test:unit": "alsatian \"./test/**/*.test.ts\""
+        "test:unit": "node ../alsatian/dist/cli/alsatian-cli \"./test/**/*.test.ts\""
     },
     "repository": {
         "type": "git",
