@@ -35,7 +35,7 @@
         "@types/node": ">=0.0.2",
         "duplexer": "^0.1.1",
         "ink": "^0.5.1",
-        "tap-parser": "^5.0.0",
+        "tap-parser": "^10.0.1",
         "through2": "^3.0.1"
     },
     "devDependencies": {
