@@ -1,7 +1,6 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
-import * as path from "path";
-import { AsyncTest, Expect, Timeout } from "../../../../core/alsatian-core";
+import { AsyncTest, Expect, Timeout } from "alsatian";
 
 export class BabelIntegrationTests {
 	@AsyncTest()
@@ -29,7 +28,7 @@ export class BabelIntegrationTests {
 	}
 
 	@AsyncTest()
-	@Timeout(5000)
+	@Timeout(10000)
 	public toThrowExpectations() {
 		const result = child.exec(
 			"alsatian ./dist/test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap"
