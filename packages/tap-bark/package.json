@@ -33,7 +33,7 @@
     "dependencies": {
         "@types/node": ">=0.0.2",
         "duplexer": "^0.1.1",
-        "ink": "^2.0.3",
+        "ink": "^2.6.0",
         "react": "^16.12.0",
         "tap-parser": "^5.0.0",
         "through2": "^3.0.1"
