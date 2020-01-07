@@ -31,10 +31,10 @@
     },
     "homepage": "https://github.com/alsatian-test/alsatian/tree/master/packages/tap-bark#readme",
     "dependencies": {
-        "@types/ink": "^0.5.2",
         "@types/node": ">=0.0.2",
         "duplexer": "^0.1.1",
         "ink": "^2.0.3",
+        "react": "^16.12.0",
         "tap-parser": "^5.0.0",
         "through2": "^3.0.1"
     },

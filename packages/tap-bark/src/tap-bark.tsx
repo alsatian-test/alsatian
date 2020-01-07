@@ -1,55 +1,56 @@
 import { Results } from "./results";
 import { Assertion as TAPAssertion, Results as TAPResults, Assertion, Plan } from "./external/tap-parser";
 import chalk from "chalk";
-
-const through = require("through2");
-const parser = require("tap-parser");
-const duplexer = require("duplexer");
-import { h, render, Color, Component, Indent } from "ink";
+import through from "through2";
+import parser from "tap-parser";
+import duplexer from "duplexer";
+import React, { useState } from "react";
+import { render, Color } from "ink";
 
 const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
-
-export interface TapBarkOutputState {
-    logs: Array<string>;
-    warnings: Array<string>;
-    fixtureName?: string;
-    results?: {
-        pass: number;
-        fail: number;
-        ignore: number;
-        failures: Array<Assertion>;
-    };
-    totalTests?: number;
-    currentTest?: number;
-    testName?: string;
-}
 
 export interface TapBarkOutputProps {
     showProgress: boolean;
 }
 
-export class TapBarkOutputComponent extends Component<TapBarkOutputProps, TapBarkOutputState> {
+const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
+
+export function TapBarkOutputComponent(props: TapBarkOutputProps) {
+
+    const [ warnings, setWarnings ] = useState([]);
+    const [ totalTests, setTotalTests ] = useState(0);
+    const [ currentTest, setCurrentTest ] = useState(0);
+    const [ results, setResults ] = useState<Results>(null);
+    const [ complete, setComplete ] = useState(false);
+
+    function handleComment(comment: string) {
+        const message = comment.replace("# ", "");
+
+        if (CONSOLE_WARNING_REGEXP.test(comment)) {
+            setWarnings([
+                ...warnings,
+                chalk.yellow(message)
+            ]);
+        }
+    }
     
-    public getPipeable(): any {
-        return duplexer(TAP_PARSER, through());
+    if (props.showProgress) {
+        TAP_PARSER.on("comment", handleComment);
+        TAP_PARSER.on("assert", (assertion: TAPAssertion) => setCurrentTest(assertion.id));
     }
+    
+    TAP_PARSER.on("plan", (plan: Plan) => setTotalTests(plan.end));
+    TAP_PARSER.on("complete", (r: TAPResults) => {
+        setResults({
+            ok: r.ok,
+            pass: r.pass || 0,
+            fail: (r.fail || (r.failures || []).length),
+            ignore: (r.skip || 0) + (r.todo || 0),
+            failures: r.failures || []
+        });
+    });
 
-    private FIXTURE_REGEXP: RegExp = /^# FIXTURE (.*)/;
-    private CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
-    private _completeCalled = false;
-
-    public constructor(props) {
-        super(props);
-
-        this.state = {
-            logs: [],
-            warnings: []
-        };
-
-        this.setupListeners();
-    }
-
-    public getFailureMessage(assertion: Assertion): string {
+    function getFailureMessage(assertion: Assertion): string {
 
         const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
 
@@ -72,94 +73,29 @@ export class TapBarkOutputComponent extends Component<TapBarkOutputProps, TapBar
         return failureTitle + "Failure reason unknown.";
     }
 
-    public render() {
-        const results = this.state.results;
-        const total = this.state.totalTests;
+    if (results) {
 
-        if (this.state.results) {
-            return <Indent>
-                        {this.state.warnings.join("\n")}
-                        {results.failures.map(this.getFailureMessage.bind(this)).join("\n")}
-                        {"\n"}
-                        <Color green>Pass: {results.pass} / {total}{"\n"}</Color>
-                        <Color red>Fail: {results.fail} / {total}{"\n"}</Color>
-                        <Color yellow>Ignore: {results.ignore} / {total}{"\n"}{"\n"}</Color>
-                    </Indent>;
+        // ensure only runs once (seems like tap can report complete multiple times)
+        if (complete === false) {
+            setTimeout(() => process.exit(results.ok ? 0 : 1), 100);        
+            setComplete(true);
         }
 
-        if (this.props.showProgress === false) {
-            return <Indent>running alsatian tests</Indent>
-        }
-
-        return <Indent>{Math.floor(this.state.currentTest / total * 100 || 0)}% complete</Indent>;
+        return <>
+                    {warnings.join("\n")}
+                    {results.failures.map(getFailureMessage).join("\n")}
+                    {"\n"}
+                    <Color green>Pass: {results.pass} / {totalTests}{"\n"}</Color>
+                    <Color red>Fail: {results.fail} / {totalTests}{"\n"}</Color>
+                    <Color yellow>Ignore: {results.ignore} / {totalTests}{"\n"}{"\n"}</Color>
+                </>;
     }
 
-    private handleNewPlan(plan: Plan) {
-        this.setState({
-            totalTests: plan.end
-        });
+    if (props.showProgress === false) {
+        return <>running alsatian tests</>
     }
 
-    // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
-    private readonly warnings = [] as Array<string>;
-
-    private handleComment(comment: string) {
-        let fixtureParse = this.FIXTURE_REGEXP.exec(comment);
-
-        if (fixtureParse !== null) {
-            this.setState({
-                fixtureName: fixtureParse[1]
-            });
-        }
-        else {
-            const message = comment.replace("# ", "");
-
-            if (this.CONSOLE_WARNING_REGEXP.test(comment)) {
-                
-                // temporary while https://github.com/vadimdemedes/ink/issues/97 is still an issue
-                this.warnings.push(chalk.yellow(message));
-                this.setState({
-                    warnings: this.warnings
-                });
-            }
-        }
-    }
-
-    private handleAssert(assertion: TAPAssertion) {
-        this.setState({
-            currentTest: assertion.id,
-            testName: assertion.name
-        });
-    }
-
-    private handleComplete(results: TAPResults) {
-        let _results: Results = {
-            pass: results.pass || 0,
-            fail: (results.fail || (results.failures || []).length),
-            ignore: (results.skip || 0) + (results.todo || 0),
-            failures: results.failures || []
-        };
-
-        // getting called multiple times for whatever reason
-        if (this._completeCalled === false) {
-            this._completeCalled = true;
-            
-            this.setState({
-                ... this.state,
-                results: _results
-            }, () => setTimeout(() => process.exit(results.ok ? 0 : 1), 100));
-        }
-    }
-
-    private setupListeners(): void {
-        if (this.props.showProgress) {
-            TAP_PARSER.on("comment", this.handleComment.bind(this));
-            TAP_PARSER.on("assert", this.handleAssert.bind(this));
-        }
-        
-        TAP_PARSER.on("plan", this.handleNewPlan.bind(this));
-        TAP_PARSER.on("complete", this.handleComplete.bind(this));
-    }
+    return <>{Math.floor(currentTest / totalTests * 100 || 0)}% complete</>;
 }
 
 export class TapBark {
@@ -170,6 +106,8 @@ export class TapBark {
         const tapBarkOutput = <TapBarkOutputComponent showProgress={showProgress} />;
         render(tapBarkOutput);
         
-        return tapBarkOutput.instance as TapBarkOutputComponent;
+        return {
+            getPipeable: () => duplexer(TAP_PARSER, through())
+        };
     }
 }
