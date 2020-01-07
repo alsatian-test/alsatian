@@ -4,13 +4,36 @@ import chalk from "chalk";
 import through from "through2";
 import parser from "tap-parser";
 import duplexer from "duplexer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { render, Color } from "ink";
 
 const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
 
 export interface TapBarkOutputProps {
     showProgress: boolean;
+}
+
+function getFailureMessage(assertion: Assertion): string {
+
+    const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
+
+    if (assertion.diag) {
+        const data = assertion.diag.data;
+        const details = data.details;
+        const title = `${failureTitle} ${assertion.diag.message}\n`;
+
+        if (details && Object.keys(details).length > 0) {
+            return `${title}${
+                Object.keys(details)
+                        .map(key => `\n${chalk.underline(key)}:\n${details[key]}`)
+                        .join("\n")
+                }`;
+        }
+
+        return `${title}\nexpected:\n${data.expect}\nactual:\n${data.got}`;
+    }
+
+    return failureTitle + "Failure reason unknown.";
 }
 
 const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
@@ -34,44 +57,23 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
         }
     }
     
-    if (props.showProgress) {
-        TAP_PARSER.on("comment", handleComment);
-        TAP_PARSER.on("assert", (assertion: TAPAssertion) => setCurrentTest(assertion.id));
-    }
-    
-    TAP_PARSER.on("plan", (plan: Plan) => setTotalTests(plan.end));
-    TAP_PARSER.on("complete", (r: TAPResults) => {
-        setResults({
-            ok: r.ok,
-            pass: r.pass || 0,
-            fail: (r.fail || (r.failures || []).length),
-            ignore: (r.skip || 0) + (r.todo || 0),
-            failures: r.failures || []
-        });
-    });
-
-    function getFailureMessage(assertion: Assertion): string {
-
-        const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
-
-        if (assertion.diag) {
-            const data = assertion.diag.data;
-            const details = data.details;
-            const title = `${failureTitle} ${assertion.diag.message}\n`;
-
-            if (details && Object.keys(details).length > 0) {
-                return `${title}${
-                    Object.keys(details)
-                            .map(key => `\n${chalk.underline(key)}:\n${details[key]}`)
-                            .join("\n")
-                    }`;
-            }
-
-            return `${title}\nexpected:\n${data.expect}\nactual:\n${data.got}`;
+    useEffect(() => {
+        if (props.showProgress) {
+            TAP_PARSER.on("comment", handleComment);
+            TAP_PARSER.on("assert", (assertion: TAPAssertion) => setCurrentTest(assertion.id));
         }
-
-        return failureTitle + "Failure reason unknown.";
-    }
+        
+        TAP_PARSER.on("plan", (plan: Plan) => setTotalTests(plan.end));
+        TAP_PARSER.on("complete", (r: TAPResults) => {
+            setResults({
+                ok: r.ok,
+                pass: r.pass || 0,
+                fail: (r.fail || (r.failures || []).length),
+                ignore: (r.skip || 0) + (r.todo || 0),
+                failures: r.failures || []
+            });
+        });
+    }, []);
 
     if (results) {
 
