@@ -39,6 +39,7 @@
         "through2": "^3.0.1"
     },
     "devDependencies": {
+        "@types/react": "^16.9.17",
         "@types/through2": "^2.0.34",
         "chalk": "^2.4.1",
         "install-self": "^1.0.0-rc.1",

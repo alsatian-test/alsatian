@@ -5,7 +5,7 @@ import through from "through2";
 import parser from "tap-parser";
 import duplexer from "duplexer";
 import React, { useEffect, useState } from "react";
-import { render, Color } from "ink";
+import { render, Color, Text } from "ink";
 
 const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
 
@@ -45,19 +45,25 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
     const [ currentTest, setCurrentTest ] = useState(0);
     const [ results, setResults ] = useState<Results>(null);
     const [ complete, setComplete ] = useState(false);
+    const [ setup, setSetup ] = useState(false);
 
     function handleComment(comment: string) {
         const message = comment.replace("# ", "");
 
         if (CONSOLE_WARNING_REGEXP.test(comment)) {
-            setWarnings([
-                ...warnings,
+            setWarnings(previousWarnings => [
+                ...previousWarnings,
                 chalk.yellow(message)
             ]);
         }
     }
     
-    useEffect(() => {
+    //TODO: convert this to useEffect however since this is deferred would
+    (() => {
+        if (setup) {
+            return;
+        }
+
         if (props.showProgress) {
             TAP_PARSER.on("comment", handleComment);
             TAP_PARSER.on("assert", (assertion: TAPAssertion) => setCurrentTest(assertion.id));
@@ -73,7 +79,9 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
                 failures: r.failures || []
             });
         });
-    }, []);
+
+        setSetup(true);
+    })();
 
     if (results) {
 
@@ -87,17 +95,17 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
                     {warnings.join("\n")}
                     {results.failures.map(getFailureMessage).join("\n")}
                     {"\n"}
-                    <Color green>Pass: {results.pass} / {totalTests}{"\n"}</Color>
-                    <Color red>Fail: {results.fail} / {totalTests}{"\n"}</Color>
-                    <Color yellow>Ignore: {results.ignore} / {totalTests}{"\n"}{"\n"}</Color>
+                    <Color green>Pass: {results.pass} / {totalTests}</Color>
+                    <Color red>Fail: {results.fail} / {totalTests}</Color>
+                    <Color yellow>Ignore: {results.ignore} / {totalTests}</Color>
                 </>;
     }
 
     if (props.showProgress === false) {
-        return <>running alsatian tests</>
+        return <Text>running alsatian tests</Text>
     }
 
-    return <>{Math.floor(currentTest / totalTests * 100 || 0)}% complete</>;
+    return <Text>{Math.floor(currentTest / totalTests * 100 || 0)}% complete</Text>;
 }
 
 export class TapBark {
