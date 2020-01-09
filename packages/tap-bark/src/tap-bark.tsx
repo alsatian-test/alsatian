@@ -87,7 +87,7 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
             setResults({
                 ok: r.ok,
                 pass: r.pass || 0,
-                fail: (r.failures.length || r.fail || (r.failures || []).length),
+                fail: r.fail || (r.failures || []).length,
                 ignore: (r.skip || 0) + (r.todo || 0),
                 failures: r.failures || []
             });
@@ -102,28 +102,50 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
         if (complete === false) {
             setTimeout(() => process.exit(results.ok ? 0 : 1), 100);        
             setComplete(true);
-        }
+        };
 
-        return  <>
-                    <Static>
-                        {warnings}
-                        {results.failures.map((assertion, index) => {
-                            return <Box key={`failure-${index}`} flexDirection="column">{getFailureMessage(assertion)}</Box>;
-                        })}
-                    </Static>
-                    <Box flexDirection="column" padding={1}>
-                        <Color green>Pass: {results.pass} / {totalTests}</Color>
-                        <Color red>Fail: {results.fail} / {totalTests}</Color>
-                        <Color yellow>Ignore: {results.ignore} / {totalTests}</Color>
-                    </Box>
-                </>;
+        return <TapBarkResults {... { results, totalTests, warnings }} />;
     }
 
+    return <TapBarkProgress showProgress={props.showProgress} {... { currentTest, totalTests }}/>;
+}
+
+interface TapBarkResultsProps {
+    warnings: Array<React.ReactElement>;
+    results: Results;
+    totalTests: number;
+}
+
+function TapBarkResults(props: TapBarkResultsProps) {
+    const { warnings, results, totalTests } = props;
+
+    return  <>
+        <Static>
+            {warnings}
+            {results.failures.map((assertion, index) => {
+                return <Box key={`failure-${index}`} flexDirection="column">{getFailureMessage(assertion)}</Box>;
+            })}
+        </Static>
+        <Box flexDirection="column" padding={1}>
+            <Color green>Pass: {results.pass} / {totalTests}</Color>
+            <Color red>Fail: {results.fail} / {totalTests}</Color>
+            <Color yellow>Ignore: {results.ignore} / {totalTests}</Color>
+        </Box>
+    </>;
+}
+
+interface TapBarkProgressProps {
+    showProgress: boolean;
+    currentTest: number;
+    totalTests: number;
+}
+
+function TapBarkProgress(props: TapBarkProgressProps) {
     if (props.showProgress === false) {
         return <Text>running alsatian tests</Text>
     }
 
-    return <Text>{Math.floor(currentTest / totalTests * 100 || 0)}% complete</Text>;
+    return <Text>{Math.floor(props.currentTest / props.totalTests * 100 || 0)}% complete</Text>;
 }
 
 export class TapBark {
