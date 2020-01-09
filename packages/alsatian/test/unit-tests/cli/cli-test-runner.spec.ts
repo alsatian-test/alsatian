@@ -9,12 +9,10 @@ import {
 	Test,
 	TestCase,
 	TestOutcome,
-	TestRunner,
-	Focus
+	TestRunner
 } from "../../../core/alsatian-core";
 import { TapBark } from "tap-bark";
 
-@Focus
 export class CliTestRunnerTests {
 	private _originalTestPlan: any;
 
