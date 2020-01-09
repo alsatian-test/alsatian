@@ -65,9 +65,7 @@ function setupTapParser(
         setResults: (result: Results) => void
     }) {
     const [ setup, setSetup ] = useState(false);
-    if (setup) {
-        return;
-    }
+    if (setup) return;
 
     if (showProgress) {
         TAP_PARSER.on("comment", (comment: string) => {
