@@ -1,4 +1,4 @@
-export interface Assertion {
+export interface TapAssertion {
 	id: number;
 	ok: boolean;
 	name?: string;
@@ -7,7 +7,7 @@ export interface Assertion {
 	diag?: any;
 }
 
-export interface Results {
+export interface TapResults {
 	ok: boolean;
 	count: number;
 	pass: number;
@@ -16,7 +16,7 @@ export interface Results {
 	todo?: number;
 	bailout?: boolean;
 	plan?: Plan;
-	failures: Array<Assertion>;
+	failures: Array<TapAssertion>;
 }
 
 export interface Plan {

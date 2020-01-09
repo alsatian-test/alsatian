@@ -45,7 +45,7 @@ export class CliTestRunnerTests {
 	@TestCase(null)
 	@TestCase(undefined)
 	public nullOrUndefinedTestRunnerThrowsError(testRunner: TestRunner) {
-		Expect(() => new CliTestRunner(testRunner)).not.toThrowError(
+		Expect(() => new CliTestRunner(testRunner)).toThrowError(
 			TypeError,
 			"_testRunner must not be null or undefined."
 		);
