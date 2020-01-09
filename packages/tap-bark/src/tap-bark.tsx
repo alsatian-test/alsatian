@@ -29,22 +29,31 @@ function getFailureMessage(assertion: Assertion) {
                 {title}
                 {Object.keys(details)
                     .map((key, index) => <Box padding={1} flexDirection="column" key={`failure-detail-${index}`}>
-                                    <Text underline>{key}:</Text>
-                                    <Box>{details[key]}</Box>
+                                    <FailureDetail name={key} value={details[key]} />
                                 </Box>)}
             </>);
         }
 
         return <>
                 {title}
-                <Text underline>expected:</Text>
-                <Box>{data.expect}</Box>
-                <Text underline>actual:</Text>
-                <Box>{data.got}</Box>
+                <FailureDetail name="expected" value={data.expect} />
+                <FailureDetail name="actual" value={data.got} />
                </>;
     }
 
     return <>{failureTitle}Failure reason unknown.</>;
+}
+
+interface FailureDetailProps {
+    name: string;
+    value: string;
+}
+
+function FailureDetail(props: FailureDetailProps) {
+    return <>
+            <Text underline>{props.name}:</Text>
+            <Box>{props.value}</Box>
+           </>;
 }
 
 const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
@@ -56,7 +65,6 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
     const [ currentTest, setCurrentTest ] = useState(0);
     const [ results, setResults ] = useState<Results>(null);
     const [ complete, setComplete ] = useState(false);
-    const [ setup, setSetup ] = useState(false);
 
     function handleComment(comment: string) {
         const message = comment.replace("# ", "");
@@ -73,6 +81,7 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
     //      need to change getPipeable to async so probably a 4.0.0 thing as is
     //      a breaking change
     (() => {
+        const [ setup, setSetup ] = useState(false);
         if (setup) {
             return;
         }
@@ -97,8 +106,8 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
     })();
 
     if (results) {
-
         // ensure only runs once (seems like tap can report complete multiple times)
+        //TODO: confirm the above is still true
         if (complete === false) {
             setTimeout(() => process.exit(results.ok ? 0 : 1), 100);        
             setComplete(true);
