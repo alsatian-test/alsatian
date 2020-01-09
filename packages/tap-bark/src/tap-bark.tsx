@@ -56,6 +56,47 @@ function FailureDetail(props: FailureDetailProps) {
            </>;
 }
 
+function setupTapParser(
+    showProgress: boolean,
+    callbacks: {
+        setCurrentTest: (id: number) => void,
+        setTotalTests: (id: number) => void,
+        setWarnings: React.Dispatch<React.SetStateAction<React.ReactElement[]>>,
+        setResults: (result: Results) => void
+    }) {
+    const [ setup, setSetup ] = useState(false);
+    if (setup) {
+        return;
+    }
+
+    if (showProgress) {
+        TAP_PARSER.on("comment", (comment: string) => {
+            const message = comment.replace("# ", "");
+        
+            if (CONSOLE_WARNING_REGEXP.test(comment)) {
+                callbacks.setWarnings(previousWarnings => [
+                    ...previousWarnings,
+                    <Color yellow key={`warn-${previousWarnings.length}`}>{message}</Color>
+                ]);
+            }
+        });
+        TAP_PARSER.on("assert", (assertion: TAPAssertion) => callbacks.setCurrentTest(assertion.id));
+    }
+    
+    TAP_PARSER.on("plan", (plan: Plan) => callbacks.setTotalTests(plan.end));
+    TAP_PARSER.on("complete", (r: TAPResults) => {
+        callbacks.setResults({
+            ok: r.ok,
+            pass: r.pass || 0,
+            fail: r.fail || (r.failures || []).length,
+            ignore: (r.skip || 0) + (r.todo || 0),
+            failures: r.failures || []
+        });
+    });
+
+    setSetup(true);
+}
+
 const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
 
 export function TapBarkOutputComponent(props: TapBarkOutputProps) {
@@ -65,45 +106,19 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
     const [ currentTest, setCurrentTest ] = useState(0);
     const [ results, setResults ] = useState<Results>(null);
     const [ complete, setComplete ] = useState(false);
-
-    function handleComment(comment: string) {
-        const message = comment.replace("# ", "");
-
-        if (CONSOLE_WARNING_REGEXP.test(comment)) {
-            setWarnings(previousWarnings => [
-                ...previousWarnings,
-                <Color yellow key={`warn-${previousWarnings.length}`}>{message}</Color>
-            ]);
-        }
-    }
     
     //TODO: convert this to useEffect however since this is deferred would
     //      need to change getPipeable to async so probably a 4.0.0 thing as is
     //      a breaking change
-    (() => {
-        const [ setup, setSetup ] = useState(false);
-        if (setup) {
-            return;
+    setupTapParser(
+        props.showProgress,
+        {
+            setCurrentTest,
+            setTotalTests,
+            setWarnings,
+            setResults
         }
-
-        if (props.showProgress) {
-            TAP_PARSER.on("comment", handleComment);
-            TAP_PARSER.on("assert", (assertion: TAPAssertion) => setCurrentTest(assertion.id));
-        }
-        
-        TAP_PARSER.on("plan", (plan: Plan) => setTotalTests(plan.end));
-        TAP_PARSER.on("complete", (r: TAPResults) => {
-            setResults({
-                ok: r.ok,
-                pass: r.pass || 0,
-                fail: r.fail || (r.failures || []).length,
-                ignore: (r.skip || 0) + (r.todo || 0),
-                failures: r.failures || []
-            });
-        });
-
-        setSetup(true);
-    })();
+    );
 
     if (results) {
         // ensure only runs once (seems like tap can report complete multiple times)
