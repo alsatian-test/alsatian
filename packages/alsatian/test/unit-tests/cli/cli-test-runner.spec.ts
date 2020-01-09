@@ -9,10 +9,12 @@ import {
 	Test,
 	TestCase,
 	TestOutcome,
-	TestRunner
+	TestRunner,
+	Focus
 } from "../../../core/alsatian-core";
 import { TapBark } from "tap-bark";
 
+@Focus
 export class CliTestRunnerTests {
 	private _originalTestPlan: any;
 
@@ -45,7 +47,7 @@ export class CliTestRunnerTests {
 	@TestCase(null)
 	@TestCase(undefined)
 	public nullOrUndefinedTestRunnerThrowsError(testRunner: TestRunner) {
-		Expect(() => new CliTestRunner(testRunner)).toThrowError(
+		Expect(() => new CliTestRunner(testRunner)).not.toThrowError(
 			TypeError,
 			"_testRunner must not be null or undefined."
 		);

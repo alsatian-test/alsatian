@@ -1,39 +1,50 @@
 import { Results } from "./results";
 import { Assertion as TAPAssertion, Results as TAPResults, Assertion, Plan } from "./external/tap-parser";
-import chalk from "chalk";
 import through from "through2";
 import parser from "tap-parser";
 import duplexer from "duplexer";
-import React, { useEffect, useState } from "react";
-import { render, Color, Text } from "ink";
+import React, { useState } from "react";
+import { render, Color, Text, Box, Static } from "ink";
 
-const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = parser();
+const TAP_PARSER: { on: (eventName: string, callback: Function) => void } = new parser();
 
 export interface TapBarkOutputProps {
     showProgress: boolean;
 }
 
-function getFailureMessage(assertion: Assertion): string {
+function getFailureMessage(assertion: Assertion) {
 
-    const failureTitle = chalk.red("FAIL: ") + chalk.bold(assertion.name) + "\n";
+    const failureTitle = <Box><Text bold><Color red>FAIL:</Color> {assertion.name}</Text></Box>;
 
     if (assertion.diag) {
         const data = assertion.diag.data;
         const details = data.details;
-        const title = `${failureTitle} ${assertion.diag.message}\n`;
+        const title = <Box flexDirection="column">
+                        {failureTitle}
+                        <Box>{assertion.diag.message}</Box>
+                      </Box>;
 
         if (details && Object.keys(details).length > 0) {
-            return `${title}${
-                Object.keys(details)
-                        .map(key => `\n${chalk.underline(key)}:\n${details[key]}`)
-                        .join("\n")
-                }`;
+            return (<>
+                {title}
+                {Object.keys(details)
+                    .map((key, index) => <Box padding={1} flexDirection="column" key={`failure-detail-${index}`}>
+                                    <Text underline>{key}:</Text>
+                                    <Box>{details[key]}</Box>
+                                </Box>)}
+            </>);
         }
 
-        return `${title}\nexpected:\n${data.expect}\nactual:\n${data.got}`;
+        return <>
+                {title}
+                <Text underline>expected:</Text>
+                <Box>{data.expect}</Box>
+                <Text underline>actual:</Text>
+                <Box>{data.got}</Box>
+               </>;
     }
 
-    return failureTitle + "Failure reason unknown.";
+    return <>{failureTitle}Failure reason unknown.</>;
 }
 
 const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;
@@ -53,12 +64,14 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
         if (CONSOLE_WARNING_REGEXP.test(comment)) {
             setWarnings(previousWarnings => [
                 ...previousWarnings,
-                chalk.yellow(message)
+                <Color yellow key={`warn-${previousWarnings.length}`}>{message}</Color>
             ]);
         }
     }
     
     //TODO: convert this to useEffect however since this is deferred would
+    //      need to change getPipeable to async so probably a 4.0.0 thing as is
+    //      a breaking change
     (() => {
         if (setup) {
             return;
@@ -74,7 +87,7 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
             setResults({
                 ok: r.ok,
                 pass: r.pass || 0,
-                fail: (r.fail || (r.failures || []).length),
+                fail: (r.failures.length || r.fail || (r.failures || []).length),
                 ignore: (r.skip || 0) + (r.todo || 0),
                 failures: r.failures || []
             });
@@ -91,13 +104,18 @@ export function TapBarkOutputComponent(props: TapBarkOutputProps) {
             setComplete(true);
         }
 
-        return <>
-                    {warnings.join("\n")}
-                    {results.failures.map(getFailureMessage).join("\n")}
-                    {"\n"}
-                    <Color green>Pass: {results.pass} / {totalTests}</Color>
-                    <Color red>Fail: {results.fail} / {totalTests}</Color>
-                    <Color yellow>Ignore: {results.ignore} / {totalTests}</Color>
+        return  <>
+                    <Static>
+                        {warnings}
+                        {results.failures.map((assertion, index) => {
+                            return <Box key={`failure-${index}`} flexDirection="column">{getFailureMessage(assertion)}</Box>;
+                        })}
+                    </Static>
+                    <Box flexDirection="column" padding={1}>
+                        <Color green>Pass: {results.pass} / {totalTests}</Color>
+                        <Color red>Fail: {results.fail} / {totalTests}</Color>
+                        <Color yellow>Ignore: {results.ignore} / {totalTests}</Color>
+                    </Box>
                 </>;
     }
 

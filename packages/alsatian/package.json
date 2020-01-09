@@ -33,7 +33,7 @@
     "lint:fix": "npm run lint:code -- --fix & npm run lint:tests -- --fix",
     "pretest": "npm run build",
     "test": "npm run lint && npm run unit-tests && npm run integration-tests",
-    "unit-tests": "node ./dist/cli/alsatian-cli.js \"./test/unit-tests/**/*.spec.ts\"",
+    "unit-tests": "ts-node ./cli/alsatian-cli.ts \"./test/unit-tests/**/*.spec.ts\"",
     "check-coverage": "nyc npm run unit-tests -- --hide-progress && nyc report",
     "build:integration-tests": "tsc -p \"./test/integration-tests\"",
     "install-self": "rimraf node_modules/alsatian node_modules/.bin/alsatian* && install-self && chmod +x ./node_modules/.bin/alsatian",
