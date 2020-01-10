@@ -84,7 +84,7 @@
   "devDependencies": {
     "@types/deep-diff": "0.0.31",
     "@types/diff": "^3.5.1",
-    "@types/glob": "^5.0.30",
+    "@types/glob": "^7.1.1",
     "@types/js-yaml": "^3.11.2",
     "@types/selenium-webdriver": "^3.0.0",
     "babel-cli": "^6.26.0",
