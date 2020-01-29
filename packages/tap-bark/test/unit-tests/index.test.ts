@@ -2,10 +2,6 @@ import { Test, Expect, SpyOn, Teardown } from "../../../alsatian";
 import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
-	@Teardown
-	private _restoreTapBarkCreate() {
-		(TapBark.create as any).restore();
-	}
 
 	@Test("process.stdin stream piped to Tap Bark")
 	public stdInPipedToTapBark() {
@@ -56,5 +52,10 @@ export default class IndexTests {
 		require("../../src/cli");
 
 		Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
+	}
+
+	@Teardown
+	private _restoreTapBarkCreate() {
+		(TapBark.create as any).restore();
 	}
 }

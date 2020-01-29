@@ -67,4 +67,30 @@ export class CliIntegrationTests {
 			});
 		});
 	}
+
+	public shouldWorkWithSpecifiedTsConfig() {
+		const result = child.exec(
+			`alsatian` +
+				`./dist/test/integration-tests/test-sets/expectations/to-be.spec.js` +
+				` --tap` +
+				` --project ./dist/test/tsconfig.json`
+		);
+
+		let consoleOutput = "";
+
+		result.stdout.on("data", (data: string) => (consoleOutput += data));
+		result.stderr.on("data", (data: string) => (consoleOutput += data));
+
+		const expectedOutput = FileSystem.readFileSync(
+			`./test/integration-tests/expected-output/` +
+				`expectations/to-be.txt`
+		).toString();
+
+		return new Promise<void>((resolve, reject) => {
+			result.on("close", (code: number) => {
+				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				resolve();
+			});
+		});
+	}
 }
