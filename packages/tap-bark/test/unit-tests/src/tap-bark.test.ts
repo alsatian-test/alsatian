@@ -7,7 +7,7 @@ import {
 	Setup,
 	Teardown,
 	TestFixture
-} from "alsatian";
+} from "../../../../alsatian";
 import { TapBark, TapBarkOutputComponent, TapBarkOutputState } from "../../../src/tap-bark";
 import chalk from "chalk";
 

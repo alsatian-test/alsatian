@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {
-	Expect,
 	METADATA_KEYS,
 	TestFixtureResults,
 	TestOutputStream,
@@ -16,7 +15,6 @@ import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
 	private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
-	private _flushedWarnings: Array<string> = [];
 	private _outputStream: TestOutputStream;
 	public get outputStream() {
 		return this._outputStream;
@@ -112,6 +110,8 @@ export class TestRunner {
 			await this._teardownFixture(testFixture.fixture);
 		}
 
+		Warner.warnings.forEach(warning => this.outputStream.emitWarning(warning));
+
 		this._outputStream.end();
 	}
 
@@ -147,20 +147,6 @@ export class TestRunner {
 				testItem.testCase.caseArguments,
 				e
 			);
-		} finally {
-			const newWarnings = Warner.warnings
-				.filter(
-					(message, index, array) =>
-						array.indexOf(message, index + 1) === -1
-				)
-				.filter(
-					message => this._flushedWarnings.indexOf(message) === -1
-				);
-
-			newWarnings.forEach(warning => {
-				this._flushedWarnings.push(warning);
-				this.outputStream.emitWarning(warning);
-			});
 		}
 	}
 

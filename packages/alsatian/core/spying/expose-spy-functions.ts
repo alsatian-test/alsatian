@@ -1,8 +1,8 @@
 import { FunctionSpy } from "./function-spy";
-import { ISpiedFunction } from "./spied-function.i";
+import { ISpiedFunction, TypedFunction } from "./spied-function.i";
 
-export function exposeSpyFunctions<ArgumentType, ReturnType>(
-	spiedFunction: ISpiedFunction<ArgumentType, ReturnType>,
+export function exposeSpyFunctions<T extends TypedFunction>(
+	spiedFunction: ISpiedFunction<T>,
 	functionSpy: FunctionSpy
 ) {
 	// expose spy's calls on function

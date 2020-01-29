@@ -12,7 +12,6 @@
         "preserveConstEnums": true,
         "newLine": "LF",        
         "jsx": "react",
-        "jsxFactory": "h",
         "lib": [ "es2015" ]
     },
     "include": [
