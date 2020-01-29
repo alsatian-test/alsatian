@@ -3,7 +3,6 @@ import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 import { Unused } from "../core/unused";
-import { removeItemByIndex } from "../core/utils/remove-item-by-index";
 
 export class AlsatianCliOptions {
 	public readonly fileGlobs: Array<string>;
@@ -32,7 +31,8 @@ export class AlsatianCliOptions {
 		const f = this.extractHideProgress(e.args);
 		this.hideProgress = f.value;
 
-		const p = this.extractProject(f.args);
+		const t = this.extractTranspileOnly(f.args);
+		const p = this.extractProject(t.args);
 
 		if (p.args.length > 0) {
 			throw new InvalidArgumentNamesError(p.args);
@@ -129,6 +129,16 @@ export class AlsatianCliOptions {
 			"help",
 			"h"
 		);
+	}
+
+	private extractTranspileOnly(args) {
+		const transpileOnly = this.extractArgumentFromList(args, "transpile-only", "t");
+
+		if (transpileOnly.value) {
+			process.env.TS_NODE_TRANSPILE_ONLY = "true";
+		}
+
+		return transpileOnly;
 	}
 
 	private extractProject(args) {
