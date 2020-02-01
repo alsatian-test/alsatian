@@ -1,0 +1,58 @@
+21:59:10 (34976) INFO ConfigReader Using stryker.conf.js in the current working directory.
+21:59:11 (34976) DEBUG BroadcastReporter Broadcasting to reporters ["progress","clear-text","html"]
+21:59:10 (34976) DEBUG ConfigReader Loading config stryker.conf.js
+21:59:10 (34976) DEBUG ConfigReader Loaded config: {
+  "mutate": [
+    "sample-app/**/*.ts?(x)",
+    "!sample-app/**/*.spec.ts?(x)"
+  ],
+  "logLevel": "debug",
+  "fileLogLevel": "trace",
+  "timeoutMS": 5000,
+  "timeoutFactor": 1.5,
+  "plugins": [
+    "C:\\code\\github\\alsatian-test\\alsatian\\packages\\stryker-alsatian\\dist\\index.js",
+    "C:\\code\\github\\alsatian-test\\alsatian\\packages\\stryker-alsatian\\node_modules\\@stryker-mutator\\typescript\\src\\index.js",
+    "@stryker-mutator/html-reporter"
+  ],
+  "reporters": [
+    "progress",
+    "clear-text",
+    "html"
+  ],
+  "coverageAnalysis": "perTest",
+  "testRunner": "alsatian",
+  "mutator": "typescript",
+  "transpilers": [],
+  "maxConcurrentTestRunners": 2,
+  "symlinkNodeModules": true,
+  "thresholds": {
+    "break": null,
+    "high": 80,
+    "low": 60
+  },
+  "allowConsoleColors": true,
+  "dashboard": {
+    "baseUrl": "https://dashboard.stryker-mutator.io/api/reports",
+    "reportType": "mutationScore"
+  },
+  "tempDirName": ".stryker-tmp",
+  "files": [
+    "sample-app/**/*.ts?(x)"
+  ],
+  "tsconfigFile": "sample-app/tsconfig.json",
+  "testFramework": "alsatian",
+  "htmlReporter": {
+    "baseDir": "reports/mutation/html"
+  },
+  "options": {
+    "files": "HERE_DEM_FILES"
+  },
+  "configFile": "stryker.conf.js"
+}
+21:59:10 (34976) DEBUG PluginLoader Loading plugins C:\code\github\alsatian-test\alsatian\packages\stryker-alsatian\dist\index.js
+21:59:11 (34976) DEBUG PluginLoader Loading plugins C:\code\github\alsatian-test\alsatian\packages\stryker-alsatian\node_modules\@stryker-mutator\typescript\src\index.js
+21:59:11 (34976) DEBUG PluginLoader Loading plugins @stryker-mutator/html-reporter
+21:59:11 (34976) DEBUG PluginLoader Loading plugins C:\code\github\alsatian-test\alsatian\packages\stryker-alsatian\node_modules\@stryker-mutator\core\src\reporters\index.js
+21:59:11 (34976) INFO TypescriptConfigEditor Loading tsconfig file C:\code\github\alsatian-test\alsatian\packages\stryker-alsatian\sample-app\tsconfig.json
+21:59:11 (34976) INFO InputFileResolver Found 2 of 3 file(s) to be mutated.
