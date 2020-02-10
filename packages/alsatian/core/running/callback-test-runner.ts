@@ -40,7 +40,7 @@ export class CallbackTestRunner {
 			testSetResults,
 			timeout
 		);
-		this._fireTestingStarted(testSetRunInfo);
+		await this._fireTestingStarted(testSetRunInfo);
 		await this._runTests(testSetRunInfo, testSetResults);
 	}
 
@@ -134,10 +134,10 @@ export class CallbackTestRunner {
 				.filter(
 					message => this._flushedWarnings.indexOf(message) === -1
 				);
-			newWarnings.forEach(warning => {
+			for (const warning of newWarnings) {
 				this._flushedWarnings.push(warning);
-				this._fireWarning(warning);
-			});
+				await this._fireWarning(warning);
+			}
 		}
 		return result;
 	}
@@ -179,14 +179,14 @@ export class CallbackTestRunner {
 		const testFixtureResults = results.addTestFixtureResult(
 			testFixture
 		);
-		this._fireTestFixtureStarted(testFixture);
+		await this._fireTestFixtureStarted(testFixture);
 
 		for (const testItem of testFixtureItems) {
 			await this._runTestItem(testItem, testSetRunInfo, testFixtureResults);
 		}
 
 		await this._teardownFixture(testFixture.fixture);
-		this._fireTestFixtureComplete(testFixture, testFixtureResults);
+		await this._fireTestFixtureComplete(testFixture, testFixtureResults);
 	}
 
 	private async _runTestItem(
@@ -203,51 +203,51 @@ export class CallbackTestRunner {
 		await this._fireTestComplete(result, testItem, testSetRunInfo);
 	}
 
-	private _fireTestingStarted(testSetRunInfo: TestSetRunInfo) {
-		this._onTestingStartedCBs.forEach(onTestingStartedCB => {
-			onTestingStartedCB({
+	private async _fireTestingStarted(testSetRunInfo: TestSetRunInfo) {
+		for (const onTestingStartedCB of this._onTestingStartedCBs) {
+			await onTestingStartedCB({
 				testSetRunInfo
 			});
-		});
+		}
 	}
 
-	private _fireTestFixtureStarted(testFixture: ITestFixture) {
-		this._onTestFixtureStartedCBs.forEach(onTestFixtureStartedCB => {
-			onTestFixtureStartedCB({
+	private async _fireTestFixtureStarted(testFixture: ITestFixture) {
+		for (const onTestFixtureStartedCB of this._onTestFixtureStartedCBs) {
+			await onTestFixtureStartedCB({
 				testFixture
 			});
-		});
+		}
 	}
 
-	private _fireTestFixtureComplete(testFixture: ITestFixture, testFixtureResults: TestFixtureResults) {
-		this._onTestFixtureCompleteCBs.forEach(onTestFixtureCompleteCB => {
-			onTestFixtureCompleteCB({
+	private async _fireTestFixtureComplete(testFixture: ITestFixture, testFixtureResults: TestFixtureResults) {
+		for (const onTestFixtureCompleteCB of this._onTestFixtureCompleteCBs) {
+			await onTestFixtureCompleteCB({
 				testFixture,
 				testFixtureResults
 			});
-		});
+		}
 	}
 
-	private _fireWarning(warning: string) {
-		this._onWarningCBs.forEach(onWarningCB => {
-			onWarningCB({
+	private async _fireWarning(warning: string) {
+		for (const onWarningCB of this._onWarningCBs) {
+			await onWarningCB({
 				warning
 			});
-		});
+		}
 	}
 
-	private _fireTestingCompleted(testSetRunInfo: TestSetRunInfo, testSetResults: TestSetResults) {
-		this._onTestingCompleteCBs.forEach(onTestingCompleteCB => {
-			onTestingCompleteCB({
+	private async _fireTestingCompleted(testSetRunInfo: TestSetRunInfo, testSetResults: TestSetResults) {
+		for (const onTestingCompleteCB of this._onTestingCompleteCBs) {
+			await onTestingCompleteCB({
 				testSetRunInfo,
 				testSetResults
 			});
-		});
+		}
 	}
 
-	private _fireTestComplete(result: TestCaseResult, testItem: TestItem, testSetRunInfo: TestSetRunInfo) {
-		this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-			onTestCompleteCB({
+	private async _fireTestComplete(result: TestCaseResult, testItem: TestItem, testSetRunInfo: TestSetRunInfo) {
+		for (const onTestCompleteCB of this._onTestCompleteCBs) {
+			await onTestCompleteCB({
 				error: result.error,
 				outcome: result.outcome,
 				test: testItem.test,
@@ -259,12 +259,12 @@ export class CallbackTestRunner {
 					) + 1,
 				testCaseResult: result
 			});
-		});
+		}
 	}
 
-	private _fireTestStarted(testItem: TestItem, testSetRunInfo: TestSetRunInfo) {
-		this._onTestStartedCBs.forEach(onTestStartedCB => {
-			onTestStartedCB({
+	private async _fireTestStarted(testItem: TestItem, testSetRunInfo: TestSetRunInfo) {
+		for (const onTestStartedCB of this._onTestStartedCBs) {
+			await onTestStartedCB({
 				test: testItem.test,
 				testCase: testItem.testCase,
 				testFixture: testItem.testFixture,
@@ -273,7 +273,7 @@ export class CallbackTestRunner {
 						testItem
 					) + 1,
 			});
-		});
+		}
 	}
 
 	private async _runTests(
@@ -286,6 +286,6 @@ export class CallbackTestRunner {
 		for (const testFixture of testFixtures) {
 			await this._runTestFixture(testFixture, testItems, results, testSetRunInfo);
 		}
-		this._fireTestingCompleted(testSetRunInfo, results);
+		await this._fireTestingCompleted(testSetRunInfo, results);
 	}
 }
