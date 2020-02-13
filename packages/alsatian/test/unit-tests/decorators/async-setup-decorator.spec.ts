@@ -82,7 +82,7 @@ export class AsyncSetupDecoratorTests {
 		AsyncSetup({}, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
-			"AsyncSetup has been depreacated and will be removed in version 4.0.0. " +
+			"AsyncSetup has been deprecated and will be removed in version 4.0.0. " +
 				"Use the Setup decorator instead."
 		);
 	}

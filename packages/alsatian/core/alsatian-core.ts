@@ -40,6 +40,7 @@ import {
 	Any,
 	createFunctionSpy,
 	FunctionSpy,
+	ISpiedFunction,
 	RestorableFunctionSpy,
 	SpyOn,
 	SpyOnProperty
@@ -91,6 +92,7 @@ export {
 	PropertyMatcher,
 	Setup,
 	SetupFixture,
+	ISpiedFunction,
 	FunctionSpy,
 	RestorableFunctionSpy,
 	createFunctionSpy,

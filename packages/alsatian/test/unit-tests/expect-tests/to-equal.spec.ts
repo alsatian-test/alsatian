@@ -132,6 +132,35 @@ export class ToEqualTests {
 		);
 	}
 
+	@TestCase({})
+	@TestCase({ with: "something" })
+	@TestCase([])
+	@TestCase([1, 2, 3])
+	public sameComplexValuesShouldntMatchThrowsExactMatchErrorWithCorrectMessage(
+		expected: any
+	) {
+		const expect = Expect(expected);
+
+		Expect(() => expect.not.toEqual(expected)).toThrowError(
+			MatchError,
+			"Expected objects not to be equal"
+		);
+	}
+
+	@TestCase(1)
+	@TestCase("two")
+	@TestCase(true)
+	public sameSimpleValuesShouldntMatchThrowsExactMatchErrorWithCorrectMessage(
+		expected: any
+	) {
+		const expect = Expect(expected);
+
+		Expect(() => expect.not.toEqual(expected)).toThrowError(
+			MatchError,
+			"Expected values not to be equal"
+		);
+	}
+
 	@TestCase({}, { with: "something" })
 	@TestCase({ with: "something" }, {})
 	@TestCase([], [1, 2, 3])
@@ -202,11 +231,11 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), 42)
 	@TestCase(Any(String), "something")
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: 42,
 		anotherProperty: "something"
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: 42,
 		anotherProperty: "something"
 	})
@@ -218,11 +247,11 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), "something")
 	@TestCase(Any(String), 42)
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: "something",
 		anotherProperty: 42
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: "something",
 		anotherProperty: 42
 	})
@@ -234,24 +263,45 @@ export class ToEqualTests {
 
 	@TestCase(Any(Number), "something")
 	@TestCase(Any(String), 42, "Expected 42 to be equal to Any String.")
-	@TestCase(Any(Object).thatMatches("property", 42), {
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
 		property: "something",
 		anotherProperty: 42
 	})
-	@TestCase(Any(Object).thatMatches({ anotherProperty: "something" }), {
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
 		property: "something",
 		anotherProperty: 42
 	})
 	public throwsCorrectErrorMessageForNonMatchesWithAny(
 		expected: any,
-		actual: any,
-		errorMessage: string
+		actual: any
 	) {
 		const expect = Expect(actual);
 
 		Expect(() => expect.toEqual(expected)).toThrowError(
 			MatchError,
 			"Expected values to be equal"
+		);
+	}
+
+	@TestCase(Any(Number), 42)
+	@TestCase(Any(String), "something")
+	@TestCase(Any<{ property: number }>().thatMatches("property", 42), {
+		property: 42,
+		anotherProperty: "something"
+	})
+	@TestCase(Any<{ anotherProperty: string }>().thatMatches({ anotherProperty: "something" }), {
+		property: 42,
+		anotherProperty: "something"
+	})
+	public throwsCorrectErrorMessageForMatchesWithAnyAndShouldnt(
+		expected: any,
+		actual: any
+	) {
+		const expect = Expect(actual);
+
+		Expect(() => expect.not.toEqual(expected)).toThrowError(
+			MatchError,
+			"Expected values not to be equal"
 		);
 	}
 
@@ -285,14 +335,27 @@ export class ToEqualTests {
 	@TestCase(Buffer.from([1, 2, 3]), {})
 	public throwsCorrectErrorMessageForNonMatchesWithBuffer(
 		expected: any,
-		actual: any,
-		errorMessage: string
+		actual: any
 	) {
 		const expect = Expect(actual);
 
 		Expect(() => expect.toEqual(expected)).toThrowError(
 			MatchError,
 			"Expected values to be equal"
+		);
+	}
+
+	@TestCase(Buffer.from([1]))
+	@TestCase(Buffer.from([1, 2]))
+	@TestCase(Buffer.from([1, 2, 3]))
+	public throwsCorrectErrorMessageForMatchesWithBufferSameBuffer(
+		expected: any
+	) {
+		const expect = Expect(expected);
+
+		Expect(() => expect.not.toEqual(expected)).toThrowError(
+			MatchError,
+			"Expected values not to be equal"
 		);
 	}
 }

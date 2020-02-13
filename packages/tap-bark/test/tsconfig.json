@@ -2,7 +2,6 @@
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "jsx": "react",
-        "jsxFactory": "h",
         "outDir": "../test-build"
     },
     "exclude": [
@@ -12,6 +11,7 @@
     ],
     "include": [
         "./**/*.test.ts",
+        "./**/*.test.tsx",
         "../src/**/*.ts",
         "../src/**/*.tsx"
     ]

@@ -22,7 +22,6 @@ export class CallbackTestRunner {
 	private _onTestFixtureStartedCBs: Array<IOnTestFixtureStartedCBFunction> = [];
 	private _onTestFixtureCompleteCBs: Array<IOnTestFixtureCompleteCBFunction> = [];
 	private _onWarningCBs: Array<IOnWarningCBFunction> = [];
-	private _flushedWarnings: Array<string> = [];
 
 	public async run(testSet: TestSet, timeout?: number | null) {
 		const testPlan = new TestPlan(testSet);
@@ -125,19 +124,6 @@ export class CallbackTestRunner {
 				testItem.testCase.caseArguments,
 				e
 			);
-		} finally {
-			const newWarnings = Warner.warnings
-				.filter(
-					(message, index, array) =>
-						array.indexOf(message, index + 1) === -1
-				)
-				.filter(
-					message => this._flushedWarnings.indexOf(message) === -1
-				);
-			for (const warning of newWarnings) {
-				this._flushedWarnings.push(warning);
-				await this._fireWarning(warning);
-			}
 		}
 		return result;
 	}
@@ -286,6 +272,7 @@ export class CallbackTestRunner {
 		for (const testFixture of testFixtures) {
 			await this._runTestFixture(testFixture, testItems, results, testSetRunInfo);
 		}
+		Warner.warnings.forEach(warning => this._fireWarning(warning));
 		await this._fireTestingCompleted(testSetRunInfo, results);
 	}
 }

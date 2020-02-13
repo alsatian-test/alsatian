@@ -1,6 +1,5 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
-import * as path from "path";
 import {
 	AsyncTest,
 	Expect,
@@ -13,7 +12,7 @@ export class CliIntegrationTests {
 	@TestCase("to-equal")
 	@TestCase("to-throw")
 	@AsyncTest()
-	@Timeout(5000)
+	@Timeout(10000)
 	public toBeExpectations(expectationTestName: string) {
 		const result = child.exec(
 			`alsatian ` +

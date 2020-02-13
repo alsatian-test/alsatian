@@ -7,8 +7,9 @@ import {
 	Setup,
 	Teardown,
 	TestFixture
-} from "alsatian";
-import { TapBark, TapBarkOutput } from "../../../src/tap-bark";
+} from "../../../../alsatian";
+import { TapBark, TapBarkOutputComponent, TapBarkOutputState } from "../../../src/tap-bark";
+import chalk from "chalk";
 
 async function wait(timeInMs: number) {
 	return new Promise(resolve => {
@@ -94,7 +95,7 @@ export default class TapBarkTests {
 	public createReturnsInstanceOfTapBark() {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "setState").andStub();
-		Expect(tapBark instanceof TapBarkOutput).toBe(true);
+		Expect(tapBark instanceof TapBarkOutputComponent).toBe(true);
 	}
 
 	@Test("create a new TapBark instance every time")
@@ -137,13 +138,13 @@ export default class TapBarkTests {
 		assertEventHandler({ id: 1 });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				totalTests: planEnd
 			})
 		);
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: 1
 			})
 		);
@@ -165,7 +166,7 @@ export default class TapBarkTests {
 		commentEventHandler("# FIXTURE " + fixtureName);
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				fixtureName
 			})
 		);
@@ -187,9 +188,7 @@ export default class TapBarkTests {
 		commentEventHandler(comment);
 
 		Expect(setStateSpy).not.toHaveBeenCalledWith(
-			Any(Object).thatMatches({
-				fixtureName: Any
-			})
+			Any<TapBarkOutputState>().thatMatches(value => value.fixtureName !== undefined)
 		);
 	}
 
@@ -209,7 +208,7 @@ export default class TapBarkTests {
 		assertEventHandler({ name: testName });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				testName
 			})
 		);
@@ -237,7 +236,7 @@ export default class TapBarkTests {
 		assertEventHandler({ id: testId });
 
 		Expect(setStateSpy).toHaveBeenCalledWith(
-			Any(Object).thatMatches({
+			Any<TapBarkOutputState>().thatMatches({
 				currentTest: testId
 			})
 		);
@@ -247,7 +246,6 @@ export default class TapBarkTests {
 	public async completeEventResultsOkExitsProcessCodeZero() {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
 
 		const completeEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -255,7 +253,7 @@ export default class TapBarkTests {
 
 		completeEventHandler({ ok: true });
 
-		await wait(105);
+		await wait(150);
 
 		Expect(process.exit).toHaveBeenCalledWith(0);
 	}
@@ -264,7 +262,6 @@ export default class TapBarkTests {
 	public async completeEventResultsNotOkExitsProcessCodeOne() {
 		const tapBark = TapBark.create();
 		SpyOn(tapBark, "render").andStub();
-		SpyOn(tapBark, "setState").andStub();
 
 		const completeEventHandler = (TapBark.tapParser.on as any).calls
 			.map(call => call.args)
@@ -272,7 +269,7 @@ export default class TapBarkTests {
 
 		completeEventHandler({ ok: false });
 
-		await wait(105);
+		await wait(150);
 
 		Expect(process.exit).toHaveBeenCalledWith(1);
 	}
@@ -292,8 +289,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.pass
-		).toBe(0);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.pass === 0),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -316,8 +316,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.pass
-		).toBe(passCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.pass === passCount),
+			Any
+		);
 	}
 
 	@Test()
@@ -335,8 +338,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.ignore
-		).toBe(0);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.ignore === 0),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -357,8 +363,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.ignore
-		).toBe(skipCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.ignore === skipCount),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -379,8 +388,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.ignore
-		).toBe(todoCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.ignore === todoCount),
+			Any
+		);
 	}
 
 	@TestCase(1, 1)
@@ -402,8 +414,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.ignore
-		).toBe(skipCount + todoCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.ignore === skipCount + todoCount),
+			Any
+		);
 	}
 
 	@Test()
@@ -420,8 +435,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.fail
-		).toBe(0);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.fail === 0),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -440,8 +458,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.fail
-		).toBe(failCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.fail === failCount),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -468,8 +489,11 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.fail
-		).toBe(failCount);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.fail === failCount),
+			Any
+		);
 	}
 
 	@Test()
@@ -485,8 +509,11 @@ export default class TapBarkTests {
 		completeEventHandler({});
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.failures
-		).toEqual([]);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.failures.length === 0),
+			Any
+		);
 	}
 
 	@TestCase(0)
@@ -513,7 +540,141 @@ export default class TapBarkTests {
 		await wait(105);
 
 		Expect(
-			tapBark.setState.calls[0].args[0].results.failures
-		).toBe(failures);
+			tapBark.setState
+		).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.results.failures === failures),
+			Any
+		);
+	}
+
+	@Test("only first complete call sets state")
+	public async completeSetStateOnlyCalledOnce() {		
+		const tapBark = TapBark.create();
+		SpyOn(tapBark, "render").andStub();
+		SpyOn(tapBark, "setState").andStub();
+
+		const completeEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "complete")[0][1];
+
+		completeEventHandler({});
+		completeEventHandler({});
+
+		await wait(210);
+
+		Expect(tapBark.setState).toHaveBeenCalled().exactly(1).times;
+	}
+
+	@TestCase("")
+	@TestCase("WARNING")
+	@TestCase("Oh no, something's really wrong!")
+	public warningStoredCorrectly(warning: string) {
+		const tapBark = TapBark.create();
+		SpyOn(tapBark, "render").andStub();
+		const setStateSpy = SpyOn(tapBark, "setState");
+		setStateSpy.andStub();
+
+		const commentEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "comment")[0][1];
+
+		warning = `WARN: ${warning}`;
+
+		commentEventHandler(`# ${warning}`);
+
+		Expect(setStateSpy).toHaveBeenCalledWith(
+			Any<TapBarkOutputState>().thatMatches(state => state.warnings.indexOf(chalk.yellow(warning)) !== -1)
+		);
+	}
+
+	@Test("show message in place of progress")
+	public showMessageInPlaceOfProgress() {
+		const tapBark = TapBark.create(false);
+
+		Expect(tapBark.render()._props.children as Array<string>).toContain("running alsatian tests");
+	}
+
+	@Test("hide pending message after complete")
+	public async hidePendingMessageOnComplete() {
+		const tapBark = TapBark.create(false);
+
+		const completeEventHandler = (TapBark.tapParser.on as any).calls
+			.map(call => call.args)
+			.filter(args => args[0] === "complete")[0][1];
+
+		completeEventHandler({});
+		await wait(105);
+
+		Expect(tapBark.render()._props.children as Array<string>).not.toContain("running alsatian tests");
+	}
+
+	@TestCase("Failed")
+	@TestCase("Darn it")
+	@TestCase("OOOOOPS!!!")
+	@Test("standard message without diag")
+	public async standardFailureMesssageWithoutDiag(name: string) {
+		const tapBark = TapBark.create(false);
+
+		const failureMessage = tapBark.getFailureMessage({ id: null, ok: null, name });
+
+		Expect(failureMessage).toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\nFailure reason unknown.`);
+	}
+
+	@TestCase("Failed")
+	@TestCase("Darn it")
+	@TestCase("OOOOOPS!!!")
+	@Test("diag message output")
+	public async diagMessageOutput(message: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const expect = "EXPECT";
+		const got = "GOT";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { expect, got } } });
+
+		Expect(failureMessage)
+			.toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\n ${message}\n\nexpected:\n${expect}\nactual:\n${got}`);
+	}
+
+	@TestCase("EXPECTED", "GOT")
+	@TestCase("Something", "Something Else")
+	@TestCase("This normal thing", "something EXCEPTIONALLY weird")
+	@Test("diag without data returns expect and got")
+	public async diagWithoutDataReturnsExpectAndGot(expect: string, got: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const message = "MESSAGE";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { expect, got } } });
+
+		Expect(failureMessage)
+			.toBe(`${chalk.red("FAIL: ")}${chalk.bold(name)}\n ${message}\n\nexpected:\n${expect}\nactual:\n${got}`);
+	}
+
+	@TestCase("KEY", "VALUE")
+	@TestCase("This", "thing")
+	@TestCase("Wow this is important", "something EXCEPTIONALLY important")
+	@Test("diag details output in failure message")
+	public async diagDetailsOutputInFailureMessage(key: string, value: string) {
+		const tapBark = TapBark.create(false);		
+		const name = "NAME";
+		const message = "MESSAGE";
+
+		const failureMessage = tapBark.getFailureMessage({
+			id: null,
+			ok: null,
+			name,
+			diag: { message, data: { details: { [key]: value } } } });
+
+		Expect(failureMessage)
+			.toContain(`${chalk.underline(key)}:\n${value}`)
 	}
 }
