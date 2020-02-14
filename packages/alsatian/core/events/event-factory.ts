@@ -1,7 +1,7 @@
 import {TestItem, TestSetRunInfo} from "../running";
 import {ITestCompleteEvent} from "./test-complete.i";
 import {ITestingCompleteEvent} from "./testing-completed.i";
-import {TestFixtureResults, TestSetResults} from "../results";
+import {TestCaseResult, TestFixtureResults, TestSetResults} from "../results";
 import {IWarningEvent} from "./warning.i";
 import {ITestingStartedEvent} from "./testing-started.i";
 import {ITestFixture} from "../_interfaces";
@@ -10,7 +10,7 @@ import {ITestFixtureCompleteEvent} from "./test-fixture-complete.i";
 import {ITestStartedEvent} from "./test-started.i";
 
 export class EventFactory {
-	public createTestComplete(result, testItem: TestItem, testSetRunInfo: TestSetRunInfo)
+	public createTestComplete(result: TestCaseResult, testItem: TestItem, testSetRunInfo: TestSetRunInfo)
 		: ITestCompleteEvent {
 		return {
 			error: result.error,

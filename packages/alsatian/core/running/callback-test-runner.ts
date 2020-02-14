@@ -110,7 +110,7 @@ export class CallbackTestRunner {
 		testItem: TestItem,
 		testSetRunInfo: TestSetRunInfo,
 		testFixtureResults: TestFixtureResults
-	) {
+	): Promise<TestCaseResult> {
 		let testResults = testFixtureResults.testResults.find(
 			result2 => result2.test === testItem.test
 		);
