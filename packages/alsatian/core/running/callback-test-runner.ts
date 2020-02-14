@@ -15,6 +15,7 @@ import {ISetupTeardownMetadata} from "../decorators/_interfaces";
 import {ITestFixture} from "../_interfaces";
 import {ListenerInformer} from "./callback-listener-informer";
 import {CallbackFunction} from "../events/generic-callback";
+import {EventFactory} from "../events/event-factory";
 
 export class CallbackTestRunner {
 	private _onTestStartedCBs: Array<CallbackFunction<ITestStartedEvent>> = [];
@@ -24,7 +25,8 @@ export class CallbackTestRunner {
 	private _onTestFixtureStartedCBs: Array<CallbackFunction<ITestFixtureStartedEvent>> = [];
 	private _onTestFixtureCompleteCBs: Array<CallbackFunction<ITestFixtureCompleteEvent>> = [];
 	private _onWarningCBs: Array<CallbackFunction<IWarningEvent>> = [];
-	private listenerInformer: ListenerInformer = new ListenerInformer();
+	private _listenerInformer: ListenerInformer = new ListenerInformer();
+	private _eventFactory: EventFactory = new EventFactory();
 
 	public async run(testSet: TestSet, timeout?: number | null) {
 		const testPlan = new TestPlan(testSet);
@@ -42,7 +44,8 @@ export class CallbackTestRunner {
 			testSetResults,
 			timeout
 		);
-		await this.listenerInformer.informListeners(this._onTestingStartedCBs, {testSetRunInfo});
+		await this._listenerInformer.informListeners(this._onTestingStartedCBs,
+			this._eventFactory.createTestingStarted(testSetRunInfo));
 		await this._runTests(testSetRunInfo, testSetResults);
 	}
 
@@ -168,50 +171,32 @@ export class CallbackTestRunner {
 		const testFixtureResults = results.addTestFixtureResult(
 			testFixture
 		);
-		await this.listenerInformer.informListeners(this._onTestFixtureStartedCBs, {testFixture});
+		await this._listenerInformer.informListeners(this._onTestFixtureStartedCBs,
+			this._eventFactory.createTestFixtureStarted(testFixture));
 
 		for (const testItem of testFixtureItems) {
 			await this._runTestItem(testItem, testSetRunInfo, testFixtureResults);
 		}
 
 		await this._teardownFixture(testFixture.fixture);
-		await this.listenerInformer.informListeners(this._onTestFixtureCompleteCBs, {
-			testFixture,
-			testFixtureResults
-		});
+		await this._listenerInformer.informListeners(this._onTestFixtureCompleteCBs,
+			this._eventFactory.createTestFixtureComplete(testFixture, testFixtureResults));
 	}
 
 	private async _runTestItem(
 		testItem: TestItem,
 		testSetRunInfo: TestSetRunInfo,
 		testFixtureResults: TestFixtureResults) {
-		await this.listenerInformer.informListeners(this._onTestStartedCBs, {
-			test: testItem.test,
-			testCase: testItem.testCase,
-			testFixture: testItem.testFixture,
-			testId:
-				testSetRunInfo.testPlan.testItems.indexOf(
-					testItem
-				) + 1,
-		});
+		await this._listenerInformer.informListeners(this._onTestStartedCBs,
+			this._eventFactory.createTestStarted(testItem, testSetRunInfo));
 		const result = await this._getTestItemResult(
 			testItem,
 			testSetRunInfo,
 			testFixtureResults
 		);
 
-		await this.listenerInformer.informListeners(this._onTestCompleteCBs, {
-			error: result.error,
-			outcome: result.outcome,
-			test: testItem.test,
-			testCase: testItem.testCase,
-			testFixture: testItem.testFixture,
-			testId:
-				testSetRunInfo.testPlan.testItems.indexOf(
-					testItem
-				) + 1,
-			testCaseResult: result
-		});
+		await this._listenerInformer.informListeners(this._onTestCompleteCBs,
+			this._eventFactory.createTestComplete(result, testItem, testSetRunInfo));
 	}
 
 	private async _runTests(
@@ -224,12 +209,9 @@ export class CallbackTestRunner {
 		for (const testFixture of testFixtures) {
 			await this._runTestFixture(testFixture, testItems, testSetResults, testSetRunInfo);
 		}
-		Warner.warnings.forEach(warning => this.listenerInformer.informListeners(this._onWarningCBs, {
-			warning
-		}));
-		await this.listenerInformer.informListeners(this._onTestingCompleteCBs, {
-			testSetRunInfo,
-			testSetResults
-		});
+		Warner.warnings.forEach(warning => this._listenerInformer.informListeners(this._onWarningCBs,
+			this._eventFactory.createWarning(warning)));
+		await this._listenerInformer.informListeners(this._onTestingCompleteCBs,
+			this._eventFactory.createTestingComplete(testSetRunInfo, testSetResults));
 	}
 }
