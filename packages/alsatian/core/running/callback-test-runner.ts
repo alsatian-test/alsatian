@@ -1,8 +1,11 @@
 import {
-	ITestCompleteEvent, ITestFixtureCompleteEvent, ITestFixtureStartedEvent,
+	ITestCompleteEvent,
+	ITestFixtureCompleteEvent,
+	ITestFixtureStartedEvent,
 	ITestingCompleteEvent,
 	ITestingStartedEvent,
-	ITestStartedEvent, IWarningEvent
+	ITestStartedEvent,
+	IWarningEvent
 } from "../events";
 import {TestSet} from "../test-set";
 import {TestPlan} from "./test-plan";
@@ -133,18 +136,6 @@ export class CallbackTestRunner {
 		}
 		return result;
 	}
-
-	private async _setupFixture(fixture: { [key: string]: () => any }) {
-		await this._runFixtureFunctions(fixture, METADATA_KEYS.SETUP_FIXTURE);
-	}
-
-	private async _teardownFixture(fixture: { [key: string]: () => any }) {
-		await this._runFixtureFunctions(
-			fixture,
-			METADATA_KEYS.TEARDOWN_FIXTURE
-		);
-	}
-
 	private async _runFixtureFunctions(
 		fixture: { [key: string]: () => any },
 		metadataKey: string
@@ -167,7 +158,7 @@ export class CallbackTestRunner {
 			testItem => testItem.testFixture === testFixture
 		);
 
-		await this._setupFixture(testFixture.fixture);
+		await this._runFixtureFunctions(testFixture.fixture, METADATA_KEYS.SETUP_FIXTURE);
 		const testFixtureResults = results.addTestFixtureResult(
 			testFixture
 		);
@@ -178,7 +169,10 @@ export class CallbackTestRunner {
 			await this._runTestItem(testItem, testSetRunInfo, testFixtureResults);
 		}
 
-		await this._teardownFixture(testFixture.fixture);
+		await this._runFixtureFunctions(
+			testFixture.fixture,
+			METADATA_KEYS.TEARDOWN_FIXTURE
+		);
 		await this._listenerInformer.informListeners(this._onTestFixtureCompleteCBs,
 			this._eventFactory.createTestFixtureComplete(testFixture, testFixtureResults));
 	}
