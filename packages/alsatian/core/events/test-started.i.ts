@@ -7,7 +7,3 @@ export interface ITestStartedEvent {
 	testFixture: ITestFixture;
 
 }
-
-export type IOnTestStartedCBFunction = (
-	testStarted: ITestStartedEvent
-) => void;

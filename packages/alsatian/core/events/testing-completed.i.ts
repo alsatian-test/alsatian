@@ -5,7 +5,3 @@ export interface ITestingCompleteEvent {
 	testSetRunInfo: TestSetRunInfo;
 	testSetResults: TestSetResults;
 }
-
-export type IOnTestingCompleteCBFunction = (
-	testingComplete: ITestingCompleteEvent
-) => void;

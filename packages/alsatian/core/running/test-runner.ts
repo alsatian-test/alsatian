@@ -4,7 +4,6 @@ import {
 } from "../alsatian-core";
 
 import {CallbackTestRunner} from "./callback-test-runner";
-import {Warner} from "../maintenance/warn";
 
 export class TestRunner extends CallbackTestRunner {
 	private readonly _outputStream: TestOutputStream;
@@ -35,7 +34,6 @@ export class TestRunner extends CallbackTestRunner {
 			this._outputStream.end();
 		});
 		this.onTestComplete((event) => {
-
 			this._outputStream.emitResult(
 				event.testId, event.testCaseResult
 			);

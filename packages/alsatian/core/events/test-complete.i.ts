@@ -11,7 +11,3 @@ export interface ITestCompleteEvent {
 	error?: Error | null;
 	testCaseResult: TestCaseResult;
 }
-
-export type IOnTestCompleteCBFunction = (
-	testCompleted: ITestCompleteEvent
-) => void;
