@@ -18,6 +18,7 @@
 - [ ] git revert tests accidentally changed while testing
 - [ ] add unit test
 - [ ] standard linting
+- [ ] ci
 - [ ] tidy up deps
 - [ ] add telemetry / error handling / find out what that random throw is all about
 - [ ] tidy up
