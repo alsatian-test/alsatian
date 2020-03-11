@@ -11,6 +11,29 @@ const styles: { [key: string]: TextEditorDecorationType } = {
 
 };
 
+async function runFixtureTests(fileName: string, fixture: any) {
+	const range = fixture.range;
+	
+	// need to make more robust (perhaps pass in document instead)
+	const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
+
+	const runningDecorator = window.createTextEditorDecorationType({
+		gutterIconPath: Uri.file(runningPath),
+		gutterIconSize: "contain"
+	});
+
+	//TODO: may need to push this to the background in order for the change to apply I guess the thread is locked
+	//      preventing update / may want to use vscode's EventEmitter
+	editor.setDecorations(runningDecorator, [{range: new Range(range.start, range.start)}]);
+
+	//TODO: this is likely inefficient and can be refactored to avoid loading the document multiple times
+	await Promise.all(
+		fixture.tests.map((test: any) => runTest(fileName, test.name, test.selectionRange))
+	);
+	
+	runningDecorator.dispose();
+}
+
 async function debugTest(fileName: string, testName: string, range: Range) {
 	const debuggerPort = 40894;
 	// process.execArgv.push('--debug=' + (debuggerPort));
@@ -65,8 +88,7 @@ async function runTest(fileName: string, testName: string, range: Range, execArg
 	const decoration = window.createTextEditorDecorationType({
 		isWholeLine: true,
 		gutterIconPath: iconPath,
-		gutterIconSize: "contain",
-		
+		gutterIconSize: "contain",		
 	});
 
 	styles[testName] = decoration;
@@ -76,6 +98,7 @@ async function runTest(fileName: string, testName: string, range: Range, execArg
 	editor.setDecorations(decoration, [
 		{
 			range: new Range(range.start, range.start),
+			//TODO: make this work
 			hoverMessage: pass ? "Test Passed" : "Test Failed" //results.map(x => x.error?.message).join("\n")			
 		}
 	]);
@@ -86,6 +109,13 @@ async function runTest(fileName: string, testName: string, range: Range, execArg
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
+
+	context.subscriptions.push(
+		commands.registerCommand(
+			"alsatian.runFixtureTest",
+			runFixtureTests
+		)
+	);
 
 	context.subscriptions.push(
 		commands.registerCommand(

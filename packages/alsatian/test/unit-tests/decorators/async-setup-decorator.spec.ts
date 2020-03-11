@@ -29,7 +29,7 @@ export class AsyncSetupDecoratorTests {
 	public test() {
 		const d = 4;
 
-		Expect(d).toBe(4);
+		Expect(d).toBe(2);
 	}
 
 	@TestCase("key")

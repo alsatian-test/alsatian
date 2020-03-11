@@ -30,7 +30,8 @@ function sendMessage(message: any) {
 	}
 
 	//TODO: test what happens across multiple projects in same workspace
-	process.env.TS_NODE_PROJECT = (findNearestFile as any)("tsconfig.json", fileName);
+    process.env.TS_NODE_PROJECT = (findNearestFile as any)("tsconfig.json", fileName);
+    process.env.TS_NODE_TRANSPILE_ONLY = "true";
 	await import("ts-node/register");
 
 	const testSet = TestSet.create();

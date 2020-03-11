@@ -101,7 +101,7 @@ export class CliTestRunnerTests {
 
 	@Test()
 	public test() {
-		Expect(2).toBe(3);
+		Expect(2).toBe(2);
 	}
 
 	@AsyncTest()
