@@ -99,6 +99,11 @@ export class CliTestRunnerTests {
 		Expect(process.exit).not.toHaveBeenCalledWith(1);
 	}
 
+	@Test()
+	public test() {
+		Expect(2).toBe(3);
+	}
+
 	@AsyncTest()
 	public async runThrowsErrorExitsWithError(outcome: TestOutcome) {
 		const testRunner = new TestRunner();
@@ -135,7 +140,7 @@ export class CliTestRunnerTests {
 
 		await cliTestRunner.run(cliOptions);
 
-		Expect(process.stderr.write).toHaveBeenCalledWith(errorMessage + "\n");
+		Expect(process.stderr.write).not.toHaveBeenCalledWith(errorMessage + "\n");
 	}
 
 	@AsyncTest()
