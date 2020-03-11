@@ -10,17 +10,15 @@
                     * fork process with debug argument setting defined port number
                     * use messaging to communicate between the two
                 )
-- [ ] write progress to output window
 - [ ] add failure details to indicator / to respective line?
 - [ ] target tsconfig.json (may not be necessary)
 - [x] add running indicator
-- [ ] require before run e.g. enzyme
-- [ ] reset tests changed while testing
+- [x] run all tests in file
+- [ ] account for multiple fixtures per file
+- [ ] git revert tests accidentally changed while testing
 - [ ] add unit test
 - [ ] standard linting
 - [ ] tidy up deps
-- [ ] run all tests in file
-- [ ] account for multiple fixtures per file
 - [ ] add telemetry / error handling / find out what that random throw is all about
 - [ ] fine tune animations for svgs
 - [ ] tidy up
@@ -28,6 +26,11 @@
 - [ ] figure out publish
 
 ## Next steps
+
+- [ ] require before run e.g. enzyme (dep on broader alsatian feature)
+
+- [ ] speed up (potentially keep longing process to run tests and pass send info to it to keep typescript compilation rapid - perhaps one per tsconfig resolved? Also need to handle process dying unexpectedly)
+- [ ] write progress to output window (deps on speed up as currently multiple workers processing unless we write different progress)
 
 - [ ] tdd / watch task
 - [ ] consider being able to target alsatian version installed
@@ -38,4 +41,3 @@
 - [ ] load tests into separate tree view
 - [ ] indicator on file in tree view
 - [ ] trigger runs from tree view
-- [ ] speed up (potentially keep longing process to run tests and pass send info to it to keep typescript compilation rapid - perhaps one per tsconfig resolved? Also need to handle process dying unexpectedly)

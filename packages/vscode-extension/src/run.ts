@@ -17,7 +17,8 @@ function sendMessage(message: any) {
     setTimeout(timeout, 20000);
 
     const fileName = process.argv[2];
-    const testName = process.argv[3];
+    const fixtureName = process.argv[3];
+    const testName = process.argv[4];
 
     sendMessage({
         fileName,
@@ -38,7 +39,9 @@ function sendMessage(message: any) {
 	testSet.addTestsFromFiles(fileName);
 
 	//TODO: ensure correct fixture is selected
-	testSet.testFixtures[0].tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
+    const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
+    fixture.focussed = true;
+    fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
 
 	const runner = new TestRunner();
 	const results: ITestCompleteEvent[] = [];

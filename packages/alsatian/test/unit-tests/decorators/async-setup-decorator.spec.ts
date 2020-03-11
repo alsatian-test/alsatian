@@ -9,6 +9,20 @@ import {
 import { AsyncSetup } from "../../../core/decorators/async-setup-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
+export class TestOne {
+	@Test()
+	failing() {
+		Expect(2).toBe(3);
+	}
+}
+
+export class TestTwo {
+	@Test()
+	passing() {
+		Expect(2).toBe(2);
+	}
+}
+
 export class AsyncSetupDecoratorTests {
 	@Test()
 	public setupFunctionAddedAsMetaData() {

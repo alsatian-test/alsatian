@@ -28,13 +28,13 @@ async function runFixtureTests(fileName: string, fixture: any) {
 
 	//TODO: this is likely inefficient and can be refactored to avoid loading the document multiple times
 	await Promise.all(
-		fixture.tests.map((test: any) => runTest(fileName, test.name, test.selectionRange))
+		fixture.tests.map((test: any) => runTest(fileName, fixture.className, test.name, test.selectionRange))
 	);
-	
+
 	runningDecorator.dispose();
 }
 
-async function debugTest(fileName: string, testName: string, range: Range) {
+async function debugTest(fileName: string, fixtureName: string, testName: string, range: Range) {
 	const debuggerPort = 40894;
 	// process.execArgv.push('--debug=' + (debuggerPort));
 	debug.startDebugging(
@@ -49,10 +49,10 @@ async function debugTest(fileName: string, testName: string, range: Range) {
 			stopOnEntry: false
 		}
 	);
-	runTest(fileName, testName, range, ['--inspect-brk=' + (debuggerPort)]);
+	runTest(fileName, fixtureName, testName, range, ['--inspect-brk=' + (debuggerPort)]);
 }
 
-async function runTest(fileName: string, testName: string, range: Range, execArgv?: string[]) {
+async function runTest(fileName: string, fixtureName: string, testName: string, range: Range, execArgv?: string[]) {
 	if (styles[testName]) {
 		styles[testName].dispose();
 	}
@@ -69,7 +69,7 @@ async function runTest(fileName: string, testName: string, range: Range, execArg
 	//      preventing update / may want to use vscode's EventEmitter
 	editor.setDecorations(runningDecorator, [{range: new Range(range.start, range.start)}]);
 
-	const runProcess = fork(`${__dirname}/run`, [ fileName, testName ], { execArgv });
+	const runProcess = fork(`${__dirname}/run`, [ fileName, fixtureName, testName ], { execArgv });
 
 	const pass = await new Promise((resolve, reject) => {
 		runProcess.on("message", message => {

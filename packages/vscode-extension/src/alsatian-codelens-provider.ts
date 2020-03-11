@@ -35,20 +35,20 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
             title: "$(debug) Debug",
         };
 
-        const tests = fixtures.reduce<DocumentSymbol[]>((allTests, fixture) => allTests.concat(fixture.tests), []);
+        const tests = fixtures.reduce<(DocumentSymbol& { fixtureName: string })[]>((allTests, fixture) => allTests.concat(fixture.tests.map(test => ({ ...test, fixtureName: fixture.className }))), []);
 
         return lenses
             .concat(tests.map(test => 
                     new CodeLens(
                         test.range,
-                        { ...runTestCommand, arguments: [ document.fileName, test.name, test.selectionRange ]}
+                        { ...runTestCommand, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
                     )
                 )
             )            
             .concat(tests.map(test => 
                     new CodeLens(
                         test.range,
-                        { ...debugTestCommand, arguments: [ document.fileName, test.name, test.selectionRange ]}
+                        { ...debugTestCommand, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
                     )
                 )
             );
