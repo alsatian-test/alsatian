@@ -18,11 +18,11 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
         };
 
         const debugTestCommand: Command = {
-            command: "extension.runTest",
+            command: "alsatian.debugTest",
             title: "$(debug) Debug",
         };
 
         return methods.map(x => new CodeLens(x.range, { ...runTestCommand, arguments: [ document.fileName, x.name, x.selectionRange ] }))
-                .concat(methods.map(x => new CodeLens(x.range, { ...debugTestCommand, arguments: [ document.fileName, x.name ] })));
+                .concat(methods.map(x => new CodeLens(x.range, { ...debugTestCommand, arguments: [ document.fileName, x.name, x.selectionRange ] })));
     }
 }

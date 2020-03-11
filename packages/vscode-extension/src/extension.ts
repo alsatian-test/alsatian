@@ -3,8 +3,6 @@
 import { commands, debug, ExtensionContext, languages, window, TextEditor, TextEditorDecorationType, Range, Uri, DecorationOptions, Position, TextDocument } from "vscode";
 import { AlsatianCodeLensProvider } from "./alsatian-codelens-provider";
 import { fork } from "child_process";
-import { resolve } from "dns";
-import { rejects } from "assert";
 
 let successPath: string;
 let failurePath: string;
@@ -13,7 +11,25 @@ const styles: { [key: string]: TextEditorDecorationType } = {
 
 };
 
-async function runTest(fileName: string, testName: string, range: Range) {
+async function debugTest(fileName: string, testName: string, range: Range) {
+	const debuggerPort = 40894;
+	// process.execArgv.push('--debug=' + (debuggerPort));
+	debug.startDebugging(
+		undefined,
+		{
+			name: "alsatian debugging",
+			type: 'node',
+			request: 'attach',
+			port: debuggerPort,
+			protocol: 'inspector',
+			timeout: 5000,
+			stopOnEntry: false
+		}
+	);
+	runTest(fileName, testName, range, ['--inspect-brk=' + (debuggerPort)]);
+}
+
+async function runTest(fileName: string, testName: string, range: Range, execArgv?: string[]) {
 	if (styles[testName]) {
 		styles[testName].dispose();
 	}
@@ -30,7 +46,7 @@ async function runTest(fileName: string, testName: string, range: Range) {
 	//      preventing update / may want to use vscode's EventEmitter
 	editor.setDecorations(runningDecorator, [{range: new Range(range.start, range.start)}]);
 
-	const runProcess = fork(`${__dirname}/run`, [ fileName, testName ]);
+	const runProcess = fork(`${__dirname}/run`, [ fileName, testName ], { execArgv });
 
 	const pass = await new Promise((resolve, reject) => {
 		runProcess.on("message", message => {
@@ -75,6 +91,13 @@ export function activate(context: ExtensionContext) {
 		commands.registerCommand(
 			"alsatian.runTest",
 			runTest
+		)
+	);
+
+	context.subscriptions.push(
+		commands.registerCommand(
+			"alsatian.debugTest",
+			debugTest
 		)
 	);
 

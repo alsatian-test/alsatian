@@ -5,14 +5,14 @@
 - [x] clear require cache
 - [x] move indicator in line with function name
 - [x] don't show run / debug on non tests e.g. setup / teardown
-- [ ] debugging (try
+- [x] debugging (try
                     * setup attach with port number
                     * fork process with debug argument setting defined port number
                     * use messaging to communicate between the two
                 )
 - [ ] write progress to output window
+- [ ] add failure details to indicator / to respective line?
 - [ ] speed up (potentially keep longing process to run tests and pass send info to it to keep typescript compilation rapid - perhaps one per tsconfig resolved? Also need to handle process dying unexpectedly)
-- [ ] add failure details to indicator
 - [ ] target tsconfig.json (may not be necessary)
 - [x] add running indicator
 - [ ] run all tests in file

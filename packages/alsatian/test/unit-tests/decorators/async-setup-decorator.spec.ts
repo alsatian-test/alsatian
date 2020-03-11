@@ -25,6 +25,13 @@ export class AsyncSetupDecoratorTests {
 		Expect(setupFunctions).not.toBeNull();
 	}
 
+	@Test()
+	public test() {
+		const d = 4;
+
+		Expect(d).toBe(4);
+	}
+
 	@TestCase("key")
 	@TestCase("another key")
 	@TestCase("something-different")
