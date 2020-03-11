@@ -11,9 +11,10 @@
                     * use messaging to communicate between the two
                 )
 - [ ] write progress to output window
+- [ ] speed up (potentially keep longing process to run tests and pass send info to it to keep typescript compilation rapid - perhaps one per tsconfig resolved? Also need to handle process dying unexpectedly)
 - [ ] add failure details to indicator
 - [ ] target tsconfig.json (may not be necessary)
-- [ ] add running indicator
+- [x] add running indicator
 - [ ] run all tests in file
 - [ ] account for multiple fixtures per file
 - [ ] add telemetry / error handling / find out what that random throw is all about

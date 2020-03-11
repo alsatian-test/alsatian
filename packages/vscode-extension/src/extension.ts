@@ -2,9 +2,9 @@
 // Import the module and reference it with the alias vscode in your code below
 import { commands, debug, ExtensionContext, languages, window, TextEditor, TextEditorDecorationType, Range, Uri, DecorationOptions, Position, TextDocument } from "vscode";
 import { AlsatianCodeLensProvider } from "./alsatian-codelens-provider";
-import { TestRunner, TestSet, TestOutcome } from "alsatian";
-import { ITestCompleteEvent } from "alsatian/dist/core/events";
-import * as findNearestFile from "find-nearest-file";
+import { fork } from "child_process";
+import { resolve } from "dns";
+import { rejects } from "assert";
 
 let successPath: string;
 let failurePath: string;
@@ -30,27 +30,19 @@ async function runTest(fileName: string, testName: string, range: Range) {
 	//      preventing update / may want to use vscode's EventEmitter
 	editor.setDecorations(runningDecorator, [{range: new Range(range.start, range.start)}]);
 
-	//TODO: may need to do more than this should test against running for multiple files
-	if (require.cache[require.resolve(fileName)]) {
-		delete require.cache[require.resolve(fileName)];
-	}
+	const runProcess = fork(`${__dirname}/run`, [ fileName, testName ]);
 
-	//TODO: test what happens across multiple projects in same workspace
-	process.env.TS_NODE_PROJECT = (findNearestFile as any)("tsconfig.json", fileName);
-	await import("ts-node/register");
+	const pass = await new Promise((resolve, reject) => {
+		runProcess.on("message", message => {
+			if (message.type === "testComplete") {
+				resolve(message.pass);
+			}
+		});
 
-	const testSet = TestSet.create();
-	testSet.addTestsFromFiles(fileName);
-
-	//TODO: ensure correct fixture is selected
-	testSet.testFixtures[0].tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
-
-	const runner = new TestRunner();
-	const results: ITestCompleteEvent[] = [];
-	runner.onTestComplete(x => results.push(x));
-	await runner.run(testSet);
-
-	const pass = results.every(x => x.outcome === TestOutcome.Pass);
+		runProcess.on("exit", code => {
+			resolve(code === 0);
+		});
+	});
 
 	const iconPath = Uri.file(pass ? successPath : failurePath);
 
@@ -68,7 +60,7 @@ async function runTest(fileName: string, testName: string, range: Range) {
 	editor.setDecorations(decoration, [
 		{
 			range: new Range(range.start, range.start),
-			hoverMessage: pass ? "Test Passed" : results.map(x => x.error?.message).join("\n")			
+			hoverMessage: pass ? "Test Passed" : "Test Failed" //results.map(x => x.error?.message).join("\n")			
 		}
 	]);
 
