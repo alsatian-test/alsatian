@@ -1,8 +1,8 @@
-// The module "vscode" contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import { commands, debug, ExtensionContext, languages, window, TextEditor, TextEditorDecorationType, Range, Uri, DecorationOptions, Position, TextDocument } from "vscode";
+import { commands, debug, ExtensionContext, languages, window, TextEditorDecorationType, Range, Uri, Position } from "vscode";
 import { AlsatianCodeLensProvider } from "./alsatian-codelens-provider";
 import { fork } from "child_process";
+import { ITestCompleteEvent } from "alsatian/dist/core/events";
+import { TestOutcome } from "alsatian";
 
 let successPath: string;
 let failurePath: string;
@@ -71,35 +71,44 @@ async function runTest(fileName: string, fixtureName: string, testName: string, 
 
 	const runProcess = fork(`${__dirname}/run`, [ fileName, fixtureName, testName ], { execArgv });
 
-	const pass = await new Promise((resolve, reject) => {
+	const results = await new Promise<ITestCompleteEvent[] | null>((resolve, reject) => {
 		runProcess.on("message", message => {
 			if (message.type === "testComplete") {
-				resolve(message.pass);
+				resolve(message.results);
 			}
 		});
 
 		runProcess.on("exit", code => {
-			resolve(code === 0);
+			resolve(null);
 		});
-	});
+	});	
+
+	const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
 
 	const iconPath = Uri.file(pass ? successPath : failurePath);
 
-	const decoration = window.createTextEditorDecorationType({
+	const resultDecoration = window.createTextEditorDecorationType({
 		isWholeLine: true,
 		gutterIconPath: iconPath,
-		gutterIconSize: "contain",		
+		gutterIconSize: "contain"	
 	});
 
-	styles[testName] = decoration;
+	const errors = results?.filter(result => result.error).map(result => result.error) || [];
+
+	styles[testName] = resultDecoration;
 
 	// new EventEmitter().fire({ type: "test", test: testName, state: pass ? "passed" : "failed" });
 	runningDecorator.dispose();
-	editor.setDecorations(decoration, [
+	editor.setDecorations(resultDecoration, [
 		{
 			range: new Range(range.start, range.start),
-			//TODO: make this work
-			hoverMessage: pass ? "Test Passed" : "Test Failed" //results.map(x => x.error?.message).join("\n")			
+			renderOptions: {
+				after: {
+					margin: "2em",
+					contentText: errors[0] ? errors[0].message || (errors[0] as any)._message || "An unknown error ocurred" : "",
+					color: "#f44"
+				}
+			},	
 		}
 	]);
 

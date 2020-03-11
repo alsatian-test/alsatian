@@ -10,22 +10,26 @@
                     * fork process with debug argument setting defined port number
                     * use messaging to communicate between the two
                 )
-- [ ] add failure details to indicator / to respective line?
-- [ ] target tsconfig.json (may not be necessary)
+- [x] add failure details to indicator / to respective line?
+- [x] target tsconfig.json (may not be necessary)
 - [x] add running indicator
 - [x] run all tests in file
-- [ ] account for multiple fixtures per file
+- [x] account for multiple fixtures per file
 - [ ] git revert tests accidentally changed while testing
 - [ ] add unit test
 - [ ] standard linting
 - [ ] tidy up deps
 - [ ] add telemetry / error handling / find out what that random throw is all about
-- [ ] fine tune animations for svgs
 - [ ] tidy up
 - [ ] document
 - [ ] figure out publish
 
 ## Next steps
+
+- [ ] fine tune animations for svgs
+
+- [ ] get thrown error message on screen e.g. if there is a `throw new Error("bam")` in the test that should put that out
+- [ ] get correct line number for error
 
 - [ ] require before run e.g. enzyme (dep on broader alsatian feature)
 
