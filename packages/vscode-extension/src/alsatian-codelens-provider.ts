@@ -1,4 +1,7 @@
 import { commands, CodeLens, CodeLensProvider, Command, DocumentSymbol, SymbolInformation, SymbolKind, TextDocument, debug } from "vscode";
+import { RunTestCommand } from "./commands/run-test-command";
+import { DebugTestCommand } from "./commands/debug-test-command";
+import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
 
 export class AlsatianCodeLensProvider implements CodeLensProvider {
     async provideCodeLenses(document: TextDocument): Promise<CodeLens[]> {
@@ -16,24 +19,9 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
             range: c.range,
             tests: c.children.filter(child => child.kind === SymbolKind.Method)
                              .filter(method => /@(Test|TestCase|AsyncTest)\(/.test(document.getText(method.range)))
-        })).filter(fixture => fixture.tests.length > 0);
-
-        const runFixtureTestsCommand: Command = {
-            command: "alsatian.runFixtureTest",
-            title: "$(play) Run All",
-        };
+        })).filter(fixture => fixture.tests.length >  0);
         
-        const lenses = fixtures.map(fixture => new CodeLens(fixture.range, { ...runFixtureTestsCommand, arguments: [ document.fileName, fixture ]}));
-
-        const runTestCommand: Command = {
-            command: "alsatian.runTest",
-            title: "$(play) Run",
-        };
-
-        const debugTestCommand: Command = {
-            command: "alsatian.debugTest",
-            title: "$(debug) Debug",
-        };
+        const lenses = fixtures.map(fixture => new CodeLens(fixture.range, { ...RunTestFixtureCommand.details, arguments: [ document.fileName, fixture ]}));
 
         const tests = fixtures.reduce<(DocumentSymbol& { fixtureName: string })[]>((allTests, fixture) => allTests.concat(fixture.tests.map(test => ({ ...test, fixtureName: fixture.className }))), []);
 
@@ -41,14 +29,14 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
             .concat(tests.map(test => 
                     new CodeLens(
                         test.range,
-                        { ...runTestCommand, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
+                        { ...RunTestCommand.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
                     )
                 )
             )            
             .concat(tests.map(test => 
                     new CodeLens(
                         test.range,
-                        { ...debugTestCommand, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
+                        { ...DebugTestCommand.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
                     )
                 )
             );

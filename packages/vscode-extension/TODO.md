@@ -17,15 +17,17 @@
 - [x] account for multiple fixtures per file
 - [ ] git revert tests accidentally changed while testing
 - [ ] add unit test
-- [ ] standard linting
+- [x] standard linting
 - [ ] ci
-- [ ] tidy up deps
+- [x] tidy up deps
 - [ ] add telemetry / error handling / find out what that random throw is all about
-- [ ] tidy up
+- [ ] tidy up / refactor
 - [ ] document
 - [ ] figure out publish
 
 ## Next steps
+
+- [ ] push declarations to @types
 
 - [ ] fine tune animations for svgs
 
