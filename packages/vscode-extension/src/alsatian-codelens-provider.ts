@@ -2,6 +2,7 @@ import { commands, CodeLens, CodeLensProvider, Command, DocumentSymbol, SymbolIn
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
+import { AlsatianCommand } from "./commands/alsatian-command";
 
 export class AlsatianCodeLensProvider implements CodeLensProvider {
     async provideCodeLenses(document: TextDocument): Promise<CodeLens[]> {
@@ -26,19 +27,15 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
         const tests = fixtures.reduce<(DocumentSymbol& { fixtureName: string })[]>((allTests, fixture) => allTests.concat(fixture.tests.map(test => ({ ...test, fixtureName: fixture.className }))), []);
 
         return lenses
-            .concat(tests.map(test => 
-                    new CodeLens(
-                        test.range,
-                        { ...RunTestCommand.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
-                    )
-                )
-            )            
-            .concat(tests.map(test => 
-                    new CodeLens(
-                        test.range,
-                        { ...DebugTestCommand.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
-                    )
-                )
-            );
+            .concat(tests.map(test => buildTestCodeLens(test, document, RunTestCommand)))
+            .concat(tests.map(test => buildTestCodeLens(test, document, DebugTestCommand)));
     }
+}
+
+function buildTestCodeLens(test: DocumentSymbol & { fixtureName: string }, document: TextDocument, command: typeof AlsatianCommand) {
+    
+    return new CodeLens(
+        test.range,
+        { ...command.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
+    )
 }
