@@ -16,9 +16,8 @@
 - [x] run all tests in file
 - [x] account for multiple fixtures per file
 - [ ] git revert tests accidentally changed while testing
-- [ ] add unit test
 - [x] standard linting
-- [ ] ci
+- [x] ci
 - [x] tidy up deps
 - [ ] add telemetry / error handling / find out what that random throw is all about
 - [ ] tidy up / refactor
@@ -26,6 +25,8 @@
 - [ ] figure out publish
 
 ## Next steps
+
+- [ ] add unit test
 
  * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
  * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.

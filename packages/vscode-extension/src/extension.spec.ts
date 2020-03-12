@@ -1,4 +1,4 @@
-import { Expect, Test } from "alsatian";
+import { Expect, Test, Timeout } from "alsatian";
 
 export class TestOne {
 	@Test()
@@ -13,11 +13,14 @@ export class TestOne {
 
 export class TestTwo {
 	@Test()
-	passing() {
+	async passing() {
 		Expect(2).toBe(2);
 	}
 	@Test()
 	failing() {
-		Expect(2).toBe(3);
+		Expect(2).toBe(4);
 	}
 }
+
+
+const wait = (x: number) => new Promise(resolve => setTimeout(resolve, x));
