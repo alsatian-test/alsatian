@@ -1,5 +1,5 @@
 import { AlsatianCommand } from "./alsatian-command";
-import { TextEditorDecorationType, window, Uri, ExtensionContext } from "vscode";
+import { TextEditorDecorationType, window, Uri, ExtensionContext, Range } from "vscode";
 import { Icons } from "../icons";
 import { RunTestCommand } from "./run-test-command";
 import { showIcon } from "./show-icon";
@@ -25,7 +25,7 @@ export class RunTestFixtureCommand extends AlsatianCommand {
         // need to make more robust (perhaps pass in document instead)
         const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];    
         
-        const runningDecorator = showIcon(editor, RunTestFixtureCommand.testRunningIconPath, [ range ]);
+        const runningDecorator = showIcon(editor, RunTestFixtureCommand.testRunningIconPath, [ new Range(range.start, range.start) ]);
     
         //TODO: this is likely inefficient and can be refactored to avoid loading the document multiple times
         await Promise.all(
