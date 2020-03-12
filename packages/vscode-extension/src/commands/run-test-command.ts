@@ -5,6 +5,7 @@ import { ITestCompleteEvent } from "alsatian/dist/core/events";
 import { TestOutcome } from "alsatian";
 import { Icons } from "../icons";
 import { join } from "path";
+import { showIcon } from "./show-icon";
 
 const styles: { [key: string]: TextEditorDecorationType } = {
 
@@ -33,14 +34,7 @@ export class RunTestCommand extends AlsatianCommand {
         // need to make more robust (perhaps pass in document instead)
         const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
 
-        const runningDecorator = window.createTextEditorDecorationType({
-            gutterIconPath: RunTestCommand.testRunningIconPath,
-            gutterIconSize: "contain"
-        });
-
-        //TODO: may need to push this to the background in order for the change to apply I guess the thread is locked
-        //      preventing update / may want to use vscode's EventEmitter
-        editor.setDecorations(runningDecorator, [{range: new Range(range.start, range.start)}]);
+        const runningDecorator = showIcon(editor, RunTestCommand.testRunningIconPath, [ range ]);
 
         const runProcess = fork(join(__dirname, `../run`), [ fileName, fixtureName, testName ], { execArgv });
 
@@ -57,32 +51,28 @@ export class RunTestCommand extends AlsatianCommand {
         });	
 
         const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
-
-        const iconPath = pass ? RunTestCommand.testSuccessIconPath : RunTestCommand.testFailureIconPath;
-
-        const resultDecoration = window.createTextEditorDecorationType({
-            isWholeLine: true,
-            gutterIconPath: iconPath,
-            gutterIconSize: "contain"	
-        });
-
         const errors = results?.filter(result => result.error).map(result => result.error) || [];
+
+        const resultDecoration = showIcon(
+            editor,
+            pass ? RunTestCommand.testSuccessIconPath : RunTestCommand.testFailureIconPath,
+            [
+                {
+                    range,
+                    renderOptions: {
+                        after: {
+                            margin: "2em",
+                            contentText: errors[0] ? errors[0].message || (errors[0] as any)._message || "An unknown error ocurred" : "",
+                            color: "#f44"
+                        }
+                    },	
+                }
+            ]
+        );
 
         styles[testName] = resultDecoration;
 
         runningDecorator.dispose();
-        editor.setDecorations(resultDecoration, [
-            {
-                range: new Range(range.start, range.start),
-                renderOptions: {
-                    after: {
-                        margin: "2em",
-                        contentText: errors[0] ? errors[0].message || (errors[0] as any)._message || "An unknown error ocurred" : "",
-                        color: "#f44"
-                    }
-                },	
-            }
-        ]);
 
         console.log(`run ${testName} resulted in ${pass ? "success" : "failure"}`);
     }

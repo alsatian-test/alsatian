@@ -27,9 +27,15 @@
 
 ## Next steps
 
+ * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
+ * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.
+ * Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
+
 - [ ] push declarations to @types
 
 - [ ] fine tune animations for svgs
+
+- [ ] hover error shows details e.g. diff
 
 - [ ] get thrown error message on screen e.g. if there is a `throw new Error("bam")` in the test that should put that out
 - [ ] get correct line number for error

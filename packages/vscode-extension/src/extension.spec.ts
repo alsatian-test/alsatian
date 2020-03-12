@@ -3,7 +3,7 @@ import { Expect, Test } from "alsatian";
 export class TestOne {
 	@Test()
 	failingdalskndlsndlkanalkdsnlksanldskn() {
-		Expect(2).toBe(3);
+		Expect({ an: "object" }).toBe({ an: "object" });
 	}
 	@Test()
 	passing() {

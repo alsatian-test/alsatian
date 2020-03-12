@@ -1,4 +1,4 @@
-import { commands, CodeLens, CodeLensProvider, Command, DocumentSymbol, SymbolInformation, SymbolKind, TextDocument, debug } from "vscode";
+import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument } from "vscode";
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
@@ -24,7 +24,7 @@ export class AlsatianCodeLensProvider implements CodeLensProvider {
         
         const lenses = fixtures.map(fixture => new CodeLens(fixture.range, { ...RunTestFixtureCommand.details, arguments: [ document.fileName, fixture ]}));
 
-        const tests = fixtures.reduce<(DocumentSymbol& { fixtureName: string })[]>((allTests, fixture) => allTests.concat(fixture.tests.map(test => ({ ...test, fixtureName: fixture.className }))), []);
+        const tests = fixtures.reduce<(DocumentSymbol & { fixtureName: string })[]>((allTests, fixture) => allTests.concat(fixture.tests.map(test => ({ ...test, fixtureName: fixture.className }))), []);
 
         return lenses
             .concat(tests.map(test => buildTestCodeLens(test, document, RunTestCommand)))
@@ -37,5 +37,5 @@ function buildTestCodeLens(test: DocumentSymbol & { fixtureName: string }, docum
     return new CodeLens(
         test.range,
         { ...command.details, arguments: [ document.fileName, test.fixtureName, test.name, test.selectionRange ]}
-    )
+    );
 }
