@@ -40,6 +40,7 @@ export class RunTestCommand extends AlsatianCommand {
 
         const results = await new Promise<ITestCompleteEvent[] | null>((resolve, reject) => {
             runProcess.on("message", message => {
+                console.log("message", JSON.stringify(message));
                 if (message.type === "testComplete") {
                     resolve(message.results);
                 }

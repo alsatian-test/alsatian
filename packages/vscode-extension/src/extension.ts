@@ -17,8 +17,17 @@ export function activate(context: ExtensionContext) {
 		},
 		new AlsatianCodeLensProvider()
 	);
+
+	const codeLensProviderDisposableReact = languages.registerCodeLensProvider(
+		{
+			language: "typescriptreact",
+			scheme: "file",
+		},
+		new AlsatianCodeLensProvider()
+	);
 	  
 	context.subscriptions.push(codeLensProviderDisposable);
+	context.subscriptions.push(codeLensProviderDisposableReact);
 }
 
 export function deactivate() {}

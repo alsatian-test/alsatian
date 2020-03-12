@@ -1,4 +1,4 @@
-import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument } from "vscode";
+import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument, languages } from "vscode";
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";

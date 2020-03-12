@@ -7,8 +7,11 @@
 		"lib": [
 			"es6"
 		],
+		"resolveJsonModule": true,
 		"sourceMap": true,
 		"rootDir": "src",
+		"allowSyntheticDefaultImports": true,
+		"jsx": "react",
 		"strict": true   /* enable all strict type-checking options */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */

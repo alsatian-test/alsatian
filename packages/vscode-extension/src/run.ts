@@ -1,6 +1,7 @@
 import { TestSet, TestRunner } from "alsatian";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
 import * as findNearestFile from "find-nearest-file";
+import { join } from "path";
 
 function sendMessage(message: any) {
     if (process.send) {
@@ -29,10 +30,23 @@ function sendMessage(message: any) {
         process.env.TS_NODE_TRANSPILE_ONLY = "true";
         await import("ts-node/register");
 
+        const alsatianConfigPath: string = (findNearestFile as any)(".alsatianrc.json", fileName);
+
+        if (alsatianConfigPath) {
+            const alsatianConfig = await import(alsatianConfigPath);
+            
+            const root = alsatianConfigPath.split(/[\\/]/);
+            root.pop();
+            const rootPath = root.join("/");
+    
+            const preTestScripts = (alsatianConfig.preTestScripts as string[]).map(script => join(rootPath, script));
+    
+            await Promise.all(preTestScripts.map(script => import(script)));
+        }
+
         const testSet = TestSet.create();
-        sendMessage("preload");
+
         testSet.addTestsFromFiles(fileName);
-        sendMessage("postload");
 
         const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
         fixture.focussed = true;
@@ -52,7 +66,7 @@ function sendMessage(message: any) {
         sendMessage({
             type: "testComplete",
             results: [
-                { error }
+                { error, stack: error.stack }
             ]
         });
     }

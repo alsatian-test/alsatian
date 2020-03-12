@@ -10,7 +10,6 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
 		"onLanguage:typescript"
 	],
 	"main": "./out/extension.js",
@@ -26,11 +25,19 @@
 		"test:unit": "alsatian \"./src/**/*.spec.ts\""
 	},
 	"devDependencies": {
+		"@types/enzyme": "^3.10.5",
+		"@types/enzyme-adapter-react-16": "^1.0.6",
 		"@types/node": "^12.11.7",
+		"@types/react": "^16.9.23",
 		"@types/vscode": "^1.42.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.18.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
+		"alsatian-enzyme": "^1.0.1",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"eslint": "^6.8.0",
+		"react": "^16.13.0",
+		"react-dom": "^16.13.0",
 		"typescript": "^3.7.5",
 		"vscode-test": "^1.3.0"
 	},
