@@ -1,17 +1,34 @@
 {
 	"name": "alsatian-vscode",
 	"displayName": "alsatian",
+	"publisher": "JamesAdarich",
 	"description": "VSCode extension for the Alsatian test framework",
-	"version": "0.0.1",
+	"version": "0.2.0",
+	"preview": true,
 	"engines": {
 		"vscode": "^1.42.0"
 	},
+	"icon": "docs/alsatian-logo.png",
 	"categories": [
+		"Debuggers",
 		"Other"
 	],
+	"keywords": [
+		"alsatian",
+		"test",
+		"tdd",
+		"javascript",
+		"typescript"
+	],
 	"activationEvents": [
+		"onLanguage:javascript",
 		"onLanguage:typescript"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/alsatian-test/alsatian/tree/master/vscode-extension"
+	},
+	"author": "James Adarich <=> (https://james.adarich.com)",
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": []
@@ -38,12 +55,13 @@
 		"eslint": "^6.8.0",
 		"react": "^16.13.0",
 		"react-dom": "^16.13.0",
-		"typescript": "^3.7.5",
+		"vsce": "^1.74.0",
 		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
 		"alsatian": "^3.2.1",
 		"find-nearest-file": "^1.1.0",
-		"ts-node": "^8.6.2"
+		"ts-node": "^8.6.2",
+		"typescript": "^3.7.5"
 	}
 }

@@ -2,11 +2,11 @@
   "name": "alsatian",
   "version": "3.2.1",
   "description": "TypeScript and JavaScript testing framework for beautiful and readable tests",
-  "author": "James Richford <=> (=)",
+	"author": "James Adarich <=> (https://james.adarich.com)",
   "contributors": [
     {
       "name": "James Richford",
-      "url": "https://github.com/jamesrichford"
+      "url": "https://james.adarich.com"
     },
     {
       "name": "James Monger",

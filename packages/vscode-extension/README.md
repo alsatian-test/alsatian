@@ -1,8 +1,6 @@
 # alsatian
 
-Want to run your [alsatian](https://github.com/alsatian-test/alsatian/packages/alsatian) tests directly in VSCode? Well this is the extension for you! Don't take my word for it though, watch this GIF!
-
-![running all tests in the editor](src/docs/running-all-tests.gif)
+Want to run your [alsatian](https://github.com/alsatian-test/alsatian/packages/alsatian) tests directly in VSCode? Well this is the extension for you! Don't take my word for it though, check out them GIFs below!
 
 ## Features
 
@@ -10,13 +8,13 @@ Want to run your [alsatian](https://github.com/alsatian-test/alsatian/packages/a
 
 Want to run an individual test? Just click the "Run" button above the method.
 
-![running a test in the editor](src/docs/running-a-test.gif)
+![running a test in the editor](docs/running-a-test.gif)
 
 #### Debugging a Test
 
 Not sure what the problem is with a test? Click the "Debug" button and find out.
 
-![debugging a test in the editor](src/docs/debugging-a-test.gif)
+![debugging a test in the editor](docs/debugging-a-test.gif)
 
 ### Test Setup
 

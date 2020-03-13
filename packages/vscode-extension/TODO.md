@@ -23,6 +23,8 @@
 - [ ] tidy up / refactor
 - [ ] document
 - [ ] figure out publish
+- [ ] icon
+- [ ] category
 
 ## Next steps
 
