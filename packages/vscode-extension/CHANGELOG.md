@@ -1,9 +1,6 @@
 # Change Log
 
-All notable changes to the "alsatian" extension will be documented in this file.
+## [1.0.0]
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- `Added` running tests in the editor
+- `Added` debugging tests in the editor

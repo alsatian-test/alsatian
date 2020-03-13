@@ -1,31 +1,32 @@
-# alsatian README
+# alsatian
 
-This is the README for your extension "alsatian". After writing up a brief description, we recommend including the following sections.
+Want to run your [alsatian](https://github.com/alsatian-test/alsatian/packages/alsatian) tests directly in VSCode? Well this is the extension for you! Don't take my word for it though, watch this GIF!
+
+![running all tests in the editor](src/docs/running-all-tests.gif)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Runing a Test in the Editor
 
-For example if there is an image subfolder under your extension project workspace:
+Want to run an individual test? Just click the "Run" button above the method.
 
-\!\[feature X\]\(images/feature-x.png\)
+![running a test in the editor](src/docs/running-a-test.gif)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+#### Debugging a Test
 
-## Release Notes
+Not sure what the problem is with a test? Click the "Debug" button and find out.
 
-Users appreciate release notes as you update your extension.
+![debugging a test in the editor](src/docs/debugging-a-test.gif)
 
-### 1.0.0
+### Test Setup
 
-Initial release of ...
+If you have something to setup before running tests then all you need to do is drop an `.alsatianrc.json` in your project root referencing the required files (as below)
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
+.alsatianrc.json
+```json
+{
+    "preTestScripts": [
+        "./path/to/test-setup.ts"
+    ]
+}
+```

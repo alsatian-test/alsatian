@@ -11,12 +11,12 @@ function sendMessage(message: any) {
 
 (async () => {
     try {
-        const timeout = () => {
+        const testRunTimeout = () => {
             console.log("test run exceeded timeout");
             process.exit(1);
         };
 
-        setTimeout(timeout, 20000);
+        const timeout = setTimeout(testRunTimeout, 20000);
 
         const fileName = process.argv[2];
         const fixtureName = process.argv[3];
@@ -61,6 +61,8 @@ function sendMessage(message: any) {
             type: "testComplete",
             results
         });
+
+        clearTimeout(timeout);
     }
     catch (error) {
         sendMessage({
