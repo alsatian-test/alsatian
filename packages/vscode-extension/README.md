@@ -23,6 +23,7 @@ If you have something to setup before running tests then all you need to do is d
 .alsatianrc.json
 ```json
 {
+    "tsconfig": "./custom-tsconfig.json", // will default to find nearest file called "tsconfig.json" to the file
     "preTestScripts": [
         "./path/to/test-setup.ts"
     ]

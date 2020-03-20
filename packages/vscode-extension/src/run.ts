@@ -26,10 +26,6 @@ function sendMessage(message: any) {
             delete require.cache[require.resolve(fileName)];
         }
 
-        process.env.TS_NODE_PROJECT = (findNearestFile as any)("tsconfig.json", fileName);
-        process.env.TS_NODE_TRANSPILE_ONLY = "true";
-        await import("ts-node/register");
-
         const alsatianConfigPath: string = (findNearestFile as any)(".alsatianrc.json", fileName);
 
         if (alsatianConfigPath) {
@@ -38,10 +34,19 @@ function sendMessage(message: any) {
             const root = alsatianConfigPath.split(/[\\/]/);
             root.pop();
             const rootPath = root.join("/");
+
+            await registerTsNode(
+                alsatianConfig.tsconfig ?
+                join(rootPath, alsatianConfig.tsconfig) :
+                (findNearestFile as any)("tsconfig.json", fileName)
+            );
     
             const preTestScripts = (alsatianConfig.preTestScripts as string[]).map(script => join(rootPath, script));
     
             await Promise.all(preTestScripts.map(script => import(script)));
+        }
+        else {
+            await registerTsNode((findNearestFile as any)("tsconfig.json", fileName));
         }
 
         const testSet = TestSet.create();
@@ -52,21 +57,28 @@ function sendMessage(message: any) {
         fixture.focussed = true;
         fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
 
+        sendMessage("pre run");
+
         const runner = new TestRunner();
         const results: ITestCompleteEvent[] = [];
         runner.onTestComplete(x => results.push(x));
         await runner.run(testSet);
 
+        sendMessage(`results: ${results.length} outcome ${results[0].error?.message}`);
+
         sendMessage({
             type: "testComplete",
-            results
+            results: results.map(x => ({ outcome: x.outcome, error: x.error }))
         });
+
+        sendMessage("post send");
 
         clearTimeout(timeout);
     }
     catch (error) {
         sendMessage({
             type: "testComplete",
+            info: "test fawked",
             results: [
                 { error, stack: error.stack }
             ]
@@ -74,3 +86,9 @@ function sendMessage(message: any) {
     }
 
 })();
+
+async function registerTsNode(tsconfigPath: string) {
+    process.env.TS_NODE_PROJECT = tsconfigPath;
+    process.env.TS_NODE_TRANSPILE_ONLY = "true";
+    await import("ts-node/register");
+}

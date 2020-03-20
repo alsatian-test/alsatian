@@ -49,7 +49,7 @@ export class RunTestCommand extends AlsatianCommand {
             runProcess.on("exit", code => {
                 resolve(null);
             });
-        });	
+        });
 
         const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
         const errors = results?.filter(result => result.error).map(result => result.error) || [];
