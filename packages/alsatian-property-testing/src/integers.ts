@@ -1,3 +1,5 @@
+import { GeneratorBuilder } from "./generator-builder";
+
 export class Integers {
     static between(lowerLimit: number, upperLimit: number) {
         if (upperLimit <= lowerLimit) {
@@ -22,27 +24,5 @@ export class Integers {
         }
 
         return new GeneratorBuilder(() => Math.round(Math.random() * upperLimit + lowerLimit));
-    }
-}
-
-class GeneratorBuilder<T> {
-
-    public constructor(private generator: () => T) {}
-
-    public generate(count: number) {
-        if (count < 1) {
-            throw new TypeError("must generate at least one");
-        }
-
-        let returnedCount = 0;
-
-        const generator = this.generator;
-
-        return function* () {
-            while (returnedCount < count) {
-                yield generator();
-                returnedCount++;
-            }
-        }
     }
 }
