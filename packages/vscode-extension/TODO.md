@@ -25,6 +25,8 @@
 - [ ] figure out publish
 - [ ] icon
 - [ ] category
+- [ ] figure out can't find file issue (.alsatianrc.json)
+- [ ] run other tests in repo
 
 ## Next steps
 

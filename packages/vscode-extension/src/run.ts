@@ -1,8 +1,9 @@
 import { TestSet, TestRunner } from "alsatian";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
-import * as findNearestFile from "find-nearest-file";
 import { join } from "path";
+import { findNearestFile } from "./find-nearest-file";
 
+//TODO: migrate this to output window or something (with log levels)
 function sendMessage(message: any) {
     if (process.send) {
         process.send(message);
@@ -26,7 +27,11 @@ function sendMessage(message: any) {
             delete require.cache[require.resolve(fileName)];
         }
 
-        const alsatianConfigPath: string = (findNearestFile as any)(".alsatianrc.json", fileName);
+        sendMessage("trying to find alsatian config")
+
+        const alsatianConfigPath = await findNearestFile(".alsatianrc.json", fileName);
+
+        sendMessage(`alsatian config resolved as ${alsatianConfigPath}`);
 
         if (alsatianConfigPath) {
             const alsatianConfig = await import(alsatianConfigPath);
@@ -38,26 +43,29 @@ function sendMessage(message: any) {
             await registerTsNode(
                 alsatianConfig.tsconfig ?
                 join(rootPath, alsatianConfig.tsconfig) :
-                (findNearestFile as any)("tsconfig.json", fileName)
+                await findNearestFile("tsconfig.json", fileName)
             );
     
-            const preTestScripts = (alsatianConfig.preTestScripts as string[]).map(script => join(rootPath, script));
+            const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => join(rootPath, script));
     
             await Promise.all(preTestScripts.map(script => import(script)));
         }
         else {
-            await registerTsNode((findNearestFile as any)("tsconfig.json", fileName));
+            await registerTsNode(await findNearestFile("tsconfig.json", fileName));
         }
 
         const testSet = TestSet.create();
+        sendMessage(`adding tests for: ${fileName}`);
 
         testSet.addTestsFromFiles(fileName);
+
+        sendMessage(`tests added`);
 
         const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
         fixture.focussed = true;
         fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
 
-        sendMessage("pre run");
+        sendMessage(`tests: ${fixture.tests.length}`);
 
         const runner = new TestRunner();
         const results: ITestCompleteEvent[] = [];
@@ -80,15 +88,20 @@ function sendMessage(message: any) {
             type: "testComplete",
             info: "test fawked",
             results: [
-                { error, stack: error.stack }
+                { error: { message: JSON.stringify(error) }, stack: error.stack }
             ]
         });
     }
 
 })();
 
-async function registerTsNode(tsconfigPath: string) {
-    process.env.TS_NODE_PROJECT = tsconfigPath;
+async function registerTsNode(tsconfigPath: string | null) {
+    //TODO: add error if no tsconfig resolved - this is not likely to be correct setup
+    process.env.TS_NODE_PROJECT = tsconfigPath || "";
+    sendMessage(`tsconfig.json is ${process.env.TS_NODE_PROJECT}`);
+
+    await import("tsconfig-paths/register");
+
     process.env.TS_NODE_TRANSPILE_ONLY = "true";
     await import("ts-node/register");
 }

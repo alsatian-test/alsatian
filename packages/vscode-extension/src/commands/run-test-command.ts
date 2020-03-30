@@ -63,7 +63,7 @@ export class RunTestCommand extends AlsatianCommand {
                     renderOptions: {
                         after: {
                             margin: "2em",
-                            contentText: errors[0] ? errors[0].message || (errors[0] as any)._message || "An unknown error ocurred" : "",
+                            contentText: errors[0] || results === null ? errors[0]?.message || (errors[0] as any)?._message || "An unknown error ocurred" : "",
                             color: "#f44"
                         }
                     },	

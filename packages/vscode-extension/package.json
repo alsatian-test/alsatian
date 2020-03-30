@@ -3,7 +3,7 @@
 	"displayName": "alsatian",
 	"publisher": "JamesAdarich",
 	"description": "VSCode extension for the Alsatian test framework",
-	"version": "0.3.1",
+	"version": "0.5.0",
 	"preview": true,
 	"engines": {
 		"vscode": "^1.42.0"
@@ -64,6 +64,7 @@
 		"alsatian": "^3.2.1",
 		"find-nearest-file": "^1.1.0",
 		"ts-node": "^8.6.2",
+		"tsconfig-paths": "^3.9.0",
 		"typescript": "^3.7.5"
 	}
 }
