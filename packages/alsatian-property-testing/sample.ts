@@ -30,6 +30,9 @@ export class PropertyTests {
     @TestCases(Strings.ofLength(12).withCharSet(utf8).build(42))*/
 }
 
+class Strings {
+    
+}
 
 class ObjectPropertyBuilder<T = any> {
 
@@ -58,3 +61,5 @@ class Arrays {
         }
     }
 }
+
+
