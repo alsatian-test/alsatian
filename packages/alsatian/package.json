@@ -26,7 +26,7 @@
     "clean": "rimraf dist",
     "publish-nightly": "npm run build && node ./dist/scripts/build-nightly",
     "prepublishOnly": "npm run clean && npm test && npm run build",
-    "prepack": "npm run build",
+    "prepare": "npm run build",
     "postpublish": "node ./dist/scripts/tag-release",
     "lint": "npm run lint:code && npm run lint:tests",
     "lint:code": "tslint \"./**/*.ts\" --exclude \"./**/*.d.ts\" --exclude \"./tap-bark/**/*.ts\" --exclude \"./test/**/*.ts\" --exclude \"./node_modules/**/*.ts\"",
