@@ -1,12 +1,8 @@
 import { AlsatianCommand } from "./alsatian-command";
-import { TextEditorDecorationType, window, Uri, ExtensionContext, Range } from "vscode";
+import { window, Uri, ExtensionContext, Range } from "vscode";
 import { Icons } from "../icons";
 import { RunTestCommand } from "./run-test-command";
 import { showIcon } from "./show-icon";
-
-const styles: { [key: string]: TextEditorDecorationType } = {
-
-};
 
 export class RunTestFixtureCommand extends AlsatianCommand {
     protected static commandName = "runFixtureTest";

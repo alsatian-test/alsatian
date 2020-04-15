@@ -1,6 +1,5 @@
 import { Expect, Test, TestFixture, createFunctionSpy, SpyOn, TestCase } from "alsatian";
-import { Icons } from ".";
-import { ExtensionContext, Uri } from "vscode";
+import mock from "mock-require";
 
 @TestFixture("icon tests")
 export class IconTests {
@@ -9,16 +8,21 @@ export class IconTests {
     @TestCase("/another/location.png")
     @TestCase("c:\\some\\windows\\path.exe")
     @Test("running icon resolved from absolute path")
-    public runningIcon(absolutePath: string) {
+    public async runningIcon(absolutePath: string) {
+        const asAbsolutePath = createFunctionSpy();
+        asAbsolutePath.andReturn(absolutePath);
         const context = {
-            asAbsolutePath: createFunctionSpy().andReturn(absolutePath)
-        } as unknown as ExtensionContext;
+            asAbsolutePath
+        } as any;
 
-        SpyOn(Uri, "file");
+        const UriMock = { file: createFunctionSpy() };
+        mock("vscode", { Uri: UriMock });
+        delete require.cache[require.resolve(".")];
+        const { Icons } = await import(".");
 
         Icons.getTestRunningIconPath(context);
 
         Expect(context.asAbsolutePath).toHaveBeenCalledWith("src/icons/running.svg");
-        Expect(Uri.file).toHaveBeenCalledWith(absolutePath)
+        Expect(UriMock.file).toHaveBeenCalledWith(absolutePath);
     }
 }

@@ -3,7 +3,6 @@ import { ITestCompleteEvent } from "alsatian/dist/core/events";
 import { join } from "path";
 import { findNearestFile } from "./find-nearest-file";
 
-//TODO: migrate this to output window or something (with log levels)
 function sendMessage(message: any) {
     if (process.send) {
         process.send(message);
@@ -12,26 +11,16 @@ function sendMessage(message: any) {
 
 (async () => {
     try {
-        const testRunTimeout = () => {
-            console.log("test run exceeded timeout");
-            process.exit(1);
-        };
-
-        const timeout = setTimeout(testRunTimeout, 20000);
-
         const fileName = process.argv[2];
         const fixtureName = process.argv[3];
         const testName = process.argv[4];
+        sendMessage(`start running for ${fileName} ${fixtureName} ${testName}`);
 
         if (require.cache[require.resolve(fileName)]) {
             delete require.cache[require.resolve(fileName)];
         }
 
-        sendMessage("trying to find alsatian config")
-
         const alsatianConfigPath = await findNearestFile(".alsatianrc.json", fileName);
-
-        sendMessage(`alsatian config resolved as ${alsatianConfigPath}`);
 
         if (alsatianConfigPath) {
             const alsatianConfig = await import(alsatianConfigPath);
@@ -55,40 +44,31 @@ function sendMessage(message: any) {
         }
 
         const testSet = TestSet.create();
-        sendMessage(`adding tests for: ${fileName}`);
 
         testSet.addTestsFromFiles(fileName);
-
-        sendMessage(`tests added`);
 
         const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
         fixture.focussed = true;
         fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
-
-        sendMessage(`tests: ${fixture.tests.length}`);
 
         const runner = new TestRunner();
         const results: ITestCompleteEvent[] = [];
         runner.onTestComplete(x => results.push(x));
         await runner.run(testSet);
 
-        sendMessage(`results: ${results.length} outcome ${results[0].error?.message}`);
+        sendMessage(`tests complete for ${fileName} ${fixtureName} ${testName}`);
 
         sendMessage({
             type: "testComplete",
-            results: results.map(x => ({ outcome: x.outcome, error: x.error }))
+            results: results.map(x => ({ outcome: x.outcome, error: x.error ? { message: x.error?.message }: null }))
         });
-
-        sendMessage("post send");
-
-        clearTimeout(timeout);
     }
-    catch (error) {
+    catch (error) {        
+        sendMessage(`error running test ${error}`);
         sendMessage({
             type: "testComplete",
-            info: "test fawked",
             results: [
-                { error: { message: JSON.stringify(error) }, stack: error.stack }
+                { error: { message: error.message }, stack: error.stack }
             ]
         });
     }
@@ -98,7 +78,6 @@ function sendMessage(message: any) {
 async function registerTsNode(tsconfigPath: string | null) {
     //TODO: add error if no tsconfig resolved - this is not likely to be correct setup
     process.env.TS_NODE_PROJECT = tsconfigPath || "";
-    sendMessage(`tsconfig.json is ${process.env.TS_NODE_PROJECT}`);
 
     await import("tsconfig-paths/register");
 

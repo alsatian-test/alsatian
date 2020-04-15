@@ -1,14 +1,6 @@
 import { AlsatianCommand } from "./alsatian-command";
-import { TextEditorDecorationType, window, Uri, Range, ExtensionContext, debug } from "vscode";
-import { fork } from "child_process";
-import { ITestCompleteEvent } from "alsatian/dist/core/events";
-import { TestOutcome } from "alsatian";
-import { Icons } from "../icons";
+import { Range, debug } from "vscode";
 import { RunTestCommand } from "./run-test-command";
-
-const styles: { [key: string]: TextEditorDecorationType } = {
-
-};
 
 export class DebugTestCommand extends AlsatianCommand {
     protected static commandName = "debugTest";

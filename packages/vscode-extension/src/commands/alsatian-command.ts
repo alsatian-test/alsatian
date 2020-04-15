@@ -6,6 +6,9 @@ export abstract class AlsatianCommand {
 
     public static readonly title: string;
 
+    // ensure that commands can't be constructed by anything apart from themselves
+    protected constructor() { }
+
     public static get details() {
         if (this.commandName === undefined) {
             throw new TypeError("name must be defined");

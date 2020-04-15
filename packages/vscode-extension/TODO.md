@@ -1,36 +1,13 @@
 ## Initial offering
 
-- [x] run individual test
-- [x] current state color indicator
-- [x] clear require cache
-- [x] move indicator in line with function name
-- [x] don't show run / debug on non tests e.g. setup / teardown
-- [x] debugging (try
-                    * setup attach with port number
-                    * fork process with debug argument setting defined port number
-                    * use messaging to communicate between the two
-                )
-- [x] add failure details to indicator / to respective line?
-- [x] target tsconfig.json (may not be necessary)
-- [x] add running indicator
-- [x] run all tests in file
-- [x] account for multiple fixtures per file
-- [ ] git revert tests accidentally changed while testing
-- [x] standard linting
-- [x] ci
-- [x] tidy up deps
 - [ ] add telemetry / error handling / find out what that random throw is all about
 - [ ] tidy up / refactor
 - [ ] document
-- [ ] figure out publish
-- [ ] icon
-- [ ] category
-- [ ] figure out can't find file issue (.alsatianrc.json)
-- [ ] run other tests in repo
 
 ## Next steps
 
 - [ ] add unit test
+- [ ] capture errors loading tests (currently exit 1 by default)
 
  * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
  * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.

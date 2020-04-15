@@ -11,6 +11,7 @@
 		"sourceMap": true,
 		"rootDir": "src",
 		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"jsx": "react",
 		"strict": true   /* enable all strict type-checking options */
 		/* Additional Checks */
@@ -20,6 +21,7 @@
 	},
 	"exclude": [
 		"node_modules",
-		".vscode-test"
+		".vscode-test",
+		"samples"
 	]
 }

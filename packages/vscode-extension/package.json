@@ -45,6 +45,7 @@
 	"devDependencies": {
 		"@types/enzyme": "^3.10.5",
 		"@types/enzyme-adapter-react-16": "^1.0.6",
+		"@types/mock-require": "^2.0.0",
 		"@types/node": "^12.11.7",
 		"@types/react": "^16.9.23",
 		"@types/vscode": "^1.42.0",
@@ -54,6 +55,7 @@
 		"enzyme": "^3.11.0",
 		"enzyme-adapter-react-16": "^1.15.2",
 		"eslint": "^6.8.0",
+		"mock-require": "^3.0.3",
 		"react": "^16.13.0",
 		"react-dom": "^16.13.0",
 		"rimraf": "^3.0.2",
@@ -63,6 +65,7 @@
 	"dependencies": {
 		"alsatian": "^3.2.1",
 		"find-nearest-file": "^1.1.0",
+		"less-loader": "^4.1.0",
 		"ts-node": "^8.6.2",
 		"tsconfig-paths": "^3.9.0",
 		"typescript": "^3.7.5"

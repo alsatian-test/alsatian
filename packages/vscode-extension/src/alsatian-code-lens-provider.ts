@@ -1,10 +1,32 @@
-import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument } from "vscode";
+import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument, languages, ExtensionContext } from "vscode";
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
 import { AlsatianCommand } from "./commands/alsatian-command";
 
 export class AlsatianCodeLensProvider implements CodeLensProvider {
+    // ensure can't be constructed apart from by itself
+    private constructor () { };
+
+    public static setup(context: ExtensionContext) {
+        const codeLensProvider = new AlsatianCodeLensProvider();
+        
+        this.setupProvider(codeLensProvider, "typescript", context);
+        this.setupProvider(codeLensProvider, "typescriptreact", context);
+    }
+
+    private static setupProvider(codeLensProvider: AlsatianCodeLensProvider, language: string, context: ExtensionContext) {
+        const codeLensProviderDisposable = languages.registerCodeLensProvider(
+            {
+                language,
+                scheme: "file",
+            },
+            codeLensProvider
+        );
+        
+	    context.subscriptions.push(codeLensProviderDisposable);
+    }
+
     async provideCodeLenses(document: TextDocument): Promise<CodeLens[]> {
 
         const symbols: Array<DocumentSymbol> | undefined = await commands.executeCommand("vscode.executeDocumentSymbolProvider", document.uri);

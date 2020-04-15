@@ -1,4 +1,4 @@
-import { Expect, Test, TestFixture } from "alsatian";
+import { Expect, Test, TestFixture, TestCase } from "alsatian";
 
 @TestFixture("a sample test fixture")
 export class SampleTestFixture {
@@ -11,5 +11,11 @@ export class SampleTestFixture {
 	@Test("a failing test")
 	public failing() {
 		Expect(2).toBe(3);
+	}
+
+	@TestCase((null as any).something)
+	@Test("an erroring test")
+	public erroring() {
+		throw new Error("Wow, this is always going to break!");
 	}
 }

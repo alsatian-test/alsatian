@@ -11,6 +11,8 @@ const styles: { [key: string]: TextEditorDecorationType } = {
 
 };
 
+const output = window.createOutputChannel("Alsatian");
+
 export class RunTestCommand extends AlsatianCommand {
     protected static commandName = "runTest";
     public static title = "$(play) Run";
@@ -40,9 +42,11 @@ export class RunTestCommand extends AlsatianCommand {
 
         const results = await new Promise<ITestCompleteEvent[] | null>((resolve, reject) => {
             runProcess.on("message", message => {
-                console.log("message", JSON.stringify(message));
                 if (message.type === "testComplete") {
                     resolve(message.results);
+                }
+                else {
+                    output.appendLine(message);
                 }
             });
 
@@ -63,7 +67,7 @@ export class RunTestCommand extends AlsatianCommand {
                     renderOptions: {
                         after: {
                             margin: "2em",
-                            contentText: errors[0] || results === null ? errors[0]?.message || (errors[0] as any)?._message || "An unknown error ocurred" : "",
+                            contentText: errors[0] || results === null ? errors[0]?.message || "An unknown error ocurred" : "",
                             color: "#f44"
                         }
                     },	
