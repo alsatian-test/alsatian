@@ -15,9 +15,6 @@
   ],
   "main": "./dist/core/alsatian-core.js",
   "typings": "./dist/core/alsatian-core.d.ts",
-  "bin": {
-    "alsatian": "./dist/cli/alsatian-cli.js"
-  },
   "engines": {
     "node": ">=4.0.0"
   },
