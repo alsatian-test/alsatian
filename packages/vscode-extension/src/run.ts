@@ -2,6 +2,7 @@ import { TestSet, TestRunner } from "alsatian";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
 import { join } from "path";
 import { findNearestFile } from "./find-nearest-file";
+import { registerTsNode } from "./register-ts-node";
 
 function sendMessage(message: any) {
     if (process.send) {
@@ -74,13 +75,3 @@ function sendMessage(message: any) {
     }
 
 })();
-
-async function registerTsNode(tsconfigPath: string | null) {
-    //TODO: add error if no tsconfig resolved - this is not likely to be correct setup
-    process.env.TS_NODE_PROJECT = tsconfigPath || "";
-
-    await import("tsconfig-paths/register");
-
-    process.env.TS_NODE_TRANSPILE_ONLY = "true";
-    await import("ts-node/register");
-}

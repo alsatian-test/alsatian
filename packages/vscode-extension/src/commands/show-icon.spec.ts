@@ -14,7 +14,7 @@ export class ShowIconTests {
         showIcon({ setDecorations: createFunctionSpy() } as any, null as any, null as any);
 
         Expect(fakeVscodeWindow.createTextEditorDecorationType)
-            .toHaveBeenCalledWith(
+            .not.toHaveBeenCalledWith(
                 Any<DecorationRenderOptions>().thatMatches(x => x.isWholeLine === true));        
     }
     

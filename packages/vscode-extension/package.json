@@ -20,10 +20,6 @@
 		"javascript",
 		"typescript"
 	],
-	"activationEvents": [
-		"onLanguage:javascript",
-		"onLanguage:typescript"
-	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/alsatian-test/alsatian/tree/master/vscode-extension"
@@ -31,8 +27,43 @@
 	"author": "James Adarich <=> (https://james.adarich.com)",
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": []
+		"commands": [
+			{
+				"command": "alsatian.treeviewRunTest",
+				"title": "Run Test",
+				"icon": {
+					"light": "src/icons/success.svg",
+					"dark": "src/icons/success.svg"
+				}
+			}
+		],
+		"views": {
+			"test": [
+				{
+					"id": "alsatianTests",
+					"name": "Alsatian Tests"
+				}
+			]
+		},
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "alsatian.treeviewRunTest",
+					"when": "view == alsatianTests",
+					"group": "inline"
+				},
+				{
+					"command": "alsatian.treeviewRunTest",
+					"when": "view == alsatianTests"
+				}
+			]
+		}
 	},
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onView:alsatianTests"
+	],
 	"scripts": {
 		"clean": "rimraf out",
 		"vscode:prepublish": "npm run clean && npm run build",

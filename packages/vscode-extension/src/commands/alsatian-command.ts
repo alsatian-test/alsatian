@@ -24,7 +24,7 @@ export abstract class AlsatianCommand {
         throw new Error("not implemented");
     }
 
-    public static setup(context: ExtensionContext) {
+    public static setup(context: ExtensionContext, ...args: Array<any>) {
         context.subscriptions.push(
             commands.registerCommand(
                 this.details.command,

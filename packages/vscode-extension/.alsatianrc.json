@@ -1,5 +1,8 @@
 {
     "preTestScripts": [
         "./samples/enzyme-setup.ts"
+    ],
+    "specs": [
+        "./src/**/*.spec.ts"
     ]
 }

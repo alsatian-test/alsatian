@@ -7,6 +7,7 @@ import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
 import { AlsatianCodeLensProvider } from "./alsatian-code-lens-provider";
 import { ExtensionContext } from "vscode";
+import { TestRunner } from "./running/test-runner";
 
 @TestFixture("Extension Tests")
 export class ExtensionTests {
@@ -23,7 +24,7 @@ export class ExtensionTests {
 
         activate(context);
 
-        Expect(RunTestCommand.setup).toHaveBeenCalledWith(context);
+        Expect(RunTestCommand.setup).toHaveBeenCalledWith(context, new TestRunner());
     }
 
     @TestCase({})
