@@ -32,8 +32,8 @@
 				"command": "alsatian.treeviewRunTest",
 				"title": "Run Test",
 				"icon": {
-					"light": "src/icons/success.svg",
-					"dark": "src/icons/success.svg"
+					"light": "src/icons/run-test-light.svg",
+					"dark": "src/icons/run-test.svg"
 				}
 			}
 		],

@@ -31,6 +31,15 @@ export class AlsatianTestTreeViewItem extends TreeItem {
       });
     }
   
+    command = {
+      title: "",
+      command: "alsatian.openSpec",
+      arguments: [
+        this.fixture.filePath,
+        this.test.key
+      ]
+    }
+  
     get tooltip(): string {
       return `${this.label}-tooltip`;
     }

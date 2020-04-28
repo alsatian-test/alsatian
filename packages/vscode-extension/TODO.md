@@ -1,25 +1,30 @@
 ## Initial offering
 
-- [ ] add telemetry / error handling / find out what that random throw is all about
-- [ ] tidy up / refactor
-- [ ] document
 - [x] load tests into separate tree view
 - [x] indicator on file in tree view
 - [x] trigger runs from tree view
 
-- [ ] load multiple .alsatianrc.json in tree view
-- [ ] fix run icons
-- [ ] show loading message on tree view
+- [x] load multiple .alsatianrc.json in tree view
+- [ ] fix run icons for code lenses
+- [x] show loading message on tree view
 
-- [ ] trigger debug from tree view
+- [x] click on tree item navigates too file (and hopefully line)
 - [ ] trigger fixture run from tree view
 - [ ] run all tests from tree view
+- [ ] batch test runs
+- [ ] refresh tree view user function
+- [ ] rename and move files about
 
 - [ ] require before run e.g. enzyme (dep on broader alsatian feature)
 - [ ] show failed to load tests message in tree view
 - [ ] show failure message in tree view
 
+- [ ] trigger debug from tree view
 - [ ] update tree view on saves .alsatianrc.json / spec files / trace deps and run also (more of a tdd thing)
+
+- [ ] add telemetry / error handling / find out what that random throw is all about
+- [ ] tidy up / refactor
+- [ ] document
 
 ## Next steps
 

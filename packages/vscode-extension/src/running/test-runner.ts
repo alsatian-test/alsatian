@@ -49,6 +49,8 @@ export class TestRunner {
                 results
             }
         });
+
+        return results;
     }
 }
 

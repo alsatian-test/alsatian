@@ -10,6 +10,14 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
     super(fixture?.description, collapsibleState);
   }
 
+  command = {
+    title: "",
+    command: "alsatian.openSpec",
+    arguments: [
+      this.fixture.filePath
+    ]
+  }
+
   get tooltip(): string {
     return `${this.label}-tooltip`;
   }
