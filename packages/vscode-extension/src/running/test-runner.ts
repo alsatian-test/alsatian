@@ -10,7 +10,7 @@ export class TestRunner {
 
     public subscribe = this.resultEmitter.event;
 
-    public async runTest(fileName: string, fixtureName: string, testName: string, execArgv?: string[]) {
+    public async runTest(fileName: string, fixtureName: string, testName?: string, execArgv?: string[]) {
 
         const eventData = {
             fileName,
@@ -25,12 +25,32 @@ export class TestRunner {
             }
         });
 
-        const runProcess = fork(join(__dirname, `../run`), [ fileName, fixtureName, testName ], { execArgv });
+        const runArguments = [ fileName, fixtureName ];
+
+        if (testName) {
+            runArguments.push(testName);
+        }
+
+        const runProcess = fork(join(__dirname, `../run`), runArguments, { execArgv });
     
         const results = await new Promise<ITestCompleteEvent[] | null>((resolve, reject) => {
+            let results = [] as ITestCompleteEvent[];
+
             runProcess.on("message", message => {
                 if (message.type === "testComplete") {
-                    resolve(message.results);
+                    this.resultEmitter.fire({
+                        type: ResultEventType.TestCompleted,
+                        payload: {
+                            ...eventData,
+                            testName: message.test.key,
+                            results: message.results
+                        }
+                    });
+
+                    results = results.concat(message.results);
+                }
+                else if (message.type === "runComplete") {
+                    resolve(results);
                 }
                 else {
                     output.appendLine(message);
@@ -43,7 +63,7 @@ export class TestRunner {
         });
 
         this.resultEmitter.fire({
-            type: ResultEventType.Completed,
+            type: ResultEventType.RunCompleted,
             payload: {
                 ...eventData,
                 results
@@ -59,12 +79,13 @@ export interface TestResultEvent {
     payload: {
         fileName: string,
         fixtureName: string,
-        testName: string,
+        testName?: string,
         results?: Array<ITestCompleteEvent> | null
     };
 }
 
 export enum ResultEventType {
     Started = "STARTED",
-    Completed = "COMPLETED"
+    TestCompleted = "TEST_COMPLETED",
+    RunCompleted = "RUN_COMPLETED"
 }

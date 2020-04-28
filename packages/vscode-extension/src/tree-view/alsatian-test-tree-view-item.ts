@@ -18,16 +18,13 @@ export class AlsatianTestTreeViewItem extends TreeItem {
         if (
            relative(event.payload.fileName, this.fixture.filePath) !== ""
         || event.payload.fixtureName !== this.fixture.fixture.constructor.name
-        || event.payload.testName !== this.test.key
+        || (event.payload.testName !== this.test.key
+        && event.payload.testName !== undefined)
         ) {
           return;
         }
 
         this.test.isRunning = event.type === ResultEventType.Started;
-
-        if (event.type === ResultEventType.Completed) {
-          this.test.results = event.payload.results;
-        }
       });
     }
   

@@ -44,7 +44,7 @@ export class RunTestCommand extends AlsatianCommand {
                 event.payload.fileName !== fileName
             || event.payload.fixtureName !== fixtureName
             || event.payload.testName !== testName
-            || event.type !== ResultEventType.Completed
+            || event.type !== ResultEventType.TestCompleted
             ) {
                 return;
             }

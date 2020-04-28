@@ -34,7 +34,7 @@ export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider
     
     if (element) {
       if (element instanceof TestSetTreeViewItem) {
-        return element.testSet.testFixtures.map(fixture => new AlsatianTestFixtureTreeViewItem(fixture, vscode.TreeItemCollapsibleState.Collapsed));;
+        return element.testSet.testFixtures.map(fixture => new AlsatianTestFixtureTreeViewItem(fixture, vscode.TreeItemCollapsibleState.Collapsed, this.testRunner.subscribe));;
       }
 
       return element.fixture?.tests.map(test => new AlsatianTestTreeViewItem(element.fixture, test, vscode.TreeItemCollapsibleState.None, this.testRunner.subscribe));

@@ -1,13 +1,32 @@
-import { TreeItem, TreeItemCollapsibleState } from "vscode";
-import { join } from "path";
+import { TreeItem, TreeItemCollapsibleState, Event } from "vscode";
+import { join, relative } from "path";
 import { ITestFixture } from "alsatian/dist/core/_interfaces";
+import { TestResultEvent, ResultEventType } from "../running/test-runner";
+import { TestOutcome } from "alsatian";
+import { ITestCompleteEvent } from "alsatian/dist/core/events";
 
 export class AlsatianTestFixtureTreeViewItem extends TreeItem {
   constructor(
-    public readonly fixture: ITestFixture,
-    public readonly collapsibleState: TreeItemCollapsibleState
+    public readonly fixture: ITestFixture & { results?: ITestCompleteEvent[] | null, isRunning?: boolean },
+    public readonly collapsibleState: TreeItemCollapsibleState,
+    resultStream: Event<TestResultEvent>
   ) {
-    super(fixture?.description, collapsibleState);
+    super(fixture?.description, collapsibleState);    
+
+    resultStream(event => {
+      if (
+         (relative(event.payload.fileName, this.fixture.filePath) !== ""
+      || event.payload.fixtureName !== this.fixture.fixture.constructor.name)
+      ) {
+        return;
+      }
+
+      this.fixture.isRunning = event.type !== ResultEventType.RunCompleted;
+
+      if (event.type === ResultEventType.TestCompleted && event.payload.testName) {
+        (this.fixture.tests.find(x => x.key === event.payload.testName) as any).results = event.payload.results;
+      }
+    });
   }
 
   command = {
@@ -26,8 +45,27 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
     return `(${this.fixture?.tests.length || 0} tests)`;
   }
 
+  private get resultIcon(): string {
+    if (this.fixture.isRunning) {
+      return "running";
+    }
+
+    const results = this.fixture.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x));
+
+    if (results.length === 0) {
+      return "not-run";
+    }
+    
+    if (results.every((x: any) => x.outcome === TestOutcome.Pass)) {
+      return "success";
+    }
+    else {
+      return "failure";
+    }
+  }
+  
   iconPath = {
-    light: join(__filename, "..", "..", "..", "src", "icons", "success.svg"),
-    dark: join(__filename, "..", "..", "..", "src", "icons", "success.svg")
+    light: join(__filename, "..", "..", "..", "src", "icons", `${this.resultIcon}.svg`),
+    dark: join(__filename, "..", "..", "..", "src", "icons", `${this.resultIcon}.svg`)
   };
 }

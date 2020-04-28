@@ -50,24 +50,34 @@ function sendMessage(message: any) {
 
         const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
         fixture.focussed = true;
-        fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
+
+        if (testName) {
+            fixture.tests.filter(x => x.key === testName).forEach(x => x.focussed = true);
+        }
 
         const runner = new TestRunner();
         const results: ITestCompleteEvent[] = [];
-        runner.onTestComplete(x => results.push(x));
+        runner.onTestComplete(x => {
+            results.push(x);
+            sendMessage({
+                type: "testComplete",
+                test: x.test,
+                results: [ { outcome: x.outcome, error: x.error ? { message: x.error?.message }: null } ]
+            });
+        });
         await runner.run(testSet);
 
         sendMessage(`tests complete for ${fileName} ${fixtureName} ${testName}`);
 
         sendMessage({
-            type: "testComplete",
+            type: "runComplete",
             results: results.map(x => ({ outcome: x.outcome, error: x.error ? { message: x.error?.message }: null }))
         });
     }
     catch (error) {        
         sendMessage(`error running test ${error}`);
         sendMessage({
-            type: "testComplete",
+            type: "runComplete",
             results: [
                 { error: { message: error.message }, stack: error.stack }
             ]

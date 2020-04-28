@@ -5,25 +5,37 @@
 - [x] trigger runs from tree view
 
 - [x] load multiple .alsatianrc.json in tree view
-- [ ] fix run icons for code lenses
 - [x] show loading message on tree view
 
 - [x] click on tree item navigates too file (and hopefully line)
-- [ ] trigger fixture run from tree view
-- [ ] run all tests from tree view
-- [ ] batch test runs
+- [x] trigger fixture run from tree view
+- [x] run all tests from tree view
+- [x] batch test runs
 - [ ] refresh tree view user function
+- [ ] fix run icons for code lenses
+- [ ] show failed to load tests message in tree view
+- [ ] fix tree view sometimes shows still running
+- [ ] add not started icon
+- [ ] tooltips
+- [ ] add status for test set
+
+- [ ] remove anys
 - [ ] rename and move files about
+- [ ] fix non loading test set
+- [ ] test on ttc
+
+- [ ] tidy up / refactor / remove anys and TODOs
+- [ ] speed up by running test set in parallel / in one go rather than await / both?
+
+- [ ] pull through result to code lens
 
 - [ ] require before run e.g. enzyme (dep on broader alsatian feature)
-- [ ] show failed to load tests message in tree view
 - [ ] show failure message in tree view
 
 - [ ] trigger debug from tree view
 - [ ] update tree view on saves .alsatianrc.json / spec files / trace deps and run also (more of a tdd thing)
 
 - [ ] add telemetry / error handling / find out what that random throw is all about
-- [ ] tidy up / refactor
 - [ ] document
 
 ## Next steps

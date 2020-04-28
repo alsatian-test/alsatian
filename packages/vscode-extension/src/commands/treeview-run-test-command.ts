@@ -25,12 +25,12 @@ export class TreeviewRunTestCommand extends AlsatianCommand {
         }
 
         if (view instanceof AlsatianTestFixtureTreeViewItem) {
-            view.fixture.tests.map(test => TreeviewRunTestCommand.testRunner.runTest(view.fixture.filePath, view.fixture.fixture.constructor.name, test.key));
+            await TreeviewRunTestCommand.testRunner.runTest(view.fixture.filePath, view.fixture.fixture.constructor.name);
             return;
         }
 
-        view.testSet.testFixtures.map(fixture => {
-            fixture.tests.map(test => TreeviewRunTestCommand.testRunner.runTest(fixture.filePath, fixture.fixture.constructor.name, test.key));
-        });
+        for (const fixture of view.testSet.testFixtures) {
+            await TreeviewRunTestCommand.testRunner.runTest(fixture.filePath, fixture.fixture.constructor.name);
+        }
     }
 }
