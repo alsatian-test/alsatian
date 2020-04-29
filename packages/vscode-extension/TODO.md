@@ -16,13 +16,14 @@
 - [ ] show failed to load tests message in tree view
 - [x] fix tree view sometimes shows still running
 - [x] add not started icon
-- [ ] tooltips
+- [x] tooltips
 
 - [ ] rename and move files about
 - [ ] fix non loading test set
 - [ ] test on ttc
 - [ ] tidy up / refactor / remove anys and TODOs
 
+- [ ] icon for skipped
 - [ ] add status for test set
 - [ ] speed up by running test set in parallel / in one go rather than await / both?
 

@@ -42,12 +42,28 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
     ]
   }
 
+  private get totalTests() {
+    return this.fixture.tests.map(test => test.testCases.length).reduce((total, current) => total + current, 0);
+  }
+
+  private get results(): Array<ITestCompleteEvent> {
+    return this.fixture.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x));
+  }
+
   get tooltip(): string {
-    return `${this.label}-tooltip`;
+    const passCount = this.results.filter(result => result.outcome === TestOutcome.Pass).length;
+    const failCount = this.results.filter(result => result.outcome === TestOutcome.Fail || result.outcome === TestOutcome.Error).length;
+    const skipCount = this.results.filter(result => result.outcome === TestOutcome.Skip).length;
+    const notRunCount = this.totalTests - passCount - failCount - skipCount;
+
+    return `Pass: ${passCount}/${this.totalTests}\n`
+         + `Fail: ${failCount}/${this.totalTests}\n`
+         + `Not Run: ${notRunCount}/${this.totalTests}\n`
+         + `Skipped: ${skipCount}/${this.totalTests}`;
   }
 
   get description(): string {
-    return `(${this.fixture?.tests.length || 0} tests)`;
+    return `(${this.totalTests} tests)`;
   }
 
   private get resultIcon(): string {
@@ -55,13 +71,11 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
       return "running";
     }
 
-    const results = this.fixture.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x));
-
-    if (results.length === 0) {
+    if (this.results.length === 0) {
       return "not-run";
     }
     
-    if (results.every((x: any) => x.outcome === TestOutcome.Pass)) {
+    if (this.results.every(result => result.outcome === TestOutcome.Pass)) {
       return "success";
     }
     else {

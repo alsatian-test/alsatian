@@ -10,10 +10,6 @@ export class TestSetTreeViewItem extends TreeItem {
     super("Test Set", collapsibleState);
   }
 
-  get tooltip(): string {
-    return `${this.label}-tooltip`;
-  }
-
   get description(): string {
     return `(${this.path})`;
   }

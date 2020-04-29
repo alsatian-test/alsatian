@@ -36,13 +36,29 @@ export class AlsatianTestTreeViewItem extends TreeItem {
         this.test.key
       ]
     }
-  
+
+    get results() {
+      return this.test.results || [];
+    }
+
+    get totalTests() {
+      return this.test.testCases.length;
+    }
+
     get tooltip(): string {
-      return `${this.label}-tooltip`;
+      const passCount = this.results.filter(result => result.outcome === TestOutcome.Pass).length;
+      const failCount = this.results.filter(result => result.outcome === TestOutcome.Fail || result.outcome === TestOutcome.Error).length;
+      const skipCount = this.results.filter(result => result.outcome === TestOutcome.Skip).length;
+      const notRunCount = this.totalTests - passCount - failCount - skipCount;
+  
+      return `Pass: ${passCount}/${this.totalTests}\n`
+           + `Fail: ${failCount}/${this.totalTests}\n`
+           + `Not Run: ${notRunCount}/${this.totalTests}\n`
+           + `Skipped: ${skipCount}/${this.totalTests}`;
     }
   
     get description(): string {
-      return `(${this.test?.testCases.length || 0} tests)`;
+      return `(${this.totalTests} tests)`;
     }
 
     private get resultIcon(): string {
