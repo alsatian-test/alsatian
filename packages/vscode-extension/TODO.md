@@ -13,13 +13,13 @@
 - [x] batch test runs
 - [x] refresh tree view user function
 - [x] fix run icons for code lenses
-- [ ] show failed to load tests message in tree view
+- [x] show failed to load tests message in tree view
 - [x] fix tree view sometimes shows still running
 - [x] add not started icon
 - [x] tooltips
 
 - [ ] rename and move files about
-- [ ] fix non loading test set
+- [x] fix non loading test set
 - [ ] test on ttc
 - [ ] tidy up / refactor / remove anys and TODOs
 

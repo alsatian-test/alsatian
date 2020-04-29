@@ -11,7 +11,11 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
     public readonly collapsibleState: TreeItemCollapsibleState,
     resultStream: Event<TestResultEvent>
   ) {
-    super(fixture?.description, collapsibleState);    
+    super(fixture?.description || "Fixture Failed to Load", fixture ? collapsibleState : TreeItemCollapsibleState.None);
+
+    if (fixture === undefined) {
+      return;
+    }
 
     resultStream(event => {
       if (
@@ -34,23 +38,27 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
     });
   }
 
-  command = {
+  command = this.fixture ? {
     title: "",
     command: "alsatian.openSpec",
     arguments: [
       this.fixture.filePath
     ]
-  }
+  } : undefined;
 
   private get totalTests() {
-    return this.fixture.tests.map(test => test.testCases.length).reduce((total, current) => total + current, 0);
+    return this.fixture?.tests.map(test => test.testCases.length).reduce((total, current) => total + current, 0) || 0;
   }
 
   private get results(): Array<ITestCompleteEvent> {
-    return this.fixture.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x));
+    return this.fixture?.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x)) || [];
   }
 
   get tooltip(): string {
+    if (this.fixture === undefined) {
+      return "An unexpected error was thrown when loading this test fixture";
+    }
+
     const passCount = this.results.filter(result => result.outcome === TestOutcome.Pass).length;
     const failCount = this.results.filter(result => result.outcome === TestOutcome.Fail || result.outcome === TestOutcome.Error).length;
     const skipCount = this.results.filter(result => result.outcome === TestOutcome.Skip).length;
@@ -63,10 +71,14 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
   }
 
   get description(): string {
-    return `(${this.totalTests} tests)`;
+    return this.fixture ? `(${this.totalTests} tests)` : "";
   }
 
   private get resultIcon(): string {
+    if (this.fixture === undefined) {
+      return "failure";
+    }
+
     if (this.fixture.isRunning) {
       return "running";
     }
