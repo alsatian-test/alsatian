@@ -31,51 +31,58 @@ export class RunTestCommand extends AlsatianCommand {
             styles[testName].dispose();
         }
 
-        // need to make more robust (perhaps pass in document instead)
-        const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
-
-        const runningDecorator = showIcon(editor, RunTestCommand.testRunningIconPath, [ range ]);
-
-        await RunTestCommand.testRunner.runTest(fileName, fixtureName, testName, execArgv);
-
-        RunTestCommand.testRunner.subscribe(event => {
+        const subscription = RunTestCommand.testRunner.subscribe(event => {
             
             if (
                 event.payload.fileName !== fileName
             || event.payload.fixtureName !== fixtureName
             || event.payload.testName !== testName
-            || event.type !== ResultEventType.TestCompleted
             ) {
                 return;
+            }            
+
+            if (event.type === ResultEventType.RunCompleted) {
+                subscription.dispose();
             }
 
-            const results = event.payload.results;
+            // need to make more robust (perhaps pass in document instead)
+            const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
 
-            const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
-            const errors = results?.filter(result => result.error).map(result => result.error) || [];
+            if (event.type === ResultEventType.Started) {
+                styles[testName]?.dispose();              
     
-            const resultDecoration = showIcon(
-                editor,
-                pass ? RunTestCommand.testSuccessIconPath : RunTestCommand.testFailureIconPath,
-                [
-                    {
-                        range,
-                        renderOptions: {
-                            after: {
-                                margin: "2em",
-                                contentText: errors[0] || results === null ? errors[0]?.message || "An unknown error ocurred" : "",
-                                color: "#f44"
-                            }
-                        },	
-                    }
-                ]
-            );
+                styles[testName] = showIcon(editor, RunTestCommand.testRunningIconPath, [ range ]);
+                
+            }
+            else if (event.type === ResultEventType.TestCompleted) {
+                styles[testName]?.dispose();
+
+                const results = event.payload.results;
+
+                const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
+                const errors = results?.filter(result => result.error).map(result => result.error) || [];
     
-            styles[testName] = resultDecoration;
-    
-            runningDecorator.dispose();
-    
-            console.log(`run ${testName} resulted in ${pass ? "success" : "failure"}`);
+                styles[testName] = showIcon(
+                    editor,
+                    pass ? RunTestCommand.testSuccessIconPath : RunTestCommand.testFailureIconPath,
+                    [
+                        {
+                            range,
+                            renderOptions: {
+                                after: {
+                                    margin: "2em",
+                                    contentText: errors[0] || results === null ? errors[0]?.message || "An unknown error ocurred" : "",
+                                    color: "#f44"
+                                }
+                            },	
+                        }
+                    ]
+                );
+        
+                console.log(`run ${testName} resulted in ${pass ? "success" : "failure"}`);
+            }
         });
+
+        await RunTestCommand.testRunner.runTest(fileName, fixtureName, testName, execArgv);
     }
 }

@@ -21,7 +21,12 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
         return;
       }
 
-      this.fixture.isRunning = event.type !== ResultEventType.RunCompleted;
+      if (event.type === ResultEventType.Started) {
+        this.fixture.isRunning = true;
+      }
+      else if (event.type === ResultEventType.RunCompleted) {
+        this.fixture.isRunning = false;
+      }
 
       if (event.type === ResultEventType.TestCompleted && event.payload.testName) {
         (this.fixture.tests.find(x => x.key === event.payload.testName) as any).results = event.payload.results;

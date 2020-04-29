@@ -19,7 +19,7 @@ export function activate(context: ExtensionContext) {
 
 	TreeviewRunTestCommand.setup(context, testRunner);
 	OpenSpecCommand.setup(context);
-	AlsatianTestTreeViewDataProvider.setup(testRunner);
+	AlsatianTestTreeViewDataProvider.setup(context, testRunner);
 	
 }
 

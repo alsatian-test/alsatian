@@ -11,20 +11,19 @@
 - [x] trigger fixture run from tree view
 - [x] run all tests from tree view
 - [x] batch test runs
-- [ ] refresh tree view user function
-- [ ] fix run icons for code lenses
+- [x] refresh tree view user function
+- [x] fix run icons for code lenses
 - [ ] show failed to load tests message in tree view
-- [ ] fix tree view sometimes shows still running
-- [ ] add not started icon
+- [x] fix tree view sometimes shows still running
+- [x] add not started icon
 - [ ] tooltips
-- [ ] add status for test set
 
-- [ ] remove anys
 - [ ] rename and move files about
 - [ ] fix non loading test set
 - [ ] test on ttc
-
 - [ ] tidy up / refactor / remove anys and TODOs
+
+- [ ] add status for test set
 - [ ] speed up by running test set in parallel / in one go rather than await / both?
 
 - [ ] pull through result to code lens

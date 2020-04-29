@@ -7,20 +7,33 @@ import { registerTsNode } from "../register-ts-node";
 import { AlsatianTestTreeViewItem } from "./alsatian-test-tree-view-item";
 import { TestRunner } from "../running/test-runner";
 import { TestSetTreeViewItem } from "./test-set-tree-view-item";
+import { UpdateTreeviewCommand } from "./update-tree-view-command";
 
 export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider<AlsatianTestFixtureTreeViewItem> {
 
-    public static setup(testRunner: TestRunner) {
+    public static setup(context: vscode.ExtensionContext, testRunner: TestRunner) {    
+        const treeViewDataProvider = new AlsatianTestTreeViewDataProvider(vscode.workspace.rootPath || ".", testRunner);
+
         vscode.window.registerTreeDataProvider(
             "alsatianTests",
-            new AlsatianTestTreeViewDataProvider(vscode.workspace.rootPath || ".", testRunner)
+            treeViewDataProvider
         );
+
+        UpdateTreeviewCommand.setup(context, treeViewDataProvider);
     }
 
   private testSets!: Array<{ testSet: TestSet, relativePath: string }>;
 
   private updateView = new vscode.EventEmitter<AlsatianTestTreeViewItem | undefined>();
   readonly onDidChangeTreeData: vscode.Event<any | undefined> = this.updateView.event;
+  public async refresh() {
+    this.testSets = [];
+    this.updateView.fire();
+    Object.keys(require.cache)
+          .forEach(key => delete require.cache[key]);
+    await this.loadTestSets();
+    this.updateView.fire();
+  }
 
   constructor(private workspaceRoot: string, private testRunner: TestRunner) {
     this.testRunner.subscribe(() => this.updateView.fire());
@@ -43,6 +56,11 @@ export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider
     if (this.testSets) {
       return this.testSets.map(testSet => new TestSetTreeViewItem(testSet.testSet, testSet.relativePath, vscode.TreeItemCollapsibleState.Collapsed));
     }
+
+    return await this.loadTestSets();
+  }
+
+  private async loadTestSets() {
 
     const configs = await vscode.workspace.findFiles("**/.alsatianrc.json");
 

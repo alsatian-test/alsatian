@@ -3,8 +3,6 @@ import { ExtensionContext, workspace } from "vscode";
 import { AlsatianTestTreeViewItem } from "../tree-view/alsatian-test-tree-view-item";
 import { TestRunner } from "../running/test-runner";
 import { AlsatianTestFixtureTreeViewItem } from "../tree-view/alsatian-test-fixture-tree-view-item";
-import { ITestCompleteEvent } from "alsatian/dist/core/events";
-import { TestOutcome } from "alsatian";
 import { TestSetTreeViewItem } from "../tree-view/test-set-tree-view-item";
 
 export class TreeviewRunTestCommand extends AlsatianCommand {
