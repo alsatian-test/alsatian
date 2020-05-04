@@ -23,6 +23,6 @@ export class Integers {
             throw new TypeError("upper limit must be greater than lower limit");
         }
 
-        return new GeneratorBuilder(() => Math.round(Math.random() * upperLimit + lowerLimit));
+        return new GeneratorBuilder(() => Math.round(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit);
     }
 }

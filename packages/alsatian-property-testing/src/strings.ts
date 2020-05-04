@@ -21,13 +21,15 @@ export class Strings {
     static Over(length: number, options?: { charset?: string }) {
         const charset = options?.charset ? [...options.charset] : [...this.numbers, ...this.upperLetters, ...this.lowerLetters, ...this.uniqueChars];
 
-        return new GeneratorBuilder(() => [...Array(Math.floor(Math.random() * 182 + length))].map(e => charset[Math.random() * charset.length | 0]).join(""));
+        const maxLength = 1000; //How to limit it somehow? 
+
+        return new GeneratorBuilder(() => this.GenerateString(charset, length, maxLength));
     }
 
     static Below(length: number, options?: { charset?: string }) {
         const charset = options?.charset ? [...options.charset] : [...this.numbers, ...this.upperLetters, ...this.lowerLetters, ...this.uniqueChars];
 
-        return new GeneratorBuilder(() => [...Array(Math.floor(Math.random() * length))].map(e => charset[Math.random() * charset.length | 0]).join(""));
+        return new GeneratorBuilder(() => this.GenerateString(charset, 0, length));
     }
 
     static Between(options: { between?: { minLength?: number, maxLength?: number }, charset?: string}) {
@@ -35,9 +37,13 @@ export class Strings {
 
         // The official longest word in the world contains 189819 letters. And it's chemical name of titin, the largest known protein.
         // I'm pretty sure that we don't want to use is as default. https://en.wikipedia.org/wiki/Longest_word_in_English
+        // On the other hand it's string generator not word generator (but still I suppose we want to limit to an unspecified yet value?) 
         const maxLength = options.between?.maxLength ?? 182;
         const charset = options?.charset ? [...options.charset] : [...this.numbers, ...this.upperLetters, ...this.lowerLetters, ...this.uniqueChars];
        
-        return new GeneratorBuilder(() => [...Array(Math.floor(Math.random() * maxLength + minLength))].map(e => charset[Math.random() * charset.length | 0]).join(""));
+        return new GeneratorBuilder(() => this.GenerateString(charset, minLength, maxLength));
     }
+
+    private static GenerateString = (charset: string[], minLength: number, maxLength: number): string => 
+        [...Array(Math.floor(Math.random() * (maxLength + minLength) + minLength))].map(e => charset[Math.random() * charset.length | 0]).join("")
 }
