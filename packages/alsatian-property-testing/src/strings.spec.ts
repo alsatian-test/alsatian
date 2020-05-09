@@ -25,4 +25,46 @@ export class StringsGeneratorTests {
         Expect(((generator.next().value) as string).length).toBe(length);
         Expect(generator.next().done).toBe(true);
     }
+
+    @TestCase(1)
+    @TestCase(2)
+    @TestCase(50)
+    @Test("returns string that's below the given length")
+    public returnsStringOfLengthBelowGivenNumber(belowLength: number) {
+        const generator = Strings.Below(belowLength).generate(1000)();
+
+        let lastValue = generator.next();
+        let currentValue = lastValue;
+        let succeed = true;
+
+        while(currentValue.done === false) {
+            if (belowLength <= currentValue.value.length) {
+                succeed = false;
+            }
+            currentValue = generator.next();
+        };
+
+        Expect(succeed).toBeTruthy();
+    }
+
+    @TestCase(1)
+    @TestCase(2)
+    @TestCase(50)
+    @Test("returns that's over given length")
+    public returnsStringOfLengthOverGivenNumber(overLength: number) {
+        const generator = Strings.Over(overLength).generate(1000)();
+
+        let lastValue = generator.next();
+        let currentValue = lastValue;
+        let succeed = true;
+
+        while(currentValue.done === false) {
+            if (overLength >= currentValue.value.length) {
+                succeed = false;
+            }
+            currentValue = generator.next();
+        };
+
+        Expect(succeed).toBeTruthy();
+    }
 }

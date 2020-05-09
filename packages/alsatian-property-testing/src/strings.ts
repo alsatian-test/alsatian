@@ -21,9 +21,9 @@ export class Strings {
     static Over(length: number, options?: { charset?: string }) {
         const charset = options?.charset ? [...options.charset] : [...this.numbers, ...this.upperLetters, ...this.lowerLetters, ...this.uniqueChars];
 
-        const maxLength = 1000; //How to limit it somehow? 
+        const maxLength = 1000; // How to limit it somehow? 
 
-        return new GeneratorBuilder(() => this.GenerateString(charset, length, maxLength));
+        return new GeneratorBuilder(() => this.GenerateString(charset, length + 1, maxLength));
     }
 
     static Below(length: number, options?: { charset?: string }) {
