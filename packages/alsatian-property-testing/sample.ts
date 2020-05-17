@@ -39,6 +39,8 @@ class ObjectPropertyBuilder<T = any> {
 class Objects<T = { [prop: string]: any }> {
     private constructedObject: Partial<T>;
 
+    // private propGenerators: { propName: keyof T, generaotr: Generator<number | string, void, unknown>[] };
+
     // For things that we might want to be constant like ids or other props. I think that might make life easier
     constructor(object?: Partial<T>) {
        this.constructedObject = { ...object };
