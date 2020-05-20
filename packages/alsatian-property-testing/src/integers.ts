@@ -16,9 +16,9 @@ export class Integers {
         }
     }
 
-    static random(options?: { between: { upperLimit: number, lowerLimit: number }, seed?: string}) {
-        const upperLimit = options?.between.upperLimit ?? 100;
-        const lowerLimit = options?.between.lowerLimit ?? 0;
+    static random(options?: { between?: { upperLimit: number, lowerLimit: number }, seed?: string}) {
+        const upperLimit = options?.between?.upperLimit ?? 100;
+        const lowerLimit = options?.between?.lowerLimit ?? 0;
 
         const randomGenerator = initializeRandomNumberGenerator(options?.seed);
 
