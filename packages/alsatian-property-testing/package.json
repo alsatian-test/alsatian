@@ -11,5 +11,9 @@
   "devDependencies": {
     "alsatian": "^3.2.1",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/seedrandom": "^2.4.28",
+    "seedrandom": "^3.0.5"
   }
 }

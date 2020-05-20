@@ -106,4 +106,22 @@ export class IntegerGeneratorTests {
 
         Expect(integersGenerated).toBe(numberRequested);
     }
+
+    @Test("returns predictable results")
+    public randomNumberReturnsPredictableResults()
+    {
+        const intGenerator = Integers.random().generate(10)();
+
+        Expect(intGenerator.next().value).toBe(44);
+        Expect(intGenerator.next().value).toBe(53);
+        Expect(intGenerator.next().value).toBe(19);
+        Expect(intGenerator.next().value).toBe(59);
+        Expect(intGenerator.next().value).toBe(36);
+        Expect(intGenerator.next().value).toBe(14);
+        Expect(intGenerator.next().value).toBe(36);
+        Expect(intGenerator.next().value).toBe(33);
+        Expect(intGenerator.next().value).toBe(40);
+        Expect(intGenerator.next().value).toBe(89);
+        Expect(intGenerator.next().done).toBe(true);
+    }
 }

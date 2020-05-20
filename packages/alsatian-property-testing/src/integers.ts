@@ -1,4 +1,5 @@
 import { GeneratorBuilder } from "./generator-builder";
+import { initializeRandomNumberGenerator } from "./utils/seedable-rng";
 
 export class Integers {
     static between(lowerLimit: number, upperLimit: number) {
@@ -15,14 +16,16 @@ export class Integers {
         }
     }
 
-    static random(options?: { between: { upperLimit: number, lowerLimit: number }}) {
+    static random(options?: { between: { upperLimit: number, lowerLimit: number }, seed?: string}) {
         const upperLimit = options?.between.upperLimit ?? 100;
         const lowerLimit = options?.between.lowerLimit ?? 0;
+
+        const randomGenerator = initializeRandomNumberGenerator(options?.seed);
 
         if (upperLimit <= lowerLimit) {
             throw new TypeError("upper limit must be greater than lower limit");
         }
 
-        return new GeneratorBuilder(() => Math.round(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit);
+        return new GeneratorBuilder(() => Math.round(randomGenerator() * (upperLimit - lowerLimit + 1)) + lowerLimit);
     }
 }

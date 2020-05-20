@@ -1,6 +1,5 @@
 import { Expect, Test, TestFixture, TestCase } from "alsatian";
 import { Strings } from "./strings";
-import { GeneratorBuilder } from "./generator-builder";
 
 @TestFixture("strings generator tests")
 export class StringsGeneratorTests {
