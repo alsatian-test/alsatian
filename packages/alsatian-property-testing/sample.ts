@@ -3,12 +3,13 @@ import { Strings } from "./src/strings";
 import { GeneratorBuilder } from "./src/generator-builder";
 import { Integers } from "./src";
 import { Numbers } from "./src/numbers";
+import { initializeRandomNumberGenerator } from "./src/utils/seedable-rng";
 
 @TestFixture("property tests")
 export class PropertyTests {
     @Test()
     public test() {
-        var generator = new Objects<TestInterface>({propTwo: "duuupa"}).withProp("propThree", Strings.Below(10).generate(10)()).withProp("propOne", Numbers.Between(1, 6, 1)()).build(20)();
+        var generator = new Objects<TestInterface>({propTwo: "duuupa"}).withProp("propThree", Strings.Below(10).generate(10)()).withProp("propOne", Numbers.Between(1, 6, 1)()).build(20, "szelest")();
 
 
         var g1 = generator.next().value;
@@ -24,10 +25,11 @@ export class PropertyTests {
 
 class Objects<T = { [prop: string]: any }> {
     private constructedObject: Partial<T>;
-    private valueMatrix: {[id in keyof T]: any[] };
+    private valueMatrix: {[id: string]: any[] };
 
     constructor(object?: Partial<T>) {
        this.constructedObject = { ...object };
+       this.valueMatrix = {};
     }
 
     withProp(propName: keyof T, generator: Generator<number | string | object, void, unknown>) {
@@ -39,24 +41,25 @@ class Objects<T = { [prop: string]: any }> {
             iteration = generator.next();
         };
 
-        this.valueMatrix[propName] = values;
+        this.valueMatrix[propName as string] = values;
         return this;
     }
 
-    build(count: number) {
+    build(count: number, seed?: string) {
         if (!count || count < 0) {
             throw new TypeError("Count need to be truthy positive value");
         }
 
         var self = this;
         let counter = 0;
+        const randomGenerator = initializeRandomNumberGenerator(seed);
 
         return function* () {
             while(counter <= count) {
                 let obj = { ...self.constructedObject };
 
                 for (let key in self.valueMatrix) {
-                    obj = {...obj, [key]: self.valueMatrix[key][Math.floor(Math.random() * self.valueMatrix[key].length)]}
+                    obj = {...obj, [key]: self.valueMatrix[key][Math.floor(randomGenerator() * self.valueMatrix[key].length)]}
                 }
 
                 yield obj;
