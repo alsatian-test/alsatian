@@ -33,7 +33,8 @@ import {
 	TestCase,
 	TestCases,
 	TestFixture,
-	Timeout
+	Timeout,
+	TestProperties
 } from "./decorators";
 
 import {
@@ -113,5 +114,6 @@ export {
 	TestSetResults,
 	TestSet,
 	TestTimeoutError,
-	Timeout
+	Timeout,
+	TestProperties
 };

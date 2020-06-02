@@ -1,7 +1,7 @@
 import { alea } from "seedrandom";
 
-export const PropertyTestingConfiguration = {
-    seed: "99"
+const PropertyTestingConfiguration = {
+    seed: "niesamowity-seed"
 }
 
 export function initializeRandomNumberGenerator(seed?: string): seedrandom.prng {

@@ -17,6 +17,7 @@ const TEARDOWN_FIXTURE: "alsatian:teardown-fixture" =
 	"alsatian:teardown-fixture";
 const TEST_CASES: "alsatian:testcases" = "alsatian:testcases";
 const TIMEOUT: "alsatian:timeout" = "alsatian:timeout";
+const TEST_PROPERTIES: "alsatian:testproperties" = "alsatian:testproperties";
 
 export {
 	TEST_FIXTURE,
@@ -29,5 +30,6 @@ export {
 	TEARDOWN,
 	TEARDOWN_FIXTURE,
 	TEST_CASES,
-	TIMEOUT
+	TIMEOUT,
+	TEST_PROPERTIES
 };

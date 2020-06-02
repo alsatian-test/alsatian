@@ -18,6 +18,7 @@ import { TestCases } from "./test-cases-decorator";
 import { Test } from "./test-decorator";
 import { TestFixture } from "./test-fixture-decorator";
 import { Timeout } from "./timeout-decorator";
+import { TestProperties } from "./test-properties-decorator";
 
 export {
 	AsyncSetup,
@@ -39,5 +40,6 @@ export {
 	Test,
 	TestCase,
 	TestCases,
-	Timeout
+	Timeout,
+	TestProperties
 };
