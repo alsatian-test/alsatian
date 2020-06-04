@@ -3,7 +3,7 @@
 	"displayName": "alsatian",
 	"publisher": "JamesAdarich",
 	"description": "VSCode extension for the Alsatian test framework",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"preview": true,
 	"engines": {
 		"vscode": "^1.42.0"
@@ -82,6 +82,7 @@
 	"scripts": {
 		"clean": "rimraf out",
 		"vscode:prepublish": "npm run clean && npm run build",
+		"vscode:publish": "vsce package",
 		"build": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"test": "npm run test:lint && npm run test:unit",
