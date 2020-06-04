@@ -20,11 +20,11 @@ export abstract class AlsatianCommand {
         };
     }
 
-    protected static async execute(...args: Array<any>) {
+    protected static async execute(...args: Array<unknown>) {
         throw new Error("not implemented");
     }
 
-    public static setup(context: ExtensionContext, ...args: Array<any>) {
+    public static setup(context: ExtensionContext, ...args: Array<unknown>) {
         context.subscriptions.push(
             commands.registerCommand(
                 this.details.command,

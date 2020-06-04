@@ -1,5 +1,6 @@
 import { Expect, Test, TestFixture, createFunctionSpy, SpyOn, TestCase } from "alsatian";
 import mock from "mock-require";
+import { ExtensionContext } from "vscode";
 
 @TestFixture("icon tests")
 export class IconTests {
@@ -13,7 +14,7 @@ export class IconTests {
         asAbsolutePath.andReturn(absolutePath);
         const context = {
             asAbsolutePath
-        } as any;
+        } as unknown as ExtensionContext;
 
         const UriMock = { file: createFunctionSpy() };
         mock("vscode", { Uri: UriMock });

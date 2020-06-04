@@ -1,4 +1,4 @@
-import { TreeItem, TreeItemCollapsibleState, EventEmitter, Event } from "vscode";
+import { TreeItem, TreeItemCollapsibleState, Event } from "vscode";
 import { join, relative } from "path";
 import { ITest, ITestFixture } from "alsatian/dist/core/_interfaces";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
@@ -35,7 +35,7 @@ export class AlsatianTestTreeViewItem extends TreeItem {
         this.fixture.filePath,
         this.test.key
       ]
-    }
+    };
 
     get results() {
       return this.test.results || [];

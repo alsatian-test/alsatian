@@ -1,30 +1,33 @@
 import { TestFixture, Test, createFunctionSpy, Expect, Any, TestCase } from "alsatian";
-import mock from "mock-require";
+import "../test/setup-vscode-environment";
 import { DecorationRenderOptions, Uri } from "vscode";
+import { TextEditorBuilder } from "../test/text-editor-builder";
+import { VsCodeWindowBuilder } from "../test/vscode-window-builder";
+import mock from "mock-require";
 
 @TestFixture("showIcon() tests")
 export class ShowIconTests {
     
     @Test("create decoration for whole line")
     public async wholeLine() {
-        const fakeVscodeWindow = { createTextEditorDecorationType: createFunctionSpy() };
+        const fakeVscodeWindow = new VsCodeWindowBuilder().build();
         mock("vscode", { window: fakeVscodeWindow });
 		delete require.cache[require.resolve(`./show-icon.ts`)];
         const { showIcon } = await import("./show-icon");
-        showIcon({ setDecorations: createFunctionSpy() } as any, null as any, null as any);
+        showIcon(new TextEditorBuilder().build(), {} as Uri, []);
 
         Expect(fakeVscodeWindow.createTextEditorDecorationType)
-            .not.toHaveBeenCalledWith(
+            .toHaveBeenCalledWith(
                 Any<DecorationRenderOptions>().thatMatches(x => x.isWholeLine === true));        
     }
     
     @Test("set gutter icon size to 'contain'")
     public async gutterIconSizeContain() {
-        const fakeVscodeWindow = { createTextEditorDecorationType: createFunctionSpy() };
+        const fakeVscodeWindow = new VsCodeWindowBuilder().build();
         mock("vscode", { window: fakeVscodeWindow });
 		delete require.cache[require.resolve(`./show-icon.ts`)];
         const { showIcon } = await import("./show-icon");
-        showIcon({ setDecorations: createFunctionSpy() } as any, null as any, null as any);
+        showIcon(new TextEditorBuilder().build(), {} as Uri, []);
 
         Expect(fakeVscodeWindow.createTextEditorDecorationType)
             .toHaveBeenCalledWith(
@@ -39,7 +42,7 @@ export class ShowIconTests {
         mock("vscode", { window: fakeVscodeWindow });
 		delete require.cache[require.resolve(`./show-icon.ts`)];
         const { showIcon } = await import("./show-icon");
-        showIcon({ setDecorations: createFunctionSpy() } as any, iconPath, null as any);
+        showIcon(new TextEditorBuilder().build(), iconPath, []);
 
         Expect(fakeVscodeWindow.createTextEditorDecorationType)
             .toHaveBeenCalledWith(

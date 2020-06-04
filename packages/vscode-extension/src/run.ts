@@ -3,8 +3,9 @@ import { ITestCompleteEvent } from "alsatian/dist/core/events";
 import { join } from "path";
 import { findNearestFile } from "./find-nearest-file";
 import { registerTsNode } from "./register-ts-node";
+import { IMessage, MessageType } from "./message";
 
-function sendMessage(message: any) {
+function sendMessage<T extends IMessage | string>(message: T) {
     if (process.send) {
         process.send(message);
     }
@@ -60,7 +61,7 @@ function sendMessage(message: any) {
         runner.onTestComplete(x => {
             results.push(x);
             sendMessage({
-                type: "testComplete",
+                type: MessageType.TestComplete,
                 test: x.test,
                 results: [ { outcome: x.outcome, error: x.error ? { message: x.error?.message }: null } ]
             });
@@ -70,14 +71,14 @@ function sendMessage(message: any) {
         sendMessage(`tests complete for ${fileName} ${fixtureName} ${testName}`);
 
         sendMessage({
-            type: "runComplete",
+            type: MessageType.RunComplete,
             results: results.map(x => ({ outcome: x.outcome, error: x.error ? { message: x.error?.message }: null }))
         });
     }
     catch (error) {        
         sendMessage(`error running test ${error}`);
         sendMessage({
-            type: "runComplete",
+            type: MessageType.RunComplete,
             results: [
                 { error: { message: error.message }, stack: error.stack }
             ]

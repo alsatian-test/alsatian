@@ -1,8 +1,15 @@
-import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument, languages, ExtensionContext } from "vscode";
+import { commands, CodeLens, CodeLensProvider, DocumentSymbol, SymbolKind, TextDocument, languages, ExtensionContext, Range } from "vscode";
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
 import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
 import { AlsatianCommand } from "./commands/alsatian-command";
+import { ITestFixture } from "alsatian/dist/core/_interfaces";
+
+export interface IVsCodeTestFixture {
+    className: string;
+    range: Range;
+    tests: Array<DocumentSymbol>
+}
 
 export class AlsatianCodeLensProvider implements CodeLensProvider {
     // ensure can't be constructed apart from by itself

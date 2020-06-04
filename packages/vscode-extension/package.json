@@ -36,14 +36,14 @@
 					"dark": "src/icons/run-test.svg"
 				}
 			},
-            {
-                "command": "alsatian.refreshTreeView",
-                "title": "Refresh",
-                "icon": {
-                    "light": "src/icons/refresh-light.svg",
-                    "dark": "src/icons/refresh.svg"
-                }
-            }
+			{
+				"command": "alsatian.refreshTreeView",
+				"title": "Refresh",
+				"icon": {
+					"light": "src/icons/refresh-light.svg",
+					"dark": "src/icons/refresh.svg"
+				}
+			}
 		],
 		"views": {
 			"test": [
@@ -54,11 +54,11 @@
 			]
 		},
 		"menus": {
-            "view/title": [
-                {
-                    "command": "alsatian.refreshTreeView",
-                    "when": "view == alsatianTests",
-                    "group": "navigation"
+			"view/title": [
+				{
+					"command": "alsatian.refreshTreeView",
+					"when": "view == alsatianTests",
+					"group": "navigation"
 				}
 			],
 			"view/item/context": [

@@ -1,13 +1,24 @@
 import { TreeItem, TreeItemCollapsibleState, Event } from "vscode";
 import { join, relative } from "path";
-import { ITestFixture } from "alsatian/dist/core/_interfaces";
+import { ITestFixture, ITest } from "alsatian/dist/core/_interfaces";
 import { TestResultEvent, ResultEventType } from "../running/test-runner";
 import { TestOutcome } from "alsatian";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
 
+interface IResults {
+  results?: Array<ITestCompleteEvent> | null;
+  isRunning?: boolean;
+}
+
+type ITestWithResults = ITest & IResults;
+
+interface ITestFixtureWithResults extends ITestFixture, IResults {
+  tests: Array<ITestWithResults>
+}
+
 export class AlsatianTestFixtureTreeViewItem extends TreeItem {
   constructor(
-    public readonly fixture: ITestFixture & { results?: ITestCompleteEvent[] | null, isRunning?: boolean },
+    public readonly fixture: ITestFixtureWithResults,
     public readonly collapsibleState: TreeItemCollapsibleState,
     resultStream: Event<TestResultEvent>
   ) {
@@ -33,7 +44,7 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
       }
 
       if (event.type === ResultEventType.TestCompleted && event.payload.testName) {
-        (this.fixture.tests.find(x => x.key === event.payload.testName) as any).results = event.payload.results;
+        this.fixture.tests.find(x => x.key === event.payload.testName)!.results = event.payload.results;
       }
     });
   }
@@ -51,7 +62,7 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
   }
 
   private get results(): Array<ITestCompleteEvent> {
-    return this.fixture?.tests.map((x: any) => x.results || []).reduce((c, x) => c.concat(x)) || [];
+    return this.fixture?.tests.map(x => x.results || []).reduce((c, x) => c.concat(x)) || [];
   }
 
   get tooltip(): string {

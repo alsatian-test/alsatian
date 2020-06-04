@@ -13,7 +13,8 @@ export class SampleTestFixture {
 		Expect(2).toBe(3);
 	}
 
-	@TestCase((null as any).something)
+	// to test errors thrown in the test runner rather than the test
+	// @TestCase((null as any).something)
 	@Test("an erroring test")
 	public erroring() {
 		throw new Error("Wow, this is always going to break!");

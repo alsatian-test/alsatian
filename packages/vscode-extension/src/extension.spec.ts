@@ -1,6 +1,5 @@
-import { TestFixture, Test, Expect, SpyOn, TestCase } from "alsatian";
-import mock from "mock-require";
-mock("vscode", { });
+import { TestFixture, Test, Expect, SpyOn, TestCase, Any } from "alsatian";
+import "./test/setup-vscode-environment";
 import { activate } from "./extension";
 import { RunTestCommand } from "./commands/run-test-command";
 import { DebugTestCommand } from "./commands/debug-test-command";
@@ -8,12 +7,13 @@ import { RunTestFixtureCommand } from "./commands/run-test-fixture-command";
 import { AlsatianCodeLensProvider } from "./alsatian-code-lens-provider";
 import { ExtensionContext } from "vscode";
 import { TestRunner } from "./running/test-runner";
+import { ExtensionContextBuilder } from "./test/extension-context-builder";
 
 @TestFixture("Extension Tests")
 export class ExtensionTests {
 
-    @TestCase({})
-    @TestCase({ some: "context" })
+    @TestCase(new ExtensionContextBuilder().build())
+    @TestCase(new ExtensionContextBuilder().build())
     @Test("activate sets up run test command")
     public activateRunTestCommand(context: ExtensionContext) {
 
@@ -24,11 +24,11 @@ export class ExtensionTests {
 
         activate(context);
 
-        Expect(RunTestCommand.setup).toHaveBeenCalledWith(context, new TestRunner());
+        Expect(RunTestCommand.setup).toHaveBeenCalledWith(context, Any(TestRunner));
     }
 
-    @TestCase({})
-    @TestCase({ some: "context" })
+    @TestCase(new ExtensionContextBuilder().build())
+    @TestCase(new ExtensionContextBuilder().build())
     @Test("activate sets up debug test command")
     public activateDebugTestCommand(context: ExtensionContext) {
 
@@ -42,8 +42,8 @@ export class ExtensionTests {
         Expect(DebugTestCommand.setup).toHaveBeenCalledWith(context);
     }
 
-    @TestCase({})
-    @TestCase({ some: "context" })
+    @TestCase(new ExtensionContextBuilder().build())
+    @TestCase(new ExtensionContextBuilder().build())
     @Test("activate sets up run test fixture command")
     public activateRunFixtureCommand(context: ExtensionContext) {
 
@@ -57,8 +57,8 @@ export class ExtensionTests {
         Expect(RunTestFixtureCommand.setup).toHaveBeenCalledWith(context);
     }
 
-    @TestCase({})
-    @TestCase({ some: "context" })
+    @TestCase(new ExtensionContextBuilder().build())
+    @TestCase(new ExtensionContextBuilder().build())
     @Test("activate sets up code lens provider")
     public activateCodeLens(context: ExtensionContext) {
 

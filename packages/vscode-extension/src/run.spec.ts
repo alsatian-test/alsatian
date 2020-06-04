@@ -1,6 +1,7 @@
 import { fork } from "child_process";
 import { join } from "path";
 import { TestFixture, Test, Expect, TestOutcome, Timeout, Focus } from "alsatian";
+import { IMessage } from "./message";
 
 @TestFixture("Run Process Tests")
 export class RunProcessTests {
@@ -19,7 +20,7 @@ export class RunProcessTests {
             }
           });
 
-        const message = await new Promise<{ results: any[]}>(resolve => {
+        const message = await new Promise<IMessage>(resolve => {
             runProcess.on("message", msg => {
                 if (msg.type === "testComplete") {
                     resolve(msg);
@@ -27,9 +28,9 @@ export class RunProcessTests {
             });
         });
 
-        Expect(message.results.length).toBe(1);
-        Expect(message.results[0].outcome).toBe(TestOutcome.Pass);
-        Expect(message.results[0].error).toBeNull();
+        Expect(message.results?.length).toBe(1);
+        Expect(message.results?.[0].outcome).toBe(TestOutcome.Pass);
+        Expect(message.results?.[0].error).toBeNull();
     }
 
     @Timeout(5000)
@@ -45,7 +46,7 @@ export class RunProcessTests {
             }
           });
 
-        const message = await new Promise<{ results: any[]}>(resolve => {
+        const message = await new Promise<IMessage>(resolve => {
             runProcess.on("message", msg => {
                 if (msg.type === "testComplete") {
                     resolve(msg);
@@ -53,8 +54,8 @@ export class RunProcessTests {
             });
         });
 
-        Expect(message.results.length).toBe(1);
-        Expect(message.results[0].outcome).toBe(TestOutcome.Fail);
+        Expect(message.results?.length).toBe(1);
+        Expect(message.results?.[0].outcome).toBe(TestOutcome.Fail);
     }
 
     @Timeout(5000)
@@ -70,7 +71,7 @@ export class RunProcessTests {
             }
         });
 
-        const message = await new Promise<{ results: any[]}>(resolve => {
+        const message = await new Promise<IMessage>(resolve => {
             runProcess.on("message", msg => {
                 if (msg.type === "testComplete") {
                     resolve(msg);
@@ -78,8 +79,8 @@ export class RunProcessTests {
             });
         });
 
-        Expect(message.results.length).toBe(1);
-        Expect(message.results[0].outcome).toBe(TestOutcome.Error);
-        Expect(message.results[0].error.message).toBe("Wow, this is always going to break!");
+        Expect(message.results?.length).toBe(1);
+        Expect(message.results?.[0].outcome).toBe(TestOutcome.Error);
+        Expect(message.results?.[0].error?.message).toBe("Wow, this is always going to break!");
     }
 }

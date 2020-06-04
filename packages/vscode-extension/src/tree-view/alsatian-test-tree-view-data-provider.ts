@@ -9,7 +9,9 @@ import { TestRunner } from "../running/test-runner";
 import { TestSetTreeViewItem } from "./test-set-tree-view-item";
 import { UpdateTreeviewCommand } from "./update-tree-view-command";
 
-export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider<AlsatianTestFixtureTreeViewItem> {
+type AlsatianTreeViewItem = TestSetTreeViewItem | AlsatianTestFixtureTreeViewItem | AlsatianTestTreeViewItem | vscode.TreeItem;
+
+export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider<AlsatianTreeViewItem> {
 
     public static setup(context: vscode.ExtensionContext, testRunner: TestRunner) {    
         const treeViewDataProvider = new AlsatianTestTreeViewDataProvider(vscode.workspace.rootPath || ".", testRunner);
@@ -43,7 +45,7 @@ export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider
     return element;
   }
 
-  public async getChildren(element?: AlsatianTestFixtureTreeViewItem | TestSetTreeViewItem): Promise<any[]> {   
+  public async getChildren(element?: AlsatianTestFixtureTreeViewItem | TestSetTreeViewItem): Promise<Array<AlsatianTreeViewItem>> {   
     
     if (element) {
       if (element instanceof TestSetTreeViewItem) {
@@ -90,8 +92,8 @@ export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider
 
       const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => path.join(rootPath, script));
       
-      // this may only be run on run perhaps? either that or just remove
-      // await Promise.all(preTestScripts.map(script => import(script)));
+      // needed in case any setup occurs in a constructor
+      await Promise.all(preTestScripts.map(script => import(script)));
 
       //TODO: tests already loaded here and are loaded again in `run.ts` could avoid double load for quicker running
       // depends on solution to updates.
