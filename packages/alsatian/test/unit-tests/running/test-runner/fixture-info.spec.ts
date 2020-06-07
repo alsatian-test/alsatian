@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	MatchError,
 	SpyOn,
@@ -41,7 +41,7 @@ export class FixtureInfoTests {
 		return `# FIXTURE ${fixtureName}\n`;
 	}
 
-	@AsyncTest("a passing test outputs the fixture name")
+	@Test("a passing test outputs the fixture name")
 	@TestCase("SomeFixtureName")
 	@TestCase("AnotherFixture")
 	public async outputsFixtureNameWithPassingTest(fixtureDescription: string) {
@@ -75,7 +75,7 @@ export class FixtureInfoTests {
 		);
 	}
 
-	@AsyncTest("a failing tests outputs the fixture name")
+	@Test("a failing tests outputs the fixture name")
 	@TestCase("SomeFixtureName")
 	@TestCase("AnotherFixture")
 	public async outputsFixtureNameWithFailingTest(fixtureDescription: string) {

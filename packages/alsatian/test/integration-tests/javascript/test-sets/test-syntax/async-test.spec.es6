@@ -1,4 +1,4 @@
-import { Expect, TestFixture, AsyncTest } from "../../../../../core/alsatian-core";
+import { Expect, TestFixture, Test } from "../../../../../core/alsatian-core";
 
 @TestFixture("asynchronous tests")
 export class AsyncTests {
@@ -9,7 +9,7 @@ export class AsyncTests {
        });
    }
 
-   @AsyncTest("simple passing asynchronous test")
+   @Test("simple passing asynchronous test")
    passingAsyncTest() {
        return this._asyncFunction()
        .then(result => {
@@ -17,7 +17,7 @@ export class AsyncTests {
        });
    }
 
-   @AsyncTest("simple failing asynchronous test")
+   @Test("simple failing asynchronous test")
    failingAsyncTest() {
        return this._asyncFunction()
        .then(result => {

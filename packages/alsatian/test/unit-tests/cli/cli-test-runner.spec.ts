@@ -1,7 +1,6 @@
 import { AlsatianCliOptions } from "../../../cli/alsatian-cli-options";
 import { CliTestRunner } from "../../../cli/cli-test-runner";
 import {
-	AsyncTest,
 	Expect,
 	Setup,
 	SpyOn,
@@ -56,7 +55,7 @@ export class CliTestRunnerTests {
 		Expect(CliTestRunner.create()).toBeDefined();
 	}
 */
-	@AsyncTest()
+	@Test()
 	public async noTestFixturesExitsWithError() {
 		const cliTestRunner = new CliTestRunner(new TestRunner());
 
@@ -67,7 +66,7 @@ export class CliTestRunnerTests {
 		Expect(process.exit).toHaveBeenCalledWith(1);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async noTestFixturesPrintsErrorMessageWithNewLine() {
 		const cliTestRunner = new CliTestRunner(new TestRunner());
 
@@ -78,7 +77,7 @@ export class CliTestRunnerTests {
 		Expect(process.stderr.write).toHaveBeenCalledWith("no tests to run.\n");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async onePassingTestFixturesExitsWithNoError() {
 		const testRunner = new TestRunner();
 
@@ -99,7 +98,7 @@ export class CliTestRunnerTests {
 		Expect(process.exit).not.toHaveBeenCalledWith(1);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async runThrowsErrorExitsWithError(outcome: TestOutcome) {
 		const testRunner = new TestRunner();
 
@@ -120,7 +119,7 @@ export class CliTestRunnerTests {
 	@TestCase("something bad")
 	@TestCase("another even worse thing")
 	@TestCase("awfully terrible")
-	@AsyncTest()
+	@Test()
 	public async runThrowsErrorOutputsErrorMessage(errorMessage: string) {
 		const testRunner = new TestRunner();
 
@@ -138,7 +137,7 @@ export class CliTestRunnerTests {
 		Expect(process.stderr.write).toHaveBeenCalledWith(errorMessage + "\n");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async tapRequestedPipesOutputDirectlyToProcessStdOut() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -162,7 +161,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async tapRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -186,7 +185,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async versionRequestedOutputsCurrentVersionNumber() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -206,7 +205,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async versionRequestedWithAliasOutputsCurrentVersionNumber() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -226,7 +225,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async versionRequestedDoesntCallTestRunnerRun() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -242,7 +241,7 @@ export class CliTestRunnerTests {
 		Expect(testRunner.run).not.toHaveBeenCalled();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async versionRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -258,7 +257,7 @@ export class CliTestRunnerTests {
 		Expect(testRunner.run).not.toHaveBeenCalled();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async helpRequestedOutputsCurrentVersionNumber() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -294,7 +293,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async helpRequestedWithAliasOutputsCurrentVersionNumber() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -330,7 +329,7 @@ export class CliTestRunnerTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async helpRequestedDoesntCallTestRunnerRun() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");
@@ -346,7 +345,7 @@ export class CliTestRunnerTests {
 		Expect(testRunner.run).not.toHaveBeenCalled();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async helpRequestedWithAliasPipesOutputDirectlyToProcessStdOut() {
 		const testRunner = new TestRunner();
 		SpyOn(testRunner.outputStream, "pipe");

@@ -1,5 +1,4 @@
 import {
-	AsyncTeardown,
 	Expect,
 	Teardown,
 	TeardownFixture,

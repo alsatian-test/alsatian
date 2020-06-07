@@ -28,6 +28,3 @@ ok 13 teardown fixtures > teardown fixture has still not been called after first
 ok 14 teardown tests > teardown not called before first test
 ok 15 teardown tests > teardown has been called after first test and before second
 ok 16 teardown tests > teardown fixture has been called when previous fixture completes
-# WARN: AsyncTest has been deprecated and will be removed in version 4.0.0. Use the Test decorator instead.
-# WARN: AsyncSetup has been deprecated and will be removed in version 4.0.0. Use the Setup decorator instead.
-# WARN: AsyncTeardown has been deprecated and will be removed in version 4.0.0. Use the Teardown decorator instead.

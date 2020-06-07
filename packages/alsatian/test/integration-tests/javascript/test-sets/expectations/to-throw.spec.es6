@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, Test, TestFixture } from "../../../../../core/alsatian-core";
+import { Expect, Test, TestFixture } from "../../../../../core/alsatian-core";
 
 @TestFixture("error throwing")
 export class ErrorThrow {
@@ -59,7 +59,7 @@ export class ErrorThrow {
         Expect(errorFunction).not.toThrowError(TypeError, "specific error");
     }
 
-    @AsyncTest()
+    @Test()
     asyncErrorThrown() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(() => reject(new Error("error")), 400);
@@ -69,7 +69,7 @@ export class ErrorThrow {
         return Expect(errorFunction).toThrowAsync();
     }
 
-    @AsyncTest()
+    @Test()
     asyncErrorNotThrown() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(resolve, 400);
@@ -79,7 +79,7 @@ export class ErrorThrow {
         return Expect(errorFunction).toThrowAsync();
     }
 
-    @AsyncTest()
+    @Test()
     asyncNoErrorThrown() {
         const errorFunction = () => { return new Promise((resolve) => {
             setTimeout(resolve, 400);
@@ -89,7 +89,7 @@ export class ErrorThrow {
         return Expect(errorFunction).not.toThrowAsync();
     }
 
-    @AsyncTest()
+    @Test()
     asyncErrorUnexpectedly() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(() => reject(new Error("error")), 400);
@@ -99,7 +99,7 @@ export class ErrorThrow {
         return Expect(errorFunction).not.toThrowAsync();
     }
 
-    @AsyncTest()
+    @Test()
     asnycExactErrorThrown() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(() => reject(new TypeError("specific error")), 400);
@@ -109,7 +109,7 @@ export class ErrorThrow {
         return Expect(errorFunction).toThrowErrorAsync(TypeError, "specific error");
     }
 
-    @AsyncTest()
+    @Test()
     asnycExactErrorNotThrown() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(() => reject(new Error("error")), 400);
@@ -119,7 +119,7 @@ export class ErrorThrow {
         return Expect(errorFunction).toThrowErrorAsync(TypeError, "specific error");
     }
 
-    @AsyncTest()
+    @Test()
     asyncNotExactErrorThrown() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             setTimeout(() => reject(new Error("any old error")), 400);
@@ -129,7 +129,7 @@ export class ErrorThrow {
         return Expect(errorFunction).not.toThrowErrorAsync(TypeError, "specific error");
     }
 
-    @AsyncTest()
+    @Test()
     asyncExactErrorThrownUnexpectedly() {
         const errorFunction = () => { return new Promise((resolve, reject) => {
             reject(new TypeError("specific error"));

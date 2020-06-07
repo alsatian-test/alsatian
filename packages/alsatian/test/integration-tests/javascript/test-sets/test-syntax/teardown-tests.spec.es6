@@ -1,4 +1,4 @@
-import { Teardown, AsyncTeardown, TestFixture, Expect, Test } from "../../../../../core/alsatian-core";
+import { Teardown, TestFixture, Expect, Test } from "../../../../../core/alsatian-core";
 import { TeardownFixtureTests } from "./teardown-fixture.spec";
 
 @TestFixture("teardown tests")
@@ -14,7 +14,7 @@ export class TeardownTests {
        this._teardownComplete = true;
    }
 
-   @AsyncTeardown
+   @Teardown
    _asyncTeardown() {
        return new Promise((resolve, reject) => {
            this._asyncTeardownComplete = true;

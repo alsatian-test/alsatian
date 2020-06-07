@@ -1,11 +1,10 @@
 import "reflect-metadata";
 import {
 	Expect,
-	METADATA_KEYS,
 	SpyOn,
 	Test,
 	TestFixture,
-	FocusTest
+	Focus
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
@@ -39,7 +38,7 @@ export class FocussedTestTests {
 		@TestFixture()
 		class SingleFocussedTest {
 			@Test()
-			@FocusTest
+			@Focus
 			public focussedTest() {}
 		}
 

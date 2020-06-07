@@ -1,9 +1,9 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
 import {
-	AsyncTest,
 	Expect,
 	TestCase,
+	Test,
 	Timeout
 } from "../../../core/alsatian-core";
 
@@ -11,7 +11,7 @@ export class CliIntegrationTests {
 	@TestCase("to-be")
 	@TestCase("to-equal")
 	@TestCase("to-throw")
-	@AsyncTest()
+	@Test()
 	@Timeout(10000)
 	public toBeExpectations(expectationTestName: string) {
 		const result = child.exec(
@@ -42,7 +42,7 @@ export class CliIntegrationTests {
 	@TestCase("setup")
 	@TestCase("teardown")
 	@TestCase("case-arguments")
-	@AsyncTest()
+	@Test()
 	@Timeout(5000)
 	public syntaxTests(syntaxTestName: string) {
 		const result = child.exec(

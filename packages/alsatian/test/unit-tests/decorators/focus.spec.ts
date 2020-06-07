@@ -3,11 +3,9 @@ import {
 	Expect,
 	METADATA_KEYS,
 	Test,
-	TestCase,
-	SpyOn
+	TestCase
 } from "../../../core/alsatian-core";
 import { Focus } from "../../../core/decorators/focus-decorator";
-import { Warner } from "../../../core/maintenance/warn";
 
 export class FocusTestDecoratorTests {
 	@TestCase("key")

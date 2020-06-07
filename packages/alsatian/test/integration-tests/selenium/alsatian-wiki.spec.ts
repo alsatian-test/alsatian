@@ -1,8 +1,8 @@
 import { Builder, By, Capabilities, WebDriver } from "selenium-webdriver";
 import {
-	AsyncSetup,
-	AsyncTeardown,
-	AsyncTest,
+	Test,
+	Setup,
+	Teardown,
 	Expect,
 	TestFixture
 } from "../../../core/alsatian-core";
@@ -11,7 +11,7 @@ import {
 export default class AlsatianWikiEndToEndTests {
 	private _driver: WebDriver;
 
-	@AsyncSetup
+	@Setup
 	private async _goToWiki() {
 		// create a driver if one hasn't yet been created
 		this._driver = new Builder()
@@ -24,13 +24,13 @@ export default class AlsatianWikiEndToEndTests {
 		);
 	}
 
-	@AsyncTeardown
+	@Teardown
 	private async _tidyUp() {
 		// quit the browser so it's not hanging about
 		this._driver.quit();
 	}
 
-	@AsyncTest("page title is Home")
+	@Test("page title is Home")
 	public async correctTitle() {
 		// get the wiki title
 		const title = await this._driver
@@ -41,7 +41,7 @@ export default class AlsatianWikiEndToEndTests {
 		Expect(title).toBe("Home");
 	}
 
-	@AsyncTest("everyone gets a nice welcome")
+	@Test("everyone gets a nice welcome")
 	public async checkContent() {
 		// get the wiki body
 		const title = await this._driver

@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	TestCase
 } from "../../../core/alsatian-core";
@@ -21,7 +21,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(1)
 	@TestCase(100)
-	@AsyncTest("Test toThrowAsync catches thrown errors and does not rethrow")
+	@Test("Test toThrowAsync catches thrown errors and does not rethrow")
 	public async asyncFunctionThrowsErrorPasses(delayMs: number) {
 		await Expect(async () => {
 			await Expect(
@@ -32,7 +32,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(1)
 	@TestCase(100)
-	@AsyncTest("Test toThrowAsync throws and error if an error is not thrown")
+	@Test("Test toThrowAsync throws and error if an error is not thrown")
 	public async asyncFunctionThrowDoesNotErrorFails(delayMs: number) {
 		await Expect(async () => {
 			await Expect(
@@ -43,7 +43,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(0)
 	@TestCase(100)
-	@AsyncTest(
+	@Test(
 		"Test toThrowAsync throws a ErrorMatchError and toThrowErrorAsync catches it"
 	)
 	public async asyncFunctionDoesNotThrowErrorFailsWithCorrectError(
@@ -61,7 +61,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(0)
 	@TestCase(100)
-	@AsyncTest("Test not.toThrowAsync does not throw when it shouldn't")
+	@Test("Test not.toThrowAsync does not throw when it shouldn't")
 	public async asyncFunctionDoesNotThrowErrorPassesWhenShouldNotThrow(
 		delayMs: number
 	) {
@@ -74,7 +74,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(0)
 	@TestCase(100)
-	@AsyncTest("Test not.toThrowAsync does throw when it should")
+	@Test("Test not.toThrowAsync does throw when it should")
 	public async asyncFunctionThrowsErrorFailsWhenShouldNotThrow(
 		delayMs: number
 	) {
@@ -87,7 +87,7 @@ export class ToThrowAsyncTests {
 
 	@TestCase(0)
 	@TestCase(100)
-	@AsyncTest("Test not.toThrowAsync thows an ErrorMatchError when it should")
+	@Test("Test not.toThrowAsync thows an ErrorMatchError when it should")
 	public async asyncFunctionThrowsErrorFailsWithCorrectError(
 		delayMs: number
 	) {
@@ -101,7 +101,7 @@ export class ToThrowAsyncTests {
 		);
 	}
 
-	@AsyncTest(
+	@Test(
 		"Test toThrowAsync errors are caught and error is type ErrorMatchError"
 	)
 	public async asyncActualValueAndShouldNotMatchErrorM() {
@@ -121,7 +121,7 @@ export class ToThrowAsyncTests {
 	@TestCase(EvalError, "something went wrong")
 	@TestCase(ReferenceError, "A much worse thing happened!")
 	@TestCase(SyntaxError, "THE END IS NIGH")
-	@AsyncTest(
+	@Test(
 		"Test not.toThrowAsync errors are caught and error is type ErrorMatchError's"
 	)
 	public async asyncActualValueAndShouldNotMatchShouldBeSetToErrorWasThrown(
@@ -145,7 +145,7 @@ export class ToThrowAsyncTests {
 		);
 	}
 
-	@AsyncTest(
+	@Test(
 		"Test not.toThrowAsync error are caught and error is ErrorMatchError"
 	)
 	public async asyncExpectedValueAndShouldNotMatchShouldBeSetToErrorNotToBeThrown() {
@@ -164,7 +164,7 @@ export class ToThrowAsyncTests {
 		Expect(errorMatchError.expected).toBe("no errors thrown");
 	}
 
-	@AsyncTest(
+	@Test(
 		"Test toThrowErrorAsync catches errors of the correct type and passes"
 	)
 	public async asyncCheckingToThrowErrorAsyncPassesWhenErrorsMatch() {
@@ -175,7 +175,7 @@ export class ToThrowAsyncTests {
 		}).toBeTruthy();
 	}
 
-	@AsyncTest(
+	@Test(
 		"Test toThrowErrorAsync catches errors and if it isn't correct throws an Error"
 	)
 	public async asyncCheckingToThrowErrorAsyncFailsOnWhenErrorsDoNotMatch() {
@@ -197,7 +197,7 @@ export class ToThrowAsyncTests {
 	@TestCase({ an: "object" })
 	@TestCase([])
 	@TestCase(["an", "array"])
-	@AsyncTest("Test toThrowErrorAsync throws a TypeError when it should")
+	@Test("Test toThrowErrorAsync throws a TypeError when it should")
 	public async asyncCheckingWhetherNonFunctionForToThrowErrorAcyncDoesThrow(
 		actualValue: any
 	) {

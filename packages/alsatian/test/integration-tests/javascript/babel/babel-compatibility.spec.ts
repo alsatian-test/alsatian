@@ -1,9 +1,10 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
-import { AsyncTest, Expect, Timeout } from "alsatian";
+import { Expect, Test, Timeout } from "alsatian";
 
 export class BabelIntegrationTests {
-	@AsyncTest()
+
+	@Test()
 	@Timeout(5000)
 	public toBeExpectations() {
 		const result = child.exec(
@@ -27,7 +28,7 @@ export class BabelIntegrationTests {
 		});
 	}
 
-	@AsyncTest()
+	@Test()
 	@Timeout(10000)
 	public toThrowExpectations() {
 		const result = child.exec(
@@ -51,7 +52,7 @@ export class BabelIntegrationTests {
 		});
 	}
 
-	@AsyncTest()
+	@Test()
 	@Timeout(5000)
 	public asyncTest() {
 		const result = child.exec(

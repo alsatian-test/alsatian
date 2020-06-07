@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	FunctionSpy,
 	METADATA_KEYS,
@@ -56,7 +56,7 @@ export class SetupTests {
 			.build();
 	}
 
-	@AsyncTest("single setup function called")
+	@Test("single setup function called")
 	public async singleSetupFunctionCalled() {
 		const testFixture = this._createTestFixture();
 
@@ -87,7 +87,7 @@ export class SetupTests {
 		Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
 	}
 
-	@AsyncTest("single async setup function called")
+	@Test("single async setup function called")
 	public async singleAsyncSetupFunctionCalled() {
 		const testFixture = this._createTestFixture();
 
@@ -121,7 +121,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple setup functions called")
+	@Test("multiple setup functions called")
 	public async multipleSetupFunctionsCalled(setupFunctionCount: number) {
 		const testFixture = this._createTestFixture();
 
@@ -160,7 +160,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple tests setup correct amount of times")
+	@Test("multiple tests setup correct amount of times")
 	public async multipleTestsSetupFunctionCalledEachTime(testCount: number) {
 		const testFixture = this._createTestFixture();
 
@@ -204,7 +204,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple test cases setup correct amount of times")
+	@Test("multiple test cases setup correct amount of times")
 	public async multipleTestCasesSetupFunctionCalledEachTime(
 		testCaseCount: number
 	) {
@@ -247,7 +247,7 @@ export class SetupTests {
 			.exactly(testCaseCount).times;
 	}
 
-	@AsyncTest("single setup fixure function called")
+	@Test("single setup fixure function called")
 	public async singleSetupFixtureFunctionCalled() {
 		const testFixture = this._createTestFixture();
 
@@ -278,7 +278,7 @@ export class SetupTests {
 		Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
 	}
 
-	@AsyncTest("single async setup fixure function called")
+	@Test("single async setup fixure function called")
 	public async singleAsyncSetupFixtureFunctionCalled() {
 		const testFixture = this._createTestFixture();
 
@@ -312,7 +312,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple setup fixture functions called")
+	@Test("multiple setup fixture functions called")
 	public async multipleSetupFixtureFunctionsCalled(
 		setupFunctionCount: number
 	) {
@@ -355,7 +355,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple tests only setup fixture once")
+	@Test("multiple tests only setup fixture once")
 	public async multipleTestsOnlySetupFixtureOnce(testCount: number) {
 		const testFixture = this._createTestFixture();
 
@@ -399,7 +399,7 @@ export class SetupTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple test cases only setup fixture once")
+	@Test("multiple test cases only setup fixture once")
 	public async multipleTestCasesOnlySetupFixureOnce(testCaseCount: number) {
 		const testFixture = this._createTestFixture();
 

@@ -10,7 +10,7 @@ import {
 	TestFixture,
 	Setup,
 	Teardown,
-	IgnoreTests
+	Ignore
 } from "../../../core/alsatian-core";
 import { FileRequirer } from "../../../core/file-requirer";
 import { TestLoader } from "../../../core/test-loader";
@@ -66,7 +66,7 @@ export class LoadTestTests {
 		const fileRequirer = new FileRequirer();
 
 		@TestFixture()
-		@IgnoreTests()
+		@Ignore("This fixture should be ignored")
 		class IgnoredFixture {
 			@Test()
 			public test() {}
@@ -328,7 +328,7 @@ export class LoadTestTests {
 		const fileRequirer = new FileRequirer();
 
 		@TestFixture()
-		@IgnoreTests(reason)
+		@Ignore(reason)
 		class IgnoredFixture {
 			@Test()
 			public testOne() {}

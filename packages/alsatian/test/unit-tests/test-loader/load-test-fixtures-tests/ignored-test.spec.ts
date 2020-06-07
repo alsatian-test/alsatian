@@ -1,12 +1,11 @@
 import "reflect-metadata";
 import {
 	Expect,
-	METADATA_KEYS,
 	SpyOn,
 	Test,
 	TestCase,
 	TestFixture,
-	IgnoreTest
+	Ignore
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
@@ -40,7 +39,7 @@ export class IgnoredTestTests {
 		@TestFixture()
 		class Fixture {
 			@Test()
-			@IgnoreTest()
+			@Ignore("This test should be ignored")
 			public singleIgnoredTest() {}
 		}
 
@@ -64,7 +63,7 @@ export class IgnoredTestTests {
 		@TestFixture()
 		class Fixture {
 			@Test()
-			@IgnoreTest(reason)
+			@Ignore(reason)
 			public singleIgnoredTest() {}
 		}
 
