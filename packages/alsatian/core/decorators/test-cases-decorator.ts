@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { TEST_CASES } from "./_metadata-keys";
 import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
+import { deprecate } from "../maintenance/deprecate";
 
 function GetTestCases(
 	caseArguments:
@@ -34,6 +35,8 @@ export function TestCases(
 	propertyKey: string,
 	descriptor?: TypedPropertyDescriptor<any>
 ) => void {
+	deprecate("TestCases", "5.0.0", "Please switch to using the new TestProperties decorator.");
+
 	return (
 		target: object,
 		propertyKey: string,

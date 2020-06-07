@@ -3,9 +3,11 @@ import {
 	Expect,
 	METADATA_KEYS,
 	Test,
-	TestCase
+	TestCase,
+	SpyOn
 } from "../../../core/alsatian-core";
 import { TestCases as TestCasesDecorator } from "../../../core/decorators/test-cases-decorator";
+import { Warner } from "../../../core/maintenance/warn";
 
 export class TestCaseDecoratorTests {
 	@Test()
@@ -243,5 +245,17 @@ export class TestCaseDecoratorTests {
 		);
 
 		Expect(testCases[0].caseArguments).toEqual(args[0]);
+	}
+
+	@Test("deprecation warning added")
+	public deprecationWarningAdded() {
+		SpyOn(Warner, "warn");
+
+		TestCasesDecorator([]);
+
+		Expect(Warner.warn).toHaveBeenCalledWith(
+			"TestCases has been deprecated and will be removed in version 5.0.0. " +
+				"Please switch to using the new TestProperties decorator."
+		);
 	}
 }
