@@ -11,7 +11,6 @@ import { MatchError } from "../../../core/errors";
 import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResultsBuilder } from "../../builders/test-results-builder";
-import { ILog } from "../../../core/maintenance/log";
 
 const _getErrorYaml = (error: MatchError, logs?: Array<string>) => {
 	return (
@@ -23,6 +22,7 @@ const _getErrorYaml = (error: MatchError, logs?: Array<string>) => {
 		` data:\n` +
 		`   got: ${yamlStringify(error.actual)}\n` +
 		`   expect: ${yamlStringify(error.expected)}\n` +
+		"   fileLocation: /fake/file.path\n" +
 		(logs !== undefined ? "   details:\n" : "") +
 		buildLogs(logs) +
 		` ...\n`
@@ -41,6 +41,7 @@ const _getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
 		" data:\n" +
 		"   got: an unhandled error\n" +
 		"   expect: no unhandled errors to be thrown\n" +
+		"   fileLocation: /fake/file.path\n" +
 		"   details:\n" +
 		buildLogs(logs) +
 		"     type: Error\n" +
@@ -68,6 +69,7 @@ function _getUnhandledErrorMessageNoStack(): string {
 		" data:\n" +
 		"   got: an unhandled error\n" +
 		"   expect: no unhandled errors to be thrown\n" +
+		"   fileLocation: /fake/file.path\n" +
 		" ...\n"
 	);
 }

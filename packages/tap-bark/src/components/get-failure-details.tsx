@@ -12,6 +12,7 @@ export function getFailureMessage(assertion: TapAssertion) {
         const details = data.details;
         const title = <Box flexDirection="column">
                         {failureTitle}
+                        <Box>at: {assertion.diag.data.fileLocation}</Box>
                         <Box>{assertion.diag.message}</Box>
                       </Box>;
 

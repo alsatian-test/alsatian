@@ -10,6 +10,8 @@ not ok 3 ToBeTests > twoPlusTwoDoNotMakeFour
  data:
    got: '4'
    expect: '4'
+   fileLocation: >-
+     {{SPEC_FILE}}
  ...
 not ok 4 ToBeTests > twoPlusTwoMakeFive
  ---
@@ -18,4 +20,6 @@ not ok 4 ToBeTests > twoPlusTwoMakeFive
  data:
    got: '4'
    expect: '5'
+   fileLocation: >-
+     {{SPEC_FILE}}
  ...
