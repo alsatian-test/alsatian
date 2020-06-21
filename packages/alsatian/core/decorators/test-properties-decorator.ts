@@ -4,7 +4,7 @@ import { Unused } from "../unused";
 import { markPropertyAsTest } from "./mark-property-as-test";
 
 export function TestProperties(
-	propertyArguments: Generator<any, void, unknown> | Array<Generator<any, void, unknown>>
+	propertyTestArguments: Generator<any, void, unknown> | Array<Generator<any, void, unknown>>
 ): (
 	target: object,
 	propertyKey: string,
@@ -32,7 +32,8 @@ export function TestProperties(
 
 		// add the test case to the list
 		testProperties.unshift({
-			propertyArguments
+			caseArguments: propertyTestArguments,
+			hasGeneratorFunctions: true
 		});
 
 		Reflect.defineMetadata(TEST_PROPERTIES, testProperties, target, propertyKey);
