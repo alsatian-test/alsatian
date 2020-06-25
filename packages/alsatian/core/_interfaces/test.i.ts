@@ -1,14 +1,16 @@
 import { ITestCase } from "./test-case.i";
+import { TestItem } from "../running";
 
 export interface ITest {
-	isAsync: boolean;
+   ignored: boolean;
+   ignoreReason?: string;
 
-	ignored: boolean;
-	ignoreReason?: string;
+   focussed: boolean;
+   timeout: number;
+   key: string;
+   description: string;
+   testCases: Array<ITestCase>;
+   testItems(): Iterable<TestItem>;
 
-	focussed: boolean;
-	timeout: number;
-	key: string;
-	description: string;
-	testCases: Array<ITestCase>;
+   addTestArguments(...args: Array<any>);
 }

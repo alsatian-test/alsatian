@@ -139,17 +139,20 @@ export class TestLoader {
 				testFixture.fixture,
 				test.key
 			);
-			test.testCases = [];
 
 			if (!testCases) {
-				test.testCases.push({ caseArguments: [] });
+				test.addTestArguments(this.createTestCasesGenerator([{ caseArguments: [] }]));
 			} else {
-				testCases.forEach((testCase: ITestCase) => {
-					test.testCases.push(testCase);
-				});
+				test.addTestArguments(this.createTestCasesGenerator(testCases));
 			}
 		});
 
 		return testFixture;
+	}
+
+	private *createTestCasesGenerator(testCases: Array<ITestCase>) {
+		for (let i; i < testCases.length; i++) {
+			yield testCases[i];
+		}
 	}
 }

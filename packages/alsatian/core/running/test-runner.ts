@@ -67,6 +67,8 @@ export class TestRunner {
 		const testItems = testSetRunInfo.testPlan.testItems;
 		const testFixtures = this._getTestFixtures(testItems);
 
+		
+
 		for (const testFixture of testFixtures) {
 			const testFixtureItems = testItems.filter(
 				testItem => testItem.testFixture === testFixture
