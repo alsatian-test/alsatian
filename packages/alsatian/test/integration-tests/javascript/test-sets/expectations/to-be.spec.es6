@@ -1,5 +1,6 @@
-import { Expect, Test } from "../../../../../core/alsatian-core";
+import { Expect, Test, TestFixture } from "../../../../../core/alsatian-core";
 
+@TestFixture("To Be Tests")
 export class ToBeTests {
 
   @Test()

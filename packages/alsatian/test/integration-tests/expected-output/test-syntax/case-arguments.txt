@@ -1,9 +1,9 @@
 TAP version 13
 1..6
-# FIXTURE CaseArgumentTestsTests
-ok 1 CaseArgumentTestsTests > AddNumbers ( 1, 2, 3 )
-ok 2 CaseArgumentTestsTests > AddNumbers ( 1.5, 2.5, 4 )
-ok 3 CaseArgumentTestsTests > AddStrings ( "Hello", " world!", "Hello world!" )
-ok 4 CaseArgumentTestsTests > AddStrings ( "Far", "away", "Faraway" )
-ok 5 CaseArgumentTestsTests > AddObjectProperty ( {"a":1}, {"a":2}, 3 )
-ok 6 CaseArgumentTestsTests > AddArray ( [1, 2], [3, 4], 10 )
+# FIXTURE @TestCase Tests
+ok 1 @TestCase Tests > AddNumbers ( 1, 2, 3 )
+ok 2 @TestCase Tests > AddNumbers ( 1.5, 2.5, 4 )
+ok 3 @TestCase Tests > AddStrings ( "Hello", " world!", "Hello world!" )
+ok 4 @TestCase Tests > AddStrings ( "Far", "away", "Faraway" )
+ok 5 @TestCase Tests > AddObjectProperty ( {"a":1}, {"a":2}, 3 )
+ok 6 @TestCase Tests > AddArray ( [1, 2], [3, 4], 10 )

@@ -1,7 +1,7 @@
 TAP version 13
 1..1
-# FIXTURE ToEqualTests
-not ok 1 ToEqualTests > onObjectWithNumericDifference
+# FIXTURE toEqual Tests
+not ok 1 toEqual Tests > onObjectWithNumericDifference
  ---
  message: Expected objects to be equal
  severity: fail
