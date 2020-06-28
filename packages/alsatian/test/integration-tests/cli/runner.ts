@@ -4,10 +4,12 @@ import {
 	AsyncTest,
 	Expect,
 	TestCase,
-	Timeout
+	Timeout,
+	TestFixture
 } from "../../../core/alsatian-core";
 import { join } from "path";
 
+@TestFixture("CLI Integration Tests")
 export class CliIntegrationTests {
 	@TestCase("to-be")
 	@TestCase("to-equal")

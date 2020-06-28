@@ -12,13 +12,13 @@ not ok 2 asynchronous tests > simple failing asynchronous test
    fileLocation: >-
      {{SPEC_PATH}}async-test.spec.js
  ...
-# FIXTURE CaseArgumentTestsTests
-ok 3 CaseArgumentTestsTests > AddNumbers ( 1, 2, 3 )
-ok 4 CaseArgumentTestsTests > AddNumbers ( 1.5, 2.5, 4 )
-ok 5 CaseArgumentTestsTests > AddStrings ( "Hello", " world!", "Hello world!" )
-ok 6 CaseArgumentTestsTests > AddStrings ( "Far", "away", "Faraway" )
-ok 7 CaseArgumentTestsTests > AddObjectProperty ( {"a":1}, {"a":2}, 3 )
-ok 8 CaseArgumentTestsTests > AddArray ( [1, 2], [3, 4], 10 )
+# FIXTURE @TestCase Tests
+ok 3 @TestCase Tests > AddNumbers ( 1, 2, 3 )
+ok 4 @TestCase Tests > AddNumbers ( 1.5, 2.5, 4 )
+ok 5 @TestCase Tests > AddStrings ( "Hello", " world!", "Hello world!" )
+ok 6 @TestCase Tests > AddStrings ( "Far", "away", "Faraway" )
+ok 7 @TestCase Tests > AddObjectProperty ( {"a":1}, {"a":2}, 3 )
+ok 8 @TestCase Tests > AddArray ( [1, 2], [3, 4], 10 )
 # FIXTURE setup tests
 ok 9 setup tests > simple setup
 ok 10 setup tests > simple async setup

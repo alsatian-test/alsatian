@@ -1,9 +1,9 @@
 TAP version 13
 1..4
-# FIXTURE ToBeTests
-ok 1 ToBeTests > twoPlusTwoMakeFour
-ok 2 ToBeTests > twoPlusTwoDoNotMakeFive
-not ok 3 ToBeTests > twoPlusTwoDoNotMakeFour
+# FIXTURE To Be Tests
+ok 1 To Be Tests > twoPlusTwoMakeFour
+ok 2 To Be Tests > twoPlusTwoDoNotMakeFive
+not ok 3 To Be Tests > twoPlusTwoDoNotMakeFour
  ---
  message: Expected 4 not to be 4.
  severity: fail
@@ -13,7 +13,7 @@ not ok 3 ToBeTests > twoPlusTwoDoNotMakeFour
    fileLocation: >-
      {{SPEC_FILE}}
  ...
-not ok 4 ToBeTests > twoPlusTwoMakeFive
+not ok 4 To Be Tests > twoPlusTwoMakeFive
  ---
  message: Expected 4 to be 5.
  severity: fail
