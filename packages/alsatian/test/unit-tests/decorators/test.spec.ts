@@ -4,11 +4,13 @@ import {
 	METADATA_KEYS,
 	Test,
 	TestCase,
-	SpyOn
+	SpyOn,
+	TestFixture
 } from "../../../core/alsatian-core";
 import { Test as TestDecorator } from "../../../core/decorators/test-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
+@TestFixture("@Test tests")
 export class TestDecoratorTests {
 	@Test()
 	public testAddedAsMetaData() {

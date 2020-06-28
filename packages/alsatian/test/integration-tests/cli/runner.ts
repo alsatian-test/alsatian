@@ -4,9 +4,11 @@ import {
 	Expect,
 	TestCase,
 	Test,
-	Timeout
+	Timeout,
+	TestFixture
 } from "../../../core/alsatian-core";
 
+@TestFixture("CLI Integration Tests")
 export class CliIntegrationTests {
 	@TestCase("to-be")
 	@TestCase("to-equal")
@@ -16,7 +18,7 @@ export class CliIntegrationTests {
 	public toBeExpectations(expectationTestName: string) {
 		const result = child.exec(
 			`alsatian ` +
-				`./dist/test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js` +
+				`./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.ts` +
 				` --tap`
 		);
 
