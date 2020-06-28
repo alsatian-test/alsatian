@@ -1,6 +1,8 @@
 import { SpyCall } from "./spy-call";
 
 export class PropertySpy<PropertyType> {
+
+	public readonly setCalls: Array<SpyCall> = [];
 	private _originialGetter: () => PropertyType | undefined;
 	private _originialSetter: (value: PropertyType) => void | undefined;
 	private _value: PropertyType;
@@ -10,11 +12,6 @@ export class PropertySpy<PropertyType> {
 	private _returnValue: boolean;
 	private _propertyName: string;
 	private _getCalls: Array<SpyCall> = [];
-
-	private _setCalls: Array<SpyCall> = [];
-	public get setCalls() {
-		return this._setCalls;
-	}
 
 	public constructor(target: any, propertyName: string) {
 		// store references to property we are spying on so we can restore it
@@ -102,7 +99,7 @@ export class PropertySpy<PropertyType> {
 
 	private _set(value: PropertyType) {
 		// log that the proeprty was set and with which value
-		this._setCalls.push(new SpyCall([value]));
+		this.setCalls.push(new SpyCall([value]));
 
 		// call the setter function
 		this._setter.call(this._descriptorTarget, value);

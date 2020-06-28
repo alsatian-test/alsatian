@@ -14,18 +14,15 @@ import { TestItem } from "./test-item";
 import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
+	public readonly outputStream: TestOutputStream;
 	private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
-	private _outputStream: TestOutputStream;
-	public get outputStream() {
-		return this._outputStream;
-	}
 
 	constructor(outputStream?: TestOutputStream) {
 		// If we were given a TestOutput, use it, otherwise make one
 		if (outputStream !== undefined) {
-			this._outputStream = outputStream;
+			this.outputStream = outputStream;
 		} else {
-			this._outputStream = new TestOutputStream();
+			this.outputStream = new TestOutputStream();
 		}
 	}
 
@@ -41,8 +38,8 @@ export class TestRunner {
 
 		const testSetResults = new TestSetResults();
 
-		this._outputStream.emitVersion();
-		this._outputStream.emitPlan(testPlan.testItems.length);
+		this.outputStream.emitVersion();
+		this.outputStream.emitPlan(testPlan.testItems.length);
 
 		const testSetRunInfo = new TestSetRunInfo(
 			testPlan,
@@ -74,7 +71,7 @@ export class TestRunner {
 
 			await this._setupFixture(testFixture.fixture);
 
-			this._outputStream.emitFixture(testFixture);
+			this.outputStream.emitFixture(testFixture);
 
 			const testFixtureResults = results.addTestFixtureResult(
 				testFixture
@@ -101,7 +98,7 @@ export class TestRunner {
 					});
 				});
 
-				this._outputStream.emitResult(
+				this.outputStream.emitResult(
 					testItems.indexOf(testItem) + 1,
 					result
 				);
@@ -112,7 +109,7 @@ export class TestRunner {
 
 		Warner.warnings.forEach(warning => this.outputStream.emitWarning(warning));
 
-		this._outputStream.end();
+		this.outputStream.end();
 	}
 
 	private _getTestFixtures(testItems: Array<TestItem>) {

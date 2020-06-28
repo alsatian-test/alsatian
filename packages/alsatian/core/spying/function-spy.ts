@@ -2,16 +2,13 @@ import { SpyCall } from "../spying";
 import { ISpyCall } from "../_interfaces";
 
 export class FunctionSpy {
+
+	public readonly calls: Array<ISpyCall> = [];
 	protected returnValue: any;
 	protected hasReturnValue: boolean;
 	protected isStubbed: boolean;
 	protected context: any;
 	private _fakeFunction: () => any;
-
-	private _calls: Array<ISpyCall> = [];
-	public get calls() {
-		return this._calls;
-	}
 
 	public callsWithArguments(...args: Array<any>): Array<ISpyCall> {
 		return this.calls.filter(call =>

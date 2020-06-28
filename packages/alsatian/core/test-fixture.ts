@@ -8,10 +8,7 @@ export class TestFixture implements ITestFixture {
 	public description: string;
 	public filePath: string;
 
-	private _tests: Array<ITest> = [];
-	public get tests() {
-		return this._tests;
-	}
+	public readonly tests: Array<ITest> = [];
 
 	constructor(description: string) {
 		this.focussed = false;
