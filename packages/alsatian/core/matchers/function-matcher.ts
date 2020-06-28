@@ -12,9 +12,9 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	 * Checks that a function throws an error when executed
 	 */
 	public toThrow() {
-		const error = this._getError();
+		const error = this.getError();
 
-		this._registerMatcher(
+		this.registerMatcher(
 			(error === null) !== this.shouldMatch,
 			`Expected an error ` +
 			`${this.shouldMatch ? "" : "not "}to be thrown ` +
@@ -27,9 +27,9 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	}
 
 	public async toThrowAsync() {
-		const error = await this._getAsyncError();
+		const error = await this.getAsyncError();
 
-		this._registerMatcher(
+		this.registerMatcher(
 			(error === null) !== this.shouldMatch,
 			`Expected an error ` +
 			`${this.shouldMatch ? "" : "not "}to be thrown ` +
@@ -50,8 +50,8 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorType: new (...args: Array<any>) => Error,
 		errorMessage: string
 	) {
-		const error = this._getError();
-		this._errorMatches(
+		const error = this.getError();
+		this.errorMatches(
 			error,
 			errorType,
 			errorMessage
@@ -67,8 +67,8 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		errorType: new (...args: Array<any>) => Error,
 		errorMessage: string
 	) {
-		const error = await this._getAsyncError();
-		this._errorMatches(
+		const error = await this.getAsyncError();
+		this.errorMatches(
 			error,
 			errorType,
 			errorMessage
@@ -79,7 +79,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	 * Checks that a spy has been called
 	 */
 	public toHaveBeenCalled(): FunctionSpyMatcher {
-		if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
+		if (this.isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
 			throw new TypeError(
 				"toHaveBeenCalled requires value passed in to Expect to be a FunctionSpy or a spied on function."
 			);
@@ -87,7 +87,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 
 		const spy = this.actualValue as FunctionSpy;
 
-		this._registerMatcher(
+		this.registerMatcher(
 			(spy.calls.length === 0) !== this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called.`,
 			`function ${!this.shouldMatch ? "not " : ""}to be called`,
@@ -103,21 +103,21 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 	public toHaveBeenCalledWith(
 		...expectedArguments: Parameters<T>
 	): FunctionSpyMatcher {
-		if (this._isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
+		if (this.isFunctionSpyOrSpiedOnFunction(this.actualValue) === false) {
 			throw new TypeError(
 				"toHaveBeenCalledWith requires value passed in to Expect to be a FunctionSpy or a spied on function."
 			);
 		}
 		const spy = this.actualValue as FunctionSpy;
 
-		this._registerMatcher(
+		this.registerMatcher(
 			spy.calls.some(call =>
-				this._callArgumentsMatch(call, expectedArguments)
+				this.callArgumentsMatch(call, expectedArguments)
 			) === this.shouldMatch,
 			`Expected function ${!this.shouldMatch ? "not " : ""}to be called` +
-			`${this._stringifyArguments(expectedArguments)}.`,
+			`${this.stringifyArguments(expectedArguments)}.`,
 			`function ${!this.shouldMatch ? "not " : ""}to be called` +
-			`${this._stringifyArguments(expectedArguments)}.`,
+			`${this.stringifyArguments(expectedArguments)}.`,
 			{
 				expectedArguments: stringify(expectedArguments),
 				actualArguments: stringify(spy.calls.map(call => call.args))
@@ -127,11 +127,11 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		return new FunctionSpyMatcher(spy, expectedArguments);
 	}
 
-	private _stringifyArguments(expectedArguments: Parameters<T>) {
+	private stringifyArguments(expectedArguments: Parameters<T>) {
 		return expectedArguments ? ` with ${stringify(expectedArguments)}` : "";
 	}
 
-	private _getError() {
+	private getError() {
 		try {
 			(this.actualValue as T)();
 			return null;
@@ -140,7 +140,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		}
 	}
 
-	private async _getAsyncError() {
+	private async getAsyncError() {
 		try {
 			await (this.actualValue as T)();
 			return null;
@@ -149,14 +149,14 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		}
 	}
 
-	private _errorMatches(
+	private errorMatches(
 		error: Error,
 		errorType: new (...args: Array<any>) => Error,
 		errorMessage: string
 	) {
 		const threwRightError = error instanceof errorType && error.message === errorMessage;
 
-		this._registerMatcher(
+		this.registerMatcher(
 			threwRightError === this.shouldMatch,
 			`Expected an error with ` +
 			`${errorMessage ? `message "${errorMessage}"` : ""} ` +
@@ -172,7 +172,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		);
 	}
 
-	private _callArgumentsMatch(call: any, expectedArguments: Array<any>) {
+	private callArgumentsMatch(call: any, expectedArguments: Array<any>) {
 		if (call.args.length !== expectedArguments.length) {
 			return false;
 		}
@@ -189,7 +189,7 @@ export class FunctionMatcher<T extends AnyFunction> extends Matcher<FunctionSpy 
 		});
 	}
 
-	private _isFunctionSpyOrSpiedOnFunction(value: any) {
+	private isFunctionSpyOrSpiedOnFunction(value: any) {
 		return (
 			value instanceof FunctionSpy ||
 			(value instanceof Function && value.calls !== undefined)

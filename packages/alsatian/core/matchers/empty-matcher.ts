@@ -10,9 +10,9 @@ export class EmptyMatcher<T> extends Matcher<T> {
 	 */
 	public toBeEmpty() {
 		const actualValue = this.actualValue;
-		const length = this._getLength(actualValue);
+		const length = this.getLength(actualValue);
 
-		this._registerMatcher(
+		this.registerMatcher(
 			(length === 0) === this.shouldMatch,
 			`Expected "${
 				typeof actualValue === "string"
@@ -27,7 +27,7 @@ export class EmptyMatcher<T> extends Matcher<T> {
 		);
 	}
 
-	private _getLength(value: any) {
+	private getLength(value: any) {
 		if (value instanceof Map) {
 			return value.size;
 		}

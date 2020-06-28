@@ -5,18 +5,15 @@ import { IResultWithOutcome } from "./result-with-outcome.i";
 import { getOverallOutcome } from "./get-overall-outcome";
 
 export class TestSetResults implements IResultWithOutcome {
-	private _testFixtureResults: Array<TestFixtureResults> = [];
-	public get testFixtureResults() {
-		return this._testFixtureResults;
-	}
+	public readonly testFixtureResults: Array<TestFixtureResults> = [];
 
 	get outcome(): TestOutcome {
-		return getOverallOutcome(this._testFixtureResults);
+		return getOverallOutcome(this.testFixtureResults);
 	}
 
 	public addTestFixtureResult(testFixture: ITestFixture): TestFixtureResults {
 		const testFixtureResult = new TestFixtureResults(testFixture);
-		this._testFixtureResults.push(testFixtureResult);
+		this.testFixtureResults.push(testFixtureResult);
 		return testFixtureResult;
 	}
 }

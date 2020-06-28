@@ -10,12 +10,12 @@ export class TeardownTests {
    }
 
    @Teardown
-   _teardown() {
+   teardown() {
        this._teardownComplete = true;
    }
 
    @AsyncTeardown
-   _asyncTeardown() {
+   asyncTeardown() {
        return new Promise((resolve, reject) => {
            this._asyncTeardownComplete = true;
            resolve();
