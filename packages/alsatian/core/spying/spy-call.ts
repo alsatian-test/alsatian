@@ -13,7 +13,7 @@ export class SpyCall implements ISpyCall {
 		if (
 			expectedArguments.some(
 				(arg, index) =>
-					!this._argumentIsAsExpected(this.args[index], arg)
+					!this.argumentIsAsExpected(this.args[index], arg)
 			)
 		) {
 			return false;
@@ -22,7 +22,7 @@ export class SpyCall implements ISpyCall {
 		return true;
 	}
 
-	private _argumentIsAsExpected(actualArgument: any, expectedArgument: any) {
+	private argumentIsAsExpected(actualArgument: any, expectedArgument: any) {
 		if (expectedArgument === Any) {
 			return true;
 		} else if (expectedArgument instanceof TypeMatcher) {

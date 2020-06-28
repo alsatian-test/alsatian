@@ -28,7 +28,7 @@ export class Matcher<T> {
 	 * @param expectedValue - the value that will be used to match
 	 */
 	public toBe(expectedValue: T) {
-		this._registerMatcher(
+		this.registerMatcher(
 			(expectedValue === this.actualValue) === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
 				!this.shouldMatch ? "not " : ""
@@ -42,14 +42,14 @@ export class Matcher<T> {
 	 * @param expectedValue - the value that will be used to match
 	 */
 	public toEqual(expectedValue: any) {
-		this._checkTypeMatcherEqual(expectedValue, this.toEqualCheck);
+		this.checkTypeMatcherEqual(expectedValue, this.toEqualCheck);
 	}
 
 	/**
 	 * Checks that a value is not undefined
 	 */
 	public toBeDefined() {
-		this._registerMatcher(
+		this.registerMatcher(
 			(this.actualValue !== undefined) === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
 				this.shouldMatch ? "not " : ""
@@ -62,7 +62,7 @@ export class Matcher<T> {
 	 * Checks that a value is null
 	 */
 	public toBeNull() {
-		this._registerMatcher(
+		this.registerMatcher(
 			(this.actualValue === null) === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
 				!this.shouldMatch ? "not " : ""
@@ -75,7 +75,7 @@ export class Matcher<T> {
 	 * Checks that a value is equivalent to boolean true
 	 */
 	public toBeTruthy() {
-		this._registerMatcher(
+		this.registerMatcher(
 			(this.actualValue && this.shouldMatch) ||
 				(!this.actualValue && !this.shouldMatch),
 			`Expected ${stringify(this.actualValue)} ${
@@ -85,7 +85,7 @@ export class Matcher<T> {
 		);
 	}
 
-	protected _registerMatcher(
+	protected registerMatcher(
 		isMatch: boolean,
 		failureMessage: string,
 		expectedValue: any,
@@ -101,9 +101,9 @@ export class Matcher<T> {
 		}
 	}
 
-	protected _checkTypeMatcherEqual(expected: any, alternativeCheck: (expectedValue: T) => void) {
+	protected checkTypeMatcherEqual(expected: any, alternativeCheck: (expectedValue: T) => void) {
 		if (expected instanceof TypeMatcher) {
-			this._registerMatcher(
+			this.registerMatcher(
 				expected.test(this.actualValue) === this.shouldMatch,
 				`Expected values ${!this.shouldMatch ? "not " : ""}to be equal`,
 				expected,
@@ -118,7 +118,7 @@ export class Matcher<T> {
 	}
 
 	private toEqualCheck(expectedValue: any) {
-		this._registerMatcher(
+		this.registerMatcher(
 			// exclude the double equals in this case from review
 			// as this is what we want to do
 			// tslint:disable-next-line:triple-equals

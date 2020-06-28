@@ -8,7 +8,7 @@ export class FunctionSpy {
 	protected hasReturnValue: boolean;
 	protected isStubbed: boolean;
 	protected context: any;
-	private _fakeFunction: () => any;
+	private fakeFunction: () => any;
 
 	public callsWithArguments(...args: Array<any>): Array<ISpyCall> {
 		return this.calls.filter(call =>
@@ -21,8 +21,8 @@ export class FunctionSpy {
 
 		let returnValue: any;
 
-		if (this._fakeFunction) {
-			returnValue = this._fakeFunction.apply(this.context, args);
+		if (this.fakeFunction) {
+			returnValue = this.fakeFunction.apply(this.context, args);
 		}
 
 		if (this.hasReturnValue) {
@@ -39,6 +39,6 @@ export class FunctionSpy {
 
 	public andCall(fakeFunction: () => any) {
 		this.isStubbed = true;
-		this._fakeFunction = fakeFunction;
+		this.fakeFunction = fakeFunction;
 	}
 }

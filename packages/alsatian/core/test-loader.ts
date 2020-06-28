@@ -3,15 +3,15 @@ import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
 
 export class TestLoader {
-	public constructor(private _fileRequirer: FileRequirer) {}
+	public constructor(private fileRequirer: FileRequirer) {}
 
 	public loadTestFixture(filePath: string): Array<ITestFixture> {
 		try {
-			const testFixtureModule = this._fileRequirer.require(filePath);
+			const testFixtureModule = this.fileRequirer.require(filePath);
 			const testFixtures: Array<ITestFixture> = [];
 
 			const loadFixture = (constructor: any, description: string) => {
-				const testFixture = this._loadTestFixture(
+				const testFixture = this.loadTestFixtureInstance(
 					constructor,
 					description,
 					filePath
@@ -38,7 +38,7 @@ export class TestLoader {
 		}
 	}
 
-	private _loadTestFixture(
+	private loadTestFixtureInstance(
 		testFixtureConstructor: new () => object,
 		defaultFixtureDescription: string,
 		filePath: string

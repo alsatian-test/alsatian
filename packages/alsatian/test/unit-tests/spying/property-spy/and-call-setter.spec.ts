@@ -14,7 +14,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			set: (value: any) => {
-				testObject._secretValue = value;
+				testObject.secretValue = value;
 			},
 			configurable: true
 		};
@@ -36,7 +36,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			set: (value: any) => {
-				testObject._secretValue = value;
+				testObject.secretValue = value;
 			},
 			configurable: true
 		};
@@ -61,7 +61,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			set: (value: any) => {
-				testObject._secretValue = value;
+				testObject.secretValue = value;
 			},
 			configurable: true
 		};
@@ -86,7 +86,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			configurable: true,
-			get: () => testObject._secretValue,
+			get: () => testObject.secretValue,
 			set: (value: any) => {}
 		};
 
@@ -98,7 +98,7 @@ export class AndCallSetterTests {
 			testObject,
 			"property"
 		).andCallSetter((value: any) => {
-			testObject._secretValue = value;
+			testObject.secretValue = value;
 		});
 
 		testObject.property = expectedValue;
@@ -120,7 +120,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			configurable: true,
-			get: () => testObject._secretValue,
+			get: () => testObject.secretValue,
 			set: (value: any) => {}
 		};
 
@@ -131,7 +131,7 @@ export class AndCallSetterTests {
 		const propertySpy = new PropertySpy(testObject, "property")
 			.andReturnValue(andReturnValue)
 			.andCallSetter((value: any) => {
-				testObject._secretValue = value;
+				testObject.secretValue = value;
 			});
 
 		testObject.property = setterValue;
@@ -153,7 +153,7 @@ export class AndCallSetterTests {
 
 		const propertyDescriptor = {
 			configurable: true,
-			get: () => testObject._secretValue,
+			get: () => testObject.secretValue,
 			set: (value: any) => {}
 		};
 
@@ -163,7 +163,7 @@ export class AndCallSetterTests {
 
 		const propertySpy = new PropertySpy(testObject, "property")
 			.andCallSetter((value: any) => {
-				testObject._secretValue = value;
+				testObject.secretValue = value;
 			})
 			.andReturnValue(andReturnValue);
 

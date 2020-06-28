@@ -7,7 +7,7 @@ import {
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 
 export class EmitFixtureTests {
-	private static _getExpectedFixtureOutput(description: string): string {
+	private static getExpectedFixtureOutput(description: string): string {
 		return `# FIXTURE ${description}\n`;
 	}
 
@@ -25,7 +25,7 @@ export class EmitFixtureTests {
 		testOutput.emitFixture(fixture);
 
 		Expect(testOutput.push).toHaveBeenCalledWith(
-			EmitFixtureTests._getExpectedFixtureOutput(description)
+			EmitFixtureTests.getExpectedFixtureOutput(description)
 		);
 	}
 }

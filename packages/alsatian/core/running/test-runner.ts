@@ -15,7 +15,7 @@ import { Warner } from "../maintenance/warn";
 
 export class TestRunner {
 	public readonly outputStream: TestOutputStream;
-	private _onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
+	private onTestCompleteCBs: Array<IOnTestCompleteCBFunction> = [];
 
 	constructor(outputStream?: TestOutputStream) {
 		// If we were given a TestOutput, use it, otherwise make one
@@ -47,29 +47,29 @@ export class TestRunner {
 			timeout
 		);
 
-		await this._runTests(testSetRunInfo, testSetResults);
+		await this.runTests(testSetRunInfo, testSetResults);
 	}
 
 	/**
 	 * Defined the call back function to be called when the test is completed
 	 */
 	public onTestComplete(testCompleteCB: IOnTestCompleteCBFunction) {
-		this._onTestCompleteCBs.push(testCompleteCB);
+		this.onTestCompleteCBs.push(testCompleteCB);
 	}
 
-	private async _runTests(
+	private async runTests(
 		testSetRunInfo: TestSetRunInfo,
 		results: TestSetResults
 	) {
 		const testItems = testSetRunInfo.testPlan.testItems;
-		const testFixtures = this._getTestFixtures(testItems);
+		const testFixtures = this.getTestFixtures(testItems);
 
 		for (const testFixture of testFixtures) {
 			const testFixtureItems = testItems.filter(
 				testItem => testItem.testFixture === testFixture
 			);
 
-			await this._setupFixture(testFixture.fixture);
+			await this.setupFixture(testFixture.fixture);
 
 			this.outputStream.emitFixture(testFixture);
 
@@ -78,13 +78,13 @@ export class TestRunner {
 			);
 
 			for (const testItem of testFixtureItems) {
-				const result = await this._getTestItemResult(
+				const result = await this.getTestItemResult(
 					testItem,
 					testSetRunInfo,
 					testFixtureResults
 				);
 
-				this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+				this.onTestCompleteCBs.forEach(onTestCompleteCB => {
 					onTestCompleteCB({
 						error: result.error,
 						outcome: result.outcome,
@@ -104,7 +104,7 @@ export class TestRunner {
 				);
 			}
 
-			await this._teardownFixture(testFixture.fixture);
+			await this.teardownFixture(testFixture.fixture);
 		}
 
 		Warner.warnings.forEach(warning => this.outputStream.emitWarning(warning));
@@ -112,7 +112,7 @@ export class TestRunner {
 		this.outputStream.end();
 	}
 
-	private _getTestFixtures(testItems: Array<TestItem>) {
+	private getTestFixtures(testItems: Array<TestItem>) {
 		return testItems
 			.map(testItem => testItem.testFixture)
 			.filter(
@@ -120,7 +120,7 @@ export class TestRunner {
 			);
 	}
 
-	private async _getTestItemResult(
+	private async getTestItemResult(
 		testItem: TestItem,
 		testSetRunInfo: TestSetRunInfo,
 		testFixtureResults: TestFixtureResults
@@ -147,18 +147,18 @@ export class TestRunner {
 		}
 	}
 
-	private async _setupFixture(fixture: { [key: string]: () => any }) {
-		await this._runFixtureFunctions(fixture, METADATA_KEYS.SETUP_FIXTURE);
+	private async setupFixture(fixture: { [key: string]: () => any }) {
+		await this.runFixtureFunctions(fixture, METADATA_KEYS.SETUP_FIXTURE);
 	}
 
-	private async _teardownFixture(fixture: { [key: string]: () => any }) {
-		await this._runFixtureFunctions(
+	private async teardownFixture(fixture: { [key: string]: () => any }) {
+		await this.runFixtureFunctions(
 			fixture,
 			METADATA_KEYS.TEARDOWN_FIXTURE
 		);
 	}
 
-	private async _runFixtureFunctions(
+	private async runFixtureFunctions(
 		fixture: { [key: string]: () => any },
 		metadataKey: string
 	) {

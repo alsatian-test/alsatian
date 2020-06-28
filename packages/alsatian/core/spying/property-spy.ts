@@ -3,30 +3,30 @@ import { SpyCall } from "./spy-call";
 export class PropertySpy<PropertyType> {
 
 	public readonly setCalls: Array<SpyCall> = [];
-	private _originialGetter: () => PropertyType | undefined;
-	private _originialSetter: (value: PropertyType) => void | undefined;
-	private _value: PropertyType;
-	private _descriptorTarget: any;
-	private _getter: () => PropertyType | undefined;
-	private _setter: (value: PropertyType) => void | undefined;
-	private _returnValue: boolean;
-	private _propertyName: string;
-	private _getCalls: Array<SpyCall> = [];
+	private originialGetter: () => PropertyType | undefined;
+	private originialSetter: (value: PropertyType) => void | undefined;
+	private value: PropertyType;
+	private descriptorTarget: any;
+	private getter: () => PropertyType | undefined;
+	private setter: (value: PropertyType) => void | undefined;
+	private returnValue: boolean;
+	private propertyName: string;
+	private getCalls: Array<SpyCall> = [];
 
 	public constructor(target: any, propertyName: string) {
 		// store references to property we are spying on so we can restore it
-		this._descriptorTarget = target;
-		this._propertyName = propertyName;
+		this.descriptorTarget = target;
+		this.propertyName = propertyName;
 
 		// for TypeScript may need to search target.constructor.prototype for propertyDescriptor
-		if (!Object.getOwnPropertyDescriptor(target, this._propertyName)) {
-			this._descriptorTarget = target.constructor.prototype;
+		if (!Object.getOwnPropertyDescriptor(target, this.propertyName)) {
+			this.descriptorTarget = target.constructor.prototype;
 		}
 
 		// get the current property descriptor
 		const propertyDescriptor = Object.getOwnPropertyDescriptor(
-			this._descriptorTarget,
-			this._propertyName
+			this.descriptorTarget,
+			this.propertyName
 		);
 
 		// throw an error if we are trying to spy on a non property
@@ -35,78 +35,78 @@ export class PropertySpy<PropertyType> {
 		}
 
 		// store the original setters and getters, which maybe undefined
-		this._originialGetter = propertyDescriptor.get as () =>
+		this.originialGetter = propertyDescriptor.get as () =>
 			| PropertyType
 			| undefined;
-		this._originialSetter = propertyDescriptor.set as (
+		this.originialSetter = propertyDescriptor.set as (
 			v: PropertyType
 		) => void | undefined;
 
-		this._getter = this._originialGetter;
-		this._setter = this._originialSetter;
+		this.getter = this.originialGetter;
+		this.setter = this.originialSetter;
 
 		// set descriptor target back to original object so the prototype doesn't get modified
-		this._descriptorTarget = target;
+		this.descriptorTarget = target;
 
 		// reset the property definition
-		Object.defineProperty(this._descriptorTarget, this._propertyName, {
-			get: this._get.bind(this),
-			set: this._set.bind(this)
+		Object.defineProperty(this.descriptorTarget, this.propertyName, {
+			get: this.get.bind(this),
+			set: this.set.bind(this)
 		});
 	}
 
 	public andReturnValue(value: PropertyType): PropertySpy<PropertyType> {
-		this._value = value;
-		this._returnValue = true;
+		this.value = value;
+		this.returnValue = true;
 		return this;
 	}
 
 	public andCallGetter(
 		getter: () => PropertyType
 	): PropertySpy<PropertyType> {
-		this._getter = getter;
-		this._returnValue = false;
+		this.getter = getter;
+		this.returnValue = false;
 		return this;
 	}
 
 	public andCallSetter(
 		setter: (value: PropertyType) => void
 	): PropertySpy<PropertyType> {
-		this._setter = setter;
-		this._returnValue = false;
+		this.setter = setter;
+		this.returnValue = false;
 		return this;
 	}
 
 	public restore() {
-		Object.defineProperty(this._descriptorTarget, this._propertyName, {
-			get: this._originialGetter,
-			set: this._originialSetter
+		Object.defineProperty(this.descriptorTarget, this.propertyName, {
+			get: this.originialGetter,
+			set: this.originialSetter
 		});
 	}
 
-	private _get() {
+	private get() {
 		// log that the property was requested
-		this._getCalls.push(new SpyCall([]));
+		this.getCalls.push(new SpyCall([]));
 
 		// return a given value if this is the spy's behaviour
-		if (this._returnValue) {
-			return this._value;
+		if (this.returnValue) {
+			return this.value;
 		}
 
 		// otherwise call the getter function and return it's return value
-		return this._getter ? this._getter.call(this._descriptorTarget) : undefined;
+		return this.getter ? this.getter.call(this.descriptorTarget) : undefined;
 	}
 
-	private _set(value: PropertyType) {
+	private set(value: PropertyType) {
 		// log that the proeprty was set and with which value
 		this.setCalls.push(new SpyCall([value]));
 
 		// call the setter function
-		this._setter.call(this._descriptorTarget, value);
+		this.setter.call(this.descriptorTarget, value);
 
 		// if there is not already a value to return then log this as the current value
-		if (!this._returnValue) {
-			this._value = value;
+		if (!this.returnValue) {
+			this.value = value;
 		}
 	}
 }
