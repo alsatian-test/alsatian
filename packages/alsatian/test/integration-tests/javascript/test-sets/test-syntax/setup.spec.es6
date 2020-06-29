@@ -10,17 +10,17 @@ export class SetupTests {
    }
 
    @SetupFixture
-   _setupFixture() {
+   setupFixture() {
        this._setupFixtureCount++;
    }
 
    @Setup
-   _setup() {
+   setup() {
        this._setupComplete = true;
    }
 
    @Setup
-   _asyncSetup() {
+   asyncSetup() {
        return new Promise((resolve, reject) => {
            this._asyncSetupComplete = true;
            resolve();
@@ -28,7 +28,7 @@ export class SetupTests {
    }
 
    @Teardown
-   _teardown() {
+   teardown() {
        this._setupComplete = false;
        this._asyncSetupComplete = false;
    }

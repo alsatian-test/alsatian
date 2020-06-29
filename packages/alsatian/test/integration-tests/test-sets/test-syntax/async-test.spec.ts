@@ -1,8 +1,8 @@
 import { Test, Expect, TestFixture } from "alsatian";
 
 @TestFixture("asynchronous tests")
-export class Tests {
-	private async _asyncFunction(): Promise<number> {
+export class AsyncTests {
+	private async asyncFunction(): Promise<number> {
 		return new Promise<number>((resolve, reject) => {
 			resolve(4);
 		});

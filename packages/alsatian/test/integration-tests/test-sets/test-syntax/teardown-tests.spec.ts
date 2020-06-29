@@ -8,32 +8,32 @@ import { TeardownFixtureTests } from "./teardown-fixture.spec";
 
 @TestFixture("teardown tests")
 export class TeardownTests {
-	private _teardownComplete: boolean = false;
-	private _asyncTeardownComplete: boolean = false;
+	private teardownComplete: boolean = false;
+	private asyncTeardownComplete: boolean = false;
 
 	@Teardown
-	private _teardown() {
-		this._teardownComplete = true;
+	private teardown() {
+		this.teardownComplete = true;
 	}
 
 	@Teardown
-	private async _Teardown(): Promise<void> {
+	private async asyncTeardown(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			this._asyncTeardownComplete = true;
+			this.asyncTeardownComplete = true;
 			resolve();
 		});
 	}
 
 	@Test("teardown not called before first test")
 	public async firstTestTeardownNotCalled() {
-		Expect(this._teardownComplete).toBe(false);
-		Expect(this._asyncTeardownComplete).toBe(false);
+		Expect(this.teardownComplete).toBe(false);
+		Expect(this.asyncTeardownComplete).toBe(false);
 	}
 
 	@Test("teardown has been called after first test and before second")
 	public async teardownNowHasBeenCalled() {
-		Expect(this._teardownComplete).toBe(true);
-		Expect(this._asyncTeardownComplete).toBe(true);
+		Expect(this.teardownComplete).toBe(true);
+		Expect(this.asyncTeardownComplete).toBe(true);
 	}
 
 	@Test("teardown fixture has been called when previous fixture completes")

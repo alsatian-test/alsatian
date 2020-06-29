@@ -3,10 +3,7 @@ import { TestSet } from "../test-set";
 import { TestItem } from "./test-item";
 
 export class TestPlan {
-	private _testItems: Array<TestItem> = [];
-	public get testItems() {
-		return this._testItems;
-	}
+	public readonly testItems: Array<TestItem> = [];
 
 	public constructor(testSet: TestSet) {
 		if (testSet.testFixtures.length === 0) {
@@ -42,7 +39,7 @@ export class TestPlan {
 
 			testsToRun.forEach(test => {
 				test.testCases.forEach(testCase => {
-					this._testItems.push(
+					this.testItems.push(
 						new TestItem(testFixture, test, testCase)
 					);
 				});

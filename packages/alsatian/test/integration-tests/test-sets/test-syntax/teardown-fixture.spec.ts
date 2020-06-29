@@ -11,7 +11,7 @@ export class TeardownFixtureTests {
 	public static teardownFixtureCount: number = 0;
 
 	@TeardownFixture
-	private _teardownFixture() {
+	private teardownFixture() {
 		TeardownFixtureTests.teardownFixtureCount++;
 	}
 

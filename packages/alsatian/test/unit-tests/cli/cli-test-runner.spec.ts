@@ -13,11 +13,11 @@ import {
 import { TapBark } from "tap-bark";
 
 export class CliTestRunnerTests {
-	private _originalTestPlan: any;
+	private originalTestPlan: any;
 
 	@Setup
-	private _spyProcess() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private spyProcess() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
@@ -29,14 +29,14 @@ export class CliTestRunnerTests {
 	}
 
 	@Teardown
-	private _resetProcess() {
+	private resetProcess() {
 		(process.exit as any).restore();
 		(process.stdout.write as any).restore();
 		(process.stderr.write as any).restore();
 		(TapBark.tapParser.on as any).restore();
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
@@ -46,7 +46,7 @@ export class CliTestRunnerTests {
 	public nullOrUndefinedTestRunnerThrowsError(testRunner: TestRunner) {
 		Expect(() => new CliTestRunner(testRunner)).toThrowError(
 			TypeError,
-			"_testRunner must not be null or undefined."
+			"testRunner must not be null or undefined."
 		);
 	}
 /*

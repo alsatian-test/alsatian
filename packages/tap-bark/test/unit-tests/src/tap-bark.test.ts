@@ -19,15 +19,15 @@ async function wait(timeInMs: number) {
 
 @TestFixture("tap bark tests")
 export default class TapBarkTests {
-	private _originalStdErr: any;
-	private _originalStdOut: any;
-	private _originalProcessExit: any;
+	private originalStdErr: any;
+	private originalStdOut: any;
+	private originalProcessExit: any;
 
 	@Setup
-	private _spyProcess() {
-		this._originalProcessExit = process.exit;
-		this._originalStdOut = process.stdout.write;
-		this._originalStdErr = process.stderr.write;
+	private spyProcess() {
+		this.originalProcessExit = process.exit;
+		this.originalStdOut = process.stdout.write;
+		this.originalStdErr = process.stderr.write;
 
 		SpyOn(TapBark.tapParser, "on");
 		SpyOn(process, "exit").andStub();
@@ -36,10 +36,10 @@ export default class TapBarkTests {
 	}
 
 	@Teardown
-	private _resetProcess() {
-		process.exit = this._originalProcessExit;
-		process.stdout.write = this._originalStdOut;
-		process.stderr.write = this._originalStdErr;
+	private resetProcess() {
+		process.exit = this.originalProcessExit;
+		process.stdout.write = this.originalStdOut;
+		process.stderr.write = this.originalStdErr;
 		(TapBark.tapParser.on as any).restore();
 	}
 
@@ -591,7 +591,7 @@ export default class TapBarkTests {
 	public showMessageInPlaceOfProgress() {
 		const tapBark = TapBark.create(false);
 
-		Expect(tapBark.render()._props.children as Array<string>).toContain("running alsatian tests");
+		Expect(tapBark.render().props.children as Array<string>).toContain("running alsatian tests");
 	}
 
 	@Test("hide pending message after complete")
@@ -605,7 +605,7 @@ export default class TapBarkTests {
 		completeEventHandler({});
 		await wait(105);
 
-		Expect(tapBark.render()._props.children as Array<string>).not.toContain("running alsatian tests");
+		Expect(tapBark.render().props.children as Array<string>).not.toContain("running alsatian tests");
 	}
 
 	@TestCase("Failed")

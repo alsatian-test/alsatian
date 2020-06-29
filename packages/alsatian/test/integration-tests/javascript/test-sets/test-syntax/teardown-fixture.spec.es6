@@ -4,7 +4,7 @@ import { Expect, Teardown, TeardownFixture, Test, TestFixture } from "../../../.
 export class TeardownFixtureTests {
 
    @TeardownFixture
-   _teardownFixture() {
+   teardownFixture() {
        TeardownFixtureTests.teardownFixtureCount++;
    }
 
