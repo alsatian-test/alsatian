@@ -12,7 +12,7 @@ import { TestBuilder } from "../../builders/test-builder";
 import { TestOutcome } from "../../../core/results/test-outcome";
 import { TestResultsBuilder } from "../../builders/test-results-builder";
 
-const _getErrorYaml = (error: MatchError, logs?: Array<string>) => {
+const getErrorYaml = (error: MatchError, logs?: Array<string>) => {
 	return (
 		` ---\n` +
 		` message: ${error.message
@@ -33,7 +33,7 @@ function yamlStringify(value: any) {
 	return `'${JSON.stringify(value)}'`;
 }
 
-const _getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
+const getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
 	return (
 		" ---\n" +
 		" message: The test threw an unhandled error.\n" +
@@ -61,7 +61,7 @@ const buildLogs = (logs: Array<string>) => {
 		: "";
 };
 
-function _getUnhandledErrorMessageNoStack(): string {
+function getUnhandledErrorMessageNoStack(): string {
 	return (
 		" ---\n" +
 		" message: The test threw an unhandled error.\n" +
@@ -254,7 +254,7 @@ export class EmitResultTests {
 
 		const testCaseResult = new TestCaseResult(testResults, [], error);
 
-		const expected = _getErrorYaml(error);
+		const expected = getErrorYaml(error);
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -277,7 +277,7 @@ export class EmitResultTests {
 
 		const testCaseResult = new TestCaseResult(testResults, [], error);
 
-		const expected = _getErrorYaml(error);
+		const expected = getErrorYaml(error);
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -300,7 +300,7 @@ export class EmitResultTests {
 
 		const testCaseResult = new TestCaseResult(testResults, [], error);
 
-		const expected = _getErrorYaml(error);
+		const expected = getErrorYaml(error);
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -337,7 +337,7 @@ export class EmitResultTests {
 
 		const testCaseResult = new TestCaseResult(testResults, [], error);
 
-		const expected = _getUnhandledErrorMessage(stack);
+		const expected = getUnhandledErrorMessage(stack);
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -360,7 +360,7 @@ export class EmitResultTests {
 			() => TestOutcome.Error
 		);
 
-		const expected = _getUnhandledErrorMessageNoStack();
+		const expected = getUnhandledErrorMessageNoStack();
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -384,7 +384,7 @@ export class EmitResultTests {
 			logs.map(value => ({ value }))
 		);
 
-		const expected = _getUnhandledErrorMessage(error.stack, logs);
+		const expected = getUnhandledErrorMessage(error.stack, logs);
 
 		testOutput.emitResult(1, testCaseResult);
 
@@ -407,7 +407,7 @@ export class EmitResultTests {
 			logs.map(value => ({ value }))
 		);
 
-		const expected = _getErrorYaml(error, logs);
+		const expected = getErrorYaml(error, logs);
 
 		testOutput.emitResult(1, testCaseResult);
 

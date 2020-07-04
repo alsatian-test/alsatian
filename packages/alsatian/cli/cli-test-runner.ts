@@ -9,9 +9,9 @@ export class CliTestRunner {
 		return new CliTestRunner(testRunner);
 	}
 
-	public constructor(private _testRunner: TestRunner) {
-		if (!_testRunner) {
-			throw new TypeError("_testRunner must not be null or undefined.");
+	public constructor(private testRunner: TestRunner) {
+		if (!testRunner) {
+			throw new TypeError("testRunner must not be null or undefined.");
 		}
 	}
 
@@ -26,7 +26,7 @@ export class CliTestRunner {
 
 		// if help has been requested then output info about using the CLI and exit
 		if (userArguments.helpRequested) {
-			this._printHelp(packageJson.version);
+			this.printHelp(packageJson.version);
 			return;
 		}
 
@@ -36,35 +36,35 @@ export class CliTestRunner {
 
 		if (userArguments.tap) {
 			// if they want TAP output then just write to stdout directly
-			this._testRunner.outputStream.pipe(process.stdout);
+			this.testRunner.outputStream.pipe(process.stdout);
 		} else {
 			// otherwise create the tap bark reporter
-			this._createTapBarkReporter(userArguments.hideProgress);
+			this.createTapBarkReporter(userArguments.hideProgress);
 		}
 
 		try {
-			await this._testRunner.run(testSet, userArguments.timeout);
+			await this.testRunner.run(testSet, userArguments.timeout);
 		} catch (error) {
-			this._handleTestSetRunError(error);
+			this.handleTestSetRunError(error);
 		}
 	}
 
-	private _createTapBarkReporter(hideProgressArgument: boolean) {
+	private createTapBarkReporter(hideProgressArgument: boolean) {
 		const hideProgress = (process.env.CI || hideProgressArgument);
 		const bark = TapBark.create(hideProgress === false);
 
 		// pipe the reporter into stdout
-		this._testRunner.outputStream
+		this.testRunner.outputStream
 			.pipe(bark.getPipeable())
 			.pipe(process.stdout);
 	}
 
-	private _handleTestSetRunError(error: Error) {
+	private handleTestSetRunError(error: Error) {
 		process.stderr.write(error.message + "\n");
 		process.exit(1);
 	}
 
-	private _printHelp(version: string) {
+	private printHelp(version: string) {
 		process.stdout.write(
 			"\n\n" +
 				"alsatian version " +

@@ -14,75 +14,75 @@ export class TestOutputStream extends ReadableStream {
 	}
 
 	public emitVersion(): void {
-		this._writeOut("TAP version 13\n");
+		this.writeOut("TAP version 13\n");
 	}
 
 	public emitPlan(testCount: number): void {
-		this._writeOut(`1..${testCount}\n`);
+		this.writeOut(`1..${testCount}\n`);
 	}
 
 	public emitFixture(fixture: ITestFixture): void {
-		this._writeOut(`# FIXTURE ${fixture.description}\n`);
+		this.writeOut(`# FIXTURE ${fixture.description}\n`);
 	}
 
 	public emitLog(...logs: Array<string>): void {
-		this._writeLogs(logs, "LOG");
+		this.writeLogs(logs, "LOG");
 	}
 
 	public emitWarning(...warnings: Array<string>): void {
-		this._writeLogs(warnings, "WARN");
+		this.writeLogs(warnings, "WARN");
 	}
 
 	public emitResult(testId: number, result: TestCaseResult): void {
 		const outcome = result.outcome;
 
 		if (outcome === TestOutcome.Pass) {
-			this._emitPass(testId, result);
+			this.emitPass(testId, result);
 		} else if (
 			outcome === TestOutcome.Fail ||
 			outcome === TestOutcome.Error
 		) {
-			this._emitFail(testId, result);
+			this.emitFail(testId, result);
 		} else if (outcome === TestOutcome.Skip) {
-			this._emitSkip(testId, result);
+			this.emitSkip(testId, result);
 		} else {
 			throw new TypeError(`Invalid test outcome: ${outcome}`);
 		}
 	}
 
-	private _writeLogs(logs: Array<string>, level: string) {
-		this._writeOut(`# ${level}: ${logs.join(" ")}\n`);
+	private writeLogs(logs: Array<string>, level: string) {
+		this.writeOut(`# ${level}: ${logs.join(" ")}\n`);
 	}
 
-	private _writeOut(message: string): void {
+	private writeOut(message: string): void {
 		this.push(message);
 	}
 
-	private _emitPass(testId: number, result: TestCaseResult): void {
-		this._writeOut(`ok ${testId} ${result.description}\n`);
+	private emitPass(testId: number, result: TestCaseResult): void {
+		this.writeOut(`ok ${testId} ${result.description}\n`);
 	}
 
-	private _emitSkip(testId: number, result: TestCaseResult): void {
+	private emitSkip(testId: number, result: TestCaseResult): void {
 		const test = result.testResults.test;
 
 		const reasonString = test.ignoreReason ? ` ${test.ignoreReason}` : "";
 
-		this._writeOut(
+		this.writeOut(
 			`ok ${testId} ${result.description} # skip${reasonString}\n`
 		);
 	}
 
-	private _emitFail(testId: number, result: TestCaseResult): void {
-		this._writeOut(`not ok ${testId} ${result.description}\n`);
+	private emitFail(testId: number, result: TestCaseResult): void {
+		this.writeOut(`not ok ${testId} ${result.description}\n`);
 
 		if (result.error && result.error.name === MatchError.name) {
-			this._writeMatchErrorOutput(result, result.logs);
+			this.writeMatchErrorOutput(result, result.logs);
 		} else {
-			this._writeUnhandledErrorOutput(result, result.logs);
+			this.writeUnhandledErrorOutput(result, result.logs);
 		}
 	}
 
-	private _writeMatchErrorOutput(result: TestCaseResult, logs: Array<ILog>): void {
+	private writeMatchErrorOutput(result: TestCaseResult, logs: Array<ILog>): void {
 		const error = result.error as MatchError;
 
 		const sanitisedMessage = error.message
@@ -91,7 +91,7 @@ export class TestOutputStream extends ReadableStream {
 		const sanitisedActual = stringify(error.actual);
 		const sanitisedExpected = stringify(error.expected);
 
-		this._writeFailure(
+		this.writeFailure(
 			sanitisedMessage,
 			sanitisedActual,
 			sanitisedExpected,
@@ -100,13 +100,13 @@ export class TestOutputStream extends ReadableStream {
 		);
 	}
 
-	private _writeUnhandledErrorOutput(
-		result: TestCaseResult,
+	private writeUnhandledErrorOutput(
+		error: Error | null,
 		logs: Array<ILog>
 	): void {
 		const error = result.error;
 
-		this._writeFailure(
+		this.writeFailure(
 			"The test threw an unhandled error.",
 			"an unhandled error",
 			"no unhandled errors to be thrown",
@@ -132,7 +132,7 @@ export class TestOutputStream extends ReadableStream {
 		return extras;
 	}
 
-	private _writeFailure(
+	private writeFailure(
 		message: string,
 		actual: string,
 		expected: string,
@@ -154,7 +154,7 @@ export class TestOutputStream extends ReadableStream {
 			delete output.data.details;
 		}
 
-		this._writeOut(
+		this.writeOut(
 			` ---\n${safeDump(output)
 				.split("\n")
 				.map(s => ` ${s}`)

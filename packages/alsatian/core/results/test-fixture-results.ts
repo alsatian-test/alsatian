@@ -6,24 +6,17 @@ import { IResultWithOutcome } from "./result-with-outcome.i";
 import { getOverallOutcome } from "./get-overall-outcome";
 
 export class TestFixtureResults implements IResultWithOutcome {
-	private _testResults: Array<TestResults> = [];
-	public get testResults() {
-		return this._testResults;
-	}
+	public readonly testResults: Array<TestResults> = [];
 
-	public constructor(private _testFixture: ITestFixture) {}
-
-	get fixture(): ITestFixture {
-		return this._testFixture;
-	}
+	public constructor(public readonly fixture: ITestFixture) {}
 
 	get outcome(): TestOutcome {
-		return getOverallOutcome(this._testResults);
+		return getOverallOutcome(this.testResults);
 	}
 
 	public addTestResult(test: ITest): TestResults {
 		const testResults = new TestResults(this, test);
-		this._testResults.push(testResults);
+		this.testResults.push(testResults);
 		return testResults;
 	}
 }
