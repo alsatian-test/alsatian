@@ -1,5 +1,5 @@
 import through from "through2";
-import * as Parser from "tap-parser";
+import Parser from "tap-parser";
 import duplexer from "duplexer";
 import React from "react";
 import { render } from "ink";
