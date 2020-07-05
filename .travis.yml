@@ -19,7 +19,6 @@ script:
   - if [ ${TRAVIS_EVENT_TYPE} == "cron" ]; then
         npm run publish-nightly;
     else
-        # npm test;
         npm test --prefix packages/vscode-extension;
     fi
 after_script:
