@@ -1,5 +1,6 @@
-import { Expect, TestCase } from "../../../../../core/alsatian-core";
+import { Expect, TestCase, TestFixture } from "../../../../../core/alsatian-core";
 
+@TestFixture("@TestCase Tests")
 export class CaseArgumentTestsTests {
    @TestCase(1, 2, 3)
    @TestCase(1.5, 2.5, 4)

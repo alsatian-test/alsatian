@@ -6,7 +6,7 @@ import { getOverallOutcome } from "./get-overall-outcome";
 import { TestFixtureResults } from "../alsatian-core";
 
 export class TestResults implements IResultWithOutcome {
-	private _testCaseResults: Array<TestCaseResult> = [];
+	private testCaseResults: Array<TestCaseResult> = [];
 
 	public constructor(
 		public readonly fixtureResult: TestFixtureResults,
@@ -14,7 +14,7 @@ export class TestResults implements IResultWithOutcome {
 	) {}
 
 	public get outcome(): TestOutcome {
-		return getOverallOutcome(this._testCaseResults);
+		return getOverallOutcome(this.testCaseResults);
 	}
 
 	public addTestCaseResult(
@@ -22,7 +22,7 @@ export class TestResults implements IResultWithOutcome {
 		error: Error | null = null
 	): TestCaseResult {
 		const testCaseResult = new TestCaseResult(this, args, error);
-		this._testCaseResults.push(testCaseResult);
+		this.testCaseResults.push(testCaseResult);
 		return testCaseResult;
 	}
 }

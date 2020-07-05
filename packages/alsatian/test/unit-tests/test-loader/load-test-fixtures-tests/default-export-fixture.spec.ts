@@ -7,6 +7,7 @@ import {
 } from "../../../../core/alsatian-core";
 import { FileRequirer } from "../../../../core/file-requirer";
 import { TestLoader } from "../../../../core/test-loader";
+import { Warner } from "../../../../core/maintenance/warn";
 
 class FakeFixture {
 	constructor() {
@@ -96,5 +97,29 @@ export class DefaultExportFixtureTests {
 		const testLoader = new TestLoader(fileRequirer);
 
 		Expect(testLoader.loadTestFixture("test").length).toBe(0);
+	}
+
+	@Test()
+	public noTestFixtureAnnotationOutputsWarning() {
+		SpyOn(Warner, "warn");
+
+		const fileRequirer = new FileRequirer();
+
+		class UnanotatedFixture {
+			@Test()
+			public testFunction() {}
+		}
+
+		const spy = SpyOn(fileRequirer, "require");
+		spy.andStub();
+		spy.andReturn(UnanotatedFixture);
+
+		const testLoader = new TestLoader(fileRequirer);
+		testLoader.loadTestFixture("test");
+
+		Expect(Warner.warn).toHaveBeenCalledWith(
+			"Writing tests without the TestFixture decorator has been deprecated and will be removed in version 5.0.0. " +
+				"Please add a TestFixture decorator to all classes containing tests."
+		);
 	}
 }

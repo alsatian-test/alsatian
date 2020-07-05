@@ -2,18 +2,18 @@ import { FunctionSpy } from "../spying";
 import { exposeSpyFunctions } from "./expose-spy-functions";
 
 export class RestorableFunctionSpy extends FunctionSpy {
-	private _originalFunction: (...args: Array<any>) => any;
-	private _functionName: string;
-	private _target: any;
+	private originalFunction: (...args: Array<any>) => any;
+	private functionName: string;
+	private target: any;
 
 	public constructor(target: any, functionName: string) {
 		super();
 
-		this._originalFunction = target[functionName];
+		this.originalFunction = target[functionName];
 		this.context = target;
 
-		this._functionName = functionName;
-		this._target = target;
+		this.functionName = functionName;
+		this.target = target;
 
 		target[functionName] = this.call.bind(this);
 
@@ -24,7 +24,7 @@ export class RestorableFunctionSpy extends FunctionSpy {
 	}
 
 	public restore() {
-		this._target[this._functionName] = this._originalFunction;
+		this.target[this.functionName] = this.originalFunction;
 	}
 
 	public andCallThrough() {
@@ -39,7 +39,7 @@ export class RestorableFunctionSpy extends FunctionSpy {
 		const returnValue = super.call.apply(this, args);
 
 		if (!this.isStubbed && !this.hasReturnValue) {
-			return this._originalFunction.apply(this.context, args);
+			return this.originalFunction.apply(this.context, args);
 		}
 
 		return returnValue;

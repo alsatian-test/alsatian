@@ -1,5 +1,7 @@
 import { Expect, Test } from "alsatian";
+import { TestFixture } from "../../../../core/decorators";
 
+@TestFixture("toEqual Tests")
 export class ToEqualTests {
 	@Test()
 	public onObjectWithNumericDifference() {

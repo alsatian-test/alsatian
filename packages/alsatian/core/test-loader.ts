@@ -1,17 +1,18 @@
 import { FileRequirer, TestFixture } from "./";
 import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
+import { deprecate } from "./maintenance/deprecate";
 
 export class TestLoader {
-	public constructor(private _fileRequirer: FileRequirer) {}
+	public constructor(private fileRequirer: FileRequirer) {}
 
 	public loadTestFixture(filePath: string): Array<ITestFixture> {
 		try {
-			const testFixtureModule = this._fileRequirer.require(filePath);
+			const testFixtureModule = this.fileRequirer.require(filePath);
 			const testFixtures: Array<ITestFixture> = [];
 
 			const loadFixture = (constructor: any, description: string) => {
-				const testFixture = this._loadTestFixture(
+				const testFixture = this.loadTestFixtureInstance(
 					constructor,
 					description,
 					filePath
@@ -38,14 +39,14 @@ export class TestLoader {
 		}
 	}
 
-	private _loadTestFixture(
+	private loadTestFixtureInstance(
 		testFixtureConstructor: new () => object,
 		defaultFixtureDescription: string,
 		filePath: string
 	): ITestFixture | null {
 		// get test fixture metadata or create new metadata
 		// to support not requiring the TestFixture decorator.
-		// This functionality will be removed in 2.0.0 where
+		// TODO: This functionality will be removed in 5.0.0 where
 		// TestFixture decorator will become mandatory
 		const testFixture =
 			Reflect.getMetadata(
@@ -85,6 +86,14 @@ export class TestLoader {
 		if (tests === undefined) {
 			// no tests on the fixture
 			return null;
+		}
+
+		if (!Reflect.getMetadata(METADATA_KEYS.TEST_FIXTURE, testFixtureConstructor)) {
+			deprecate(
+				"Writing tests without the TestFixture decorator",
+				"5.0.0",
+				"Please add a TestFixture decorator to all classes containing tests."
+			);
 		}
 
 		tests.forEach((test: ITest) => {

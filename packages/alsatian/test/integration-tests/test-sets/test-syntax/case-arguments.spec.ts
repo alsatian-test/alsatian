@@ -1,5 +1,6 @@
 import { Expect, TestCase, TestFixture } from "alsatian";
 
+@TestFixture("@TestCase Tests")
 export class CaseArgumentTestsTests {
 	@TestCase(1, 2, 3)
 	@TestCase(1.5, 2.5, 4)

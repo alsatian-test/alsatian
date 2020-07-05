@@ -4,7 +4,7 @@ import { AsyncTeardown, Expect, Teardown, TeardownFixture, Test, TestFixture } f
 export class TeardownFixtureTests {
 
    @TeardownFixture
-   _teardownFixture() {
+   teardownFixture() {
        TeardownFixtureTests.teardownFixtureCount++;
    }
 

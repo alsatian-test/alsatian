@@ -16,15 +16,15 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 @TestFixture("failing tests")
 export class FailingTestsTests {
-	private _originalStdErr: any;
-	private _originalProcessExit: any;
-	private _originalTestPlan: any;
+	private originalStdErr: any;
+	private originalProcessExit: any;
+	private originalTestPlan: any;
 
 	@Setup
-	private _spyProcess() {
-		this._originalProcessExit = process.exit;
-		this._originalStdErr = process.stderr.write;
-		this._originalTestPlan = Reflect.getMetadata(
+	private spyProcess() {
+		this.originalProcessExit = process.exit;
+		this.originalStdErr = process.stderr.write;
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
@@ -34,12 +34,12 @@ export class FailingTestsTests {
 	}
 
 	@Teardown
-	private _resetProcess() {
-		process.exit = this._originalProcessExit;
-		process.stderr.write = this._originalStdErr;
+	private resetProcess() {
+		process.exit = this.originalProcessExit;
+		process.stderr.write = this.originalStdErr;
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}

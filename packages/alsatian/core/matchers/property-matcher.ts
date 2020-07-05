@@ -12,7 +12,7 @@ export class PropertyMatcher<PropertyType> extends Matcher<
 	 * Checks that a property spy has been set
 	 */
 	public toHaveBeenSet() {
-		this._registerMatcher(
+		this.registerMatcher(
 			(this.actualValue.setCalls.length === 0) !== this.shouldMatch,
 			`Expected property ${!this.shouldMatch ? "not " : ""}to be set`,
 			`property ${this.shouldMatch ? "" : "not "}to have been set`
@@ -26,7 +26,7 @@ export class PropertyMatcher<PropertyType> extends Matcher<
 	public toHaveBeenSetTo(value: PropertyType) {
 		const stringifiedValue = stringify(value);
 
-		this._registerMatcher(
+		this.registerMatcher(
 			this.actualValue.setCalls.some(
 				call => call.args[0] === value
 			) === this.shouldMatch,

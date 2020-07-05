@@ -202,7 +202,7 @@ export class ToThrowAsyncTests {
 		actualValue: any
 	) {
 		const EXPECT = Expect(() => {});
-		(EXPECT as any)._actualValue = actualValue;
+		(EXPECT as any).actualValue = actualValue;
 
 		await Expect(async () => {
 			await EXPECT.toThrowErrorAsync(
