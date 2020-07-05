@@ -83,7 +83,7 @@ export class ToBeLessThanTests {
 	@TestCase(-1)
 	@TestCase(42)
 	public lessThanShouldSetErrorActualValueToGivenValue(actualValue: number) {
-		let lessThanError: MatchError;
+		let lessThanError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).toBeLessThan(-42);
@@ -93,7 +93,7 @@ export class ToBeLessThanTests {
 
 		Expect(lessThanError).toBeDefined();
 		Expect(lessThanError).not.toBeNull();
-		Expect(lessThanError.actual).toBe(actualValue);
+		Expect(lessThanError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(0)
@@ -102,7 +102,7 @@ export class ToBeLessThanTests {
 	public notLessThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let lessThanError: MatchError;
+		let lessThanError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).not.toBeLessThan(512);
@@ -112,14 +112,14 @@ export class ToBeLessThanTests {
 
 		Expect(lessThanError).toBeDefined();
 		Expect(lessThanError).not.toBeNull();
-		Expect(lessThanError.actual).toBe(actualValue);
+		Expect(lessThanError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(0)
 	@TestCase(-1)
 	@TestCase(42)
 	public shouldSetExpectedValueToLessThanUpperLimit(upperLimit: number) {
-		let lessThanError: MatchError;
+		let lessThanError: MatchError | undefined;
 
 		try {
 			Expect(512).toBeLessThan(upperLimit);
@@ -129,14 +129,14 @@ export class ToBeLessThanTests {
 
 		Expect(lessThanError).toBeDefined();
 		Expect(lessThanError).not.toBeNull();
-		Expect(lessThanError.expected).toBe("a number less than " + upperLimit);
+		Expect(lessThanError?.expected).toBe("a number less than " + upperLimit);
 	}
 
 	@TestCase(0)
 	@TestCase(-1)
 	@TestCase(42)
 	public shouldSetExpectedValueToNotLessThanUpperLimit(upperLimit: number) {
-		let lessThanError: MatchError;
+		let lessThanError: MatchError | undefined;
 
 		try {
 			Expect(-42).not.toBeLessThan(upperLimit);
@@ -146,7 +146,7 @@ export class ToBeLessThanTests {
 
 		Expect(lessThanError).toBeDefined();
 		Expect(lessThanError).not.toBeNull();
-		Expect(lessThanError.expected).toBe(
+		Expect(lessThanError?.expected).toBe(
 			"a number not less than " + upperLimit
 		);
 	}

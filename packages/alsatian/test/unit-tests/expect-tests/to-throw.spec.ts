@@ -59,7 +59,7 @@ export class ToThrowTests {
 
 	@Test()
 	public actualValueAndShouldMatchShouldBeSetToErrorWasNotThrown() {
-		let errorMatchError: MatchError;
+		let errorMatchError: MatchError | undefined;
 
 		try {
 			Expect(() => {}).toThrow();
@@ -69,7 +69,7 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.extras.errorThrown).toBe("none");
+		Expect(errorMatchError?.extras.errorThrown).toBe("none");
 	}
 
 	@TestCase(EvalError, "something went wrong")
@@ -79,7 +79,7 @@ export class ToThrowTests {
 		actualErrorType: new (message: string) => Error,
 		actualErrorMessage: string
 	) {
-		let errorMatchError: MatchError;
+		let errorMatchError: MatchError | undefined;
 
 		try {
 			Expect(() => {
@@ -91,14 +91,14 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.extras.errorThrown).toBe(
+		Expect(errorMatchError?.extras.errorThrown).toBe(
 			`${(actualErrorType as INameable).name}: ${actualErrorMessage}`
 		);
 	}
 
 	@Test()
 	public actualValueAndShouldMatchShouldBeSetToErrorToBeThrown() {
-		let errorMatchError: MatchError;
+		let errorMatchError: MatchError | undefined;
 
 		try {
 			Expect(() => {}).toThrow();
@@ -108,12 +108,12 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("an error thrown");
+		Expect(errorMatchError?.expected).toBe("an error thrown");
 	}
 
 	@Test()
 	public expectedValueAndShouldNotMatchShouldBeSetToErrorNotToBeThrown() {
-		let errorMatchError: MatchError;
+		let errorMatchError: MatchError | undefined;
 
 		try {
 			Expect(() => {
@@ -125,6 +125,6 @@ export class ToThrowTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError.expected).toBe("no errors thrown");
+		Expect(errorMatchError?.expected).toBe("no errors thrown");
 	}
 }

@@ -143,7 +143,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -153,7 +153,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe(some.function);
+		Expect(functionError?.actual).toBe(some.function);
 	}
 
 	@Test()
@@ -166,7 +166,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -176,7 +176,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.actual).toBe(some.function);
+		Expect(functionError?.actual).toBe(some.function);
 	}
 
 	@Test()
@@ -187,7 +187,7 @@ export class ToHaveBeenCalledTests {
 
 		SpyOn(some, "function");
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalled();
@@ -197,7 +197,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function to be called");
+		Expect(functionError?.expected).toBe("function to be called");
 	}
 
 	@Test()
@@ -210,7 +210,7 @@ export class ToHaveBeenCalledTests {
 
 		some.function();
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function).not.toHaveBeenCalled();
@@ -220,7 +220,7 @@ export class ToHaveBeenCalledTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe("function not to be called");
+		Expect(functionError?.expected).toBe("function not to be called");
 	}
 
 	@TestCase(1)
@@ -302,7 +302,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -316,11 +316,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (expectedCallCount === 1) {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called " + expectedCallCount + " time."
 			);
 		} else {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called " + expectedCallCount + " times."
 			);
 		}
@@ -343,7 +343,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -357,11 +357,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (actualCallCount === 1) {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " time."
 			);
 		} else {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " times."
 			);
 		}
@@ -447,7 +447,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -461,11 +461,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (callCount === 1) {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function not to be called " + callCount + " time."
 			);
 		} else {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function not to be called " + callCount + " times."
 			);
 		}
@@ -487,7 +487,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -501,11 +501,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (callCount === 1) {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + callCount + " time."
 			);
 		} else {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + callCount + " times."
 			);
 		}
@@ -597,7 +597,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -611,13 +611,13 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (minimumCallCount === 1) {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called greater than " +
 					minimumCallCount +
 					" time."
 			);
 		} else {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called greater than " +
 					minimumCallCount +
 					" times."
@@ -642,7 +642,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -656,11 +656,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (actualCallCount === 1) {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " time."
 			);
 		} else {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " times."
 			);
 		}
@@ -751,7 +751,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -765,11 +765,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (maximumCallCount === 1) {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called less than " + maximumCallCount + " time."
 			);
 		} else {
-			Expect(functionError.expected).toBe(
+			Expect(functionError?.expected).toBe(
 				"function to be called less than " +
 					maximumCallCount +
 					" times."
@@ -794,7 +794,7 @@ export class ToHaveBeenCalledTests {
 			some.function();
 		}
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function)
@@ -808,11 +808,11 @@ export class ToHaveBeenCalledTests {
 		Expect(functionError).not.toBeNull();
 
 		if (actualCallCount === 1) {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " time."
 			);
 		} else {
-			Expect(functionError.actual).toBe(
+			Expect(functionError?.actual).toBe(
 				"function was called " + actualCallCount + " times."
 			);
 		}

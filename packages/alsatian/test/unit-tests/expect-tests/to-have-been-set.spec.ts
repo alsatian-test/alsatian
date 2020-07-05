@@ -93,7 +93,7 @@ export class ToHaveBeenSetTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | undefined;
 
 		try {
 			Expect(propertySpy).toHaveBeenSet();
@@ -103,7 +103,7 @@ export class ToHaveBeenSetTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(propertySpy);
+		Expect(propertyError?.actual).toBe(propertySpy);
 	}
 
 	@Test()
@@ -116,7 +116,7 @@ export class ToHaveBeenSetTests {
 
 		some.property = "something";
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | undefined;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSet();
@@ -126,7 +126,7 @@ export class ToHaveBeenSetTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.actual).toBe(propertySpy);
+		Expect(propertyError?.actual).toBe(propertySpy);
 	}
 
 	@Test()
@@ -137,7 +137,7 @@ export class ToHaveBeenSetTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | undefined;
 
 		try {
 			Expect(propertySpy).toHaveBeenSet();
@@ -147,7 +147,7 @@ export class ToHaveBeenSetTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.expected).toBe("property to have been set");
+		Expect(propertyError?.expected).toBe("property to have been set");
 	}
 
 	@Test()
@@ -160,7 +160,7 @@ export class ToHaveBeenSetTests {
 
 		some.property = "something";
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | undefined;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSet();
@@ -170,6 +170,6 @@ export class ToHaveBeenSetTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.expected).toBe("property not to have been set");
+		Expect(propertyError?.expected).toBe("property not to have been set");
 	}
 }

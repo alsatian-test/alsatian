@@ -1,19 +1,15 @@
 {
     "compilerOptions": {
        "target": "es6",
+       "strict": true,
        "module": "commonjs",
        "moduleResolution": "node",
-       "isolatedModules": false,
        "declaration": true,
        "sourceMap": true,
-       "noImplicitAny": false,
        "removeComments": true,
-       "noLib": false,
        "preserveConstEnums": true,
-       "suppressImplicitAnyIndexErrors": true,
        "experimentalDecorators": true,
-       "newLine": "LF",
-       "emitDecoratorMetadata": true
+       "newLine": "LF"
     },
     "exclude": [
        "node_modules"

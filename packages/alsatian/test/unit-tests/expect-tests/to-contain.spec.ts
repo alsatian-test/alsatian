@@ -116,7 +116,7 @@ export class ToContainTests {
 		container: Array<T>,
 		expectedContent: T
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).toContain(expectedContent);
@@ -126,7 +126,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.actual).toBe(container);
+		Expect(contentsError?.actual).toBe(container);
 	}
 
 	@TestCase("", "something")
@@ -135,7 +135,7 @@ export class ToContainTests {
 		container: string,
 		expectedContent: string
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).toContain(expectedContent);
@@ -145,7 +145,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.actual).toBe(container);
+		Expect(contentsError?.actual).toBe(container);
 	}
 
 	@TestCase([1], 1)
@@ -154,7 +154,7 @@ export class ToContainTests {
 		container: Array<T>,
 		expectedContent: T
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).not.toContain(expectedContent);
@@ -164,7 +164,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.actual).toBe(container);
+		Expect(contentsError?.actual).toBe(container);
 	}
 
 	@TestCase("something", "something")
@@ -173,7 +173,7 @@ export class ToContainTests {
 		container: string,
 		expectedContent: string
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).not.toContain(expectedContent);
@@ -183,7 +183,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.actual).toBe(container);
+		Expect(contentsError?.actual).toBe(container);
 	}
 
 	@TestCase([], 1)
@@ -192,7 +192,7 @@ export class ToContainTests {
 		container: Array<T>,
 		expectedContent: T
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).toContain(expectedContent);
@@ -202,7 +202,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.expected).toBe(expectedContent);
+		Expect(contentsError?.expected).toBe(expectedContent);
 	}
 
 	@TestCase("", "something")
@@ -211,7 +211,7 @@ export class ToContainTests {
 		container: string,
 		expectedContent: string
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).toContain(expectedContent);
@@ -221,7 +221,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.expected).toBe(expectedContent);
+		Expect(contentsError?.expected).toBe(expectedContent);
 	}
 
 	@TestCase([1], 1)
@@ -230,7 +230,7 @@ export class ToContainTests {
 		container: Array<T>,
 		expectedContent: T
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).not.toContain(expectedContent);
@@ -240,7 +240,7 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.expected).toBe(expectedContent);
+		Expect(contentsError?.expected).toBe(expectedContent);
 	}
 
 	@TestCase("something", "something")
@@ -249,7 +249,7 @@ export class ToContainTests {
 		container: string,
 		expectedContent: string
 	) {
-		let contentsError: MatchError;
+		let contentsError: MatchError | undefined;
 
 		try {
 			Expect(container).not.toContain(expectedContent);
@@ -259,6 +259,6 @@ export class ToContainTests {
 
 		Expect(contentsError).toBeDefined();
 		Expect(contentsError).not.toBeNull();
-		Expect(contentsError.expected).toBe(expectedContent);
+		Expect(contentsError?.expected).toBe(expectedContent);
 	}
 }

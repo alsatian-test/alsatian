@@ -23,7 +23,7 @@ export class PropertySpyConstructorTests {
 		const propertySpy = new PropertySpy(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").get
+			Object.getOwnPropertyDescriptor(object, "property")?.get
 		).not.toBe(originalGetter);
 	}
 
@@ -41,7 +41,7 @@ export class PropertySpyConstructorTests {
 		const propertySpy = new PropertySpy(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").set
+			Object.getOwnPropertyDescriptor(object, "property")?.set
 		).not.toBe(originalSetter);
 	}
 
@@ -59,13 +59,13 @@ export class PropertySpyConstructorTests {
 		const propertySpy = new PropertySpy(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").get
+			Object.getOwnPropertyDescriptor(object, "property")?.get
 		).toBeDefined();
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").get
+			Object.getOwnPropertyDescriptor(object, "property")?.get
 		).not.toBeNull();
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").get
+			Object.getOwnPropertyDescriptor(object, "property")?.get
 		).not.toBe(originalGetter);
 	}
 
@@ -76,18 +76,18 @@ export class PropertySpyConstructorTests {
 		const originalSetter = Object.getOwnPropertyDescriptor(
 			object.constructor.prototype,
 			"property"
-		).set;
+		)?.set;
 
 		const propertySpy = new PropertySpy(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").set
+			Object.getOwnPropertyDescriptor(object, "property")?.set
 		).toBeDefined();
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").set
+			Object.getOwnPropertyDescriptor(object, "property")?.set
 		).not.toBeNull();
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").set
+			Object.getOwnPropertyDescriptor(object, "property")?.set
 		).not.toBe(originalSetter);
 	}
 

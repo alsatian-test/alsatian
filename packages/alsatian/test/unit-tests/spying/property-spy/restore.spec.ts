@@ -13,18 +13,18 @@ export class RestoreTests {
 		const originalPropertyGetter = Object.getOwnPropertyDescriptor(
 			object,
 			"originalProperty"
-		).get;
+		)?.get;
 
 		const spy = new PropertySpy(object, "originalProperty");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").get
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.get
 		).not.toBe(originalPropertyGetter);
 
 		spy.restore();
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").get
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.get
 		).toBe(originalPropertyGetter);
 	}
 
@@ -39,18 +39,18 @@ export class RestoreTests {
 		const originalPropertyGetter = Object.getOwnPropertyDescriptor(
 			object,
 			"originalProperty"
-		).get;
+		)?.get;
 
 		const spy = new PropertySpy(object, "originalProperty");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").get
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.get
 		).not.toBe(originalPropertyGetter);
 
 		spy.restore();
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").get
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.get
 		).toBe(originalPropertyGetter);
 	}
 
@@ -63,18 +63,18 @@ export class RestoreTests {
 		const originalPropertySetter = Object.getOwnPropertyDescriptor(
 			object,
 			"originalProperty"
-		).set;
+		)?.set;
 
 		const spy = new PropertySpy(object, "originalProperty");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").set
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.set
 		).not.toBe(originalPropertySetter);
 
 		spy.restore();
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").set
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.set
 		).toBe(originalPropertySetter);
 	}
 
@@ -87,18 +87,18 @@ export class RestoreTests {
 		const originalPropertySetter = Object.getOwnPropertyDescriptor(
 			object,
 			"originalProperty"
-		).set;
+		)?.set;
 
 		const spy = new PropertySpy(object, "originalProperty");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").set
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.set
 		).not.toBe(originalPropertySetter);
 
 		spy.restore();
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "originalProperty").set
+			Object.getOwnPropertyDescriptor(object, "originalProperty")?.set
 		).toBe(originalPropertySetter);
 	}
 }
