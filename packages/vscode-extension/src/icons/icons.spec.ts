@@ -1,9 +1,14 @@
-import { Expect, Test, TestFixture, createFunctionSpy, TestCase } from "alsatian";
+import { Expect, Test, TestFixture, createFunctionSpy, TestCase, Teardown } from "alsatian";
 import mock from "mock-require";
 import { ExtensionContext } from "vscode";
 
 @TestFixture("icon tests")
 export class IconTests {
+
+    @Teardown
+    private revertMock() {
+        mock.stop("vscode");
+    }
 
     @TestCase("/absolute/file/path")
     @TestCase("/another/location.png")
