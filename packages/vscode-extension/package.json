@@ -87,7 +87,7 @@
 		"watch": "tsc -watch -p ./",
 		"test": "npm run test:lint && npm run test:unit",
 		"test:lint": "eslint src --ext ts --max-warnings 0",
-		"test:unit": "alsatian \"./src/**/*.spec.ts\""
+		"test:unit": "node ../alsatian/dist/cli/alsatian-cli \"./src/**/*.spec.ts\""
 	},
 	"devDependencies": {
 		"@types/enzyme": "^3.10.5",
