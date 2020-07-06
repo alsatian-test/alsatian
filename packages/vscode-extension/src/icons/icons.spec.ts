@@ -1,4 +1,4 @@
-import { Expect, Test, TestFixture, createFunctionSpy, SpyOn, TestCase } from "alsatian";
+import { Expect, Test, TestFixture, createFunctionSpy, TestCase } from "alsatian";
 import mock from "mock-require";
 import { ExtensionContext } from "vscode";
 
