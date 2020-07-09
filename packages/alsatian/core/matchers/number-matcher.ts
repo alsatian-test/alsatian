@@ -14,7 +14,7 @@ export class NumberMatcher extends Matcher<number> {
 	 * @param upperLimit - the number that the number under test should be less than
 	 */
 	public toBeLessThan(upperLimit: number) {
-		this._matchAgainstLimit(upperLimit, LimitType.LessThan);
+		this.matchAgainstLimit(upperLimit, LimitType.LessThan);
 	}
 
 	/**
@@ -22,13 +22,13 @@ export class NumberMatcher extends Matcher<number> {
 	 * @param lowerLimit - the number that the number under test should be greater than
 	 */
 	public toBeGreaterThan(lowerLimit: number) {
-		this._matchAgainstLimit(lowerLimit, LimitType.GreaterThan);
+		this.matchAgainstLimit(lowerLimit, LimitType.GreaterThan);
 	}
 
-	private _matchAgainstLimit(limit: number, limitType: LimitType) {
+	private matchAgainstLimit(limit: number, limitType: LimitType) {
 		const limitTypeName = LimitType[limitType];
 
-		this._validateValues(
+		this.validateValues(
 			limit,
 			`toBe${LimitType[limitType]}`,
 			`${limitType === LimitType.LessThan ? "upper" : "lower"} limit`
@@ -38,7 +38,7 @@ export class NumberMatcher extends Matcher<number> {
 
 		const exceedsLimit = limitType === LimitType.LessThan ? this.actualValue < limit : this.actualValue > limit;
 
-		this._registerMatcher(
+		this.registerMatcher(
 			exceedsLimit === this.shouldMatch,
 			`Expected ${this.actualValue} ${
 				!this.shouldMatch ? "not " : ""
@@ -53,7 +53,7 @@ export class NumberMatcher extends Matcher<number> {
 		);
 	}
 
-	private _validateValues(
+	private validateValues(
 		limit: number,
 		functionName: string,
 		limitType: string

@@ -5,17 +5,17 @@ export class InvalidArgumentNamesError extends ExtendoError {
 		super();
 
 		if (argumentNames.length === 1) {
-			this.message = `unrecognised argument ${this._extractArgumentName(
+			this.message = `unrecognised argument ${this.extractArgumentName(
 				argumentNames[0]
 			)}.`;
 		} else {
 			this.message = `unrecognised arguments ${argumentNames
-				.map(this._extractArgumentName)
+				.map(this.extractArgumentName)
 				.join(" and ")}.`;
 		}
 	}
 
-	private _extractArgumentName(argument: string) {
+	private extractArgumentName(argument: string) {
 		return `"${argument.replace(/[-]*/, "")}"`;
 	}
 }

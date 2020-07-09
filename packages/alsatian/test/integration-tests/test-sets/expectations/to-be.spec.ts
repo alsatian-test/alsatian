@@ -1,5 +1,6 @@
-import { Expect, Test } from "alsatian";
+import { Expect, Test, TestFixture } from "alsatian";
 
+@TestFixture("To Be Tests")
 export class ToBeTests {
 	@Test()
 	public twoPlusTwoMakeFour() {

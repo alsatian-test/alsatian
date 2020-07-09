@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/alsatian-test/alsatian.git"
   },
-  "author": "James Adarich <=> (=)",
+  "author": "James Adarich <=> (https://james.adarich.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alsatian-test/alsatian/issues"

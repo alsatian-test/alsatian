@@ -3,7 +3,7 @@ import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
 	@Teardown
-	private _restoreTapBarkCreate() {
+	private restoreTapBarkCreate() {
 		(TapBark.create as any).restore();
 	}
 

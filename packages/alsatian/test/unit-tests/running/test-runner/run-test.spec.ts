@@ -19,21 +19,21 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("test set run tests")
 export class RunTestTests {
-	private _originalTestPlan: TestPlan;
+	private originalTestPlan: TestPlan;
 
 	@Setup
-	private _recordOriginalTestPlan() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private recordOriginalTestPlan() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
 	}
 
 	@Teardown
-	private _restoreOriginalTestPlan() {
+	private restoreOriginalTestPlan() {
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
@@ -93,7 +93,7 @@ export class RunTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(spyContainer.onCompleteCB)
 			.toHaveBeenCalled()

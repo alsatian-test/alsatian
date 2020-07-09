@@ -16,17 +16,17 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestFixture } from "../../../core";
 
 export class TestCaseResultTests {
-	private _originalLogs: Array<any>;
+	private originalLogs: Array<any>;
 
 	@Setup
-	private _replaceLogArray() {
-		this._originalLogs = Logger.LOGS;
+	private replaceLogArray() {
+		this.originalLogs = Logger.LOGS;
 		(Logger as any).LOGS = [];
 	}
 
 	@Teardown
-	private _restoreLogArray() {
-		(Logger as any).LOGS = this._originalLogs;
+	private restoreLogArray() {
+		(Logger as any).LOGS = this.originalLogs;
 	}
 
 	@TestCase()

@@ -10,14 +10,10 @@ export class TestSet {
 		return new TestSet(testLoader, globHelper);
 	}
 
-	private _testLoader: TestLoader;
-	private _globHelper: GlobHelper;
+	public readonly testFixtures: Array<ITestFixture> = [];
 
-	private _testFixtures: Array<ITestFixture> = [];
-
-	public get testFixtures(): Array<ITestFixture> {
-		return this._testFixtures;
-	}
+	private testLoader: TestLoader;
+	private globHelper: GlobHelper;
 
 	public constructor(testLoader: TestLoader, globHelper: GlobHelper) {
 		if (testLoader === null || testLoader === undefined) {
@@ -28,8 +24,8 @@ export class TestSet {
 			throw new TypeError("globHelper must not be null or undefined.");
 		}
 
-		this._testLoader = testLoader;
-		this._globHelper = globHelper;
+		this.testLoader = testLoader;
+		this.globHelper = globHelper;
 	}
 
 	public addTestsFromFiles(testsFileLocations: string | Array<string>) {
@@ -41,29 +37,26 @@ export class TestSet {
 			locationArray = testsFileLocations;
 		}
 
-		this._loadTestFixtures(locationArray);
+		this.loadTestFixtures(locationArray);
 	}
 
-	private _loadTestFixtures(testFileLocations: Array<string>) {
+	private loadTestFixtures(testFileLocations: Array<string>) {
 		testFileLocations.forEach(testFileLocation => {
 			testFileLocation = path.resolve(testFileLocation);
 
-			if (this._globHelper.isGlob(testFileLocation)) {
-				const physicalTestFileLocations = this._globHelper.resolve(
+			if (this.globHelper.isGlob(testFileLocation)) {
+				const physicalTestFileLocations = this.globHelper.resolve(
 					testFileLocation
 				);
 
 				physicalTestFileLocations.forEach(physicalTestFileLocation => {
-					this._testFixtures = this.testFixtures.concat(
-						this._testLoader.loadTestFixture(
+					this.testFixtures.push(...this.testLoader.loadTestFixture(
 							physicalTestFileLocation
 						)
 					);
 				});
 			} else {
-				this._testFixtures = this.testFixtures.concat(
-					this._testLoader.loadTestFixture(testFileLocation)
-				);
+				this.testFixtures.push(...this.testLoader.loadTestFixture(testFileLocation));
 			}
 		});
 	}
