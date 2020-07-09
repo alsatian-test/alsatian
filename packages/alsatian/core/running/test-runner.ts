@@ -6,35 +6,32 @@ import {
 import {CallbackTestRunner} from "./callback-test-runner";
 
 export class TestRunner extends CallbackTestRunner {
-	private readonly _outputStream: TestOutputStream;
-	public get outputStream() {
-		return this._outputStream;
-	}
+	public readonly outputStream: TestOutputStream;
 
 	constructor(outputStream?: TestOutputStream) {
 		super();
 		// If we were given a TestOutput, use it, otherwise make one
 		if (outputStream !== undefined) {
-			this._outputStream = outputStream;
+			this.outputStream = outputStream;
 		} else {
-			this._outputStream = new TestOutputStream();
+			this.outputStream = new TestOutputStream();
 		}
 		this.onTestingStarted((event) => {
-			this._outputStream.emitVersion();
-			this._outputStream.emitPlan(event.testSetRunInfo.testPlan.testItems.length);
+			this.outputStream.emitVersion();
+			this.outputStream.emitPlan(event.testSetRunInfo.testPlan.testItems.length);
 
 		});
 		this.onTestFixtureStarted((event) => {
-			this._outputStream.emitFixture(event.testFixture);
+			this.outputStream.emitFixture(event.testFixture);
 		});
 		this.onWarning((event) => {
 			this.outputStream.emitWarning(event.warning);
 		});
 		this.onTestingComplete((event) => {
-			this._outputStream.end();
+			this.outputStream.end();
 		});
 		this.onTestComplete((event) => {
-			this._outputStream.emitResult(
+			this.outputStream.emitResult(
 				event.testId, event.testCaseResult
 			);
 		});
