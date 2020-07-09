@@ -142,7 +142,7 @@ export class RunTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(spyContainer.onStartedCB)
 			.toHaveBeenCalled()
@@ -192,7 +192,7 @@ export class RunTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(spyContainer.onTestFixtureCompleteCB)
 			.toHaveBeenCalled()
