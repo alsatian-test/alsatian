@@ -67,8 +67,6 @@ export class TestRunner {
 		const testItems = testSetRunInfo.testPlan.testItems;
 		const testFixtures = this._getTestFixtures(testItems);
 
-		
-
 		for (const testFixture of testFixtures) {
 			const testFixtureItems = testItems.filter(
 				testItem => testItem.testFixture === testFixture
@@ -82,32 +80,32 @@ export class TestRunner {
 				testFixture
 			);
 
-			for (const testItem of testFixtureItems) {
-				const result = await this._getTestItemResult(
-					testItem,
-					testSetRunInfo,
-					testFixtureResults
-				);
+			// for (const testItem of testFixtureItems) {
+			// 	const result = await this._getTestItemResult(
+			// 		testItem,
+			// 		testSetRunInfo,
+			// 		testFixtureResults
+			// 	);
 
-				this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-					onTestCompleteCB({
-						error: result.error,
-						outcome: result.outcome,
-						test: testItem.test,
-						testCase: testItem.testCase,
-						testFixture: testItem.testFixture,
-						testId:
-							testSetRunInfo.testPlan.testItems.indexOf(
-								testItem
-							) + 1
-					});
-				});
+			// 	this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+			// 		onTestCompleteCB({
+			// 			error: result.error,
+			// 			outcome: result.outcome,
+			// 			test: testItem.test,
+			// 			testCase: testItem.testCase,
+			// 			testFixture: testItem.testFixture,
+			// 			testId:
+			// 				testSetRunInfo.testPlan.testItems.indexOf(
+			// 					testItem
+			// 				) + 1
+			// 		});
+			// 	});
 
-				this._outputStream.emitResult(
-					testItems.indexOf(testItem) + 1,
-					result
-				);
-			}
+			// 	this._outputStream.emitResult(
+			// 		testItems.indexOf(testItem) + 1,
+			// 		result
+			// 	);
+			// }
 
 			await this._teardownFixture(testFixture.fixture);
 		}
