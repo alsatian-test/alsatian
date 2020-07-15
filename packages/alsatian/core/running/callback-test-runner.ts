@@ -1,10 +1,10 @@
 import {
-	ITestCompleteEvent,
+	ITestRunCompleteEvent,
 	ITestFixtureCompleteEvent,
 	ITestFixtureStartedEvent,
 	ITestingCompleteEvent,
 	ITestingStartedEvent,
-	ITestStartedEvent,
+	ITestRunStartedEvent,
 	IWarningEvent
 } from "../events";
 import {TestSet} from "../test-set";
@@ -21,15 +21,15 @@ import {CallbackFunction} from "../events/generic-callback";
 import {EventFactory} from "../events/event-factory";
 
 export class CallbackTestRunner {
-	private _onTestStartedCBs: Array<CallbackFunction<ITestStartedEvent>> = [];
-	private _onTestCompleteCBs: Array<CallbackFunction<ITestCompleteEvent>> = [];
-	private _onTestingStartedCBs: Array<CallbackFunction<ITestingStartedEvent>> = [];
-	private _onTestingCompleteCBs: Array<CallbackFunction<ITestingCompleteEvent>> = [];
-	private _onTestFixtureStartedCBs: Array<CallbackFunction<ITestFixtureStartedEvent>> = [];
-	private _onTestFixtureCompleteCBs: Array<CallbackFunction<ITestFixtureCompleteEvent>> = [];
-	private _onWarningCBs: Array<CallbackFunction<IWarningEvent>> = [];
-	private _listenerInformer: ListenerInformer = new ListenerInformer();
-	private _eventFactory: EventFactory = new EventFactory();
+	private onTestRunStartedCBs: Array<CallbackFunction<ITestRunStartedEvent>> = [];
+	private onTestRunCompleteCBs: Array<CallbackFunction<ITestRunCompleteEvent>> = [];
+	private onTestingStartedCBs: Array<CallbackFunction<ITestingStartedEvent>> = [];
+	private onTestingCompleteCBs: Array<CallbackFunction<ITestingCompleteEvent>> = [];
+	private onTestFixtureStartedCBs: Array<CallbackFunction<ITestFixtureStartedEvent>> = [];
+	private onTestFixtureCompleteCBs: Array<CallbackFunction<ITestFixtureCompleteEvent>> = [];
+	private onWarningCBs: Array<CallbackFunction<IWarningEvent>> = [];
+	private listenerInformer: ListenerInformer = new ListenerInformer();
+	private eventFactory: EventFactory = new EventFactory();
 
 	public async run(testSet: TestSet, timeout?: number | null) {
 		const testPlan = new TestPlan(testSet);
@@ -47,58 +47,58 @@ export class CallbackTestRunner {
 			testSetResults,
 			timeout
 		);
-		await this._listenerInformer.informListeners(this._onTestingStartedCBs,
-			this._eventFactory.createTestingStarted(testSetRunInfo));
+		await this.listenerInformer.informListeners(this.onTestingStartedCBs,
+			this.eventFactory.createTestingStarted(testSetRunInfo));
 		await this._runTests(testSetRunInfo, testSetResults);
 	}
 
 	/**
 	 * Defined the call back function to be called when the test is started
 	 */
-	public onTestStarted(testStartedCB: CallbackFunction<ITestStartedEvent>) {
-		this._onTestStartedCBs.push(testStartedCB);
+	public onTestStarted(testStartedCB: CallbackFunction<ITestRunStartedEvent>) {
+		this.onTestRunStartedCBs.push(testStartedCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when the test is completed
 	 */
-	public onTestComplete(testCompleteCB: CallbackFunction<ITestCompleteEvent>) {
-		this._onTestCompleteCBs.push(testCompleteCB);
+	public onTestComplete(testCompleteCB: CallbackFunction<ITestRunCompleteEvent>) {
+		this.onTestRunCompleteCBs.push(testCompleteCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when testing has started
 	 */
 	public onTestingStarted(testingStartedCB: CallbackFunction<ITestingStartedEvent>) {
-		this._onTestingStartedCBs.push(testingStartedCB);
+		this.onTestingStartedCBs.push(testingStartedCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when testing is completed
 	 */
 	public onTestingComplete(testingCompletedCB: CallbackFunction<ITestingCompleteEvent>) {
-		this._onTestingCompleteCBs.push(testingCompletedCB);
+		this.onTestingCompleteCBs.push(testingCompletedCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when a test fixture starts to be tested
 	 */
 	public onTestFixtureStarted(testFixtureStartedCB: CallbackFunction<ITestFixtureStartedEvent>) {
-		this._onTestFixtureStartedCBs.push(testFixtureStartedCB);
+		this.onTestFixtureStartedCBs.push(testFixtureStartedCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when a test fixture is completed
 	 */
 	public onTestFixtureComplete(testFixtureCompleteCB: CallbackFunction<ITestFixtureCompleteEvent>) {
-		this._onTestFixtureCompleteCBs.push(testFixtureCompleteCB);
+		this.onTestFixtureCompleteCBs.push(testFixtureCompleteCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when a test fixture starts to be tested
 	 */
 	public onWarning(warningCB: CallbackFunction<IWarningEvent>) {
-		this._onWarningCBs.push(warningCB);
+		this.onWarningCBs.push(warningCB);
 	}
 
 	private _getTestFixtures(testItems: Array<TestItem>) {
@@ -115,26 +115,24 @@ export class CallbackTestRunner {
 		testFixtureResults: TestFixtureResults
 	): Promise<TestCaseResult> {
 		let testResults = testFixtureResults.testResults.find(
-			result2 => result2.test === testItem.test
+			result => result.test === testItem.test
 		);
 
 		if (testResults === undefined) {
 			testResults = testFixtureResults.addTestResult(testItem.test);
 		}
 
-		let result: TestCaseResult = null;
 		try {
 			await testItem.run(testSetRunInfo.timeout);
-			result = testResults.addTestCaseResult(
+			return testResults.addTestCaseResult(
 				testItem.testCase.caseArguments
 			);
 		} catch (e) {
-			result = testResults.addTestCaseResult(
+			return testResults.addTestCaseResult(
 				testItem.testCase.caseArguments,
 				e
 			);
 		}
-		return result;
 	}
 	private async _runFixtureFunctions(
 		fixture: { [key: string]: () => any },
@@ -162,8 +160,8 @@ export class CallbackTestRunner {
 		const testFixtureResults = results.addTestFixtureResult(
 			testFixture
 		);
-		await this._listenerInformer.informListeners(this._onTestFixtureStartedCBs,
-			this._eventFactory.createTestFixtureStarted(testFixture));
+		await this.listenerInformer.informListeners(this.onTestFixtureStartedCBs,
+			this.eventFactory.createTestFixtureStarted(testFixture));
 
 		for (const testItem of testFixtureItems) {
 			await this._runTestItem(testItem, testSetRunInfo, testFixtureResults);
@@ -173,24 +171,24 @@ export class CallbackTestRunner {
 			testFixture.fixture,
 			METADATA_KEYS.TEARDOWN_FIXTURE
 		);
-		await this._listenerInformer.informListeners(this._onTestFixtureCompleteCBs,
-			this._eventFactory.createTestFixtureComplete(testFixture, testFixtureResults));
+		await this.listenerInformer.informListeners(this.onTestFixtureCompleteCBs,
+			this.eventFactory.createTestFixtureComplete(testFixture, testFixtureResults));
 	}
 
 	private async _runTestItem(
 		testItem: TestItem,
 		testSetRunInfo: TestSetRunInfo,
 		testFixtureResults: TestFixtureResults) {
-		await this._listenerInformer.informListeners(this._onTestStartedCBs,
-			this._eventFactory.createTestStarted(testItem, testSetRunInfo));
+		await this.listenerInformer.informListeners(this.onTestRunStartedCBs,
+			this.eventFactory.createTestStarted(testItem, testSetRunInfo));
 		const result = await this._getTestItemResult(
 			testItem,
 			testSetRunInfo,
 			testFixtureResults
 		);
 
-		await this._listenerInformer.informListeners(this._onTestCompleteCBs,
-			this._eventFactory.createTestComplete(result, testItem, testSetRunInfo));
+		await this.listenerInformer.informListeners(this.onTestRunCompleteCBs,
+			this.eventFactory.createTestComplete(result, testItem, testSetRunInfo));
 	}
 
 	private async _runTests(
@@ -203,9 +201,9 @@ export class CallbackTestRunner {
 		for (const testFixture of testFixtures) {
 			await this._runTestFixture(testFixture, testItems, testSetResults, testSetRunInfo);
 		}
-		Warner.warnings.forEach(warning => this._listenerInformer.informListeners(this._onWarningCBs,
-			this._eventFactory.createWarning(warning)));
-		await this._listenerInformer.informListeners(this._onTestingCompleteCBs,
-			this._eventFactory.createTestingComplete(testSetRunInfo, testSetResults));
+		Warner.warnings.forEach(warning => this.listenerInformer.informListeners(this.onWarningCBs,
+			this.eventFactory.createWarning(warning)));
+		await this.listenerInformer.informListeners(this.onTestingCompleteCBs,
+			this.eventFactory.createTestingComplete(testSetRunInfo, testSetResults));
 	}
 }

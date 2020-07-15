@@ -2,7 +2,7 @@ import { ITest, ITestCase, ITestFixture } from "../_interfaces";
 import { TestOutcome } from "../results";
 import {TestCaseResult} from "../results";
 
-export interface ITestCompleteEvent {
+export interface ITestRunCompleteEvent {
 	testId: number;
 	testCase: ITestCase;
 	test: ITest;

@@ -1,6 +1,6 @@
 import { ITest, ITestCase, ITestFixture } from "../_interfaces";
 
-export interface ITestStartedEvent {
+export interface ITestRunStartedEvent {
 	testId: number;
 	testCase: ITestCase;
 	test: ITest;
