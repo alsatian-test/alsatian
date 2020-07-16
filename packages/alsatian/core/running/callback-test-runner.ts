@@ -1,10 +1,10 @@
 import {
-	ITestRunCompleteEvent,
+	ITestCompleteEvent,
 	ITestFixtureCompleteEvent,
 	ITestFixtureStartedEvent,
-	ITestingCompleteEvent,
-	ITestingStartedEvent,
 	ITestRunStartedEvent,
+	ITestRunCompleteEvent,
+	ITestStartedEvent,
 	IWarningEvent
 } from "../events";
 import {TestSet} from "../test-set";
@@ -21,10 +21,10 @@ import {CallbackFunction} from "../events/generic-callback";
 import {EventFactory} from "../events/event-factory";
 
 export class CallbackTestRunner {
+	private onTestStartedCBs: Array<CallbackFunction<ITestStartedEvent>> = [];
+	private onTestCompleteCBs: Array<CallbackFunction<ITestCompleteEvent>> = [];
 	private onTestRunStartedCBs: Array<CallbackFunction<ITestRunStartedEvent>> = [];
 	private onTestRunCompleteCBs: Array<CallbackFunction<ITestRunCompleteEvent>> = [];
-	private onTestingStartedCBs: Array<CallbackFunction<ITestingStartedEvent>> = [];
-	private onTestingCompleteCBs: Array<CallbackFunction<ITestingCompleteEvent>> = [];
 	private onTestFixtureStartedCBs: Array<CallbackFunction<ITestFixtureStartedEvent>> = [];
 	private onTestFixtureCompleteCBs: Array<CallbackFunction<ITestFixtureCompleteEvent>> = [];
 	private onWarningCBs: Array<CallbackFunction<IWarningEvent>> = [];
@@ -47,7 +47,7 @@ export class CallbackTestRunner {
 			testSetResults,
 			timeout
 		);
-		await this.listenerInformer.informListeners(this.onTestingStartedCBs,
+		await this.listenerInformer.informListeners(this.onTestRunStartedCBs,
 			this.eventFactory.createTestingStarted(testSetRunInfo));
 		await this._runTests(testSetRunInfo, testSetResults);
 	}
@@ -55,29 +55,29 @@ export class CallbackTestRunner {
 	/**
 	 * Defined the call back function to be called when the test is started
 	 */
-	public onTestStarted(testStartedCB: CallbackFunction<ITestRunStartedEvent>) {
-		this.onTestRunStartedCBs.push(testStartedCB);
+	public onTestStarted(testStartedCB: CallbackFunction<ITestStartedEvent>) {
+		this.onTestStartedCBs.push(testStartedCB);
 	}
 
 	/**
 	 * Defined the call back function to be called when the test is completed
 	 */
-	public onTestComplete(testCompleteCB: CallbackFunction<ITestRunCompleteEvent>) {
-		this.onTestRunCompleteCBs.push(testCompleteCB);
+	public onTestComplete(testCompleteCB: CallbackFunction<ITestCompleteEvent>) {
+		this.onTestCompleteCBs.push(testCompleteCB);
 	}
 
 	/**
-	 * Defined the call back function to be called when testing has started
+	 * Defined the call back function to be called when test run has started
 	 */
-	public onTestingStarted(testingStartedCB: CallbackFunction<ITestingStartedEvent>) {
-		this.onTestingStartedCBs.push(testingStartedCB);
+	public onTestRunStarted(testRunStartedCB: CallbackFunction<ITestRunStartedEvent>) {
+		this.onTestRunStartedCBs.push(testRunStartedCB);
 	}
 
 	/**
-	 * Defined the call back function to be called when testing is completed
+	 * Defined the call back function to be called when test run is completed
 	 */
-	public onTestingComplete(testingCompletedCB: CallbackFunction<ITestingCompleteEvent>) {
-		this.onTestingCompleteCBs.push(testingCompletedCB);
+	public onTestRunComplete(testRunCompletedCB: CallbackFunction<ITestRunCompleteEvent>) {
+		this.onTestRunCompleteCBs.push(testRunCompletedCB);
 	}
 
 	/**
@@ -179,7 +179,7 @@ export class CallbackTestRunner {
 		testItem: TestItem,
 		testSetRunInfo: TestSetRunInfo,
 		testFixtureResults: TestFixtureResults) {
-		await this.listenerInformer.informListeners(this.onTestRunStartedCBs,
+		await this.listenerInformer.informListeners(this.onTestStartedCBs,
 			this.eventFactory.createTestStarted(testItem, testSetRunInfo));
 		const result = await this._getTestItemResult(
 			testItem,
@@ -187,7 +187,7 @@ export class CallbackTestRunner {
 			testFixtureResults
 		);
 
-		await this.listenerInformer.informListeners(this.onTestRunCompleteCBs,
+		await this.listenerInformer.informListeners(this.onTestCompleteCBs,
 			this.eventFactory.createTestComplete(result, testItem, testSetRunInfo));
 	}
 
@@ -203,7 +203,7 @@ export class CallbackTestRunner {
 		}
 		Warner.warnings.forEach(warning => this.listenerInformer.informListeners(this.onWarningCBs,
 			this.eventFactory.createWarning(warning)));
-		await this.listenerInformer.informListeners(this.onTestingCompleteCBs,
+		await this.listenerInformer.informListeners(this.onTestRunCompleteCBs,
 			this.eventFactory.createTestingComplete(testSetRunInfo, testSetResults));
 	}
 }

@@ -16,7 +16,7 @@ export class TestRunner extends CallbackTestRunner {
 		} else {
 			this.outputStream = new TestOutputStream();
 		}
-		this.onTestingStarted((event) => {
+		this.onTestRunStarted((event) => {
 			this.outputStream.emitVersion();
 			this.outputStream.emitPlan(event.testSetRunInfo.testPlan.testItems.length);
 
@@ -27,7 +27,7 @@ export class TestRunner extends CallbackTestRunner {
 		this.onWarning((event) => {
 			this.outputStream.emitWarning(event.warning);
 		});
-		this.onTestingComplete((event) => {
+		this.onTestRunComplete((event) => {
 			this.outputStream.end();
 		});
 		this.onTestComplete((event) => {

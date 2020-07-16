@@ -9,7 +9,7 @@ import {
 	Setup,
 	Teardown, TestOutcome
 } from "../../../../core/alsatian-core";
-import {ITestRunCompleteEvent, ITestFixtureCompleteEvent, ITestRunStartedEvent} from "../../../../core/events";
+import {ITestCompleteEvent, ITestFixtureCompleteEvent, ITestStartedEvent} from "../../../../core/events";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestBuilder } from "../../../builders/test-builder";
@@ -61,7 +61,7 @@ export class RunTestTests {
 
 	@AsyncTest("a passing test can be run with on complete event")
 	public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
-		let testCompletedValue: ITestRunCompleteEvent = null;
+		let testCompletedValue: ITestCompleteEvent = null;
 		const testDescription = "testDescriptionToCheck";
 		const test = new TestBuilder()
 			.withDescription(testDescription)
@@ -83,7 +83,7 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onCompleteCB: (testCompleted: ITestRunCompleteEvent) => {
+			onCompleteCB: (testCompleted: ITestCompleteEvent) => {
 				testCompletedValue = testCompleted;
 			}
 		};
@@ -110,7 +110,7 @@ export class RunTestTests {
 	}
 	@AsyncTest("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnStartedEventRaised() {
-		let testStartedValue: ITestRunStartedEvent = null;
+		let testStartedValue: ITestStartedEvent = null;
 		const testDescription = "testDescriptionToCheck";
 		const test = new TestBuilder()
 			.withDescription(testDescription)
@@ -132,7 +132,7 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onStartedCB: (testStarted: ITestRunStartedEvent) => {
+			onStartedCB: (testStarted: ITestStartedEvent) => {
 				testStartedValue = testStarted;
 			}
 		};
@@ -206,7 +206,7 @@ export class RunTestTests {
 		"single passing test can be run successfully without on complete event"
 	)
 	public async singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
-		let testCompletedValue: ITestRunCompleteEvent = null;
+		let testCompletedValue: ITestCompleteEvent = null;
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
 		const testFixture = new TestFixtureBuilder().addTest(test).build();
@@ -220,7 +220,7 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onCompleteCB: (testCompleted: ITestRunCompleteEvent) => {
+			onCompleteCB: (testCompleted: ITestCompleteEvent) => {
 				testCompletedValue = testCompleted;
 			}
 		};
@@ -238,8 +238,8 @@ export class RunTestTests {
 		"single passing test can be run succesffully with multiple on complete events"
 	)
 	public async singlePassingTestRunsSuccessfullyWithSeveralOnCompleteEventRaised() {
-		let testCompletedValue1: ITestRunCompleteEvent = null;
-		let testCompletedValue2: ITestRunCompleteEvent = null;
+		let testCompletedValue1: ITestCompleteEvent = null;
+		let testCompletedValue2: ITestCompleteEvent = null;
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
 		const testFixture = new TestFixtureBuilder().addTest(test).build();
@@ -253,10 +253,10 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onCompleteCB1: (testCompleted: ITestRunCompleteEvent) => {
+			onCompleteCB1: (testCompleted: ITestCompleteEvent) => {
 				testCompletedValue1 = testCompleted;
 			},
-			onCompleteCB2: (testCompleted: ITestRunCompleteEvent) => {
+			onCompleteCB2: (testCompleted: ITestCompleteEvent) => {
 				testCompletedValue2 = testCompleted;
 			}
 		};

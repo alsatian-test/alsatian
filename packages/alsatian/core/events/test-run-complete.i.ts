@@ -1,13 +1,7 @@
-import { ITest, ITestCase, ITestFixture } from "../_interfaces";
-import { TestOutcome } from "../results";
-import {TestCaseResult} from "../results";
+import {TestSetRunInfo} from "../running";
+import {TestSetResults} from "../results";
 
 export interface ITestRunCompleteEvent {
-	testId: number;
-	testCase: ITestCase;
-	test: ITest;
-	testFixture: ITestFixture;
-	outcome?: TestOutcome;
-	error?: Error | null;
-	testCaseResult: TestCaseResult;
+	testSetRunInfo: TestSetRunInfo;
+	testSetResults: TestSetResults;
 }
