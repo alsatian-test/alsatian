@@ -16,7 +16,7 @@ export class FocusTestDecoratorTests {
 	public focusTestKeyMetaDataAddedToCorrectKey(key: string) {
 		const testFixture = {};
 
-		FocusTestDecorator(testFixture, key, null);
+		FocusTestDecorator(testFixture, key, undefined);
 
 		Expect(Reflect.getMetadata(METADATA_KEYS.FOCUS, testFixture, key)).toBe(
 			true

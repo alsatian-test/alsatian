@@ -4,7 +4,7 @@ import { ISpyCall } from "../../core/_interfaces";
 export class SpyCallBuilder {
 	private args: Array<any>;
 
-	public SpyCallBuilder() {
+	public constructor() {
 		this.args = [];
 	}
 

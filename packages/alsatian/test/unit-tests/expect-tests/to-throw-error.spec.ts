@@ -175,7 +175,7 @@ export class ToThrowErrorTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError?.extras.actualError).toBe("none");
+		Expect(errorMatchError?.extras?.actualError).toBe("none");
 	}
 
 	@TestCase(EvalError, "something went wrong")
@@ -198,7 +198,7 @@ export class ToThrowErrorTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError?.extras.actualError).toBe("none");
+		Expect(errorMatchError?.extras?.actualError).toBe("none");
 	}
 
 	@TestCase(
@@ -232,7 +232,7 @@ export class ToThrowErrorTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError?.extras.actualError).toBe(
+		Expect(errorMatchError?.extras?.actualError).toBe(
 			`${actualErrorType.name}: ${actualErrorMessage}`
 		);
 	}
@@ -256,7 +256,7 @@ export class ToThrowErrorTests {
 
 		Expect(errorMatchError).toBeDefined();
 		Expect(errorMatchError).not.toBeNull();
-		Expect(errorMatchError?.extras.actualError).toBe(
+		Expect(errorMatchError?.extras?.actualError).toBe(
 			`${(expectedErrorType as INameable).name}: ${expectedErrorMessage}`
 		);
 	}

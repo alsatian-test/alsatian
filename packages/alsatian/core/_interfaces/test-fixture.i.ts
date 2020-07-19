@@ -11,6 +11,6 @@ export interface ITestFixture {
 
 	description: string;
 
-	filePath: string;
+	filePath: string | undefined;
 	addTest(test: ITest): void;
 }

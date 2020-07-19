@@ -115,7 +115,7 @@ export class TestOutputStream extends ReadableStream {
 		);
 	}
 
-	private extrasWithLogs(extras: { [prop: string]: any }, logs: Array<ILog>) {
+	private extrasWithLogs(extras: { [prop: string]: any } | undefined, logs: Array<ILog>) {
 		if (logs && logs.length) {
 			return {
 				logs: logs.map(x => x.value).join("\n"),

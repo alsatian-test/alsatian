@@ -11,8 +11,8 @@ export class MatchError extends ExtendoError {
 		return this._expected;
 	}
 
-	protected _extras: { [prop: string]: any };
-	public get extras(): { [prop: string]: any } {
+	protected _extras: { [prop: string]: any } | undefined;
+	public get extras(): { [prop: string]: any } | undefined {
 		return this._extras;
 	}
 

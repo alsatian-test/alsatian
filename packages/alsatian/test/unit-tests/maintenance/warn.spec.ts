@@ -10,7 +10,7 @@ import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("warn function tests")
 export class WarnFunctionTests {
-	private _originalWarnings: Array<any>;
+	private _originalWarnings!: Array<any>;
 
 	@Setup
 	private _replaceLogArray() {

@@ -7,7 +7,7 @@ export interface ITest {
 	ignoreReason?: string;
 
 	focussed: boolean;
-	timeout: number;
+	timeout: number | null;
 	key: string;
 	description: string;
 	testCases: Array<ITestCase>;

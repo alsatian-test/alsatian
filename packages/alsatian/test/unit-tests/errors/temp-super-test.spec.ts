@@ -14,7 +14,7 @@ export class TempTests {
 		mock("../../../core/errors/match-error", mockMatch);
 		delete require.cache[require.resolve(`../../../core/errors/${error}.ts`)];
 
-  const errorModule = await import(`../../../core/errors/${error}`);
+		const errorModule = await import(`../../../core/errors/${error}`);
 
 		Expect(new errorModule[className]()).toBeDefined();
 

@@ -234,7 +234,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError?.extras.actualValues).toEqual(values);
+		Expect(propertyError?.extras?.actualValues).toEqual(values);
 	}
 
 	@TestCase([null])
@@ -265,7 +265,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError?.extras.actualValues).toEqual(values);
+		Expect(propertyError?.extras?.actualValues).toEqual(values);
 	}
 
 	@TestCase(undefined)
@@ -298,7 +298,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError?.extras.expectedValue).toBe(expectedValue);
+		Expect(propertyError?.extras?.expectedValue).toBe(expectedValue);
 	}
 
 	@TestCase(undefined)

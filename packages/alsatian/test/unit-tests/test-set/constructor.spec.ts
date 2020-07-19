@@ -1,4 +1,4 @@
-import { GlobHelper, TestLoader } from "../../../core/";
+import { GlobHelper, TestLoader, FileRequirer } from "../../../core/";
 import { Expect, TestCase } from "../../../core/alsatian-core";
 import { TestSet } from "../../../core/test-set";
 
@@ -17,7 +17,7 @@ export class TestSetConstructorTests {
 	@TestCase(null)
 	@TestCase(undefined)
 	public nullOrUndefinedGlobHelperThrowsError(globHelper: GlobHelper) {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 
 		Expect(() => new TestSet(testLoader, globHelper)).toThrowError(
 			TypeError,

@@ -26,7 +26,7 @@ export class SpyOnPropertyTests {
 		SpyOnProperty(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").get
+			Object.getOwnPropertyDescriptor(object, "property")?.get
 		).not.toBe(originalGetter);
 	}
 
@@ -44,7 +44,7 @@ export class SpyOnPropertyTests {
 		SpyOnProperty(object, "property");
 
 		Expect(
-			Object.getOwnPropertyDescriptor(object, "property").set
+			Object.getOwnPropertyDescriptor(object, "property")?.set
 		).not.toBe(originalSetter);
 	}
 

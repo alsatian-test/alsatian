@@ -26,8 +26,8 @@ class FakeFixture {
 
 @TestFixture("Load Tests")
 export class LoadTestTests {
-	private _originalStdErr: (message: string) => boolean;
-	private _originalExit: (code: number) => never;
+	private _originalStdErr!: (message: string) => boolean;
+	private _originalExit!: (code: number) => never;
 
 	@Setup
 	private _spyOnProcess() {

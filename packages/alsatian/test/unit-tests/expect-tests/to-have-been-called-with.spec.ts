@@ -361,7 +361,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArgumentsList: Array<Array<any>>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -380,7 +380,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError?.extras.actualArguments).toBe(
+		Expect(functionError?.extras?.actualArguments).toBe(
 			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
@@ -394,7 +394,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArgumentsList: Array<Array<any>>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -418,7 +418,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError?.extras.actualArguments).toBe(
+		Expect(functionError?.extras?.actualArguments).toBe(
 			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
@@ -431,7 +431,7 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -463,7 +463,7 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");

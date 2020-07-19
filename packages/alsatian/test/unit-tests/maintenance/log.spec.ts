@@ -12,7 +12,7 @@ import { Warner } from "../../../core/maintenance/warn";
 
 @TestFixture("log function tests")
 export class LogFunctionTests {
-	private _originalLogs: Array<any>;
+	private _originalLogs!: Array<any>;
 
 	@Setup
 	private _replaceLogArray() {

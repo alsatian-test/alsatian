@@ -3,11 +3,11 @@ import { SpyCall } from "./spy-call";
 export class PropertySpy<PropertyType> {
 	private _originialGetter: () => PropertyType | undefined;
 	private _originialSetter: (value: PropertyType) => void | undefined;
-	private _value: PropertyType;
+	private _value: PropertyType | undefined;
 	private _descriptorTarget: any;
 	private _getter: () => PropertyType | undefined;
 	private _setter: (value: PropertyType) => void | undefined;
-	private _returnValue: boolean;
+	private _returnValue: boolean | undefined;
 	private _propertyName: string;
 	private _getCalls: Array<SpyCall> = [];
 

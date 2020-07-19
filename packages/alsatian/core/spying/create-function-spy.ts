@@ -1,3 +1,4 @@
+
 import { FunctionSpy } from "./function-spy";
 import { exposeSpyFunctions } from "./expose-spy-functions";
 import { ISpiedFunction, TypedFunction } from "./spied-function.i";
@@ -12,7 +13,7 @@ export function createFunctionSpy() {
 
 	const spiedFunction = functionSpy.call.bind(functionSpy);
 
-	exposeSpyFunctions(spiedFunction, functionSpy);
+	exposeSpyFunctions(spiedFunction as ISpiedFunction<any>, functionSpy);
 
 	return spiedFunction;
 }

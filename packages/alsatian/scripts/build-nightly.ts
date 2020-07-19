@@ -74,7 +74,7 @@ if (
 
 async function writeFileAsync(fileLocation: string, fileContents: string) {
 	return new Promise((resolve, reject) => {
-		writeFile(fileLocation, fileContents, (error: Error) => {
+		writeFile(fileLocation, fileContents, (error: Error | null) => {
 			if (error) {
 				return reject(error);
 			}

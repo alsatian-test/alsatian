@@ -18,7 +18,7 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("fixture info tests")
 export class FixtureInfoTests {
-	private _originalTestPlan: TestPlan;
+	private _originalTestPlan!: TestPlan;
 
 	@Setup
 	private _recordPreviousTestPlan() {
@@ -50,7 +50,7 @@ export class FixtureInfoTests {
 
 		const testSet = {
 			testFixtures: []
-		} as TestSet;
+		} as unknown as TestSet;
 
 		const test = new TestBuilder()
 			.withKey("test")
@@ -84,7 +84,7 @@ export class FixtureInfoTests {
 
 		const testSet = {
 			testFixtures: []
-		} as TestSet;
+		} as unknown as TestSet;
 
 		const test = new TestBuilder()
 			.withKey("test")

@@ -20,7 +20,7 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("setting up tests")
 export class SetupTests {
-	private _originalTestPlan: TestPlan;
+	private _originalTestPlan!: TestPlan;
 
 	@Setup
 	private _recordOriginalTestPlan() {

@@ -8,7 +8,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestPlan } from "../../../../core/running";
 
 export class FocussedTestTests {
-	private _originalTestPlan: TestPlan;
+	private _originalTestPlan!: TestPlan;
 
 	@Setup
 	private _recordOriginalTestPlan() {

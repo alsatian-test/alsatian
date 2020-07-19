@@ -19,7 +19,7 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("test set run tests")
 export class RunTestTests {
-	private _originalTestPlan: TestPlan;
+	private _originalTestPlan!: TestPlan;
 
 	@Setup
 	private _recordOriginalTestPlan() {
@@ -61,7 +61,7 @@ export class RunTestTests {
 
 	@AsyncTest("a passing test can be run with on complete event")
 	public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
-		let testCompletedValue: ITestCompleteEvent = null;
+		let testCompletedValue!: ITestCompleteEvent;
 		const testDescription = "testDescriptionToCheck";
 		const test = new TestBuilder()
 			.withDescription(testDescription)
@@ -113,7 +113,7 @@ export class RunTestTests {
 		"single passing test can be run successfully without on complete event"
 	)
 	public async singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
-		let testCompletedValue: ITestCompleteEvent = null;
+		let testCompletedValue!: ITestCompleteEvent;
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
 		const testFixture = new TestFixtureBuilder().addTest(test).build();
@@ -145,8 +145,8 @@ export class RunTestTests {
 		"single passing test can be run succesffully with multiple on complete events"
 	)
 	public async singlePassingTestRunsSuccessfullyWithSeveralOnCompleteEventRaised() {
-		let testCompletedValue1: ITestCompleteEvent = null;
-		let testCompletedValue2: ITestCompleteEvent = null;
+		let testCompletedValue1!: ITestCompleteEvent;
+		let testCompletedValue2!: ITestCompleteEvent;
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
 		const testFixture = new TestFixtureBuilder().addTest(test).build();

@@ -74,7 +74,7 @@ export class ToBeGreaterThanTests {
 	public greaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).toBeGreaterThan(512);
@@ -84,7 +84,7 @@ export class ToBeGreaterThanTests {
 
 		Expect(greaterThanError).toBeDefined();
 		Expect(greaterThanError).not.toBeNull();
-		Expect(greaterThanError.actual).toBe(actualValue);
+		Expect(greaterThanError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(0)
@@ -93,7 +93,7 @@ export class ToBeGreaterThanTests {
 	public notGreaterThanShouldSetErrorActualValueToGivenValue(
 		actualValue: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).not.toBeGreaterThan(-42);
@@ -103,14 +103,14 @@ export class ToBeGreaterThanTests {
 
 		Expect(greaterThanError).toBeDefined();
 		Expect(greaterThanError).not.toBeNull();
-		Expect(greaterThanError.actual).toBe(actualValue);
+		Expect(greaterThanError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(0)
 	@TestCase(-1)
 	@TestCase(42)
 	public shouldSetExpectedValueToGreaterThanLowerLimit(lowerLimit: number) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError | undefined;
 
 		try {
 			Expect(-42).toBeGreaterThan(lowerLimit);
@@ -120,7 +120,7 @@ export class ToBeGreaterThanTests {
 
 		Expect(greaterThanError).toBeDefined();
 		Expect(greaterThanError).not.toBeNull();
-		Expect(greaterThanError.expected).toBe(
+		Expect(greaterThanError?.expected).toBe(
 			"a number greater than " + lowerLimit
 		);
 	}
@@ -131,7 +131,7 @@ export class ToBeGreaterThanTests {
 	public shouldSetExpectedValueToNotGreaterThanLowerLimit(
 		lowerLimit: number
 	) {
-		let greaterThanError: MatchError;
+		let greaterThanError: MatchError | undefined;
 
 		try {
 			Expect(512).not.toBeGreaterThan(lowerLimit);
@@ -141,7 +141,7 @@ export class ToBeGreaterThanTests {
 
 		Expect(greaterThanError).toBeDefined();
 		Expect(greaterThanError).not.toBeNull();
-		Expect(greaterThanError.expected).toBe(
+		Expect(greaterThanError?.expected).toBe(
 			"a number not greater than " + lowerLimit
 		);
 	}

@@ -51,7 +51,7 @@ export class ToBeTruthyTests {
 	@TestCase(false)
 	@TestCase("")
 	public shouldBeTruthyActualValueSet(actualValue: any) {
-		let truthyError: MatchError;
+		let truthyError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).toBeTruthy();
@@ -61,7 +61,7 @@ export class ToBeTruthyTests {
 
 		Expect(truthyError).toBeDefined();
 		Expect(truthyError).not.toBeNull();
-		Expect(truthyError.actual).toBe(actualValue);
+		Expect(truthyError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(-1)
@@ -70,7 +70,7 @@ export class ToBeTruthyTests {
 	@TestCase(true)
 	@TestCase("something")
 	public shouldNotBeTruthyActualValueSet(actualValue: any) {
-		let truthyError: MatchError;
+		let truthyError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).not.toBeTruthy();
@@ -80,14 +80,14 @@ export class ToBeTruthyTests {
 
 		Expect(truthyError).toBeDefined();
 		Expect(truthyError).not.toBeNull();
-		Expect(truthyError.actual).toBe(actualValue);
+		Expect(truthyError?.actual).toBe(actualValue);
 	}
 
 	@TestCase(0)
 	@TestCase(false)
 	@TestCase("")
 	public shouldBeTruthyExpectedValueSetToTruthy(actualValue: any) {
-		let truthyError: MatchError;
+		let truthyError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).toBeTruthy();
@@ -97,7 +97,7 @@ export class ToBeTruthyTests {
 
 		Expect(truthyError).toBeDefined();
 		Expect(truthyError).not.toBeNull();
-		Expect(truthyError.expected).toBe("truthy");
+		Expect(truthyError?.expected).toBe("truthy");
 	}
 
 	@TestCase(-1)
@@ -106,7 +106,7 @@ export class ToBeTruthyTests {
 	@TestCase(true)
 	@TestCase("something")
 	public shouldNotBeTruthyExpectedValueSetToFalsy(actualValue: any) {
-		let truthyError: MatchError;
+		let truthyError: MatchError | undefined;
 
 		try {
 			Expect(actualValue).not.toBeTruthy();
@@ -116,6 +116,6 @@ export class ToBeTruthyTests {
 
 		Expect(truthyError).toBeDefined();
 		Expect(truthyError).not.toBeNull();
-		Expect(truthyError.expected).toBe("falsy");
+		Expect(truthyError?.expected).toBe("falsy");
 	}
 }

@@ -3,7 +3,7 @@ import { Constructor } from "../../core/_interfaces";
 export class ClassBuilder {
 	private name: string;
 
-	public ClassBuilder() {
+	public constructor() {
 		this.name = "SomeClass";
 	}
 

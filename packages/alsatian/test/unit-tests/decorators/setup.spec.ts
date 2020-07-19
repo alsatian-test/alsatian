@@ -14,7 +14,7 @@ export class SetupDecoratorTests {
 	public setupFunctionAddedAsMetaData() {
 		const testFixture = {};
 
-		Setup(testFixture, "test", null);
+		Setup(testFixture, "test", undefined);
 
 		const setupFunctions = Reflect.getMetadata(
 			METADATA_KEYS.SETUP,
@@ -31,7 +31,7 @@ export class SetupDecoratorTests {
 	public setupFunctionKeyMetaDataAdded(key: string) {
 		const testFixture = {};
 
-		Setup(testFixture, key, null);
+		Setup(testFixture, key, undefined);
 
 		const setupFunctions = Reflect.getMetadata(
 			METADATA_KEYS.SETUP,
@@ -47,7 +47,7 @@ export class SetupDecoratorTests {
 	public setupFunctionIsAsyncMetaDataAdded(key: string) {
 		const testFixture = {};
 
-		Setup(testFixture, key, null);
+		Setup(testFixture, key, undefined);
 
 		const setupFunctions = Reflect.getMetadata(
 			METADATA_KEYS.SETUP,
@@ -64,7 +64,7 @@ export class SetupDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < setupFunctionCount; i++) {
-			Setup(testFixture, "key " + i, null);
+			Setup(testFixture, "key " + i, undefined);
 		}
 
 		const setupFunctions = Reflect.getMetadata(

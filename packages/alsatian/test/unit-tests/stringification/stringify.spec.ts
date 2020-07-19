@@ -41,11 +41,13 @@ export class StringifyTests {
 
 	@Test("circular references don't blow up")
 	public circularReferencesDontBlowUp() {
-		const parent = {
+		interface IChild { parent: IParent; }
+		interface IParent { children: Array<IChild>; }
+		const parent: IParent = {
 			children: []
 		};
 
-		const child = {
+		const child: IChild = {
 			parent
 		};
 

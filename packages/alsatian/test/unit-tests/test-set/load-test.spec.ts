@@ -1,4 +1,4 @@
-import { GlobHelper, TestLoader } from "../../../core/";
+import { GlobHelper, TestLoader, FileRequirer } from "../../../core/";
 import { Expect, SpyOn, Test, TestCase } from "../../../core/alsatian-core";
 import { TestSet } from "../../../core/test-set";
 import { resolve, sep } from "path";
@@ -6,7 +6,7 @@ import { resolve, sep } from "path";
 export class LoadTestTests {
 	@Test()
 	public noTestsAtLocationGivesNoTestFixtures() {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
 		testLoaderSpy.andReturn([]);
 		testLoaderSpy.andStub();
@@ -25,7 +25,7 @@ export class LoadTestTests {
 	@TestCase("/another/spec.somewhere.js")
 	@Test("absolute paths are resolved")
 	public absolutePathsAreResolved(path: string) {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
 		testLoaderSpy.andReturn([]);
 		testLoaderSpy.andStub();
@@ -45,7 +45,7 @@ export class LoadTestTests {
 	@TestCase("../another.test.js")
 	@Test("relative paths are resolved")
 	public relativePathsAreResolved(path: string) {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
 		testLoaderSpy.andReturn([]);
 		testLoaderSpy.andStub();
@@ -64,7 +64,7 @@ export class LoadTestTests {
 	@TestCase("/another/**/*.spec.somewhere.js")
 	@Test("absolute globs are resolved")
 	public absoluteGlobsAreResolved(path: string) {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
 		testLoaderSpy.andReturn([]);
 		testLoaderSpy.andStub();
@@ -84,7 +84,7 @@ export class LoadTestTests {
 	@TestCase("../*.test.js")
 	@Test("relative globs are resolved")
 	public relativeGlobsAreResolved(path: string) {
-		const testLoader = new TestLoader(null);
+		const testLoader = new TestLoader(new FileRequirer());
 		const testLoaderSpy = SpyOn(testLoader, "loadTestFixture");
 		testLoaderSpy.andReturn([]);
 		testLoaderSpy.andStub();

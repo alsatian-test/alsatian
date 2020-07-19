@@ -9,7 +9,7 @@ export class TestFixtureBuilder {
 	public constructor() {
 		this._testFixture = new TestFixture("Unnamed Test Fixture");
 		this._testFixture.filePath = new Error().stack
-			.split("\n")[3]
+			?.split("\n")[3]
 			.replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$2");
 	}
 

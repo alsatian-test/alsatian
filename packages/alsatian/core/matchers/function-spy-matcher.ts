@@ -79,7 +79,7 @@ export class FunctionSpyMatcher {
 	private _matchingArguments() {
 		return this._spy.callsWithArguments.apply(
 			this._spy,
-			this._expectedArguments
+			this._expectedArguments || []
 		).length;
 	}
 

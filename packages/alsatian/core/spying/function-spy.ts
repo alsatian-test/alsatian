@@ -3,10 +3,10 @@ import { ISpyCall } from "../_interfaces";
 
 export class FunctionSpy {
 	protected returnValue: any;
-	protected hasReturnValue: boolean;
-	protected isStubbed: boolean;
+	protected hasReturnValue!: boolean;
+	protected isStubbed!: boolean;
 	protected context: any;
-	private _fakeFunction: () => any;
+	private _fakeFunction!: (...args: Array<any>) => any;
 
 	private _calls: Array<ISpyCall> = [];
 	public get calls() {

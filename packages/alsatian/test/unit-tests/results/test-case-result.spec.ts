@@ -16,7 +16,7 @@ import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
 import { TestFixture } from "../../../core";
 
 export class TestCaseResultTests {
-	private _originalLogs: Array<any>;
+	private _originalLogs!: Array<any>;
 
 	@Setup
 	private _replaceLogArray() {

@@ -54,7 +54,7 @@ const _getUnhandledErrorMessage = (stack: string, logs?: Array<string>) => {
 	);
 };
 
-const buildLogs = (logs: Array<string>) => {
+const buildLogs = (logs: Array<string> | undefined) => {
 	return logs !== undefined
 		? "     logs: |-\n" + logs.map(l => "       " + l).join("\n") + "\n"
 		: "";

@@ -15,19 +15,6 @@ export class TestSetRunInfo {
 		return this._testSetResults;
 	}
 
-	private _testPlanItem: TestItem;
-	public get testPlanItem() {
-		return this._testPlanItem;
-	}
-
-	public set testPlanItem(testPlanItem: TestItem) {
-		if (testPlanItem) {
-			this._testPlanItem = testPlanItem;
-		} else {
-			throw new TypeError("testPlanItem must not be null or undefined.");
-		}
-	}
-
 	public constructor(
 		private _testPlan: TestPlan,
 		private _testSetResults: TestSetResults,
