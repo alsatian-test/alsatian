@@ -16,7 +16,7 @@ export class StringMatcher extends EmptyMatcher<string> {
 			);
 		}
 
-		this._registerMatcher(
+		this.registerMatcher(
 			regex.test(this.actualValue) === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
 				!this.shouldMatch ? "not " : ""
@@ -34,7 +34,7 @@ export class StringMatcher extends EmptyMatcher<string> {
 	 * @param expectedContent - the string that should be found within
 	 */
 	public toContain(expectedContent: string) {
-		this._registerMatcher(
+		this.registerMatcher(
 			this.actualValue.indexOf(expectedContent) > -1 === this.shouldMatch,
 			`Expected ${stringify(this.actualValue)} ${
 				!this.shouldMatch ? "not " : ""

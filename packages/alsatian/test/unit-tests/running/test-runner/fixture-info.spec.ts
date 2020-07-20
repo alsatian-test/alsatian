@@ -18,26 +18,26 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("fixture info tests")
 export class FixtureInfoTests {
-	private _originalTestPlan!: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
-	private _recordPreviousTestPlan() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private recordPreviousTestPlan() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
 	}
 
 	@Teardown
-	private _resetPreviousTestPlan() {
+	private resetPreviousTestPlan() {
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
 
-	private static _getExpectedFixtureOutput(fixtureName: string): string {
+	private static getExpectedFixtureOutput(fixtureName: string): string {
 		return `# FIXTURE ${fixtureName}\n`;
 	}
 
@@ -68,7 +68,7 @@ export class FixtureInfoTests {
 		const testRunner = new TestRunner(output);
 		await testRunner.run(testSet);
 		Expect(output.push).toHaveBeenCalledWith(
-			FixtureInfoTests._getExpectedFixtureOutput(fixtureDescription)
+			FixtureInfoTests.getExpectedFixtureOutput(fixtureDescription)
 		);
 		Expect(output.push).toHaveBeenCalledWith(
 			`ok 1 ${fixtureDescription} > ${test.description}\n`
@@ -112,7 +112,7 @@ export class FixtureInfoTests {
 
 		testSet.testFixtures.push(testFixture);
 		Expect(output.push).toHaveBeenCalledWith(
-			FixtureInfoTests._getExpectedFixtureOutput(fixtureDescription)
+			FixtureInfoTests.getExpectedFixtureOutput(fixtureDescription)
 		);
 		Expect(output.push).toHaveBeenCalledWith(
 			`not ok 1 ${fixtureDescription} > ${test.description}\n`

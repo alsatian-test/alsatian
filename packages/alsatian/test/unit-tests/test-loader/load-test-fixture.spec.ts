@@ -26,22 +26,22 @@ class FakeFixture {
 
 @TestFixture("Load Tests")
 export class LoadTestTests {
-	private _originalStdErr!: (message: string) => boolean;
-	private _originalExit!: (code: number) => never;
+	private originalStdErr!: (message: string) => boolean;
+	private originalExit!: (code: number) => never;
 
 	@Setup
-	private _spyOnProcess() {
-		this._originalStdErr = process.stderr.write;
+	private spyOnProcess() {
+		this.originalStdErr = process.stderr.write;
 		SpyOn(process.stderr, "write").andStub();
 
-		this._originalExit = process.exit;
+		this.originalExit = process.exit;
 		SpyOn(process, "exit").andStub();
 	}
 
 	@Teardown
-	private _resetProcess() {
-		process.stderr.write = this._originalStdErr;
-		process.exit = this._originalExit;
+	private resetProcess() {
+		process.stderr.write = this.originalStdErr;
+		process.exit = this.originalExit;
 	}
 
 	@Test()

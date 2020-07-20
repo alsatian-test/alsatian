@@ -321,7 +321,7 @@ export class ToHaveBeenCalledWithTests {
 		actualValue: any
 	) {
 		const EXPECT = Expect(() => {});
-		(EXPECT as any)._actualValue = actualValue;
+		(EXPECT as any).actualValue = actualValue;
 
 		Expect(() => EXPECT.toHaveBeenCalledWith()).toThrowError(
 			TypeError,
@@ -344,7 +344,7 @@ export class ToHaveBeenCalledWithTests {
 		actualValue: any
 	) {
 		const EXPECT = Expect(() => {});
-		(EXPECT as any)._actualValue = actualValue;
+		(EXPECT as any).actualValue = actualValue;
 
 		Expect(() => EXPECT.not.toHaveBeenCalledWith()).toThrowError(
 			TypeError,

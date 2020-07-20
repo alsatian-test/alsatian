@@ -1,20 +1,9 @@
 import ExtendoError from "extendo-error";
 
 export class MatchError extends ExtendoError {
-	protected _actual: any;
-	public get actual(): any {
-		return this._actual;
-	}
-
-	protected _expected: any;
-	public get expected(): any {
-		return this._expected;
-	}
-
-	protected _extras: { [prop: string]: any } | undefined;
-	public get extras(): { [prop: string]: any } | undefined {
-		return this._extras;
-	}
+	public readonly actual: any;
+	public readonly expected: any;
+	public readonly extras: { [prop: string]: any } | undefined;
 
 	public constructor(
 		message?: string,
@@ -24,8 +13,8 @@ export class MatchError extends ExtendoError {
 	) {
 		super(message);
 
-		this._actual = actualValue;
-		this._expected = expectedValue;
-		this._extras = extras;
+		this.actual = actualValue;
+		this.expected = expectedValue;
+		this.extras = extras;
 	}
 }

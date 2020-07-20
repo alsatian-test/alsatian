@@ -5,14 +5,14 @@ import { MatcherOrType } from "./matcher-or-type";
 import { MatcherArgument } from "./matcher-argument";
 
 export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<ExpectedType> {
-	private readonly _testers: Array<ITester> = [];
+	private readonly testers: Array<ITester> = [];
 
 	public constructor(public readonly type: new (...args: Array<any>) => ExpectedType) {
 		if (type === null || type === undefined) {
 			throw new TypeError("type must not be null or undefined");
 		}
 
-		this._testers.push({
+		this.testers.push({
 			stringify: () => `Any ${(this.type as INameable).name}`,
 			test: (value: any) => {
 				if ((type as any) === String) {
@@ -36,11 +36,11 @@ export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<Exp
 	}
 
 	public test(value: any) {
-		return this._testers.every(tester => tester.test(value));
+		return this.testers.every(tester => tester.test(value));
 	}
 
 	public stringify(): string {
-		return this._testers.map(tester => tester.stringify()).join(" and ");
+		return this.testers.map(tester => tester.stringify()).join(" and ");
 	}
 
 	public thatMatches<Key extends keyof ExpectedType>(
@@ -54,25 +54,25 @@ export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<Exp
 		}
 
 		if (typeof first === "string") {
-			return this._matchesKeyAndValue(first, second);
+			return this.matchesKeyAndValue(first, second);
 		}
 
 		if (typeof first === "function") {
 			// cast required for node 6 remove when out of LTS
-			return this._matchesDelegate(first as (
+			return this.matchesDelegate(first as (
 				argument: ExpectedType
 			) => boolean);
 		}
 
 		if (typeof first === "object") {
-			return this._matchesObjectLiteral(first);
+			return this.matchesObjectLiteral(first);
 		}
 
 		throw new Error("Invalid arguments");
 	}
 
-	private _matchesKeyAndValue(key: string, value: any): MatcherOrType<ExpectedType> {
-		this._testers.push({
+	private matchesKeyAndValue(key: string, value: any): MatcherOrType<ExpectedType> {
+		this.testers.push({
 			stringify: () =>
 				`with property '${key}' equal to '${stringify(value)}'`,
 			test: (v: any) => {
@@ -84,22 +84,22 @@ export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<Exp
 			}
 		});
 
-		return this._thisAsMatcherOrType();
+		return this.thisAsMatcherOrType();
 	}
 
-	private _matchesDelegate(
+	private matchesDelegate(
 		delegate: (argument: ExpectedType) => boolean
 	): MatcherOrType<ExpectedType> {
-		this._testers.push({
+		this.testers.push({
 			stringify: () => `matches '${delegate.toString()}'`,
 			test: (v: any) => delegate(v)
 		});
 
-		return this._thisAsMatcherOrType();
+		return this.thisAsMatcherOrType();
 	}
 
-	private _matchesObjectLiteral(properties: object): MatcherOrType<ExpectedType> {
-		this._testers.push({
+	private matchesObjectLiteral(properties: object): MatcherOrType<ExpectedType> {
+		this.testers.push({
 			stringify: () => `matches '${stringify(properties)}'`,
 			test: (v: any) => {
 				const targetKeys = Object.getOwnPropertyNames(v);
@@ -113,10 +113,10 @@ export class TypeMatcher<ExpectedType extends object> implements ISpyMatcher<Exp
 			}
 		});
 
-		return this._thisAsMatcherOrType();
+		return this.thisAsMatcherOrType();
 	}
 
-	private _thisAsMatcherOrType() {
+	private thisAsMatcherOrType() {
 		return this as unknown as MatcherOrType<ExpectedType>;
 	}
 }

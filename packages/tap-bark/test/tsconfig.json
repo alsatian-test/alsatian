@@ -2,7 +2,7 @@
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "jsx": "react",
-        "outDir": "../test-build"
+        "outDir": "../test-build",
     },
     "exclude": [
         "../node_modules",

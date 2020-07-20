@@ -20,26 +20,26 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("setting up tests")
 export class SetupTests {
-	private _originalTestPlan!: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
-	private _recordOriginalTestPlan() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private recordOriginalTestPlan() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
 	}
 
 	@Teardown
-	private _restoreOriginalTestPlan() {
+	private restoreOriginalTestPlan() {
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
 
-	private _createTestFixture() {
+	private createTestFixture() {
 		const test = new TestBuilder()
 			.withTestCaseCount(1)
 			.withKey("testFunction")
@@ -58,7 +58,7 @@ export class SetupTests {
 
 	@AsyncTest("single setup function called")
 	public async singleSetupFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "setupFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -89,7 +89,7 @@ export class SetupTests {
 
 	@AsyncTest("single async setup function called")
 	public async singleAsyncSetupFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "setupFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -123,7 +123,7 @@ export class SetupTests {
 	@TestCase(5)
 	@AsyncTest("multiple setup functions called")
 	public async multipleSetupFunctionsCalled(setupFunctionCount: number) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionDetails = [];
 
@@ -162,7 +162,7 @@ export class SetupTests {
 	@TestCase(5)
 	@AsyncTest("multiple tests setup correct amount of times")
 	public async multipleTestsSetupFunctionCalledEachTime(testCount: number) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		while (testFixture.tests.length < testCount) {
 			testFixture.tests.push(
@@ -208,7 +208,7 @@ export class SetupTests {
 	public async multipleTestCasesSetupFunctionCalledEachTime(
 		testCaseCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const test = testFixture.tests[0];
 
@@ -249,7 +249,7 @@ export class SetupTests {
 
 	@AsyncTest("single setup fixure function called")
 	public async singleSetupFixtureFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "setupFixtureFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -280,7 +280,7 @@ export class SetupTests {
 
 	@AsyncTest("single async setup fixure function called")
 	public async singleAsyncSetupFixtureFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "setupFixtureFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -316,7 +316,7 @@ export class SetupTests {
 	public async multipleSetupFixtureFunctionsCalled(
 		setupFunctionCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionDetails = [];
 
@@ -357,7 +357,7 @@ export class SetupTests {
 	@TestCase(5)
 	@AsyncTest("multiple tests only setup fixture once")
 	public async multipleTestsOnlySetupFixtureOnce(testCount: number) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		while (testFixture.tests.length < testCount) {
 			testFixture.tests.push(
@@ -401,7 +401,7 @@ export class SetupTests {
 	@TestCase(5)
 	@AsyncTest("multiple test cases only setup fixture once")
 	public async multipleTestCasesOnlySetupFixureOnce(testCaseCount: number) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const test = testFixture.tests[0];
 

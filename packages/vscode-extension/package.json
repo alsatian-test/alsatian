@@ -1,0 +1,120 @@
+{
+	"name": "alsatian-vscode",
+	"displayName": "alsatian",
+	"publisher": "JamesAdarich",
+	"description": "VSCode extension for the Alsatian test framework",
+	"version": "0.6.0",
+	"preview": true,
+	"engines": {
+		"vscode": "^1.42.0"
+	},
+	"icon": "docs/alsatian-logo.png",
+	"categories": [
+		"Debuggers",
+		"Other"
+	],
+	"keywords": [
+		"alsatian",
+		"test",
+		"tdd",
+		"javascript",
+		"typescript"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/alsatian-test/alsatian/tree/master/vscode-extension"
+	},
+	"author": "James Adarich <=> (https://james.adarich.com)",
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "alsatian.treeviewRunTest",
+				"title": "Run Test",
+				"icon": {
+					"light": "src/icons/run-test-light.svg",
+					"dark": "src/icons/run-test.svg"
+				}
+			},
+			{
+				"command": "alsatian.refreshTreeView",
+				"title": "Refresh",
+				"icon": {
+					"light": "src/icons/refresh-light.svg",
+					"dark": "src/icons/refresh.svg"
+				}
+			}
+		],
+		"views": {
+			"test": [
+				{
+					"id": "alsatianTests",
+					"name": "Alsatian Tests"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "alsatian.refreshTreeView",
+					"when": "view == alsatianTests",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "alsatian.treeviewRunTest",
+					"when": "view == alsatianTests",
+					"group": "inline"
+				},
+				{
+					"command": "alsatian.treeviewRunTest",
+					"when": "view == alsatianTests"
+				}
+			]
+		}
+	},
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onView:alsatianTests"
+	],
+	"scripts": {
+		"clean": "rimraf out",
+		"vscode:prepublish": "npm run clean && npm run build",
+		"vscode:publish": "vsce package",
+		"build": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"test": "npm run test:lint && npm run test:unit",
+		"test:lint": "eslint src --ext ts --max-warnings 0",
+		"test:unit": "node ../alsatian/dist/cli/alsatian-cli \"./src/**/*.spec.ts\""
+	},
+	"devDependencies": {
+		"@types/enzyme": "^3.10.5",
+		"@types/enzyme-adapter-react-16": "^1.0.6",
+		"@types/mock-require": "^2.0.0",
+		"@types/node": "^12.11.7",
+		"@types/react": "^16.9.23",
+		"@types/vscode": "^1.42.0",
+		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
+		"alsatian-enzyme": "^1.0.1",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"eslint": "^6.8.0",
+		"mock-require": "^3.0.3",
+		"react": "^16.13.0",
+		"react-dom": "^16.13.0",
+		"rimraf": "^3.0.2",
+		"vsce": "^1.74.0",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"alsatian": "^3.2.1",
+		"find-nearest-file": "^1.1.0",
+		"less-loader": "^4.1.0",
+		"ts-node": "^8.6.2",
+		"tsconfig-paths": "^3.9.0",
+		"typescript": "^3.7.5"
+	}
+}

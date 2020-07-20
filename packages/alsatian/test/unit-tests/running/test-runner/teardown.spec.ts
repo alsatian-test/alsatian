@@ -20,26 +20,26 @@ import { TestPlan } from "../../../../core/running";
 
 @TestFixture("tearing down tests")
 export class TeardownTests {
-	private _originalTestPlan!: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
-	private _recordOriginalTestPlan() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private recordOriginalTestPlan() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
 	}
 
 	@Teardown
-	private _restoreOriginalTestPlan() {
+	private restoreOriginalTestPlan() {
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
 
-	private _createTestFixture() {
+	private createTestFixture() {
 		const test = new TestBuilder()
 			.withTestCaseCount(1)
 			.withKey("testFunction")
@@ -58,7 +58,7 @@ export class TeardownTests {
 
 	@AsyncTest("single teardown function called")
 	public async singleTeardownFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "teardownFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -89,7 +89,7 @@ export class TeardownTests {
 
 	@AsyncTest("single async teardown function called")
 	public async singleAsyncTeardownFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "teardownFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -125,7 +125,7 @@ export class TeardownTests {
 	public async multipleTeardownFunctionsCalled(
 		teardownFunctionCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionDetails = [];
 
@@ -168,7 +168,7 @@ export class TeardownTests {
 	public async multipleTestsTeardownFunctionCalledEachTime(
 		testCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		while (testFixture.tests.length < testCount) {
 			testFixture.tests.push(
@@ -214,7 +214,7 @@ export class TeardownTests {
 	public async multipleTestCasesTeardownFunctionCalledEachTime(
 		testCaseCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const test = testFixture.tests[0];
 
@@ -255,7 +255,7 @@ export class TeardownTests {
 
 	@AsyncTest("single teardown fixure function called")
 	public async singleTeardownFixtureFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "teardownFixtureFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -286,7 +286,7 @@ export class TeardownTests {
 
 	@AsyncTest("single async teardown fixure function called")
 	public async singleAsyncTeardownFixtureFunctionCalled() {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionKey = "teardownFixtureFunction";
 		testFixture.fixture[functionKey] = new FunctionSpy() as any;
@@ -322,7 +322,7 @@ export class TeardownTests {
 	public async multipleTeardownFixtureFunctionsCalled(
 		teardownFunctionCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const functionDetails = [];
 
@@ -363,7 +363,7 @@ export class TeardownTests {
 	@TestCase(5)
 	@AsyncTest("multiple tests only teardown fixture once")
 	public async multipleTestsOnlyTeardownFixtureOnce(testCount: number) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		while (testFixture.tests.length < testCount) {
 			testFixture.tests.push(
@@ -409,7 +409,7 @@ export class TeardownTests {
 	public async multipleTestCasesOnlyTeardownFixureOnce(
 		testCaseCount: number
 	) {
-		const testFixture = this._createTestFixture();
+		const testFixture = this.createTestFixture();
 
 		const test = testFixture.tests[0];
 

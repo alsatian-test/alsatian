@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="running circle pulse" viewbox="0 0 119 119" width="120" height="120">
+	<circle class="first-circle" cx="50%" cy="50%" r="25%" fill="#4af" stroke-width="5%">
+		<animate attributeType="svg" attributeName="r" begin="0s" dur="1.5s" repeatCount="indefinite" from="5%" to="50%"/>
+		<animate attributeType="css" attributeName="opacity" begin="0s"  dur="1.5s" repeatCount="indefinite" from="1" to="0"/>
+	</circle>
+	<circle class="second-circle" cx="50%" cy="50%" r="25%" fill="#4af" stroke-width="5%">
+		<animate attributeType="svg" attributeName="r" begin="1s" dur="1.5s" repeatCount="indefinite" from="5%" to="50%"/>
+		<animate attributeType="css" attributeName="opacity" begin="1s"  dur="1.5s" repeatCount="indefinite" from="1" to="0"/>
+	</circle>
+</svg>

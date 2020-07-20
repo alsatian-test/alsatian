@@ -9,31 +9,31 @@ import {
 
 @TestFixture("Alsatian Wiki")
 export default class AlsatianWikiEndToEndTests {
-	private _driver: WebDriver;
+	private driver: WebDriver;
 
 	@AsyncSetup
-	private async _goToWiki() {
+	private async goToWiki() {
 		// create a driver if one hasn't yet been created
-		this._driver = new Builder()
+		this.driver = new Builder()
 			.withCapabilities(Capabilities.chrome())
 			.build();
 
 		// go to the wiki home page
-		await this._driver.get(
+		await this.driver.get(
 			"https://github.com/alsatian-test/alsatian/wiki"
 		);
 	}
 
 	@AsyncTeardown
-	private async _tidyUp() {
+	private async tidyUp() {
 		// quit the browser so it's not hanging about
-		this._driver.quit();
+		this.driver.quit();
 	}
 
 	@AsyncTest("page title is Home")
 	public async correctTitle() {
 		// get the wiki title
-		const title = await this._driver
+		const title = await this.driver
 			.findElement(By.className("gh-header-title"))
 			.getText();
 
@@ -44,7 +44,7 @@ export default class AlsatianWikiEndToEndTests {
 	@AsyncTest("everyone gets a nice welcome")
 	public async checkContent() {
 		// get the wiki body
-		const title = await this._driver
+		const title = await this.driver
 			.findElement(By.id("wiki-body"))
 			.getText();
 

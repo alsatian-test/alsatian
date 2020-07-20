@@ -8,20 +8,20 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestPlan } from "../../../../core/running";
 
 export class FocussedTestTests {
-	private _originalTestPlan!: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
-	private _recordOriginalTestPlan() {
-		this._originalTestPlan = Reflect.getMetadata(
+	private recordOriginalTestPlan() {
+		this.originalTestPlan = Reflect.getMetadata(
 			"alsatian:test-plan",
 			Expect
 		);
 	}
 
-	private _restoreOriginalTestPlan() {
+	private restoreOriginalTestPlan() {
 		Reflect.defineMetadata(
 			"alsatian:test-plan",
-			this._originalTestPlan,
+			this.originalTestPlan,
 			Expect
 		);
 	}
@@ -62,7 +62,7 @@ export class FocussedTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(testOneExecuted).toBe(true);
 		Expect(testTwoExecuted).toBe(true);
@@ -105,7 +105,7 @@ export class FocussedTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(testOneExecuted).toBe(true);
 		Expect(testTwoExecuted).toBe(false);
@@ -148,7 +148,7 @@ export class FocussedTestTests {
 
 		await testRunner.run(testSet);
 
-		this._restoreOriginalTestPlan();
+		this.restoreOriginalTestPlan();
 
 		Expect(testOneExecuted).toBe(false);
 		Expect(testTwoExecuted).toBe(true);
