@@ -8,7 +8,7 @@ export class FunctionSpy {
 	protected hasReturnValue!: boolean;
 	protected isStubbed!: boolean;
 	protected context: any;
-	private fakeFunction!: () => any;
+	private fakeFunction!: (...args: Array<any>) => any;
 
 	public callsWithArguments(...args: Array<any>): Array<ISpyCall> {
 		return this.calls.filter(call =>
