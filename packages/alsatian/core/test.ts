@@ -19,6 +19,7 @@ export class Test implements ITest {
 
 	public *testItems(): Iterable<TestItem> {
 		for (const arg of this.args) {
+			// TODO: make arg consistent for both test properties and test cases
 			for (const a of arg) {
 				yield new TestItem(this.fixture, this, a);
 			}

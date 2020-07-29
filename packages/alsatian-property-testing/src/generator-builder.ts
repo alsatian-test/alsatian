@@ -13,7 +13,7 @@ export class GeneratorBuilder<T> {
 
         return function* () {
             while (returnedCount < count) {
-                yield generator();
+                yield { caseArguments: [generator()] };
                 returnedCount++;
             }
         }

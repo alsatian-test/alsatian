@@ -75,7 +75,7 @@ export class TestLoader {
 		const tests: Array<Test> = Reflect.getMetadata(
 			METADATA_KEYS.TESTS,
 			testFixture.fixture
-		).map(t => Test.Build(t, testFixture.fixture));
+		).map(t => Test.Build(t, testFixture));
 
 		testFixture.focussed = false;
 
@@ -140,12 +140,24 @@ export class TestLoader {
 				testFixture.fixture,
 				test.key
 			);
-			
+
 			//TODO: is generator or not
-			if (!testCases) {
-				test.addTestArguments(this.createTestCasesGenerator(test.testCases));
-			} else {
+			if (testCases) {
 				test.addTestArguments(this.createTestCasesGenerator(testCases));
+			}
+
+			const testProperties = Reflect.getMetadata(
+				METADATA_KEYS.TEST_PROPERTIES,
+				testFixture.fixture,
+				test.key
+			);
+
+			if (!testCases && !testProperties) {
+				test.addTestArguments(this.createTestCasesGenerator([{ caseArguments: []}]));
+			}
+
+			if (testProperties) {
+				testProperties.forEach(test.addTestArguments.bind(test));
 			}
 		});
 

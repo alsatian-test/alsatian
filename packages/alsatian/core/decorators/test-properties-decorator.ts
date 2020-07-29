@@ -31,9 +31,7 @@ export function TestProperties(
 		}
 
 		// add the test case to the list
-		testProperties.unshift({
-			arguments: propertyTestArguments
-		});
+		testProperties.unshift(propertyTestArguments);
 
 		Reflect.defineMetadata(TEST_PROPERTIES, testProperties, target, propertyKey);
 	};

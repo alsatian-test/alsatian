@@ -83,10 +83,8 @@ export class TestRunner {
 				testFixture
 			);
 
-			console.log("Test Length", testFixture.tests.length);
 			for (const test of testFixture.tests) {
 				for (const generatedTest of test.testItems()) {
-					console.log(generatedTest);
 					const result = await this._getTestItemResult(
 						generatedTest,
 						testSetRunInfo,
