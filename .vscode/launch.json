@@ -20,7 +20,7 @@
             "request": "launch",
             "program": "${workspaceRoot}\\packages\\alsatian\\dist\\cli\\alsatian-cli.js",
             "cwd": "${workspaceRoot}",
-            "args": ["./packages/alsatian/dist/test/unit-tests/**/*.spec.js"],
+            "args": ["./packages/alsatian/dist/test/unit-tests/errors/match-error.spec.js"],
             "outFiles": [],
             "sourceMaps": true
         },

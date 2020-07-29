@@ -8,7 +8,7 @@ export class TestPlan {
 		return this._testItems;
 	}
 
-	public constructor(testSet: TestSet) {
+	public constructor(public readonly testSet: TestSet) {
 		if (testSet.testFixtures.length === 0) {
 			return;
 		}
@@ -27,6 +27,7 @@ export class TestPlan {
 			// run all tests if no tests or fixtures anywhere are focussed
 			let testsToRun: Array<ITest> = testFixture.tests;
 
+			//TODO: perhaps move focus / ignore removal to somewhere else
 			// otherwise if there are tests or fixtures focussed
 			if (focussedTestsOrTestFixtures) {
 				// if any of the tests are focussed choose just those
@@ -40,13 +41,15 @@ export class TestPlan {
 				}
 			}
 
-			testsToRun.forEach(test => {
-				test.testCases.forEach(testCase => {
-					this._testItems.push(
-						new TestItem(testFixture, test, testCase)
-					);
-				});
-			});
+			// this._testItems.push(testsToRun.map(t => t.testItems).reduce((c, i) => c.concat(i), []))
+
+			// testsToRun.forEach(test => {
+			// 	test.testCases.forEach(testCase => {
+			// 		this._testItems.push(
+			// 			new TestItem(testFixture, test, testCase)
+			// 		);
+			// 	});
+			// });
 		});
 	}
 }

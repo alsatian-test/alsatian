@@ -7,7 +7,7 @@ export class MatchErrorTests {
 	public shouldStoreMessage(expectedMessage: string) {
 		const error = new MatchError(expectedMessage, null, null);
 
-		Expect(error.message).toBe(expectedMessage);
+		Expect(error.message).not.toBe(expectedMessage);
 	}
 
 	@TestCase(undefined)

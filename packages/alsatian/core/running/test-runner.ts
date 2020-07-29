@@ -31,9 +31,11 @@ export class TestRunner {
 
 	public async run(testSet: TestSet, timeout?: number | null) {
 		const testPlan = new TestPlan(testSet);
-		if (testPlan.testItems.length === 0) {
-			throw new Error("no tests to run.");
-		}
+
+		//TODO: may need to fix this
+		// if (testPlan.testItems.length === 0) {
+		// 	throw new Error("no tests to run.");
+		// }
 
 		if (!timeout) {
 			timeout = 500;
@@ -64,48 +66,53 @@ export class TestRunner {
 		testSetRunInfo: TestSetRunInfo,
 		results: TestSetResults
 	) {
-		const testItems = testSetRunInfo.testPlan.testItems;
-		const testFixtures = this._getTestFixtures(testItems);
+		const testFixtures = testSetRunInfo.testPlan.testSet.testFixtures;
+		//  sconst testFixtures = this._getTestFixtures(testItems);
 
 		for (const testFixture of testFixtures) {
-			const testFixtureItems = testItems.filter(
-				testItem => testItem.testFixture === testFixture
-			);
+			// const testFixtureItems = testItems.filter(
+			// 	testItem => testItem.testFixture === testFixture
+			// );
 
 			await this._setupFixture(testFixture.fixture);
 
 			this._outputStream.emitFixture(testFixture);
 
+			//TODO: maybe the resolution of results could be better
 			const testFixtureResults = results.addTestFixtureResult(
 				testFixture
 			);
 
-			// for (const testItem of testFixtureItems) {
-			// 	const result = await this._getTestItemResult(
-			// 		testItem,
-			// 		testSetRunInfo,
-			// 		testFixtureResults
-			// 	);
+			console.log("Test Length", testFixture.tests.length);
+			for (const test of testFixture.tests) {
+				for (const generatedTest of test.testItems()) {
+					console.log(generatedTest);
+					const result = await this._getTestItemResult(
+						generatedTest,
+						testSetRunInfo,
+						testFixtureResults
+					);
 
-			// 	this._onTestCompleteCBs.forEach(onTestCompleteCB => {
-			// 		onTestCompleteCB({
-			// 			error: result.error,
-			// 			outcome: result.outcome,
-			// 			test: testItem.test,
-			// 			testCase: testItem.testCase,
-			// 			testFixture: testItem.testFixture,
-			// 			testId:
-			// 				testSetRunInfo.testPlan.testItems.indexOf(
-			// 					testItem
-			// 				) + 1
-			// 		});
-			// 	});
+					this._onTestCompleteCBs.forEach(onTestCompleteCB => {
+						onTestCompleteCB({
+							error: result.error,
+							outcome: result.outcome,
+							test: generatedTest.test,
+							testCase: generatedTest.testCase,
+							testFixture: generatedTest.testFixture,
+							testId:
+								testSetRunInfo.testPlan.testItems.indexOf(
+									generatedTest
+								) + 1
+						});
+					});
 
-			// 	this._outputStream.emitResult(
-			// 		testItems.indexOf(testItem) + 1,
-			// 		result
-			// 	);
-			// }
+					this._outputStream.emitResult(
+						42, // testItems.indexOf(generatedTest) + 1,
+						result
+					);
+				}
+			}
 
 			await this._teardownFixture(testFixture.fixture);
 		}

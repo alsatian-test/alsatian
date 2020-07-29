@@ -1,6 +1,7 @@
 import { FileRequirer, TestFixture } from "./";
 import { ITest, ITestCase, ITestFixture } from "./_interfaces";
 import { METADATA_KEYS } from "./alsatian-core";
+import { Test } from "./test";
 
 export class TestLoader {
 	public constructor(private _fileRequirer: FileRequirer) {}
@@ -71,10 +72,10 @@ export class TestLoader {
 		testFixture.fixture = new testFixtureConstructor();
 
 		// find all the tests on this test fixture
-		const tests = Reflect.getMetadata(
+		const tests: Array<Test> = Reflect.getMetadata(
 			METADATA_KEYS.TESTS,
 			testFixture.fixture
-		);
+		).map(t => Test.Build(t, testFixture.fixture));
 
 		testFixture.focussed = false;
 
@@ -139,9 +140,10 @@ export class TestLoader {
 				testFixture.fixture,
 				test.key
 			);
-
+			
+			//TODO: is generator or not
 			if (!testCases) {
-				test.addTestArguments(this.createTestCasesGenerator([{ caseArguments: [] }]));
+				test.addTestArguments(this.createTestCasesGenerator(test.testCases));
 			} else {
 				test.addTestArguments(this.createTestCasesGenerator(testCases));
 			}
@@ -151,7 +153,7 @@ export class TestLoader {
 	}
 
 	private *createTestCasesGenerator(testCases: Array<ITestCase>) {
-		for (let i; i < testCases.length; i++) {
+		for (let i = 0; i < testCases.length; i++) {
 			yield testCases[i];
 		}
 	}
