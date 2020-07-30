@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import {
 	Expect,
-	METADATA_KEYS,
 	SpyOn,
 	Test,
 	TestFixture,

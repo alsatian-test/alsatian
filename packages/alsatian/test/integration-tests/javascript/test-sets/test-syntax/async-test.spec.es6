@@ -3,7 +3,7 @@ import { Expect, TestFixture, AsyncTest } from "../../../../../core/alsatian-cor
 @TestFixture("asynchronous tests")
 export class AsyncTests {
 
-   _asyncFunction() {
+   asyncFunction() {
        return new Promise((resolve, reject) => {
            resolve(4);
        });
@@ -11,7 +11,7 @@ export class AsyncTests {
 
    @AsyncTest("simple passing asynchronous test")
    passingAsyncTest() {
-       return this._asyncFunction()
+       return this.asyncFunction()
        .then(result => {
           Expect(result).toBe(4);
        });
@@ -19,7 +19,7 @@ export class AsyncTests {
 
    @AsyncTest("simple failing asynchronous test")
    failingAsyncTest() {
-       return this._asyncFunction()
+       return this.asyncFunction()
        .then(result => {
           Expect(result).toBe(5);
        });

@@ -2,6 +2,10 @@ import { Test, Expect, SpyOn, Teardown } from "../../../alsatian";
 import { TapBark } from "../../src/tap-bark";
 
 export default class IndexTests {
+	@Teardown
+	private restoreTapBarkCreate() {
+		(TapBark.create as any).restore();
+	}
 
 	@Test("process.stdin stream piped to Tap Bark")
 	public stdInPipedToTapBark() {

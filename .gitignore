@@ -6,7 +6,6 @@ dist
 #TypeScript
 *.js
 *.js.map
-*.d.ts
 
 #Test
 coverage

@@ -49,44 +49,4 @@ export class TestSetRunInfoTests {
 
 		Expect(testSetRunInfo.timeout).toBe(timeout);
 	}
-
-	@TestCase(null)
-	@TestCase(undefined)
-	public settingNullOrUndefinedTestPlanItemThrowsError(
-		testPlanItem: TestItem
-	) {
-		const testSet = new TestSetBuilder().build();
-
-		const testSetRunInfo = new TestSetRunInfo(
-			new TestPlan(testSet),
-			new TestSetResults(),
-			1
-		);
-
-		Expect(() => (testSetRunInfo.testPlanItem = testPlanItem)).toThrowError(
-			TypeError,
-			"testPlanItem must not be null or undefined."
-		);
-	}
-
-	@Test()
-	public settingTestPlanItemIsStored() {
-		const testSet = new TestSetBuilder().build();
-
-		const testSetRunInfo = new TestSetRunInfo(
-			new TestPlan(testSet),
-			new TestSetResults(),
-			1
-		);
-
-		const testPlanItem = new TestItem(
-			new TestFixtureBuilder().build(),
-			new TestBuilder().build(),
-			new TestCaseBuilder().build()
-		);
-
-		testSetRunInfo.testPlanItem = testPlanItem;
-
-		Expect(testSetRunInfo.testPlanItem).toBe(testPlanItem);
-	}
 }

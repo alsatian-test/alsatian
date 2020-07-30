@@ -1,6 +1,7 @@
-import { Expect, Test, TestCase, Any } from "../../../core/alsatian-core";
+import { Expect, Test, TestCase, Any, TestFixture } from "../../../core/alsatian-core";
 import { MatchError } from "../../../core/errors/match-error";
 
+@TestFixture("toEqual Tests")
 export class ToEqualTests {
 	@TestCase(undefined)
 	@TestCase(null)

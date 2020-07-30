@@ -10,16 +10,16 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 	 */
 	public toEqual(expectedValue: T | TypeMatcher<T>) {
 		if (Buffer.isBuffer(expectedValue) || Buffer.isBuffer(this.actualValue)) {
-			this._checkTypeMatcherEqual(expectedValue, this.buffersEqual);
+			this.checkTypeMatcherEqual(expectedValue, this.buffersEqual);
 		}
 		else {
-			this._checkTypeMatcherEqual(expectedValue, this.objectsEqual);
+			this.checkTypeMatcherEqual(expectedValue, this.objectsEqual);
 		}
 	}
 
    private buffersEqual(expectedValue: T) {
-	   this._registerMatcher(
-		   this._checkBuffersAreEqual(
+	   this.registerMatcher(
+		   this.checkBuffersAreEqual(
 			   expectedValue,
 			   this.actualValue
 		   ) === this.shouldMatch,
@@ -31,9 +31,9 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 	   );
    }
 
-   private _checkBuffersAreEqual(buffer: any, other: any): boolean {
+   private checkBuffersAreEqual(buffer: any, other: any): boolean {
 	   // Buffer.from() only accepts of type string, Buffer, ArrayBuffer, Array, or Array-like Object.
-	   if (this._isBufferable(other)) {
+	   if (this.isBufferable(other)) {
 		   const otherBuffer = Buffer.isBuffer(other)
 			   ? other
 			   : Buffer.from(other as string); // Typings don't know that Buffer.from() can accept ArrayLike<T>
@@ -44,7 +44,7 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 	   }
    }
 
-   private _isBufferable(
+   private isBufferable(
 	   obj: any
    ): obj is string | Buffer | Array<any> | ArrayBuffer | ArrayLike<any> {
 	   return (
@@ -62,8 +62,8 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
    }
 
 	private objectsEqual(expectedValue: T) {
-		this._registerMatcher(
-			this._checkObjectsAreDeepEqual(
+		this.registerMatcher(
+			this.checkObjectsAreDeepEqual(
 				expectedValue,
 				this.actualValue
 			) === this.shouldMatch,
@@ -75,7 +75,7 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 		);
 	}
 
-	private _checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
+	private checkObjectsAreDeepEqual(objectA: any, objectB: any): boolean {
 		// if one object is an array and the other is not then they are not equal
 		if (Array.isArray(objectA) !== Array.isArray(objectB)) {
 			return false;
@@ -98,7 +98,7 @@ export class ObjectMatcher<T extends object> extends EmptyMatcher<T> {
 				if (
 					objectA[objectAKey] === null ||
 					typeof objectA[objectAKey] !== "object" ||
-					this._checkObjectsAreDeepEqual(
+					this.checkObjectsAreDeepEqual(
 						objectA[objectAKey],
 						objectB[objectAKey]
 					) === false
