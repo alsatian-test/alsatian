@@ -10,10 +10,10 @@ export interface TapBarkRootProps {
 
 export function TapBarkRoot(props: TapBarkRootProps) {
 
-    const [ warnings, setWarnings ] = useState([]);
+    const [ warnings, setWarnings ] = useState<Array<React.ReactElement>>([]);
     const [ totalTests, setTotalTests ] = useState(0);
     const [ currentTest, setCurrentTest ] = useState(0);
-    const [ results, setResults ] = useState<Results>(null);
+    const [ results, setResults ] = useState<Results | null>(null);
     const [ complete, setComplete ] = useState(false);
     
     //TODO: convert this to useEffect however since this is deferred would

@@ -1,3 +1,5 @@
+import "./external/tap-parser.d";
+import "./external/duplexer.d";
 import through from "through2";
 import Parser from "tap-parser";
 import duplexer from "duplexer";
