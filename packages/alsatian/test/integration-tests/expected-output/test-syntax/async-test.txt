@@ -9,5 +9,7 @@ not ok 2 asynchronous tests > simple failing asynchronous test
  data:
    got: '4'
    expect: '5'
+   fileLocation: >-
+     {{SPEC_FILE}}
  ...
 # WARN: AsyncTest has been deprecated and will be removed in version 4.0.0. Use the Test decorator instead.

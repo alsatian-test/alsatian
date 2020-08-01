@@ -7,6 +7,7 @@ import {
 	Timeout,
 	TestFixture
 } from "../../../core/alsatian-core";
+import { join } from "path";
 
 @TestFixture("CLI Integration Tests")
 export class CliIntegrationTests {
@@ -16,11 +17,9 @@ export class CliIntegrationTests {
 	@AsyncTest()
 	@Timeout(10000)
 	public toBeExpectations(expectationTestName: string) {
-		const result = child.exec(
-			`alsatian ` +
-				`./test/integration-tests/test-sets/expectations/${expectationTestName}.spec.ts` +
-				` --tap`
-		);
+		const specFile = join(__dirname, `../../../dist/test/integration-tests/test-sets/expectations/${expectationTestName}.spec.js`);
+
+		const result = child.exec(`alsatian ${specFile} --tap`);
 
 		let consoleOutput = "";
 
@@ -28,13 +27,12 @@ export class CliIntegrationTests {
 		result.stderr.on("data", (data: string) => (consoleOutput += data));
 
 		const expectedOutput = FileSystem.readFileSync(
-			`./test/integration-tests/expected-output/` +
-				`expectations/${expectationTestName}.txt`
-		).toString();
+			join(__dirname, `../expected-output/expectations/${expectationTestName}.txt`)
+		).toString().replace(/{{SPEC_FILE}}/g, specFile).toLocaleLowerCase();
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				Expect(consoleOutput.toLocaleLowerCase()).toBe(expectedOutput.replace(/\r/g, ""));
 				resolve();
 			});
 		});
@@ -42,16 +40,14 @@ export class CliIntegrationTests {
 
 	@TestCase("async-test")
 	@TestCase("setup")
-	@TestCase("teardown")
+	@TestCase("teardown*")
 	@TestCase("case-arguments")
 	@AsyncTest()
 	@Timeout(5000)
 	public syntaxTests(syntaxTestName: string) {
-		const result = child.exec(
-			`alsatian ` +
-				`./dist/test/integration-tests/test-sets/test-syntax/${syntaxTestName}*.spec.js ` +
-				`--tap`
-		);
+		const specFile = join(__dirname, `../../../dist/test/integration-tests/test-sets/test-syntax/${syntaxTestName}.spec.js`);
+
+		const result = child.exec(`alsatian ${specFile} --tap`);
 
 		let consoleOutput = "";
 
@@ -59,12 +55,12 @@ export class CliIntegrationTests {
 		result.stderr.on("data", (data: string) => (consoleOutput += data));
 
 		const expectedOutput = FileSystem.readFileSync(
-			`./test/integration-tests/expected-output/test-syntax/${syntaxTestName}.txt`
-		).toString();
+			join(__dirname, `../expected-output/test-syntax/${syntaxTestName.replace("*", "")}.txt`)
+		).toString().replace(/{{SPEC_FILE}}/g, specFile).toLocaleLowerCase();
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				Expect(consoleOutput.toLocaleLowerCase()).toBe(expectedOutput.replace(/\r/g, ""));
 				resolve();
 			});
 		});
