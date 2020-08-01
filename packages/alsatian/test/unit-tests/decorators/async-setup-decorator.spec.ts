@@ -10,6 +10,11 @@ import { AsyncSetup } from "../../../core/decorators/async-setup-decorator";
 import { Warner } from "../../../core/maintenance/warn";
 
 export class AsyncSetupDecoratorTests {
+
+	@Test()
+	public test() {
+		Expect(2).toBeLessThan(3);
+	}
 	@Test()
 	public setupFunctionAddedAsMetaData() {
 		const testFixture = {};
