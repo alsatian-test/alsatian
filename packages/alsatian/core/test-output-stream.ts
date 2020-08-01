@@ -101,7 +101,7 @@ export class TestOutputStream extends ReadableStream {
 	}
 
 	private writeUnhandledErrorOutput(
-		error: Error | null,
+		result: TestCaseResult,
 		logs: Array<ILog>
 	): void {
 		const error = result.error;
