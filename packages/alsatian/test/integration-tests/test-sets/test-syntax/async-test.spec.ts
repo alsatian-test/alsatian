@@ -10,13 +10,13 @@ export class AsyncTests {
 
 	@Test("simple passing asynchronous test")
 	public async passingTest() {
-		const result = await this._asyncFunction();
+		const result = await this.asyncFunction();
 		Expect(result).toBe(4);
 	}
 
 	@Test("simple failing asynchronous test")
 	public async failingTest() {
-		const result = await this._asyncFunction();
+		const result = await this.asyncFunction();
 		Expect(result).toBe(5);
 	}
 }
