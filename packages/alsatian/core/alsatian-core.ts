@@ -49,7 +49,7 @@ import { MatchError, TestTimeoutError } from "./errors";
 
 import * as METADATA_KEYS from "./decorators/_metadata-keys";
 
-import { TestRunner } from "./running";
+import { TestRunner, CallbackTestRunner } from "./running";
 
 import { Logger } from "./maintenance/log";
 const log = Logger.log;
@@ -57,6 +57,7 @@ const log = Logger.log;
 export {
 	Any,
 	buildExpect,
+	CallbackTestRunner,
 	ContainerMatcher,
 	EmptyMatcher,
 	Expect,

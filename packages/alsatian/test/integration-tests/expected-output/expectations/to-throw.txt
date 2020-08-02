@@ -9,6 +9,8 @@ not ok 2 error throwing > errorNotThrown
  data:
    got: errorFunction
    expect: '"an error thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      errorThrown: none
  ...
@@ -20,6 +22,8 @@ not ok 4 error throwing > errorUnexpectedlyThrown
  data:
    got: errorFunction
    expect: '"no errors thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      errorThrown: 'Error: error'
  ...
@@ -33,6 +37,8 @@ not ok 6 error throwing > exactErrorNotThrown
  data:
    got: errorFunction
    expect: '"an error of the right type thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      actualError: 'Error: any old error'
      expectedError: TypeError
@@ -48,6 +54,8 @@ not ok 8 error throwing > exactErrorThrownUnexpectedly
  data:
    got: errorFunction
    expect: '"no errors of type thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      actualError: 'TypeError: specific error'
      expectedError: TypeError
@@ -61,6 +69,8 @@ not ok 10 error throwing > asyncErrorNotThrown
  data:
    got: errorFunction
    expect: '"an error thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      errorThrown: none
  ...
@@ -72,6 +82,8 @@ not ok 12 error throwing > asyncErrorUnexpectedly
  data:
    got: errorFunction
    expect: '"no errors thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      errorThrown: 'Error: error'
  ...
@@ -85,6 +97,8 @@ not ok 14 error throwing > asnycExactErrorNotThrown
  data:
    got: errorFunction
    expect: '"an error of the right type thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      actualError: 'Error: error'
      expectedError: TypeError
@@ -100,6 +114,8 @@ not ok 16 error throwing > asyncExactErrorThrownUnexpectedly
  data:
    got: errorFunction
    expect: '"no errors of type thrown"'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      actualError: 'TypeError: specific error'
      expectedError: TypeError

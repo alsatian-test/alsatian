@@ -9,4 +9,6 @@ not ok 2 asynchronous tests > simple failing asynchronous test
  data:
    got: '4'
    expect: '5'
+   fileLocation: >-
+     {{SPEC_FILE}}
  ...

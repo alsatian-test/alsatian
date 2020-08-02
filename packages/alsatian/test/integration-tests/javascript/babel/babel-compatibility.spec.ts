@@ -1,15 +1,16 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
 import { Expect, Test, Timeout } from "alsatian";
+import { join } from "path";
 
 export class BabelIntegrationTests {
 
 	@Test()
 	@Timeout(5000)
 	public toBeExpectations() {
-		const result = child.exec(
-			"alsatian ./dist/test/integration-tests/javascript/test-sets/expectations/to-be.spec.js --tap"
-		);
+		const specFile = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/expectations/to-be.spec.js");
+
+		const result = child.exec(`alsatian ${specFile} --tap`);
 
 		let consoleOutput = "";
 
@@ -17,12 +18,12 @@ export class BabelIntegrationTests {
 		result.stderr.on("data", (data: string) => (consoleOutput += data));
 
 		const expectedOutput = FileSystem.readFileSync(
-			"./test/integration-tests/expected-output/expectations/to-be.txt"
-		).toString();
+			join(__dirname, "../../expected-output/expectations/to-be.txt")
+		).toString().replace(/{{SPEC_FILE}}/g, specFile).toLocaleLowerCase();
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				Expect(consoleOutput.toLocaleLowerCase()).toBe(expectedOutput.replace(/\r/g, ""));
 				resolve();
 			});
 		});
@@ -31,9 +32,9 @@ export class BabelIntegrationTests {
 	@Test()
 	@Timeout(10000)
 	public toThrowExpectations() {
-		const result = child.exec(
-			"alsatian ./dist/test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js --tap"
-		);
+		const specFile = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js");
+
+		const result = child.exec(`alsatian ${specFile} --tap`);
 
 		let consoleOutput = "";
 
@@ -41,12 +42,12 @@ export class BabelIntegrationTests {
 		result.stderr.on("data", (data: string) => (consoleOutput += data));
 
 		const expectedOutput = FileSystem.readFileSync(
-			"./test/integration-tests/expected-output/expectations/to-throw.txt"
-		).toString();
+			join(__dirname, "../../expected-output/expectations/to-throw.txt")
+		).toString().replace(/{{SPEC_FILE}}/g, specFile).toLocaleLowerCase();
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				Expect(consoleOutput.toLocaleLowerCase()).toBe(expectedOutput.replace(/\r/g, ""));
 				resolve();
 			});
 		});
@@ -55,9 +56,9 @@ export class BabelIntegrationTests {
 	@Test()
 	@Timeout(5000)
 	public asyncTest() {
-		const result = child.exec(
-			'alsatian "./dist/test/integration-tests/javascript/test-sets/test-syntax/**/*.spec.js" --tap'
-		);
+		const specPath = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/test-syntax/");
+
+		const result = child.exec(`alsatian ${specPath}**/*.spec.js --tap`);
 
 		let consoleOutput = "";
 
@@ -65,12 +66,12 @@ export class BabelIntegrationTests {
 		result.stderr.on("data", (data: string) => (consoleOutput += data));
 
 		const expectedOutput = FileSystem.readFileSync(
-			"./test/integration-tests/expected-output/test-syntax/all-test-syntax.txt"
-		).toString();
+			join(__dirname, "../../expected-output/test-syntax/all-test-syntax.txt")
+		).toString().replace(/{{SPEC_PATH}}/g, specPath.replace(/\\/g, "/")).toLocaleLowerCase();
 
 		return new Promise<void>((resolve, reject) => {
 			result.on("close", (code: number) => {
-				Expect(consoleOutput).toBe(expectedOutput.replace(/\r/g, ""));
+				Expect(consoleOutput.toLocaleLowerCase()).toBe(expectedOutput.replace(/\r/g, ""));
 				resolve();
 			});
 		});

@@ -9,6 +9,8 @@ not ok 2 asynchronous tests > simple failing asynchronous test
  data:
    got: '4'
    expect: '5'
+   fileLocation: >-
+     {{SPEC_PATH}}async-test.spec.js
  ...
 # FIXTURE @TestCase Tests
 ok 3 @TestCase Tests > AddNumbers ( 1, 2, 3 )

@@ -1,0 +1,5 @@
+{
+    "specs": [
+        "./test/unit-tests/**/*.spec.ts"
+    ]
+}
