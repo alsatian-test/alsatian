@@ -108,7 +108,7 @@ export class RunTestTests {
 		Expect(testCompletedValue.testCase).not.toBeNull();
 		Expect(testCompletedValue.error).toBeNull();
 	}
-	@AsyncTest("a passing test can be run with on started event")
+	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnStartedEventRaised() {
 		let testStartedValue: ITestStartedEvent = null;
 		const testDescription = "testDescriptionToCheck";
@@ -158,7 +158,7 @@ export class RunTestTests {
 		Expect(testStartedValue.test.ignored).toBe(false);
 	}
 
-	@AsyncTest("a passing test can be run with on started event")
+	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnTestFixtureCompleteEventRaised() {
 		let testTestFixtureCompleteValue: ITestFixtureCompleteEvent = null;
 		const testDescription = "testDescriptionToCheck";
