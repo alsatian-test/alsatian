@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	FunctionSpy,
 	METADATA_KEYS,
@@ -13,7 +13,7 @@ export class TestItemRunTeardownTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(8)
-	@AsyncTest()
+	@Test()
 	public async successfulSyncTeardown(teardownFunctionCount: number) {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -53,7 +53,7 @@ export class TestItemRunTeardownTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(10)
-	@AsyncTest()
+	@Test()
 	public async successfulAsyncTeardown(teardownFunctionCount: number) {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 

@@ -1,5 +1,4 @@
 import {
-	AsyncSetup,
 	Expect,
 	Setup,
 	SetupFixture,
@@ -24,7 +23,7 @@ export class SetupTests {
 		this.setupComplete = true;
 	}
 
-	@AsyncSetup
+	@Setup
 	private async asyncSetup(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			this.asyncSetupComplete = true;

@@ -121,4 +121,3 @@ not ok 16 error throwing > asyncExactErrorThrownUnexpectedly
      expectedError: TypeError
      expectedErrorMessage: specific error
  ...
-# WARN: AsyncTest has been deprecated and will be removed in version 4.0.0. Use the Test decorator instead.

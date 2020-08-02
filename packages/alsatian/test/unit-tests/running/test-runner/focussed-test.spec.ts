@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, Setup } from "../../../../core/alsatian-core";
+import { Test, Expect, Setup } from "../../../../core/alsatian-core";
 import { TestRunner } from "../../../../core/running/test-runner";
 import { TestOutputStream } from "../../../../core/test-output-stream";
 import { TestBuilder } from "../../../builders/test-builder";
@@ -26,7 +26,7 @@ export class FocussedTestTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async twoUnfocussedTestsBothRun() {
 		const output = new TestOutputStream();
 
@@ -68,7 +68,7 @@ export class FocussedTestTests {
 		Expect(testTwoExecuted).toBe(true);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async firstTestFocussedSecondUnfocussedFirstIsRun() {
 		const output = new TestOutputStream();
 
@@ -111,7 +111,7 @@ export class FocussedTestTests {
 		Expect(testTwoExecuted).toBe(false);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async secondTestFocussedFirstUnfocussedFirstIsRun() {
 		const output = new TestOutputStream();
 

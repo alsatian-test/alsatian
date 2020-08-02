@@ -41,22 +41,6 @@ export class TeardownDecoratorTests {
 		Expect(teardownFunctions[0].propertyKey).toBe(key);
 	}
 
-	@TestCase("key")
-	@TestCase("another key")
-	@TestCase("something-different")
-	public teardownFunctionIsAsyncMetaDataAdded(key: string) {
-		const testFixture = {};
-
-		Teardown(testFixture, key, null);
-
-		const teardownFunctions = Reflect.getMetadata(
-			METADATA_KEYS.TEARDOWN,
-			testFixture
-		);
-
-		Expect(teardownFunctions[0].isAsync).toBe(false);
-	}
-
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(42)

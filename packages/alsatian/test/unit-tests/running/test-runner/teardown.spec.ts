@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	FunctionSpy,
 	METADATA_KEYS,
@@ -56,7 +56,7 @@ export class TeardownTests {
 			.build();
 	}
 
-	@AsyncTest("single teardown function called")
+	@Test("single teardown function called")
 	public async singleTeardownFunctionCalled() {
 		const testFixture = this.createTestFixture();
 
@@ -87,7 +87,7 @@ export class TeardownTests {
 		Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
 	}
 
-	@AsyncTest("single async teardown function called")
+	@Test("single async teardown function called")
 	public async singleAsyncTeardownFunctionCalled() {
 		const testFixture = this.createTestFixture();
 
@@ -121,7 +121,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple teardown functions called")
+	@Test("multiple teardown functions called")
 	public async multipleTeardownFunctionsCalled(
 		teardownFunctionCount: number
 	) {
@@ -164,7 +164,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple tests teardown correct amount of times")
+	@Test("multiple tests teardown correct amount of times")
 	public async multipleTestsTeardownFunctionCalledEachTime(
 		testCount: number
 	) {
@@ -210,7 +210,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple test cases teardown correct amount of times")
+	@Test("multiple test cases teardown correct amount of times")
 	public async multipleTestCasesTeardownFunctionCalledEachTime(
 		testCaseCount: number
 	) {
@@ -253,7 +253,7 @@ export class TeardownTests {
 			.exactly(testCaseCount).times;
 	}
 
-	@AsyncTest("single teardown fixure function called")
+	@Test("single teardown fixure function called")
 	public async singleTeardownFixtureFunctionCalled() {
 		const testFixture = this.createTestFixture();
 
@@ -284,7 +284,7 @@ export class TeardownTests {
 		Expect(testFixture.fixture[functionKey]).toHaveBeenCalled();
 	}
 
-	@AsyncTest("single async teardown fixure function called")
+	@Test("single async teardown fixure function called")
 	public async singleAsyncTeardownFixtureFunctionCalled() {
 		const testFixture = this.createTestFixture();
 
@@ -318,7 +318,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple teardown fixture functions called")
+	@Test("multiple teardown fixture functions called")
 	public async multipleTeardownFixtureFunctionsCalled(
 		teardownFunctionCount: number
 	) {
@@ -361,7 +361,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple tests only teardown fixture once")
+	@Test("multiple tests only teardown fixture once")
 	public async multipleTestsOnlyTeardownFixtureOnce(testCount: number) {
 		const testFixture = this.createTestFixture();
 
@@ -405,7 +405,7 @@ export class TeardownTests {
 
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest("multiple test cases only teardown fixture once")
+	@Test("multiple test cases only teardown fixture once")
 	public async multipleTestCasesOnlyTeardownFixureOnce(
 		testCaseCount: number
 	) {

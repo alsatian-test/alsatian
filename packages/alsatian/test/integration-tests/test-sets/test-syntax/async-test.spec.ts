@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, TestFixture } from "alsatian";
+import { Test, Expect, TestFixture } from "alsatian";
 
 @TestFixture("asynchronous tests")
 export class AsyncTests {
@@ -8,14 +8,14 @@ export class AsyncTests {
 		});
 	}
 
-	@AsyncTest("simple passing asynchronous test")
-	public async passingAsyncTest() {
+	@Test("simple passing asynchronous test")
+	public async passingTest() {
 		const result = await this.asyncFunction();
 		Expect(result).toBe(4);
 	}
 
-	@AsyncTest("simple failing asynchronous test")
-	public async failingAsyncTest() {
+	@Test("simple failing asynchronous test")
+	public async failingTest() {
 		const result = await this.asyncFunction();
 		Expect(result).toBe(5);
 	}

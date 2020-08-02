@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	Setup,
 	SpyOn,
@@ -36,7 +36,7 @@ export class PreTestTests {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async tapVersionHeaderOutput() {
 		const testFixtureBuilder = new TestFixtureBuilder();
 		const testBuilder = new TestBuilder();
@@ -57,7 +57,7 @@ export class PreTestTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest()
+	@Test()
 	public async multipleTestFixtureWithSingleTestOutputsCorrectTestNumber(
 		testFixtureCount: number
 	) {
@@ -92,7 +92,7 @@ export class PreTestTests {
 	@TestCase(5, 1)
 	@TestCase(5, 2)
 	@TestCase(5, 5)
-	@AsyncTest()
+	@Test()
 	public async multipleTestFixtureWithMultipleTestsOutputsCorrectTestCount(
 		testFixtureCount: number,
 		testCount: number
@@ -162,7 +162,7 @@ export class PreTestTests {
 	@TestCase(5, 1, 5)
 	@TestCase(5, 2, 5)
 	@Timeout(1000)
-	@AsyncTest()
+	@Test()
 	public async multipleTestFixtureWithMultipleTestsWithMultipleTestCasesOutputsCorrectTestCount(
 		testFixtureCount: number,
 		testCount: number,
@@ -201,7 +201,7 @@ export class PreTestTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(5)
-	@AsyncTest()
+	@Test()
 	public async testFixtureWithMultipleTestsAndSecondWithNoneOutputsCorrectTestNumber(
 		testFixtureCount: number
 	) {

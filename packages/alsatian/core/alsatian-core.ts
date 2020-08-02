@@ -14,17 +14,8 @@ import {
 } from "./matchers";
 
 import {
-	AsyncSetup,
-	AsyncSetupFixture,
-	AsyncTeardown,
-	AsyncTeardownFixture,
-	AsyncTest,
 	Focus,
-	FocusTest,
-	FocusTests,
 	Ignore,
-	IgnoreTest,
-	IgnoreTests,
 	Setup,
 	SetupFixture,
 	Teardown,
@@ -65,11 +56,6 @@ const log = Logger.log;
 
 export {
 	Any,
-	AsyncSetup,
-	AsyncSetupFixture,
-	AsyncTeardown,
-	AsyncTeardownFixture,
-	AsyncTest,
 	buildExpect,
 	CallbackTestRunner,
 	ContainerMatcher,
@@ -77,13 +63,9 @@ export {
 	Expect,
 	IExpect,
 	Focus,
-	FocusTest,
-	FocusTests,
 	FunctionMatcher,
 	FunctionSpyMatcher,
 	Ignore,
-	IgnoreTest,
-	IgnoreTests,
 	log,
 	Matcher,
 	MatchError,

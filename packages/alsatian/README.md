@@ -34,13 +34,13 @@ Using a different approach than other JavaScript test frameworks allows us to us
 
 ```typescript
 // no globals and typing support out of the box with intellisense
-import { AsyncTest, Expect, Test, TestCase, TestFixture } from "alsatian";
+import { Expect, Test, TestCase, TestFixture } from "alsatian";
 
 @TestFixture("whatever you'd like to call the fixture")
 export class SetOfTests {
     
     // use the async/await pattern in your tests as you would in your code
-    @AsyncTest("asychronous test")
+    @Test("asychronous test")
     public async asyncTest() {
         const response = await somethingToHappen();
 

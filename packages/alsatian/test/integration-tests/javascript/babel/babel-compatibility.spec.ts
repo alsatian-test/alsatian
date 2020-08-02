@@ -1,10 +1,11 @@
 import * as child from "child_process";
 import * as FileSystem from "fs";
-import { AsyncTest, Expect, Timeout } from "alsatian";
+import { Expect, Test, Timeout } from "alsatian";
 import { join } from "path";
 
 export class BabelIntegrationTests {
-	@AsyncTest()
+
+	@Test()
 	@Timeout(5000)
 	public toBeExpectations() {
 		const specFile = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/expectations/to-be.spec.js");
@@ -28,7 +29,7 @@ export class BabelIntegrationTests {
 		});
 	}
 
-	@AsyncTest()
+	@Test()
 	@Timeout(10000)
 	public toThrowExpectations() {
 		const specFile = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/expectations/to-throw.spec.js");
@@ -52,7 +53,7 @@ export class BabelIntegrationTests {
 		});
 	}
 
-	@AsyncTest()
+	@Test()
 	@Timeout(5000)
 	public asyncTest() {
 		const specPath = join(__dirname, "../../../../dist/test/integration-tests/javascript/test-sets/test-syntax/");

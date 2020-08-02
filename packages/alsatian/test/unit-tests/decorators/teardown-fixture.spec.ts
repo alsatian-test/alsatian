@@ -44,23 +44,6 @@ export class TeardownFixtureDecoratorTests {
 		Expect(teardownFixtureFunctions[0].propertyKey).toBe(key);
 	}
 
-	@TestCase("key")
-	@TestCase("another key")
-	@TestCase("something-different")
-	@Test("teardown fixture function added to metadata with isAsync = false")
-	public teardownFixtureFunctionIsAsyncMetaDataAdded(key: string) {
-		const testFixture = {};
-
-		TeardownFixture(testFixture, key, null);
-
-		const teardownFixtureFunctions = Reflect.getMetadata(
-			METADATA_KEYS.TEARDOWN_FIXTURE,
-			testFixture
-		);
-
-		Expect(teardownFixtureFunctions[0].isAsync).toBe(false);
-	}
-
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(42)
