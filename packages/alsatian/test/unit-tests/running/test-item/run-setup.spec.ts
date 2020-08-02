@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	FunctionSpy,
 	METADATA_KEYS,
@@ -13,7 +13,7 @@ export class TestItemRunSetupTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(10)
-	@AsyncTest()
+	@Test()
 	public async successfulSyncSetup(setupFunctionCount: number) {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -53,7 +53,7 @@ export class TestItemRunSetupTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(10)
-	@AsyncTest()
+	@Test()
 	public async successfulAsyncSetup(setupFunctionCount: number) {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 

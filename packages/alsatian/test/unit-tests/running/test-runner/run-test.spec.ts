@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	METADATA_KEYS,
 	SpyOn,
@@ -38,7 +38,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("a single passing test can be run successfully")
+	@Test("a single passing test can be run successfully")
 	public async singlePassingTestRunsSuccessfully() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 
@@ -59,7 +59,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("a passing test can be run with on complete event")
+	@Test("a passing test can be run with on complete event")
 	public async singlePassingTestRunsSuccessfullyWithOnCompleteEventRaised() {
 		let testCompletedValue!: ITestCompleteEvent;
 		const testDescription = "testDescriptionToCheck";
@@ -108,7 +108,7 @@ export class RunTestTests {
 		Expect(testCompletedValue.testCase).not.toBeNull();
 		Expect(testCompletedValue.error).toBeNull();
 	}
-	@AsyncTest("a passing test can be run with on started event")
+	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnStartedEventRaised() {
 		let testStartedValue: ITestStartedEvent = null;
 		const testDescription = "testDescriptionToCheck";
@@ -158,7 +158,7 @@ export class RunTestTests {
 		Expect(testStartedValue.test.ignored).toBe(false);
 	}
 
-	@AsyncTest("a passing test can be run with on started event")
+	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnTestFixtureCompleteEventRaised() {
 		let testTestFixtureCompleteValue: ITestFixtureCompleteEvent = null;
 		const testDescription = "testDescriptionToCheck";
@@ -202,7 +202,7 @@ export class RunTestTests {
 		Expect(testTestFixtureCompleteValue.testFixtureResults.outcome).toBe(TestOutcome.Pass);
 	}
 
-	@AsyncTest(
+	@Test(
 		"single passing test can be run successfully without on complete event"
 	)
 	public async singlePassingTestRunsSuccessfullyWithoutOnCompleteEventRaised() {
@@ -234,7 +234,7 @@ export class RunTestTests {
 		Expect(spyContainer.onCompleteCB).not.toHaveBeenCalled();
 	}
 
-	@AsyncTest(
+	@Test(
 		"single passing test can be run succesffully with multiple on complete events"
 	)
 	public async singlePassingTestRunsSuccessfullyWithSeveralOnCompleteEventRaised() {
@@ -275,7 +275,7 @@ export class RunTestTests {
 			.exactly(1);
 	}
 
-	@AsyncTest("single test that exceeds timeout fails")
+	@Test("single test that exceeds timeout fails")
 	@Timeout(600)
 	public async singleTestTakes501msFails() {
 		const test = new TestBuilder()
@@ -312,7 +312,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("single test that exceeds custom timeout fails")
+	@Test("single test that exceeds custom timeout fails")
 	public async singleTestTakes100msWith50msTimeoutFails() {
 		const test = new TestBuilder()
 			.withTestCaseCount(1)
@@ -348,7 +348,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("single test that throws an error fails")
+	@Test("single test that throws an error fails")
 	public async singleTestThrowsErrorFails() {
 		const test = new TestBuilder()
 			.withTestCaseCount(1)
@@ -390,7 +390,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("two passing tests run successfully")
+	@Test("two passing tests run successfully")
 	public async twoPassingTestsRunsSuccessfully() {
 		const firstTest = new TestBuilder().withTestCaseCount(1).build();
 		const secondTest = new TestBuilder().withTestCaseCount(1).build();
@@ -418,7 +418,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("two tests first exceeds timeout fails")
+	@Test("two tests first exceeds timeout fails")
 	@Timeout(1000)
 	public async twoTestsFirstTakes501msFails() {
 		const firstTest = new TestBuilder()
@@ -470,7 +470,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("two tests, second exceeds timeout fails")
+	@Test("two tests, second exceeds timeout fails")
 	@Timeout(1000)
 	public async twoTestsSecondTakes501msFails() {
 		const firstTest = new TestBuilder()
@@ -522,7 +522,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("two tests first exceeds custom timeout fails")
+	@Test("two tests first exceeds custom timeout fails")
 	public async twoTestsFirstTakes100msWith50msTimeoutFails() {
 		const firstTest = new TestBuilder()
 			.withTestCaseCount(1)
@@ -573,7 +573,7 @@ export class RunTestTests {
 		);
 	}
 
-	@AsyncTest("two tests second exceeds custom timeout fails")
+	@Test("two tests second exceeds custom timeout fails")
 	public async twoTestsSecondTakes100msWith50msTimeoutFails() {
 		const firstTest = new TestBuilder()
 			.withTestCaseCount(1)

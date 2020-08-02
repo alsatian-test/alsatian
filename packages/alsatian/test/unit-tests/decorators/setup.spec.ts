@@ -41,22 +41,6 @@ export class SetupDecoratorTests {
 		Expect(setupFunctions[0].propertyKey).toBe(key);
 	}
 
-	@TestCase("key")
-	@TestCase("another key")
-	@TestCase("something-different")
-	public setupFunctionIsAsyncMetaDataAdded(key: string) {
-		const testFixture = {};
-
-		Setup(testFixture, key, undefined);
-
-		const setupFunctions = Reflect.getMetadata(
-			METADATA_KEYS.SETUP,
-			testFixture
-		);
-
-		Expect(setupFunctions[0].isAsync).toBe(false);
-	}
-
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(42)

@@ -8,9 +8,7 @@ export class TestFixtureBuilder {
 
 	public constructor() {
 		this.testFixture = new TestFixture("Unnamed Test Fixture");
-		this.testFixture.filePath = new Error().stack
-			?.split("\n")[3]
-			.replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$2");
+		this.testFixture.filePath = "/fake/file.path";
 	}
 
 	public withFilePath(filePath: string) {

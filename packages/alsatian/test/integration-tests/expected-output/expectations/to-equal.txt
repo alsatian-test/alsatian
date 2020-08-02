@@ -8,6 +8,8 @@ not ok 1 toEqual Tests > onObjectWithNumericDifference
  data:
    got: '{"price":159.99999999999997}'
    expect: '{"price":160}'
+   fileLocation: >-
+     {{SPEC_FILE}}
    details:
      diff: |-
        {

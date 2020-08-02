@@ -4,4 +4,3 @@ TAP version 13
 ok 1 setup tests > simple setup
 ok 2 setup tests > simple async setup
 ok 3 setup tests > setup fixture only happened once
-# WARN: AsyncSetup has been deprecated and will be removed in version 4.0.0. Use the Setup decorator instead.

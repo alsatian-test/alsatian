@@ -76,13 +76,15 @@ export class TestOutputStream extends ReadableStream {
 		this.writeOut(`not ok ${testId} ${result.description}\n`);
 
 		if (result.error && result.error.name === MatchError.name) {
-			this.writeMatchErrorOutput(result.error as MatchError, result.logs);
+			this.writeMatchErrorOutput(result, result.logs);
 		} else {
-			this.writeUnhandledErrorOutput(result.error, result.logs);
+			this.writeUnhandledErrorOutput(result, result.logs);
 		}
 	}
 
-	private writeMatchErrorOutput(error: MatchError, logs: Array<ILog>): void {
+	private writeMatchErrorOutput(result: TestCaseResult, logs: Array<ILog>): void {
+		const error = result.error as MatchError;
+
 		const sanitisedMessage = error.message
 			.replace(/\\/g, "\\\\")
 			.replace(/"/g, '\\"');
@@ -93,18 +95,22 @@ export class TestOutputStream extends ReadableStream {
 			sanitisedMessage,
 			sanitisedActual,
 			sanitisedExpected,
+			result.testResults.fixtureResult.fixture.filePath,
 			this.extrasWithLogs(error.extras, logs)
 		);
 	}
 
 	private writeUnhandledErrorOutput(
-		error: Error | null,
+		result: TestCaseResult,
 		logs: Array<ILog>
 	): void {
+		const error = result.error;
+
 		this.writeFailure(
 			"The test threw an unhandled error.",
 			"an unhandled error",
 			"no unhandled errors to be thrown",
+			result.testResults.fixtureResult.fixture.filePath,
 			error instanceof Error
 				? this.extrasWithLogs({
 					type: error.name,
@@ -130,6 +136,7 @@ export class TestOutputStream extends ReadableStream {
 		message: string,
 		actual: string,
 		expected: string,
+		fileLocation: string,
 		details?: { [props: string]: any }
 	): void {
 		const output = {
@@ -138,6 +145,7 @@ export class TestOutputStream extends ReadableStream {
 			data: {
 				got: actual,
 				expect: expected,
+				fileLocation,
 				details
 			}
 		};

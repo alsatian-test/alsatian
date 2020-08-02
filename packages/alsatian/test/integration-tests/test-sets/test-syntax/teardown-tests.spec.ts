@@ -1,8 +1,6 @@
 import {
-	AsyncTeardown,
 	Expect,
 	Teardown,
-	TeardownFixture,
 	Test,
 	TestFixture
 } from "alsatian";
@@ -18,7 +16,7 @@ export class TeardownTests {
 		this.teardownComplete = true;
 	}
 
-	@AsyncTeardown
+	@Teardown
 	private async asyncTeardown(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			this.asyncTeardownComplete = true;

@@ -1,5 +1,5 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	Setup,
 	SpyOn,
@@ -41,7 +41,7 @@ export class NotestsErrorTests {
 		);
 	}
 
-	@AsyncTest("empty test fixture throws no tests error")
+	@Test("empty test fixture throws no tests error")
 	public async emptyTestFixturesThrowsError() {
 		const testSet = new TestSetBuilder().build();
 
@@ -64,7 +64,7 @@ export class NotestsErrorTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(13)
-	@AsyncTest(
+	@Test(
 		"one test fixture with multiple empty tests throws no tests error"
 	)
 	public async testFixtureWithEmptyTestsOutputsNoTestError(
@@ -98,7 +98,7 @@ export class NotestsErrorTests {
 	@TestCase(1)
 	@TestCase(2)
 	@TestCase(13)
-	@AsyncTest("multiple test fixtures with no tests throws no tests error")
+	@Test("multiple test fixtures with no tests throws no tests error")
 	public async multipleTestFixtureWithEmptyTestOutputsNoTestError(
 		testFixtureCount: number
 	) {
@@ -135,7 +135,7 @@ export class NotestsErrorTests {
 	@TestCase(13, 1)
 	@TestCase(13, 2)
 	@TestCase(13, 13)
-	@AsyncTest(
+	@Test(
 		"multiple test fixtures with multiple empty tests throws no tests error"
 	)
 	public async multipleTestFixtureWithMultipleEmptyTestOutputsNoTestError(

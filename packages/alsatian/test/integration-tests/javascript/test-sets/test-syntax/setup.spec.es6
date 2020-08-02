@@ -1,4 +1,4 @@
-import { AsyncSetup, Expect, Setup, SetupFixture, Teardown, Test, TestFixture } from "../../../../../core/alsatian-core";
+import { Expect, Setup, SetupFixture, Teardown, Test, TestFixture } from "../../../../../core/alsatian-core";
 
 @TestFixture("setup tests")
 export class SetupTests {
@@ -19,7 +19,7 @@ export class SetupTests {
        this._setupComplete = true;
    }
 
-   @AsyncSetup
+   @Setup
    asyncSetup() {
        return new Promise((resolve, reject) => {
            this._asyncSetupComplete = true;

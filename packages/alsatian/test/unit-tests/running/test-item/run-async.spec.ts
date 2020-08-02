@@ -1,21 +1,16 @@
 import {
-	AsyncTest,
+	Test,
 	Expect,
-	METADATA_KEYS,
-	SpyOn,
 	TestCase,
-	Timeout,
-	Focus
 } from "../../../../core/alsatian-core";
 import { MatchError } from "../../../../core/errors";
 import { TestItem } from "../../../../core/running/test-item";
 import { TestBuilder } from "../../../builders/test-builder";
 import { TestFixtureBuilder } from "../../../builders/test-fixture-builder";
-import { TestSetBuilder } from "../../../builders/test-set-builder";
 
 export class TestItemRunAsyncTests {
-	@AsyncTest()
-	public async successfulAsyncTest() {
+	@Test()
+	public async successfulTest() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.isAsync = true;
 
@@ -42,8 +37,8 @@ export class TestItemRunAsyncTests {
 		Expect(error).toBe(undefined);
 	}
 
-	@AsyncTest()
-	public async ignoreAsyncTest() {
+	@Test()
+	public async ignoreTest() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.ignored = true;
 		test.isAsync = true;
@@ -63,8 +58,8 @@ export class TestItemRunAsyncTests {
 		Expect(error).toBe(undefined);
 	}
 
-	@AsyncTest()
-	public async failAsyncTest() {
+	@Test()
+	public async failTest() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.isAsync = true;
 
@@ -97,8 +92,8 @@ export class TestItemRunAsyncTests {
 		Expect(error).toBe(expectedError);
 	}
 
-	@AsyncTest()
-	public async errorAsyncTest() {
+	@Test()
+	public async errorTest() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.isAsync = true;
 
@@ -127,8 +122,8 @@ export class TestItemRunAsyncTests {
 		Expect(error).toBe(expectedError);
 	}
 
-	@AsyncTest()
-	public async testErrorAsyncTest() {
+	@Test()
+	public async testErrorTest() {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.isAsync = true;
 
@@ -159,8 +154,8 @@ export class TestItemRunAsyncTests {
 	@TestCase(1)
 	@TestCase(42)
 	@TestCase(99)
-	@AsyncTest()
-	public async timeoutAsyncTest(timeout: number) {
+	@Test()
+	public async timeoutTest(timeout: number) {
 		const test = new TestBuilder().withTestCaseCount(1).build();
 		test.isAsync = true;
 

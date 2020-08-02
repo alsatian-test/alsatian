@@ -1,7 +1,7 @@
 import * as child from "child_process";
 import * as path from "path";
 import {
-	AsyncTest,
+	Test,
 	Expect,
 	TestCase,
 	TestFixture,
@@ -14,7 +14,7 @@ export class TypeScriptCompilerTests {
 	@TestCase("es5")
 	@TestCase("es6")
 	@TestCase("es2015")
-	@AsyncTest("Compiler supports all targets")
+	@Test("Compiler supports all targets")
 	@Timeout(5000)
 	public targetBuildCompiles(target: string) {
 		const result = child.exec(

@@ -9,30 +9,6 @@ export class AlsatianCoreTests {
 	}
 
 	@Test()
-	public focusTestShouldBeExposed() {
-		Expect(Alsatian.FocusTest).toBeDefined();
-		Expect(Alsatian.FocusTest).not.toBeNull();
-	}
-
-	@Test()
-	public focusTestsShouldBeExposed() {
-		Expect(Alsatian.FocusTests).toBeDefined();
-		Expect(Alsatian.FocusTests).not.toBeNull();
-	}
-
-	@Test()
-	public ignoreTestShouldBeExposed() {
-		Expect(Alsatian.IgnoreTest).toBeDefined();
-		Expect(Alsatian.IgnoreTest).not.toBeNull();
-	}
-
-	@Test()
-	public ignoreTestsShouldBeExposed() {
-		Expect(Alsatian.IgnoreTests).toBeDefined();
-		Expect(Alsatian.IgnoreTests).not.toBeNull();
-	}
-
-	@Test()
 	public testShouldBeExposed() {
 		Expect(Alsatian.Test).toBeDefined();
 		Expect(Alsatian.Test).not.toBeNull();
@@ -62,34 +38,10 @@ export class AlsatianCoreTests {
 		Expect(Alsatian.Setup).not.toBeNull();
 	}
 
-	@Test("AsyncSetup decorator is exposed")
-	public asyncSetupShouldBeExposed() {
-		Expect(Alsatian.AsyncSetup).toBeDefined();
-		Expect(Alsatian.AsyncSetup).not.toBeNull();
-	}
-
-	@Test("AsyncSetupFixture decorator is exposed")
-	public asyncSetupFixtureShouldBeExposed() {
-		Expect(Alsatian.AsyncSetupFixture).toBeDefined();
-		Expect(Alsatian.AsyncSetupFixture).not.toBeNull();
-	}
-
 	@Test()
 	public teardownShouldBeExposed() {
 		Expect(Alsatian.Teardown).toBeDefined();
 		Expect(Alsatian.Teardown).not.toBeNull();
-	}
-
-	@Test("AsyncTeardown decorator is exposed")
-	public asyncTeardownShouldBeExposed() {
-		Expect(Alsatian.AsyncTeardown).toBeDefined();
-		Expect(Alsatian.AsyncTeardown).not.toBeNull();
-	}
-
-	@Test("AsyncTeardownFixture decorator is exposed")
-	public asyncTeardownFixtureShouldBeExposed() {
-		Expect(Alsatian.AsyncTeardownFixture).toBeDefined();
-		Expect(Alsatian.AsyncTeardownFixture).not.toBeNull();
 	}
 
 	@Test("Any should be exposed")

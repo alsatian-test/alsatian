@@ -1,4 +1,4 @@
-import { AsyncTest, Expect, Test, TestFixture } from "alsatian";
+import { Expect, Test, TestFixture } from "alsatian";
 
 @TestFixture("error throwing")
 export class ErrorThrow {
@@ -70,7 +70,7 @@ export class ErrorThrow {
 		Expect(errorFunction).not.toThrowError(TypeError, "specific error");
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncErrorThrown() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -81,7 +81,7 @@ export class ErrorThrow {
 		await Expect(errorFunction).toThrowAsync();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncErrorNotThrown() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -92,7 +92,7 @@ export class ErrorThrow {
 		await Expect(errorFunction).toThrowAsync();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncNoErrorThrown() {
 		const errorFunction = async () => {
 			return new Promise(resolve => {
@@ -103,7 +103,7 @@ export class ErrorThrow {
 		await Expect(errorFunction).not.toThrowAsync();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncErrorUnexpectedly() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -114,7 +114,7 @@ export class ErrorThrow {
 		await Expect(errorFunction).not.toThrowAsync();
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asnycExactErrorThrown() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -128,7 +128,7 @@ export class ErrorThrow {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asnycExactErrorNotThrown() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -142,7 +142,7 @@ export class ErrorThrow {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncNotExactErrorThrown() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
@@ -156,7 +156,7 @@ export class ErrorThrow {
 		);
 	}
 
-	@AsyncTest()
+	@Test()
 	public async asyncExactErrorThrownUnexpectedly() {
 		const errorFunction = async () => {
 			return new Promise((resolve, reject) => {
