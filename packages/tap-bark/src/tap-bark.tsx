@@ -6,15 +6,14 @@ import { render } from "ink";
 import { TapBarkRoot } from "./components/tap-bark-root";
 
 export class TapBark {
-    
-    public static readonly tapParser = new Parser();
+	public static readonly tapParser = new Parser();
 
-    public static create(showProgress: boolean = true) {
-        const tapBarkOutput = <TapBarkRoot showProgress={showProgress} />;
-        render(tapBarkOutput);
-        
-        return {
-            getPipeable: () => duplexer(TapBark.tapParser, through())
-        };
-    }
+	public static create(showProgress: boolean = true) {
+		const tapBarkOutput = <TapBarkRoot showProgress={showProgress} />;
+		render(tapBarkOutput);
+
+		return {
+			getPipeable: () => duplexer(TapBark.tapParser, through())
+		};
+	}
 }

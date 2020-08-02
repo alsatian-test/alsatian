@@ -57,4 +57,9 @@ export default class IndexTests {
 
 		Expect(chainedPipe.pipe).toHaveBeenCalledWith(process.stdout);
 	}
+
+	@Teardown
+	private _restoreTapBarkCreate() {
+		(TapBark.create as any).restore();
+	}
 }

@@ -3,7 +3,6 @@ import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 import { Unused } from "../core/unused";
-import { removeItemByIndex } from "../core/utils/remove-item-by-index";
 
 export class AlsatianCliOptions {
 	public readonly fileGlobs: Array<string>;
@@ -32,8 +31,11 @@ export class AlsatianCliOptions {
 		const f = this.extractHideProgress(e.args);
 		this.hideProgress = f.value;
 
-		if (f.args.length > 0) {
-			throw new InvalidArgumentNamesError(f.args);
+		const t = this.extractTranspileOnly(f.args);
+		const p = this.extractProject(t.args);
+
+		if (p.args.length > 0) {
+			throw new InvalidArgumentNamesError(p.args);
 		}
 	}
 
@@ -129,10 +131,31 @@ export class AlsatianCliOptions {
 		);
 	}
 
+	private extractTranspileOnly(args) {
+		const transpileOnly = this.extractArgumentFromList(args, "transpile-only", "t");
+
+		if (transpileOnly.value) {
+			process.env.TS_NODE_TRANSPILE_ONLY = "true";
+		}
+
+		return transpileOnly;
+	}
+
+	private extractProject(args) {
+		const project = this.extractArgumentFromList(args, "project", "p", true);
+
+		if (project.value) {
+			process.env.TS_NODE_PROJECT = project.value;
+		}
+
+		return project;
+	}
+
 	private extractArgumentFromList(
 		args: Array<string>,
 		argumentName: string,
-		argumentShorthand?: string
+		argumentShorthand?: string,
+		hasValue: boolean = false
 	) {
 		const argumentIndex = this.getArgumentIndexFromArgumentList(
 			args,
@@ -140,14 +163,20 @@ export class AlsatianCliOptions {
 			argumentShorthand
 		);
 
+		let value: any = argumentIndex !== -1;
+
+		if (hasValue && value) {
+			value = args[argumentIndex + 1];
+		}
+
 		// filter out the tap argument and return the other args
-		args = args.filter((value, index) => {
-			Unused(value);
+		args = args.filter((_, index) => {
+			Unused(_);
 			return index !== argumentIndex;
 		});
 
 		return {
-			value: argumentIndex !== -1,
+			value,
 			args
 		};
 	}
