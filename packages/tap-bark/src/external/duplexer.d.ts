@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 declare module "duplexer" {
-    import { Transform } from "stream";
+    import { Transform, Writable } from "stream";
 
-    export default function duplexer(streamA: Transform, streamB: Transform): void;
+    export default function duplexer(streamA: Transform, streamB: Transform): Writable;
 }
