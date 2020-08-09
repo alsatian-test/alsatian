@@ -10,6 +10,6 @@ export class FunctionSpyMatcherTests {
 			test: value
 		});
 
-		Expect(() => objectMatcher.toEqual({ test: null })).toThrowError(MatchError, "Expected objects to be equal");
+		Expect(() => objectMatcher.toEqual({ test: 2 })).toThrowError(MatchError, "Expected objects to be equal");
 	}
 }

@@ -13,7 +13,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionCalledPasses() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -28,7 +28,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionNotCalledFails() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -39,7 +39,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionNotCalledFailsWithCorrectError() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -58,7 +58,7 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -86,7 +86,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -117,7 +117,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -142,7 +142,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -163,7 +163,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionNotCalledPassesWhenShouldNotCall() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -176,7 +176,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionThrowsErrorFailsWhenShouldNotThrow() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -191,7 +191,7 @@ export class ToHaveBeenCalledWithTests {
 	@Test()
 	public functionThrowsErrorFailsWithCorrectError() {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -221,7 +221,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -247,7 +247,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -267,7 +267,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -288,7 +288,7 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: () => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -361,7 +361,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArgumentsList: Array<Array<any>>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -370,7 +370,7 @@ export class ToHaveBeenCalledWithTests {
 			some.function.apply(some, actualArguments);
 		});
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith([]);
@@ -380,7 +380,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.extras.actualArguments).toBe(
+		Expect(functionError?.extras?.actualArguments).toBe(
 			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
@@ -394,7 +394,7 @@ export class ToHaveBeenCalledWithTests {
 		actualArgumentsList: Array<Array<any>>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
@@ -403,7 +403,7 @@ export class ToHaveBeenCalledWithTests {
 			some.function.apply(some, actualArguments);
 		});
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			const expect = Expect(some.function);
@@ -418,7 +418,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.extras.actualArguments).toBe(
+		Expect(functionError?.extras?.actualArguments).toBe(
 			`[${actualArgumentsList.map(args => stringify(args)).join(", ")}]`
 		);
 	}
@@ -431,12 +431,12 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			const expect = Expect(some.function);
@@ -448,7 +448,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe(
+		Expect(functionError?.expected).toBe(
 			"function to be called with " +
 				JSON.stringify(expectedArguments).replace(/,/g, ", ") +
 				"."
@@ -463,14 +463,14 @@ export class ToHaveBeenCalledWithTests {
 		expectedArguments: Array<any>
 	) {
 		const some = {
-			function: (args: Array<any>) => {}
+			function: (...args: Array<any>) => {}
 		};
 
 		SpyOn(some, "function");
 
 		some.function.apply(some, expectedArguments);
 
-		let functionError: MatchError;
+		let functionError: MatchError | undefined;
 
 		try {
 			const expect = Expect(some.function);
@@ -482,7 +482,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionError).toBeDefined();
 		Expect(functionError).not.toBeNull();
-		Expect(functionError.expected).toBe(
+		Expect(functionError?.expected).toBe(
 			"function not to be called with " +
 				JSON.stringify(expectedArguments).replace(/,/g, ", ") +
 				"."
@@ -624,7 +624,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function.apply(some, callArguments);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any);
@@ -634,7 +634,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Anything]."
 		);
 	}
@@ -654,7 +654,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function.apply(some, callArguments);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any, Any);
@@ -664,7 +664,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Anything, Anything]."
 		);
 	}
@@ -785,7 +785,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Number));
@@ -795,7 +795,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any Number]."
 		);
 	}
@@ -916,7 +916,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(String));
@@ -926,7 +926,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any String]."
 		);
 	}
@@ -1047,7 +1047,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Boolean));
@@ -1057,7 +1057,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any Boolean]."
 		);
 	}
@@ -1178,7 +1178,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Object));
@@ -1188,7 +1188,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any Object]."
 		);
 	}
@@ -1309,7 +1309,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Array));
@@ -1319,7 +1319,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any Array]."
 		);
 	}
@@ -1440,7 +1440,7 @@ export class ToHaveBeenCalledWithTests {
 		SpyOn(some, "function");
 		some.function(argument);
 
-		let functionCallError: MatchError;
+		let functionCallError: MatchError | undefined;
 
 		try {
 			Expect(some.function).toHaveBeenCalledWith(Any(Error));
@@ -1450,7 +1450,7 @@ export class ToHaveBeenCalledWithTests {
 
 		Expect(functionCallError).toBeDefined();
 		Expect(functionCallError).not.toBeNull();
-		Expect(functionCallError.expected).toBe(
+		Expect(functionCallError?.expected).toBe(
 			"function to be called with [Any Error]."
 		);
 	}

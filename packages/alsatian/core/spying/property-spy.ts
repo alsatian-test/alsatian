@@ -5,11 +5,11 @@ export class PropertySpy<PropertyType> {
 	public readonly setCalls: Array<SpyCall> = [];
 	private originialGetter: () => PropertyType | undefined;
 	private originialSetter: (value: PropertyType) => void | undefined;
-	private value: PropertyType;
+	private value: PropertyType | undefined;
 	private descriptorTarget: any;
 	private getter: () => PropertyType | undefined;
 	private setter: (value: PropertyType) => void | undefined;
-	private returnValue: boolean;
+	private returnValue: boolean | undefined;
 	private propertyName: string;
 	private getCalls: Array<SpyCall> = [];
 

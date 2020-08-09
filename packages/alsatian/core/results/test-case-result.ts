@@ -13,7 +13,7 @@ export class TestCaseResult implements IResultWithOutcome {
 	) {}
 
 	public get logs() {
-		const filePath = this.testResults.fixtureResult.fixture.filePath.replace(
+		const filePath = this.testResults.fixtureResult.fixture.filePath?.replace(
 			/\//g,
 			"\\"
 		);

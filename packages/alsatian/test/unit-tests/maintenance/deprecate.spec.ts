@@ -18,7 +18,7 @@ export class DeprecateFunctionTests {
 	public warningGiven(featureName: string, versionNumber: string) {
 		SpyOn(Warner, "warn");
 
-		deprecate(featureName, versionNumber, null);
+		deprecate(featureName, versionNumber, "");
 
 		Expect(Warner.warn).toHaveBeenCalledWith(
 			`${featureName} has been deprecated and will be removed in version ${versionNumber}.`

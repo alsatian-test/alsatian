@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Color } from "ink";
 import { TapBark } from "./tap-bark";
-import { Plan, TapResults, TapAssertion } from "./external/tap-parser";
+import { Plan, TapResults, TapAssertion } from "tap-parser";
 import { Results } from "./results";
 
 const CONSOLE_WARNING_REGEXP: RegExp = /^# WARN: (.*)/;

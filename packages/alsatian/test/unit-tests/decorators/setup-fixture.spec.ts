@@ -16,7 +16,7 @@ export class SetupFixtureDecoratorTests {
 	public setupFixtureFunctionAddedAsMetaData() {
 		const testFixture = {};
 
-		SetupFixture(testFixture, "test", null);
+		SetupFixture(testFixture, "test", undefined);
 
 		const setupFixtureFunctions = Reflect.getMetadata(
 			METADATA_KEYS.SETUP_FIXTURE,
@@ -34,7 +34,7 @@ export class SetupFixtureDecoratorTests {
 	public setupFixtureFunctionKeyMetaDataAdded(key: string) {
 		const testFixture = {};
 
-		SetupFixture(testFixture, key, null);
+		SetupFixture(testFixture, key, undefined);
 
 		const setupFixtureFunctions = Reflect.getMetadata(
 			METADATA_KEYS.SETUP_FIXTURE,
@@ -52,7 +52,7 @@ export class SetupFixtureDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < setupFixtureFunctionCount; i++) {
-			SetupFixture(testFixture, "key " + i, null);
+			SetupFixture(testFixture, "key " + i, undefined);
 		}
 
 		const setupFixtureFunctions = Reflect.getMetadata(

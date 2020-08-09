@@ -17,7 +17,7 @@ import { TestSetBuilder } from "../../../builders/test-set-builder";
 import { TestPlan } from "../../../../core/running";
 
 export class PreTestTests {
-	private originalTestPlan: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
 	private recordOriginalTestPlan() {

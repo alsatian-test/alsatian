@@ -231,7 +231,7 @@ export class TypeMatcherTestFunctionTests {
 	@Test()
 	public thatMatchesWithValidArgumentsDoesNotThrow() {
 		const sut = new TypeMatcher(Error);
-		Expect(() => sut.thatMatches("name", null)).not.toThrow();
+		Expect(() => sut.thatMatches("name", undefined)).not.toThrow();
 		Expect(() => sut.thatMatches({})).not.toThrow();
 		Expect(() => sut.thatMatches((v: Error) => true)).not.toThrow();
 	}
@@ -240,12 +240,12 @@ export class TypeMatcherTestFunctionTests {
 	public thatMatchesWithInvalidArgumentsDoesThrow() {
 		const sut = new TypeMatcher(Error);
 
-		Expect(() => sut.thatMatches(null as object)).toThrowError(
+		Expect(() => sut.thatMatches(null as unknown as object)).toThrowError(
 			TypeError,
 			"thatMatches requires none-null or non-undefined argument"
 		);
 		Expect(() =>
-			sut.thatMatches(null as ((v: Error) => boolean))
+			sut.thatMatches(null as unknown as ((v: Error) => boolean))
 		).toThrowError(
 			TypeError,
 			"thatMatches requires none-null or non-undefined argument"

@@ -1,19 +1,15 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es6",
 		"outDir": "out",
-		"experimentalDecorators": true,
+		"rootDir": "src",
 		"lib": [
 			"es6"
 		],
 		"resolveJsonModule": true,
-		"sourceMap": true,
-		"rootDir": "src",
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"jsx": "react",
-		"strict": true   /* enable all strict type-checking options */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
@@ -23,5 +19,8 @@
 		"node_modules",
 		".vscode-test",
 		"samples"
+	],
+	"include": [
+		"src"
 	]
 }

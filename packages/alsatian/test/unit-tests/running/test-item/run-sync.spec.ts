@@ -15,7 +15,7 @@ export class TestItemRunSyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -34,7 +34,7 @@ export class TestItemRunSyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -66,7 +66,7 @@ export class TestItemRunSyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -94,7 +94,7 @@ export class TestItemRunSyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);

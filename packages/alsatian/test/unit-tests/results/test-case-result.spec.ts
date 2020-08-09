@@ -13,10 +13,9 @@ import { TestResultsBuilder } from "../../builders/test-results-builder";
 import { Logger } from "../../../core/maintenance/log";
 import { TestFixtureResultsBuilder } from "../../builders/test-fixture-results-builder";
 import { TestFixtureBuilder } from "../../builders/test-fixture-builder";
-import { TestFixture } from "../../../core";
 
 export class TestCaseResultTests {
-	private originalLogs: Array<any>;
+	private originalLogs!: Array<any>;
 
 	@Setup
 	private replaceLogArray() {

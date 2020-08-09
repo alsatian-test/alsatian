@@ -1,4 +1,4 @@
-import { TapAssertion } from "./external/tap-parser";
+import { TapAssertion } from "tap-parser";
 
 export interface Results {
 	ok: boolean;

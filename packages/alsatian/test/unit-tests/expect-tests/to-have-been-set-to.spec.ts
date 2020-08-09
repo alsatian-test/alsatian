@@ -224,7 +224,7 @@ export class ToHaveBeenSetToTests {
 			some.property = value;
 		});
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | null = null;
 
 		try {
 			Expect(propertySpy).toHaveBeenSetTo({ something: "weird" });
@@ -234,7 +234,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.extras.actualValues).toEqual(values);
+		Expect(propertyError?.extras?.actualValues).toEqual(values);
 	}
 
 	@TestCase([null])
@@ -255,7 +255,7 @@ export class ToHaveBeenSetToTests {
 			some.property = value;
 		});
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | null = null;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSetTo(values[0]);
@@ -265,7 +265,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.extras.actualValues).toEqual(values);
+		Expect(propertyError?.extras?.actualValues).toEqual(values);
 	}
 
 	@TestCase(undefined)
@@ -288,7 +288,7 @@ export class ToHaveBeenSetToTests {
 
 		const propertySpy = SpyOnProperty(some, "property");
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | null = null;
 
 		try {
 			Expect(propertySpy).toHaveBeenSetTo(expectedValue);
@@ -298,7 +298,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.extras.expectedValue).toBe(expectedValue);
+		Expect(propertyError?.extras?.expectedValue).toBe(expectedValue);
 	}
 
 	@TestCase(undefined)
@@ -323,7 +323,7 @@ export class ToHaveBeenSetToTests {
 
 		some.property = expectedValue;
 
-		let propertyError: MatchError;
+		let propertyError: MatchError | null = null;
 
 		try {
 			Expect(propertySpy).not.toHaveBeenSetTo(expectedValue);
@@ -333,7 +333,7 @@ export class ToHaveBeenSetToTests {
 
 		Expect(propertyError).toBeDefined();
 		Expect(propertyError).not.toBeNull();
-		Expect(propertyError.expected).toBe(
+		Expect(propertyError?.expected).toBe(
 			"property not to be set to " + stringify(expectedValue) + "."
 		);
 	}

@@ -16,7 +16,7 @@ export class TeardownFixtureDecoratorTests {
 	public teardownFixtureFunctionAddedAsMetaData() {
 		const testFixture = {};
 
-		TeardownFixture(testFixture, "test", null);
+		TeardownFixture(testFixture, "test", undefined);
 
 		const teardownFixtureFunctions = Reflect.getMetadata(
 			METADATA_KEYS.TEARDOWN_FIXTURE,
@@ -34,7 +34,7 @@ export class TeardownFixtureDecoratorTests {
 	public teardownFixtureFunctionKeyMetaDataAdded(key: string) {
 		const testFixture = {};
 
-		TeardownFixture(testFixture, key, null);
+		TeardownFixture(testFixture, key, undefined);
 
 		const teardownFixtureFunctions = Reflect.getMetadata(
 			METADATA_KEYS.TEARDOWN_FIXTURE,
@@ -52,7 +52,7 @@ export class TeardownFixtureDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < teardownFixtureFunctionCount; i++) {
-			TeardownFixture(testFixture, "key " + i, null);
+			TeardownFixture(testFixture, "key " + i, undefined);
 		}
 
 		const teardownFixtureFunctions = Reflect.getMetadata(

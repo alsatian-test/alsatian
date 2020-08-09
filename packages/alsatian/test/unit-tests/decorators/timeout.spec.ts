@@ -16,7 +16,7 @@ export class TimeoutDecoratorTests {
 
 		const testFixture = {};
 
-		timeoutDecorator(testFixture, "test", null);
+		timeoutDecorator(testFixture, "test", undefined);
 
 		Expect(
 			Reflect.getMetadata(METADATA_KEYS.TIMEOUT, testFixture, "test")

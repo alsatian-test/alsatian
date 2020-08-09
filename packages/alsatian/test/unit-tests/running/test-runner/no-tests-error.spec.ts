@@ -15,7 +15,7 @@ import { TestPlan } from "../../../../core/running";
 export class NotestsErrorTests {
 	private originalStdErr: any;
 	private originalProcessExit: any;
-	private originalTestPlan: TestPlan;
+	private originalTestPlan!: TestPlan;
 
 	@Setup
 	private spyProcess() {
@@ -47,7 +47,7 @@ export class NotestsErrorTests {
 
 		const testRunner = new TestRunner();
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testRunner.run(testSet);
@@ -57,8 +57,8 @@ export class NotestsErrorTests {
 
 		Expect(error).toBeDefined();
 		Expect(error).not.toBeNull();
-		Expect(error.constructor).toBe(Error);
-		Expect(error.message).toBe("no tests to run.");
+		Expect(error?.constructor).toBe(Error);
+		Expect(error?.message).toBe("no tests to run.");
 	}
 
 	@TestCase(1)
@@ -81,7 +81,7 @@ export class NotestsErrorTests {
 
 		const testRunner = new TestRunner();
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testRunner.run(testSet);
@@ -91,8 +91,8 @@ export class NotestsErrorTests {
 
 		Expect(error).toBeDefined();
 		Expect(error).not.toBeNull();
-		Expect(error.constructor).toBe(Error);
-		Expect(error.message).toBe("no tests to run.");
+		Expect(error?.constructor).toBe(Error);
+		Expect(error?.message).toBe("no tests to run.");
 	}
 
 	@TestCase(1)
@@ -112,7 +112,7 @@ export class NotestsErrorTests {
 
 		const testRunner = new TestRunner();
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testRunner.run(testSet);
@@ -122,8 +122,8 @@ export class NotestsErrorTests {
 
 		Expect(error).toBeDefined();
 		Expect(error).not.toBeNull();
-		Expect(error.constructor).toBe(Error);
-		Expect(error.message).toBe("no tests to run.");
+		Expect(error?.constructor).toBe(Error);
+		Expect(error?.message).toBe("no tests to run.");
 	}
 
 	@TestCase(1, 1)
@@ -158,7 +158,7 @@ export class NotestsErrorTests {
 
 		const testRunner = new TestRunner();
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testRunner.run(testSet);
@@ -168,7 +168,7 @@ export class NotestsErrorTests {
 
 		Expect(error).toBeDefined();
 		Expect(error).not.toBeNull();
-		Expect(error.constructor).toBe(Error);
-		Expect(error.message).toBe("no tests to run.");
+		Expect(error?.constructor).toBe(Error);
+		Expect(error?.message).toBe("no tests to run.");
 	}
 }

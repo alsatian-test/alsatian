@@ -1,7 +1,7 @@
 import { Warner } from "./warn";
 
 function getStack() {
-	return new Error().stack.split("\n").map(stackLine => {
+	return new Error().stack?.split("\n").map(stackLine => {
 		const STACK_ITEMS = stackLine
 			.replace(/^\s*at (.+) \((.+):\d+:\d+\)$/, "$1 $2")
 			.split(" ");
@@ -33,7 +33,7 @@ export class Logger {
 
 		Logger.LOGS.push({
 			value,
-			stack: getStack()
+			stack: getStack() || []
 		});
 	}
 }

@@ -7,12 +7,12 @@
     },
     "exclude": [
         "node_modules",
-        "**/*.d.ts",
         "test/**/*.test.ts",
         "../alsatian"
     ],
     "include": [
         "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
     ]
 }

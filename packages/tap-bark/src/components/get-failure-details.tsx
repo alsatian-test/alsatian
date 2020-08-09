@@ -1,4 +1,4 @@
-import { TapAssertion } from "../external/tap-parser";
+import { TapAssertion } from "tap-parser";
 import React from "react";
 import { Color, Box, Text } from "ink";
 import { FailureDetail } from "./failure-detail";

@@ -30,7 +30,7 @@ export class AlsatianTestFixtureTreeViewItem extends TreeItem {
 
     resultStream(event => {
       if (
-         (relative(event.payload.fileName, this.fixture.filePath) !== ""
+         (relative(event.payload.fileName, this.fixture.filePath!) !== ""
       || event.payload.fixtureName !== this.fixture.fixture.constructor.name)
       ) {
         return;

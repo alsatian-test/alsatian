@@ -19,7 +19,7 @@ export class IgnoreDecoratorTests {
 		const ignore = Ignore("");
 		const testFixture = {};
 
-		ignore(testFixture, key, null);
+		ignore(testFixture, key, undefined);
 
 		Expect(
 			Reflect.getMetadata(METADATA_KEYS.IGNORE, testFixture, key)
@@ -35,7 +35,7 @@ export class IgnoreDecoratorTests {
 		const ignore = Ignore(reason);
 		const testFixture = {};
 
-		ignore(testFixture, key, null);
+		ignore(testFixture, key, undefined);
 
 		Expect(
 			Reflect.getMetadata(METADATA_KEYS.IGNORE_REASON, testFixture, key)

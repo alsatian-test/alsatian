@@ -14,7 +14,7 @@ export class TestCaseDecoratorTests {
 
 		const testFixture = {};
 
-		testCaseDecorator(testFixture, "test", null);
+		testCaseDecorator(testFixture, "test", undefined);
 
 		const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
@@ -30,7 +30,7 @@ export class TestCaseDecoratorTests {
 
 		const testFixture = {};
 
-		testCaseDecorator(testFixture, key, null);
+		testCaseDecorator(testFixture, key, undefined);
 
 		const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
 
@@ -46,7 +46,7 @@ export class TestCaseDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < testCount; i++) {
-			testCaseDecorator(testFixture, "key " + i, null);
+			testCaseDecorator(testFixture, "key " + i, undefined);
 		}
 
 		const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
@@ -63,7 +63,7 @@ export class TestCaseDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < testCount; i++) {
-			testCaseDecorator(testFixture, "key", null);
+			testCaseDecorator(testFixture, "key", undefined);
 		}
 
 		const tests = Reflect.getMetadata(METADATA_KEYS.TESTS, testFixture);
@@ -77,7 +77,7 @@ export class TestCaseDecoratorTests {
 
 		const testFixture = {};
 
-		testCaseDecorator(testFixture, "test", null);
+		testCaseDecorator(testFixture, "test", undefined);
 
 		const testCases = Reflect.getMetadata(
 			METADATA_KEYS.TEST_CASES,
@@ -100,7 +100,7 @@ export class TestCaseDecoratorTests {
 
 		const testFixture = {};
 
-		testCaseDecorator(testFixture, "key", null);
+		testCaseDecorator(testFixture, "key", undefined);
 
 		const testCases = Reflect.getMetadata(
 			METADATA_KEYS.TEST_CASES,
@@ -119,7 +119,7 @@ export class TestCaseDecoratorTests {
 
 		const testFixture = {};
 
-		testCaseDecorator(testFixture, key, null);
+		testCaseDecorator(testFixture, key, undefined);
 
 		const testCases = Reflect.getMetadata(
 			METADATA_KEYS.TEST_CASES,
@@ -140,14 +140,14 @@ export class TestCaseDecoratorTests {
 		const testFixture = {};
 
 		for (let i = 0; i < testCount; i++) {
-			dummyTestCaseDecorator(testFixture, "key " + i, null);
+			dummyTestCaseDecorator(testFixture, "key " + i, undefined);
 		}
 
 		const args = [1, 2, 3];
 		TestCaseDecorator.apply(TestCaseDecorator, args)(
 			testFixture,
 			"key",
-			null
+			undefined
 		);
 
 		const testCases = Reflect.getMetadata(

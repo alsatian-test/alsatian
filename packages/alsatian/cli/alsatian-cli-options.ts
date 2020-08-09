@@ -3,7 +3,6 @@ import { InvalidArgumentNamesError } from "./errors/invalid-argument-names-error
 import { InvalidTimeoutValueError } from "./errors/invalid-timeout-value-error";
 import { MissingArgumentValueError } from "./errors/missing-argument-value-error";
 import { Unused } from "../core/unused";
-import { removeItemByIndex } from "../core/utils/remove-item-by-index";
 
 export class AlsatianCliOptions {
 	public readonly fileGlobs: Array<string>;
@@ -92,7 +91,7 @@ export class AlsatianCliOptions {
 		}
 
 		return {
-			value: parseInt(timeoutValue, 10) || null,
+			value: timeoutValue !== null ? parseInt(timeoutValue, 10) : null,
 			args
 		};
 	}

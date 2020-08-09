@@ -26,7 +26,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -47,7 +47,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -81,7 +81,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -111,7 +111,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -140,7 +140,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(500);
@@ -171,7 +171,7 @@ export class TestItemRunAsyncTests {
 
 		const testItem = new TestItem(testFixture, test, test.testCases[0]);
 
-		let error: Error;
+		let error: Error | undefined;
 
 		try {
 			await testItem.run(timeout);
@@ -180,7 +180,7 @@ export class TestItemRunAsyncTests {
 		}
 
 		Expect(error).toBeDefined();
-		Expect(error.message).toBe(
+		Expect(error?.message).toBe(
 			"The test exceeded the given timeout of " + timeout + "ms."
 		);
 	}
