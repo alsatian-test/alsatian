@@ -7,7 +7,7 @@ import {
 	TestFixture,
 	Timeout,
 	Setup,
-	Teardown, TestOutcome
+	Teardown, TestOutcome, Any
 } from "../../../../core/alsatian-core";
 import {ITestCompleteEvent, ITestFixtureCompleteEvent, ITestStartedEvent} from "../../../../core/events";
 import { TestRunner } from "../../../../core/running/test-runner";
@@ -110,7 +110,6 @@ export class RunTestTests {
 	}
 	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnStartedEventRaised() {
-		let testStartedValue: ITestStartedEvent = null;
 		const testDescription = "testDescriptionToCheck";
 		const test = new TestBuilder()
 			.withDescription(testDescription)
@@ -132,9 +131,7 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onStartedCB: (testStarted: ITestStartedEvent) => {
-				testStartedValue = testStarted;
-			}
+			onStartedCB: (testStarted: ITestStartedEvent) => {}
 		};
 
 		SpyOn(spyContainer, "onStartedCB");
@@ -148,19 +145,18 @@ export class RunTestTests {
 			.toHaveBeenCalled()
 			.exactly(1);
 
-		Expect(testStartedValue.testId).toEqual(1);
-		Expect(testStartedValue.test.description).toEqual(testDescription);
-		Expect(testStartedValue.testFixture.description).toEqual(
-			testFixtureDescription
-		);
-		Expect(testStartedValue.test.key).not.toBeNull();
-		Expect(testStartedValue.test.description).not.toBeNull();
-		Expect(testStartedValue.test.ignored).toBe(false);
+		Expect(spyContainer.onStartedCB)
+			.toHaveBeenCalledWith(
+				Any<ITestStartedEvent>()
+					.thatMatches(e => e.testId === 1
+								   && e.test.description === testDescription
+								   && e.test.key !== null
+								   && e.test.ignored === false
+								   && e.testFixture.description === testFixtureDescription));
 	}
 
 	@Test("a passing test can be run with on started event")
 	public async singlePassingTestRunsSuccessfullyWithOnTestFixtureCompleteEventRaised() {
-		let testTestFixtureCompleteValue: ITestFixtureCompleteEvent = null;
 		const testDescription = "testDescriptionToCheck";
 		const test = new TestBuilder()
 			.withDescription(testDescription)
@@ -182,9 +178,7 @@ export class RunTestTests {
 		const testRunner = new TestRunner(outputStream);
 
 		const spyContainer = {
-			onTestFixtureCompleteCB: (testTestFixtureComplete: ITestFixtureCompleteEvent) => {
-				testTestFixtureCompleteValue = testTestFixtureComplete;
-			}
+			onTestFixtureCompleteCB: (testTestFixtureComplete: ITestFixtureCompleteEvent) => {}
 		};
 
 		SpyOn(spyContainer, "onTestFixtureCompleteCB");
@@ -198,8 +192,10 @@ export class RunTestTests {
 			.toHaveBeenCalled()
 			.exactly(1);
 
-		Expect(testTestFixtureCompleteValue.testFixture).not.toBeNull();
-		Expect(testTestFixtureCompleteValue.testFixtureResults.outcome).toBe(TestOutcome.Pass);
+		Expect(spyContainer.onTestFixtureCompleteCB)
+			.toHaveBeenCalledWith(
+				Any<ITestFixtureCompleteEvent>()
+					.thatMatches(e => e.testFixtureResults.outcome === TestOutcome.Pass));
 	}
 
 	@Test(

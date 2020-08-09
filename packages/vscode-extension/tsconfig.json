@@ -19,5 +19,8 @@
 		"node_modules",
 		".vscode-test",
 		"samples"
+	],
+	"include": [
+		"src"
 	]
 }

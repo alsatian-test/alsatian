@@ -1,10 +1,10 @@
 import { IGNORE, IGNORE_REASON } from "./_metadata-keys";
 
-export function Ignore<T>(reason: string) {
+export function Ignore(reason: string) {
 	return (
-		target: T | (new (...args: Array<any>) => T),
+		target: object | ((...args: Array<any>) => any),
 		propertyKey?: string | symbol,
-		descriptor?: TypedPropertyDescriptor<T>
+		descriptor?: any
 	) => {
 		if (propertyKey) {
 			// mark test method as ignored

@@ -3,7 +3,6 @@ import { TestFixture as TestFixtureMetadata } from "../../../core/";
 import {
 	Expect,
 	METADATA_KEYS,
-	SpyOnProperty,
 	Test,
 	TestCase,
 	TestFixture

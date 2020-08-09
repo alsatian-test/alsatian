@@ -136,7 +136,7 @@ export class TestOutputStream extends ReadableStream {
 		message: string,
 		actual: string,
 		expected: string,
-		fileLocation: string,
+		fileLocation?: string,
 		details?: { [props: string]: any }
 	): void {
 		const output = {
