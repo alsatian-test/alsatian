@@ -32,7 +32,7 @@ export class TestRunner {
         }
 
         const runProcess = fork(join(__dirname, `../run`), runArguments, { execArgv });
-    
+
         const results = await new Promise<ITestCompleteEvent[] | null>((resolve, reject) => {
             let results = [] as ITestCompleteEvent[];
 
@@ -56,8 +56,16 @@ export class TestRunner {
                     output.appendLine(message);
                 }
             });
-    
+
             runProcess.on("exit", code => {
+                if (code !== null && code > 0) {
+                    this.resultEmitter.fire({
+                        type: ResultEventType.Error,
+                        payload: {
+                            ...eventData
+                        }
+                    });
+                }
                 resolve(null);
             });
         });
@@ -87,5 +95,6 @@ export interface TestResultEvent {
 export enum ResultEventType {
     Started = "STARTED",
     TestCompleted = "TEST_COMPLETED",
-    RunCompleted = "RUN_COMPLETED"
+    RunCompleted = "RUN_COMPLETED",
+    Error = "ERROR"
 }

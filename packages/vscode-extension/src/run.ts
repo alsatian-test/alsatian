@@ -26,7 +26,7 @@ function sendMessage<T extends IMessage | string>(message: T) {
 
         if (alsatianConfigPath) {
             const alsatianConfig = await import(alsatianConfigPath);
-            
+
             const root = alsatianConfigPath.split(/[\\/]/);
             root.pop();
             const rootPath = root.join("/");
@@ -36,9 +36,9 @@ function sendMessage<T extends IMessage | string>(message: T) {
                 join(rootPath, alsatianConfig.tsconfig) :
                 await findNearestFile("tsconfig.json", fileName)
             );
-    
+
             const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => join(rootPath, script));
-    
+
             await Promise.all(preTestScripts.map(script => import(script)));
         }
         else {
@@ -49,7 +49,7 @@ function sendMessage<T extends IMessage | string>(message: T) {
 
         testSet.addTestsFromFiles(fileName);
 
-        const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];    
+        const fixture = testSet.testFixtures.filter(x => x.fixture.constructor.name === fixtureName)[0];
         fixture.focussed = true;
 
         if (testName) {
@@ -75,7 +75,7 @@ function sendMessage<T extends IMessage | string>(message: T) {
             results: results.map(x => ({ outcome: x.outcome, error: x.error ? { message: x.error?.message }: null }))
         });
     }
-    catch (error) {        
+    catch (error) {
         sendMessage(`error running test ${error}`);
         sendMessage({
             type: MessageType.RunComplete,

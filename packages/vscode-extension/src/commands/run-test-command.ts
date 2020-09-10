@@ -25,35 +25,55 @@ export class RunTestCommand extends AlsatianCommand {
         RunTestCommand.testFailureIconPath = Icons.getTestFailureIconPath(context);
         RunTestCommand.testRunner = testRunner;
     }
-    
+
     public static async execute(fileName: string, fixtureName: string, testName: string, range: Range, execArgv?: string[]) {
         if (styles[testName]) {
             styles[testName].dispose();
         }
 
+        // need to make more robust (perhaps pass in document instead)
+        const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
         const subscription = RunTestCommand.testRunner.subscribe(event => {
-            
+
             if (
                 event.payload.fileName !== fileName
-            || event.payload.fixtureName !== fixtureName
-            || event.payload.testName !== testName
+                || event.payload.fixtureName !== fixtureName
+                || event.payload.testName !== testName
             ) {
                 return;
-            }            
+            }
 
             if (event.type === ResultEventType.RunCompleted) {
                 subscription.dispose();
             }
 
-            // need to make more robust (perhaps pass in document instead)
-            const editor = window.visibleTextEditors.filter(x => x.document.fileName === fileName)[0];
-
             if (event.type === ResultEventType.Started) {
-                styles[testName]?.dispose();              
-    
+                styles[testName]?.dispose();
+
                 styles[testName] = showIcon(editor, RunTestCommand.testRunningIconPath, [ range ]);
-                
             }
+
+            if (event.type === ResultEventType.Error) {
+                styles[testName]?.dispose();
+
+                styles[testName] = showIcon(
+                    editor,
+                    RunTestCommand.testFailureIconPath,
+                    [
+                        {
+                            range,
+                            renderOptions: {
+                                after: {
+                                    margin: "2em",
+                                    contentText: "An unknown error occurred",
+                                    color: "#f44"
+                                }
+                            },
+                        }
+                    ]
+                );
+            }
+
             else if (event.type === ResultEventType.TestCompleted) {
                 styles[testName]?.dispose();
 
@@ -61,7 +81,7 @@ export class RunTestCommand extends AlsatianCommand {
 
                 const pass = results && results.every(x => x.outcome === TestOutcome.Pass);
                 const errors = results?.filter(result => result.error).map(result => result.error) || [];
-    
+
                 styles[testName] = showIcon(
                     editor,
                     pass ? RunTestCommand.testSuccessIconPath : RunTestCommand.testFailureIconPath,
@@ -71,14 +91,14 @@ export class RunTestCommand extends AlsatianCommand {
                             renderOptions: {
                                 after: {
                                     margin: "2em",
-                                    contentText: errors[0] || results === null ? errors[0]?.message || "An unknown error ocurred" : "",
+                                    contentText: errors[0] || results === null ? errors[0]?.message || "An unknown error occurred" : "",
                                     color: "#f44"
                                 }
-                            },	
+                            },
                         }
                     ]
                 );
-        
+
                 console.log(`run ${testName} resulted in ${pass ? "success" : "failure"}`);
             }
         });
