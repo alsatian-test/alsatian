@@ -18,7 +18,7 @@ Core test reporter
 
 ### [vscode-extension](https://www.github.com/alsatian-test/alsatian/blob/master/packages/vscode-extension/README.md)
 ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/JamesAdarich.alsatian-vscode)
-Core VSCode extension
+Core VS Code extension
 
 ## Community Packages
 
