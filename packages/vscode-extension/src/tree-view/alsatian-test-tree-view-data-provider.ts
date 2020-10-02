@@ -2,8 +2,6 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { TestSet } from "alsatian";
 import { AlsatianTestFixtureTreeViewItem } from "./alsatian-test-fixture-tree-view-item";
-import { findNearestFile } from "../find-nearest-file";
-import { registerTsNode } from "../register-ts-node";
 import { AlsatianTestTreeViewItem } from "./alsatian-test-tree-view-item";
 import { TestRunner } from "../running/test-runner";
 import { TestSetTreeViewItem } from "./test-set-tree-view-item";
@@ -75,31 +73,11 @@ export class AlsatianTestTreeViewDataProvider implements vscode.TreeDataProvider
 
       const testSetInfo = {
         relativePath: path.relative(this.workspaceRoot, alsatianConfigPath).replace(/[\\/]\.alsatianrc.json$/, ""),
-        testSet: TestSet.create()
+
+        //TODO: tests already loaded here and are loaded again in `run.ts` could avoid double load for quicker running
+        // depends on solution to updates.
+        testSet: await TestSet.create()
       };
-
-      const alsatianConfig = await import(alsatianConfigPath);      
-            
-      const root = alsatianConfigPath.split(/[\\/]/);
-      root.pop();
-      const rootPath = root.join("/");
-
-      await registerTsNode(
-          alsatianConfig.tsconfig ?
-          path.join(rootPath, alsatianConfig.tsconfig) :
-          await findNearestFile("tsconfig.json", alsatianConfigPath)
-      );
-
-      const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => path.join(rootPath, script));
-      
-      // needed in case any setup occurs in a constructor
-      await Promise.all(preTestScripts.map(script => import(script)));
-
-      //TODO: tests already loaded here and are loaded again in `run.ts` could avoid double load for quicker running
-      // depends on solution to updates.
-      alsatianConfig.specs.forEach((spec: string) => {      
-        testSetInfo.testSet.addTestsFromFiles(path.join(rootPath, spec));
-      });
 
       return testSetInfo;
     }));

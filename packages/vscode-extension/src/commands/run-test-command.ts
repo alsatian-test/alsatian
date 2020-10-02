@@ -1,5 +1,5 @@
 import { AlsatianCommand } from "./alsatian-command";
-import { TextEditorDecorationType, window, Uri, Range, ExtensionContext } from "vscode";
+import { TextEditorDecorationType, window, Uri, Range, ExtensionContext, EventEmitter } from "vscode";
 import { TestOutcome } from "alsatian";
 import { Icons } from "../icons";
 import { showIcon } from "./show-icon";

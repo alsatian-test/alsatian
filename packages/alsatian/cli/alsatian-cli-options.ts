@@ -11,6 +11,7 @@ export class AlsatianCliOptions {
 	public readonly versionRequested: boolean = false;
 	public readonly helpRequested: boolean = false;
 	public readonly hideProgress: boolean = false;
+	public readonly workingDirectory: string | null = null;
 
 	public constructor(args: Array<string>) {
 		const a = this.extractTap(args);
@@ -31,8 +32,11 @@ export class AlsatianCliOptions {
 		const f = this.extractHideProgress(e.args);
 		this.hideProgress = f.value;
 
-		if (f.args.length > 0) {
-			throw new InvalidArgumentNamesError(f.args);
+		const g = this.extractWorkingDirectory(f.args);
+		this.workingDirectory = g.value;
+
+		if (g.args.length > 0) {
+			throw new InvalidArgumentNamesError(g.args);
 		}
 	}
 
@@ -126,6 +130,30 @@ export class AlsatianCliOptions {
 			"help",
 			"h"
 		);
+	}
+
+	private extractWorkingDirectory(args: Array<string>) {
+		const value = this.getArgumentValueFromArgumentList(
+			args,
+			"workingDirectory",
+			"d"
+		);
+
+		const argumentIndex = this.getArgumentIndexFromArgumentList(
+			args,
+			"workingDirectory",
+			"d"
+		);
+
+		const newArgs = args.filter((value, index) => {
+			Unused(value);
+			return index !== argumentIndex && index !== argumentIndex + 1;
+		});
+
+		return {
+			args: newArgs,
+			value
+		};
 	}
 
 	private extractArgumentFromList(

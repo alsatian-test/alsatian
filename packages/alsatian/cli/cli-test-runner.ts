@@ -31,7 +31,7 @@ export class CliTestRunner {
 		}
 
 		// create test set from given file globs
-		const testSet = TestSet.create();
+		const testSet = await TestSet.create(userArguments.workingDirectory || undefined);
 		testSet.addTestsFromFiles(userArguments.fileGlobs);
 
 		if (userArguments.tap) {

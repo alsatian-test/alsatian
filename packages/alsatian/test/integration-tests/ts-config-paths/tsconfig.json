@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "@hitch-hikers/*": [
+              "./aliased-folder/*"
+            ]
+        },
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.spec.ts"
+    ]
+}

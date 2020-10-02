@@ -3,7 +3,7 @@ import { TestSet, TestRunner } from "alsatian";
 
 async function runTypeScriptTests() {
 	try {
-		const testSet = TestSet.create();
+		const testSet = await TestSet.create();
 		testSet.addTestsFromFiles(
 			"./test/integration-tests/test-sets/**/*.spec.ts"
 		);

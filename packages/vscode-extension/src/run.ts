@@ -1,8 +1,5 @@
 import { TestSet, TestRunner } from "alsatian";
 import { ITestCompleteEvent } from "alsatian/dist/core/events";
-import { join } from "path";
-import { findNearestFile } from "./find-nearest-file";
-import { registerTsNode } from "./register-ts-node";
 import { IMessage, MessageType } from "./message";
 
 function sendMessage<T extends IMessage | string>(message: T) {
@@ -22,30 +19,7 @@ function sendMessage<T extends IMessage | string>(message: T) {
             delete require.cache[require.resolve(fileName)];
         }
 
-        const alsatianConfigPath = await findNearestFile(".alsatianrc.json", fileName);
-
-        if (alsatianConfigPath) {
-            const alsatianConfig = await import(alsatianConfigPath);
-            
-            const root = alsatianConfigPath.split(/[\\/]/);
-            root.pop();
-            const rootPath = root.join("/");
-
-            await registerTsNode(
-                alsatianConfig.tsconfig ?
-                join(rootPath, alsatianConfig.tsconfig) :
-                await findNearestFile("tsconfig.json", fileName)
-            );
-    
-            const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => join(rootPath, script));
-    
-            await Promise.all(preTestScripts.map(script => import(script)));
-        }
-        else {
-            await registerTsNode(await findNearestFile("tsconfig.json", fileName));
-        }
-
-        const testSet = TestSet.create();
+        const testSet = await TestSet.create(fileName);
 
         testSet.addTestsFromFiles(fileName);
 

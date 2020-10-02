@@ -1,13 +1,44 @@
 import * as path from "path";
 import { FileRequirer, GlobHelper, TestLoader } from "./";
 import { ITestFixture } from "./_interfaces";
+import { findNearestFile } from "./utils/find-nearest-file";
+import { registerTsNode } from "./utils/register-ts-node";
 
 export class TestSet {
-	public static create(): TestSet {
+	public static async create(workingDirectory?: string): Promise<TestSet> {
 		const fileRequirer = new FileRequirer();
 		const testLoader = new TestLoader(fileRequirer);
 		const globHelper = new GlobHelper();
-		return new TestSet(testLoader, globHelper);
+		const testSet = new TestSet(testLoader, globHelper);
+
+        const alsatianConfigPath = await findNearestFile(".alsatianrc.json", workingDirectory);
+
+        if (alsatianConfigPath) {
+            const alsatianConfig = await import(alsatianConfigPath);
+            
+            const root = alsatianConfigPath.split(/[\\/]/);
+            root.pop();
+            const rootPath = root.join("/");
+
+            await registerTsNode(
+                alsatianConfig.tsconfig ?
+                path.join(rootPath, alsatianConfig.tsconfig) :
+                await findNearestFile("tsconfig.json", workingDirectory)
+            );
+    
+            const preTestScripts = ((alsatianConfig.preTestScripts || []) as string[]).map(script => path.join(rootPath, script));
+    
+			await Promise.all(preTestScripts.map(script => import(script)));
+			
+			alsatianConfig.specs.forEach((spec: string) => {      
+				testSet.addTestsFromFiles(path.join(rootPath, spec));
+			});
+        }
+        else {
+            await registerTsNode(await findNearestFile("tsconfig.json", workingDirectory));
+        }
+
+		return testSet;
 	}
 
 	public readonly testFixtures: Array<ITestFixture> = [];
