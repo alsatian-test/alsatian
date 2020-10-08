@@ -1,0 +1,47 @@
+{
+	"name": "alsatian-webstorm",
+	"displayName": "alsatian",
+	"publisher": "JamesAdarich",
+	"description": "Intellij IDEA extension for the Alsatian test framework",
+	"version": "0.1.0",
+	"preview": true,
+	"icon": "docs/alsatian-logo.png",
+	"categories": [
+		"Debuggers",
+		"Other"
+	],
+	"keywords": [
+		"alsatian",
+		"test",
+		"tdd",
+		"javascript",
+		"typescript",
+		"idea"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/alsatian-test/alsatian/tree/master/webstorm-extension"
+	},
+	"author": "James Adarich <=> (https://james.adarich.com) && Florian Roettges",
+	"main": "./out/extension.js",
+	"contributes": {},
+	"scripts": {
+		"clean": "rimraf out",
+		"vscode:prepublish": "npm run clean && npm run build",
+		"build": "tsc",
+		"test": "npm run test:unit",
+		"test:unit": "node ../alsatian/dist/cli/alsatian-cli \"./test/**/*.spec.ts\""
+	},
+	"devDependencies": {
+		"@types/node": "^12.11.7",
+		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
+		"eslint": "^6.8.0",
+		"rimraf": "^3.0.2"
+	},
+	"dependencies": {
+		"alsatian": "^3.2.1",
+		"ts-node": "^8.6.2",
+		"typescript": "^3.7.5"
+	}
+}
