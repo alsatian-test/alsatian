@@ -7,6 +7,7 @@
     },
     "exclude": [
         "node_modules",
+        "src/**/*.spec.tsx",
         "test/**/*.test.ts",
         "../alsatian"
     ],
