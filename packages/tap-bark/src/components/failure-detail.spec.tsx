@@ -4,7 +4,7 @@ import Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
-import { Test, TestFixture, Expect, TestCase } from "../../../alsatian";
+import { Test, TestFixture, Expect, TestCase } from "alsatian";
 import { FailureDetail } from "./failure-detail";
 
 @TestFixture("<FailureDetails /> Tests")
