@@ -83,7 +83,7 @@
   "homepage": "https://github.com/alsatian-test/alsatian/tree/master/packages/alsatian#readme",
   "devDependencies": {
     "@types/deep-diff": "0.0.31",
-    "@types/diff": "^3.5.1",
+    "@types/diff": "^4.0.2",
     "@types/glob": "^5.0.30",
     "@types/js-yaml": "^3.11.2",
     "@types/mock-require": "^2.0.0",
