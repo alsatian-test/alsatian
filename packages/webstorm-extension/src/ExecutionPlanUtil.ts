@@ -1,4 +1,8 @@
-import { WebstormExecutionPlan, WebstormTestSuiteExecutionPlan } from "./WebstormExecutionPlan";
+import {
+	WebstormExecutionPlan,
+	WebstormTestFileExecutionPlan,
+	WebstormTestSuiteExecutionPlan
+} from "./WebstormExecutionPlan";
 import * as fs from "fs";
 import { TestSet } from "alsatian";
 
@@ -26,11 +30,10 @@ export class ExecutionPlanUtil {
 	private executionPlanContainsFixture(executionPlan: WebstormExecutionPlan, testFixtureClassName: string) {
 		for (const testFileExecutionPlan of executionPlan.testFileExecutionPlans) {
 			//all suites if no filter
-			if (testFileExecutionPlan.testSuiteExecutionPlans.length == 0)
+			if (this.isExecuteAllSuitesInFile(testFileExecutionPlan))
 				return true;
-			for (const testSuiteExecutionPlan of testFileExecutionPlan.testSuiteExecutionPlans) {
-				if (testSuiteExecutionPlan.suiteName === testFixtureClassName)
-					return true;
+			else {
+				return this.findTestSuiteExecutionPlan(testFileExecutionPlan, testFixtureClassName) != null;
 			}
 		}
 		return false;
@@ -38,21 +41,19 @@ export class ExecutionPlanUtil {
 
 	private executionPlanContainsTestMethod(executionPlan: WebstormExecutionPlan, testFixtureClassName: string, testMethodName: string) {
 		for (const testFileExecutionPlan of executionPlan.testFileExecutionPlans) {
-			//all suites no filter
-			if (testFileExecutionPlan.testSuiteExecutionPlans.length == 0)
+			if (this.isExecuteAllSuitesInFile(testFileExecutionPlan))
 				return true;
-			for (const testSuiteExecutionPlan of testFileExecutionPlan.testSuiteExecutionPlans) {
-				if (testSuiteExecutionPlan.suiteName === testFixtureClassName) {
+			else {
+				let testSuiteExecutionPlan = this.findTestSuiteExecutionPlan(testFileExecutionPlan, testFixtureClassName);
+				if (testSuiteExecutionPlan != null)
 					this.testSuiteExecutionPlanContainsTestMethod(testSuiteExecutionPlan, testMethodName);
-				}
 			}
 		}
 		return false;
 	}
 
 	private testSuiteExecutionPlanContainsTestMethod(testSuiteExecutionPlan: WebstormTestSuiteExecutionPlan, testMethodName: string) {
-		//all test methods if no filter
-		if (testSuiteExecutionPlan.testMethodExecutionPlans.length == 0)
+		if (this.isExecuteAllTestMethodsInSuite(testSuiteExecutionPlan))
 			return true;
 		for (const testMethodExecutionPlan of testSuiteExecutionPlan.testMethodExecutionPlans) {
 			if (testMethodExecutionPlan.testName === testMethodName)
@@ -61,4 +62,20 @@ export class ExecutionPlanUtil {
 		return false;
 	}
 
+	private findTestSuiteExecutionPlan(testFileExecutionPlan: WebstormTestFileExecutionPlan, testFixtureClassName: string) {
+		for (const testSuiteExecutionPlan of testFileExecutionPlan.testSuiteExecutionPlans) {
+			if (testSuiteExecutionPlan.suiteName === testFixtureClassName)
+				return testSuiteExecutionPlan;
+		}
+		return null;
+	}
+
+	private isExecuteAllSuitesInFile(testFileExecutionPlan: WebstormTestFileExecutionPlan) {
+		//all suites no filter
+		return testFileExecutionPlan.testSuiteExecutionPlans.length == 0;
+	}
+
+	private isExecuteAllTestMethodsInSuite(testSuiteExecutionPlan: WebstormTestSuiteExecutionPlan) {
+		return testSuiteExecutionPlan.testMethodExecutionPlans.length == 0;
+	}
 }
