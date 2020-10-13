@@ -43,13 +43,21 @@ export class ExecutionPlanUtil {
 		for (const testFileExecutionPlan of executionPlan.testFileExecutionPlans) {
 			if (this.isExecuteAllSuitesInFile(testFileExecutionPlan))
 				return true;
-			else {
-				let testSuiteExecutionPlan = this.findTestSuiteExecutionPlan(testFileExecutionPlan, testFixtureClassName);
-				if (testSuiteExecutionPlan != null)
-					this.testSuiteExecutionPlanContainsTestMethod(testSuiteExecutionPlan, testMethodName);
+			else if (this.testFileExecutionPlanContainsTestMethod(testFileExecutionPlan, testFixtureClassName, testMethodName)) {
+				return true;
 			}
 		}
 		return false;
+	}
+
+	private testFileExecutionPlanContainsTestMethod(testFileExecutionPlan: WebstormTestFileExecutionPlan, testFixtureClassName: string, testMethodName: string) {
+		let testSuiteExecutionPlan = this.findTestSuiteExecutionPlan(testFileExecutionPlan, testFixtureClassName);
+		if (testSuiteExecutionPlan != null) {
+			return this.testSuiteExecutionPlanContainsTestMethod(testSuiteExecutionPlan, testMethodName);
+		} else {
+			return false;
+		}
+
 	}
 
 	private testSuiteExecutionPlanContainsTestMethod(testSuiteExecutionPlan: WebstormTestSuiteExecutionPlan, testMethodName: string) {
