@@ -1,5 +1,5 @@
 import { theAnswer } from "@hitch-hikers/the-answer";
-import { Expect, TestFixture, Test } from "alsatian";
+import { Expect, TestFixture, Test } from "../../../../core/alsatian-core";
 
 @TestFixture("ts-config/paths")
 export class TsConfigPathsTests {

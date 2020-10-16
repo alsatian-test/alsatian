@@ -11,14 +11,18 @@ export class TestSet {
 		const globHelper = new GlobHelper();
 		const testSet = new TestSet(testLoader, globHelper);
 
-        const alsatianConfigPath = await findNearestFile(".alsatianrc.json", workingDirectory);
+		const alsatianConfigPath = path.join(process.cwd(), await findNearestFile(".alsatianrc.json", workingDirectory) || "");
+		
 
         if (alsatianConfigPath) {
             const alsatianConfig = await import(alsatianConfigPath);
             
             const root = alsatianConfigPath.split(/[\\/]/);
             root.pop();
-            const rootPath = root.join("/");
+			const rootPath = root.join("/");
+			
+			
+		console.log("\n\n\nPATH FOUND!!!", path.join(rootPath, alsatianConfig.tsconfig), "\n\n\n");
 
             await registerTsNode(
                 alsatianConfig.tsconfig ?
