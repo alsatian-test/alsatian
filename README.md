@@ -25,8 +25,6 @@ Built by the wonderful [Gr33nbl00d](https://github.com/Gr33nbl00d)
 
 ## Community Packages
 
-https://plugins.jetbrains.com/plugin/15185-alsatian-test
-
 ### [alsatian-cli-function](https://www.npmjs.com/package/alsatian-cli-function)
 [![npm](https://img.shields.io/npm/v/alsatian-cli-function.svg)](https://www.npmjs.com/package/alsatian-cli-function)
 Exports a function to run a provided file using alsatian.
