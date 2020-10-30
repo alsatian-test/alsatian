@@ -16,6 +16,13 @@ Core test framework
 [![npm](https://img.shields.io/npm/v/tap-bark.svg)](https://www.npmjs.com/package/tap-bark)
 Core test reporter
 
+## IDE Extensions
+
+### [vscode](https://marketplace.visualstudio.com/items?itemName=JamesAdarich.alsatian-vscode)
+
+### [webstorm](https://plugins.jetbrains.com/plugin/15185-alsatian-test)
+Built by the wonderful [Gr33nbl00d](https://github.com/Gr33nbl00d)
+
 ## Community Packages
 
 ### [alsatian-cli-function](https://www.npmjs.com/package/alsatian-cli-function)
