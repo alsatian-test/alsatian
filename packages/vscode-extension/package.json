@@ -113,7 +113,7 @@
 		"alsatian": "^3.2.1",
 		"find-nearest-file": "^1.1.0",
 		"less-loader": "^4.1.0",
-		"ts-node": "^8.6.2",
+		"ts-node": "^9.1.0",
 		"tsconfig-paths": "^3.9.0",
 		"typescript": "^3.7.5"
 	}
