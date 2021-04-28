@@ -93,7 +93,7 @@
 		"@types/enzyme": "^3.10.5",
 		"@types/enzyme-adapter-react-16": "^1.0.6",
 		"@types/mock-require": "^2.0.0",
-		"@types/node": "^12.11.7",
+		"@types/node": "^15.0.0",
 		"@types/react": "^16.9.23",
 		"@types/vscode": "^1.42.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
