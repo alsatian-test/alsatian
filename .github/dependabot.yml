@@ -1,0 +1,56 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.24
+    - 14.14.25
+    - 14.14.26
+    - 14.14.28
+    - 14.14.30
+    - 14.14.31
+    - 14.14.32
+    - 14.14.33
+    - 14.14.34
+    - 14.14.35
+    - 14.14.36
+    - 14.14.37
+    - 14.14.39
+    - 14.14.41
+    - 15.0.0
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: dugite
+    versions:
+    - 1.100.0
+    - 1.101.0
+    - 1.102.0
+    - 1.96.0
+    - 1.97.0
+    - 1.98.0
+  - dependency-name: typescript
+    versions:
+    - 4.1.3
+    - 4.1.4
+    - 4.1.5
+    - 4.2.2
+    - 4.2.3
+  - dependency-name: "@types/selenium-webdriver"
+    versions:
+    - 4.0.11
+  - dependency-name: handlebars
+    versions:
+    - 4.7.6
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: lerna
+    versions:
+    - 3.22.1
