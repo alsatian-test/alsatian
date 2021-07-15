@@ -62,7 +62,7 @@ function circularReplacer(
 	}
 		
 	if (typeof value === "bigint") {
-		return value + 'n';
+		return value.toString() + 'n';
 	}
 
 	if (typeof value === "object" && value !== null) {
