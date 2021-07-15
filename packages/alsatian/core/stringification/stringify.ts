@@ -60,6 +60,10 @@ function circularReplacer(
 	if (typeof value === "function") {
 		return value.toString();
 	}
+		
+	if (typeof value === "bigint") {
+		return value + 'n';
+	}
 
 	if (typeof value === "object" && value !== null) {
 		if (cache.indexOf(value) !== -1) {
