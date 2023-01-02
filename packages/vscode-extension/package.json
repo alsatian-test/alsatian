@@ -112,9 +112,9 @@
 	"dependencies": {
 		"alsatian": "^3.2.1",
 		"find-nearest-file": "^1.1.0",
-		"less-loader": "^4.1.0",
+		"less-loader": "^11.1.0",
 		"ts-node": "^10.0.0",
-		"tsconfig-paths": "^3.9.0",
+		"tsconfig-paths": "^3.10.1",
 		"typescript": "^4.3.4"
 	}
 }
